@@ -10,6 +10,9 @@ Overview
 Browse
 ![Browse](/doc/img/Browse.png?raw=true "Browse")
 
+## Supported EDM Objects
+[Supported EDM Objects](https://github.com/JeffersonLab/wedm/wiki/Supported-EDM-Objects)
+
 ## Installation
    1. Install [epics2web](https://github.com/JeffersonLab/epics2web)
    1. Download wedm.war and drop it into the Tomcat webapps directory
