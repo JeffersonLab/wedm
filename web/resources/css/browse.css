@@ -1,0 +1,7 @@
+#files td {
+    text-align: left;
+}
+#up-directory-widget {
+    display: inline-block;
+    min-width: 200px;
+}

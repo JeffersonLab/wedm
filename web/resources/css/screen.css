@@ -1,0 +1,64 @@
+.invisible,
+#svg-defs,
+.ActiveSymbol .ActiveGroup {
+    display: none;
+}
+.ActiveButton,
+.ActiveMessageButton,
+.ActiveChoiceButton,
+.ShellCommand {
+    cursor: not-allowed;
+}
+.ActiveRectangle {
+    pointer-events: none;
+}
+.RelatedDisplay {
+    cursor: pointer;
+}
+.related-display-menu {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    z-index: 2;
+
+}
+.related-display-menu ul {
+    position: relative;
+    background-color: rgb(200, 200, 200);
+    border: 3px solid white;
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+.ActiveButton:hover,
+.ActiveMessageButton:hover,
+.ActiveChoiceButton:hover,
+.RelatedDisplay:hover {
+    outline: 2px solid black;
+}
+.screen {
+    overflow: hidden;
+}
+.screen-text {
+    white-space: pre;
+    display: table-cell;
+    vertical-align: middle;
+}
+.border-3d {
+    box-sizing: border-box;
+    display: table;
+    width: 100%;
+    height: 100%;    
+}
+.ScreenObject {
+    position: absolute;
+    box-sizing: border-box;
+}
+svg.ScreenObject {
+    overflow: visible;
+}
+.connection-state-panel {
+    float: right;
+}
