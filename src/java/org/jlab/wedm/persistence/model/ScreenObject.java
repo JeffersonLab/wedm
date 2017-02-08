@@ -48,7 +48,7 @@ public class ScreenObject {
     public String indicatorPv;    
     
     public Map<String, String> attributes = new HashMap<>();
-    public Map<String, String> styles = new HashMap();
+    public Map<String, String> styles = new HashMap<>();
     public List<String> classes = new ArrayList<>();    
     
     protected void setCommonAttributes() {
