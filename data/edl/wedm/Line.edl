@@ -1,0 +1,329 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 1346
+y 169
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 400
+y 44
+w 0
+h 157
+lineColor index 14
+fillColor index 51
+arrows "both"
+numPoints 2
+xPoints {
+  0 400
+  1 400
+}
+yPoints {
+  0 44
+  1 201
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 72
+y 57
+w 80
+h 99
+lineColor index 14
+fillColor index 51
+lineWidth 2
+arrows "both"
+numPoints 3
+xPoints {
+  0 148
+  1 72
+  2 152
+}
+yPoints {
+  0 156
+  1 131
+  2 57
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 94
+y 353
+w 233
+h 108
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 254
+y 74
+w 173
+h 104
+lineColor index 14
+fill
+fillColor index 51
+closePolygon
+numPoints 3
+xPoints {
+  0 254
+  1 398
+  2 427
+}
+yPoints {
+  0 178
+  1 74
+  2 169
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 270
+y 90
+w 119
+h 26
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 270
+y 90
+w 26
+h 26
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 275
+y 104
+w 110
+h 0
+lineColor index 14
+fillColor index 51
+arrows "both"
+numPoints 2
+xPoints {
+  0 275
+  1 385
+}
+yPoints {
+  0 104
+  1 104
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 363
+y 90
+w 26
+h 26
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 257
+y 193
+w 98
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "Stacking Test"
+}
+autoSize
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 90
+y 357
+w 237
+h 104
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 97
+y 357
+w 230
+h 104
+
+beginGroup
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 97
+y 357
+w 217
+h 98
+lineColor index 15
+fillColor index 51
+lineWidth 10
+lineStyle "dash"
+arrows "to"
+numPoints 2
+xPoints {
+  0 97
+  1 314
+}
+yPoints {
+  0 357
+  1 455
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 285
+y 435
+w 42
+h 26
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 90
+y 416
+w 143
+h 36
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 111
+y 416
+w 102
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "Grouping Test"
+}
+autoSize
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 90
+y 438
+w 143
+h 14
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+

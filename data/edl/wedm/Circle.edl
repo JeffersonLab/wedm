@@ -1,0 +1,105 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 396
+y 171
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 79
+y 77
+w 149
+h 155
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 194
+y 43
+w 161
+h 127
+lineColor index 15
+fill
+fillColor index 51
+lineWidth 10
+lineStyle "dash"
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 233
+y 337
+w 88
+h 71
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 217
+y 328
+w 124
+h 90
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 281
+y 308
+w 0
+h 125
+lineColor index 14
+fillColor index 51
+numPoints 2
+xPoints {
+  0 281
+  1 281
+}
+yPoints {
+  0 308
+  1 433
+}
+endObjectProperties
+

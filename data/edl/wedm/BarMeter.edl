@@ -1,0 +1,395 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 29
+y 337
+w 1860
+h 672
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-8.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 4
+textColor index 14
+ctlFgColor1 index 30
+ctlFgColor2 index 32
+ctlBgColor1 index 34
+ctlBgColor2 index 35
+topShadowColor index 37
+botShadowColor index 44
+snapToGrid
+gridSize 5
+endScreenProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 330
+y 80
+w 15
+h 10
+font "helvetica-medium-r-8.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "0"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 330
+y 70
+w 15
+h 10
+font "helvetica-medium-r-8.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "0"
+}
+endObjectProperties
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 330
+y 60
+w 15
+h 10
+font "helvetica-medium-r-8.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "D"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 330
+y 50
+w 15
+h 10
+font "helvetica-medium-r-8.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2"
+}
+endObjectProperties
+
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 300
+y 50
+w 10
+h 45
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3"
+  "D"
+  "0"
+  "0"
+}
+endObjectProperties
+
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 280
+y 50
+w 10
+h 45
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "0"
+  "L"
+  "0"
+  "2"
+}
+endObjectProperties
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 260
+y 50
+w 10
+h 45
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "0"
+  "L"
+  "0"
+  "1"
+}
+endObjectProperties
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 230
+y 95
+w 25
+h 5
+font "helvetica-medium-r-8.0"
+fgColor index 20
+bgColor index 0
+useDisplayBg
+value {
+  "100"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 230
+y 110
+w 20
+h 5
+font "helvetica-medium-r-8.0"
+fgColor index 30
+bgColor index 0
+useDisplayBg
+value {
+  "80"
+}
+endObjectProperties
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 230
+y 120
+w 20
+h 5
+font "helvetica-medium-r-8.0"
+fgColor index 17
+bgColor index 0
+useDisplayBg
+value {
+  "60"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 230
+y 135
+w 20
+h 5
+font "helvetica-medium-r-8.0"
+fgColor index 17
+bgColor index 0
+useDisplayBg
+value {
+  "40"
+}
+endObjectProperties
+
+
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 230
+y 145
+w 20
+h 5
+font "helvetica-medium-r-8.0"
+fgColor index 17
+bgColor index 0
+useDisplayBg
+value {
+  "20"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 230
+y 160
+w 15
+h 5
+font "helvetica-medium-r-8.0"
+fgColor index 17
+bgColor index 0
+useDisplayBg
+value {
+  "0"
+}
+endObjectProperties
+
+
+# (Bar)
+object activeBarClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 255
+y 95
+w 20
+h 70
+indicatorColor index 53
+indicatorAlarm
+fgColor index 14
+fgAlarm
+bgColor index 8
+indicatorPv "VINJDIG04"
+font "helvetica-medium-r-8.0"
+labelTicks "1"
+majorTicks "10"
+border
+limitsFromDb
+scaleFormat "FFloat"
+orientation "vertical"
+endObjectProperties
+
+# (Bar)
+object activeBarClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 275
+y 95
+w 20
+h 70
+indicatorColor index 53
+indicatorAlarm
+fgColor index 14
+fgAlarm
+bgColor index 8
+indicatorPv "VIP0L02"
+font "helvetica-medium-r-8.0"
+labelTicks "1"
+majorTicks "10"
+border
+limitsFromDb
+scaleFormat "FFloat"
+orientation "vertical"
+endObjectProperties
+
+
+# (Bar)
+object activeBarClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 295
+y 95
+w 20
+h 70
+indicatorColor index 53
+indicatorAlarm
+fgColor index 14
+fgAlarm
+bgColor index 8
+indicatorPv "VINJDIG12"
+font "helvetica-medium-r-8.0"
+labelTicks "1"
+majorTicks "10"
+border
+limitsFromDb
+scaleFormat "FFloat"
+orientation "vertical"
+endObjectProperties
+
+# (Bar)
+object activeBarClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 320
+y 95
+w 20
+h 70
+indicatorColor index 53
+indicatorAlarm
+fgColor index 14
+fgAlarm
+bgColor index 8
+indicatorPv "VIP2D00A"
+font "helvetica-medium-r-8.0"
+labelTicks "1"
+majorTicks "10"
+border
+limitsFromDb
+scaleFormat "FFloat"
+orientation "vertical"
+endObjectProperties

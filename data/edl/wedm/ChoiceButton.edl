@@ -1,0 +1,104 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 315
+y 359
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 59
+y 45
+w 123
+h 87
+fgColor index 14
+bgColor index 51
+selectColor index 51
+inconsistentColor index 8
+topShadowColor index 50
+botShadowColor index 10
+font "helvetica-medium-r-18.0"
+orientation "horizontal"
+controlPv "CIOCCH1AnoXH"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 61
+y 17
+w 72
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "Horizontal"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 314
+y 23
+w 55
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "Vertical"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 313
+y 48
+w 133
+h 69
+fgColor index 14
+bgColor index 51
+selectColor index 51
+inconsistentColor index 8
+topShadowColor index 50
+botShadowColor index 10
+font "helvetica-medium-r-18.0"
+controlPv "CIOCCH1AnoXH"
+endObjectProperties
+

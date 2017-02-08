@@ -1,0 +1,118 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 567
+y 155
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Arc)
+object activeArcClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 288
+y 88
+w 105
+h 128
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Arc)
+object activeArcClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 60
+y 184
+w 153
+h 95
+lineColor index 15
+fill
+fillColor index 51
+lineWidth 10
+lineStyle "dash"
+totalAngle 280
+endObjectProperties
+
+# (Arc)
+object activeArcClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 368
+w 258
+h 195
+lineColor index 61
+fill
+fillColor index 51
+lineWidth 10
+startAngle 90
+fillMode "pie"
+endObjectProperties
+
+# (Arc)
+object activeArcClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 375
+y 250
+w 79
+h 96
+lineColor index 14
+fillColor index 51
+startAngle 45
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 284
+y 82
+w 114
+h 81
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Arc)
+object activeArcClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 371
+y 454
+w 76
+h 46
+lineColor index 14
+fillColor index 51
+startAngle 270
+totalAngle 90
+endObjectProperties
+

@@ -1,0 +1,241 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 593
+y 201
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1
+y 1
+w 10
+h 10
+lineColor index 15
+fill
+fillColor index 51
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 12
+y 1
+w 10
+h 10
+lineColor index 15
+fill
+fillColor index 51
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1
+y 12
+w 10
+h 10
+lineColor index 15
+fill
+fillColor index 51
+lineWidth 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 12
+y 12
+w 10
+h 10
+lineColor index 15
+fill
+fillColor index 51
+lineWidth 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 62
+y 39
+w 115
+h 112
+lineColor index 15
+fill
+fillColor index 51
+lineWidth 3
+lineStyle "dash"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 122
+y 99
+w 135
+h 128
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 159
+y 356
+w 120
+h 142
+lineColor index 14
+fillColor index 51
+invisible
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 407
+y 3
+w 89
+h 98
+lineColor index 14
+fillColor index 51
+lineWidth 10
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 406
+y 100
+w 1
+h 194
+lineColor index 14
+fillColor index 51
+lineWidth 10
+numPoints 2
+xPoints {
+  0 407
+  1 406
+}
+yPoints {
+  0 100
+  1 294
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 407
+y 271
+w 89
+h 79
+lineColor index 14
+fill
+fillColor index 51
+lineWidth 10
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 402
+y 353
+w 98
+h 55
+lineColor index 92
+fill
+fillColor index 51
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 28
+y 2
+w 237
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< EDM draws 1.5 border even when set to 0"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 124
+y 298
+w 230
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "Subtle slant in lines may render different >"
+}
+endObjectProperties
+
