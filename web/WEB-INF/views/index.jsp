@@ -73,6 +73,9 @@
                 <tr>
                     <td><a href="screen?edl=wedm/ChoiceButton.edl">Choice Button</a></td>
                 </tr>
+                <tr>
+                    <td><a href="screen?edl=wedm/RelatedDisplay.edl">Related Display</a></td>
+                </tr>                
             </tbody>
         </table>       
     </body>
