@@ -356,7 +356,7 @@ $(document).on("click", ".RelatedDisplay", function(event) {
             files.push(file);
             
             if(label === undefined || label === '') {
-                labels.push("&nbsp;");
+                labels.push("");
             } else {
                 labels.push(label);
             }

@@ -25,12 +25,29 @@
 .related-display-menu ul {
     position: relative;
     background-color: rgb(200, 200, 200);
-    border: 3px solid white;
+    border-top: 2px solid white; 
+    border-right: 2px solid rgb(105, 105, 105); 
+    border-left: 2px solid white; 
+    border-bottom: 2px solid rgb(105, 105, 105);
     list-style: none;
     display: inline-block;
     margin: 0;
     padding: 0;
     white-space: nowrap;
+}
+.related-display-menu a {
+    text-decoration: none;
+    color: black;
+}
+.related-display-menu li {
+    border: 2px solid transparent;
+    min-height: 5px;
+}
+.related-display-menu li:hover {
+    border-top: 2px solid white; 
+    border-right: 2px solid rgb(105, 105, 105); 
+    border-left: 2px solid white; 
+    border-bottom: 2px solid rgb(105, 105, 105);    
 }
 .ActiveButton:hover,
 .ActiveMessageButton:hover,
