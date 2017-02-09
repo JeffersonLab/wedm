@@ -1,0 +1,97 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 866
+y 455
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 18
+y 14
+w 33
+h 29
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+font "helvetica-medium-r-18.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "wedm/Line.edl"
+}
+icon
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 60
+y 22
+w 57
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "Line.edl"
+}
+autoSize
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 19
+y 69
+w 97
+h 30
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+font "helvetica-medium-r-18.0"
+buttonLabel "Other..."
+numPvs 4
+numDsps 4
+displayFileName {
+  0 "wedm/Line.edl"
+  1 "wedm/Circle.edl"
+  2 "wedm/Rectangle.edl"
+  3 "wedm/Arc.edl"
+}
+menuLabel {
+  1 "Circle"
+  2 "Rectangle"
+  3 "Arc"
+}
+endObjectProperties
+
