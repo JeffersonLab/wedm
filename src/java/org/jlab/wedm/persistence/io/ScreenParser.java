@@ -234,6 +234,15 @@ public class ScreenParser extends EDMParser {
                             case "lineWidth":
                                 last.lineWidth = Float.parseFloat(tokens[1]);
                                 break;
+                            case "max":
+                                last.max = Float.parseFloat(stripQuotes(tokens[1]));
+                                break;
+                            case "min":
+                                last.min = Float.parseFloat(stripQuotes(tokens[1]));
+                                break;         
+                            case "origin":
+                                last.origin = Float.parseFloat(stripQuotes(tokens[1]));
+                                break;
                             case "useDisplayBg":
                                 //LOGGER.log(Level.FINEST, "Found useDisplayBg");
                                 last.useDisplayBg = true; // This means ignore bgColor and inherit screen background / transparent background

@@ -22,6 +22,9 @@ public class ScreenObject {
     public Integer visMin = null;
     public Integer visMax = null;
     public Float lineWidth = null;
+    public Float max = null;
+    public Float min = null;
+    public Float origin = 0f;
     public EDLColor bgColor;
     public EDLColor fgColor;
     public EDLColor topShadowColor;
@@ -40,7 +43,7 @@ public class ScreenObject {
     public boolean decimal = false;
     public boolean border = false;   
     public boolean limitsFromDb = false;
-    public Boolean horizontal = null;    
+    public Boolean horizontal = null;    //ChoiceButton default = false, BarMeter default = true.
     public EDLFont font;
     public String controlPv;
     public String visPv;
@@ -104,6 +107,18 @@ public class ScreenObject {
         
         if(limitsFromDb) {
             attributes.put("data-limits", "from-db");
+        }
+        
+        if(max != null) {
+            attributes.put("data-max", String.valueOf(max));
+        }
+        
+        if(min != null) {
+            attributes.put("data-min", String.valueOf(min));
+        }
+
+        if(origin != null) {
+            attributes.put("data-origin", String.valueOf(origin));
         }
         
         if (fgColor != null) {

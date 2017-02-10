@@ -48,14 +48,14 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
     jlab.wedm.PvWidget.prototype.handleInfo = function (info) {
         /*console.log('Datatype: ' + info.datatype + ": " + info.count);*/
-        
+
         /*TODO: ensure subclasses call this method too?*/
-        
+
         var $obj = $("#" + this.id);
-        
-        if(!info.connected) {
-           $obj.addClass("disconnected-pv");
-           $obj.css("border", "1px solid " + disconnectedAlarmColor);
+
+        if (!info.connected) {
+            $obj.addClass("disconnected-pv");
+            $obj.css("border", "1px solid " + disconnectedAlarmColor);
         }
     };
 
@@ -288,10 +288,13 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
     var pv = this.indicatorPvs[0],
             value = this.pvNameToValueMap[pv],
             $obj = $("#" + this.id),
+            horizontal = $obj.attr("data-orientation") === "horizontal",
             $holder = $obj.find(".bar-holder"),
             $bar = $obj.find(".bar"),
             max = $obj.attr("data-max"),
-            min = $obj.attr("data-min");
+            min = $obj.attr("data-min"),
+            origin = $obj.attr("data-origin"),
+            magnitude = Math.abs(max - origin) + Math.abs(min - origin);
     /*console.log(value);*/
 
     if ($.isNumeric(max) && $.isNumeric(min)) {
@@ -299,11 +302,19 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
                 height = $bar.attr("height"),
                 width = $bar.attr("width"),
                 y = 0;
-        
-        /*$.attr will force lowercase, not camel case so we use native JavaScript*/
-        $holder[0].setAttribute("viewBox", "0 " + (-max) + " " + width + " " + (max - min));
-        
-        $bar.attr("height", value);
+
+
+        if (horizontal) {
+            /*$.attr will force lowercase, not camel case so we use native JavaScript*/
+            $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
+
+            $bar.attr("width", value);
+        } else { /*Vertical*/
+            /*$.attr will force lowercase, not camel case so we use native JavaScript*/
+            $holder[0].setAttribute("viewBox", "0 " + (-magnitude) + " " + width + " " + magnitude);
+
+            $bar.attr("height", value);
+        }
     }
 };
 
@@ -341,43 +352,43 @@ jlab.wedm.uniqueArray = function (array) {
     return a;
 };
 
-$(document).on("click", ".RelatedDisplay", function(event) {
+$(document).on("click", ".RelatedDisplay", function (event) {
     var files = [],
-    labels = [],
-    $obj = $(this);
-    
-    for(var i = 0; i < 64; i++) {
+            labels = [],
+            $obj = $(this);
+
+    for (var i = 0; i < 64; i++) {
         var file = $obj.attr("data-linked-file-" + i),
-        label = $obj.attr("data-linked-label-" + i);
-        
-        if(file === undefined) {
+                label = $obj.attr("data-linked-label-" + i);
+
+        if (file === undefined) {
             break;
         } else {
             files.push(file);
-            
-            if(label === undefined || label === '') {
+
+            if (label === undefined || label === '') {
                 labels.push("");
             } else {
                 labels.push(label);
             }
         }
     }
-    
+
     var path = '/wedm/screen?edl=',
-    //left = $obj.css("left"),
-    //right = $obj.css("top");
-    left = event.clientX + "px",
-    top = event.clientY + "px";
-    
-    if(files.length === 1) {
+            //left = $obj.css("left"),
+            //right = $obj.css("top");
+            left = event.clientX + "px",
+            top = event.clientY + "px";
+
+    if (files.length === 1) {
         window.open(path + files[0], '_blank');
     } else {
         var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
-        
-        for(var i = 0; i < files.length; i++) {
+
+        for (var i = 0; i < files.length; i++) {
             $html.find("ul").append('<li><a href="' + path + files[i] + '" target="_blank">' + labels[i] + '</a></li>');
         }
-        
+
         $(document.body).append($html);
     }
 });
@@ -387,7 +398,7 @@ $(document).mouseup(function (e)
     var container = $(".related-display-menu");
 
     if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0) // ... nor a descendant of the container
+            && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
         container.remove();
     }
