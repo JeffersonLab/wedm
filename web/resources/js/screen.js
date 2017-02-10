@@ -298,10 +298,8 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
     /*console.log(value);*/
 
     if ($.isNumeric(max) && $.isNumeric(min)) {
-        var holderHeight = $holder.attr("height"),
-                height = $bar.attr("height"),
-                width = $bar.attr("width"),
-                y = 0;
+        var height = $bar.attr("height"),
+                width = $bar.attr("width");
 
 
         if (horizontal) {
@@ -311,6 +309,7 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
             $bar.attr("width", value);
         } else { /*Vertical*/
             /*$.attr will force lowercase, not camel case so we use native JavaScript*/
+            /*Use -magnitude for x since we are using scale(1,-1) to flip coordintes and have x values go up instead of down*/
             $holder[0].setAttribute("viewBox", "0 " + (-magnitude) + " " + width + " " + magnitude);
 
             $bar.attr("height", value);
