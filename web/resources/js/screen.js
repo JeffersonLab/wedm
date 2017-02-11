@@ -299,18 +299,37 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
 
     if ($.isNumeric(max) && $.isNumeric(min)) {
         var height = $bar.attr("height"),
-                width = $bar.attr("width");
+                width = $bar.attr("width"),
+                $barHolder = $obj.find(".bar-holder"),
+                holderHeight = $barHolder.attr("height") * 1,
+                holderY = $barHolder.attr("y") * 1; // constant padding offset
 
 
-        if (horizontal) {
+        if (horizontal) {            
             /*$.attr will force lowercase, not camel case so we use native JavaScript*/
             $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
 
             $bar.attr("width", value);
+                      
         } else { /*Vertical*/
             /*$.attr will force lowercase, not camel case so we use native JavaScript*/
             /*Use -magnitude for x since we are using scale(1,-1) to flip coordintes and have x values go up instead of down*/
             $holder[0].setAttribute("viewBox", "0 " + (-magnitude) + " " + width + " " + magnitude);
+
+            /*TODO: move viewBox and origin stuff to infoUpdate as it only needs to be done once? */
+            if(origin !== 0) {
+                var $baseline = $obj.find(".base-line"),
+                        maxMag = Math.abs(max - origin),
+                        proportion = maxMag / magnitude,
+                        originOffset = holderHeight * proportion;
+                
+                var y1 = holderY + originOffset;
+                var y2 = holderY + originOffset;
+                
+                $baseline.attr("y1", y1);
+                $baseline.attr("y2", y2);
+            }            
+
 
             $bar.attr("height", value);
         }
