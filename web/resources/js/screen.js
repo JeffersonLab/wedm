@@ -338,7 +338,7 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
 
                     $bar.attr("transform", "scale(1,-1)");
 
-                    $bar.attr("height", value);
+                    $bar.attr("height", Math.min(value, max));
                 } else { /*Bar grows downward since less than origin*/
 
                     /*$.attr will force lowercase, not camel case so we use native JavaScript*/
@@ -348,7 +348,7 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
 
                     $bar.removeAttr("transform");
 
-                    $bar.attr("height", Math.abs(value));
+                    $bar.attr("height", Math.min(Math.abs(value), max));
                 }
             }
         }
