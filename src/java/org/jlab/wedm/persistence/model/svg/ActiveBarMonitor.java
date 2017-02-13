@@ -34,6 +34,8 @@ public class ActiveBarMonitor extends ActiveRectangle {
         int width;
         int height;
         
+        int verticalPadding = 0;
+        
         int vX = 0;
         int vY = 0;
         int vWidth = 0;
@@ -55,6 +57,8 @@ public class ActiveBarMonitor extends ActiveRectangle {
             width = w - (w / 3);
             height = h - (h / 12);
         
+            verticalPadding = originY;
+            
             int x1 = 0;
             int y1 = height + originY;
             int x2 = w;
@@ -81,7 +85,8 @@ public class ActiveBarMonitor extends ActiveRectangle {
 
         svg = svg + indent + "<svg class=\"bar-holder\" x=\"" + originX + "\" y=\"" + originY
                 + "\" width=\"" + width
-                + "\" height=\"" + height + "\" viewBox=\"" + vX + " " + vY + " " + vWidth + " " + vHeight + "\" preserveAspectRatio=\"none\">\n";
+                + "\" height=\"" + height + "\" viewBox=\"" + vX + " " + vY + " " + vWidth + " " + vHeight + "\" "
+                + "data-vertical-padding=\"" + verticalPadding + "\" preserveAspectRatio=\"none\">\n";
         svg = svg + indent + indentStep + "<rect class=\"bar\" x=\"" + 0 + "\" y=\"" + 0
                 + "\" width=\"" + width
                 + "\" height=\"" + height + "\" ";
