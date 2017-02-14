@@ -317,39 +317,41 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
 
         } else { /*Vertical*/
 
-            if (Math.abs(origin - min) >= 0.1) { /* If difference greater than or equal a 10th we say they aren't equal*/
-                var $baseline = $obj.find(".base-line"),
-                        maxMag = Math.abs(max - origin),
-                        proportion = maxMag / magnitude,
-                        originOffset = holderHeight * proportion;
+            var $baseline = $obj.find(".base-line"),
+                    maxMag = Math.abs(max - origin),
+                    proportion = maxMag / magnitude,
+                    baselineOffset = verticalPadding + (holderHeight * proportion),
+                    upBarHolderOffset = verticalPadding - (holderHeight * (1 - proportion)),
+                    downBarHolderOffset = verticalPadding + (holderHeight * proportion);
 
-                var y1 = verticalPadding + originOffset;
-                var y2 = verticalPadding + originOffset;
+            var y1 = baselineOffset;
+            var y2 = y1;
 
-                $baseline.attr("y1", y1);
-                $baseline.attr("y2", y2);
+            $baseline.attr("y1", y1);
+            $baseline.attr("y2", y2);
 
-                if (value > origin) {
-                    /*$.attr will force lowercase, not camel case so we use native JavaScript*/
-                    /*Use -magnitude for x since we are using scale(1,-1) to flip coordintes and have x values go up instead of down*/
-                    $holder[0].setAttribute("viewBox", "0 " + (-magnitude) + " " + width + " " + magnitude);
+            if (value > origin) {
+                /*$.attr will force lowercase, not camel case so we use native JavaScript*/
+                /*Use -magnitude for x since we are using scale(1,-1) to flip coordintes and have x values go up instead of down*/
+                $holder[0].setAttribute("viewBox", "0 " + (-magnitude) + " " + width + " " + magnitude);
 
-                    $barHolder.attr("y", (verticalPadding - originOffset));
+                $barHolder.attr("y", upBarHolderOffset);
 
-                    $bar.attr("transform", "scale(1,-1)");
+                $bar.attr("transform", "scale(1,-1)");
 
-                    $bar.attr("height", Math.min(value, max));
-                } else { /*Bar grows downward since less than origin*/
+                $bar.attr("height", Math.min(value, max));
+            } else { /*Bar grows downward since less than origin*/
 
-                    /*$.attr will force lowercase, not camel case so we use native JavaScript*/
-                    $holder[0].setAttribute("viewBox", "0 " + (0) + " " + width + " " + magnitude);
+                /*$.attr will force lowercase, not camel case so we use native JavaScript*/
+                $holder[0].setAttribute("viewBox", "0 " + (0) + " " + width + " " + magnitude);
 
-                    $barHolder.attr("y", (verticalPadding + originOffset));
+                $barHolder.attr("y", downBarHolderOffset);
 
-                    $bar.removeAttr("transform");
+                $bar.removeAttr("transform");
 
-                    $bar.attr("height", Math.min(Math.abs(value), max));
-                }
+                var height = Math.max(value, min);
+
+                $bar.attr("height", Math.abs(height));
             }
         }
     }
