@@ -535,6 +535,7 @@ $(function () {
     jlab.wedm.con = new jlab.epics2web.ClientConnection(options);
 
     jlab.wedm.con.onopen = function (e) {
+        /*This is for re-connect - on inital connect array will be empty*/
         if (monitoredPvs.length > 0) {
             jlab.wedm.con.monitorPvs(monitoredPvs);
         }
