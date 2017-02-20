@@ -1,4 +1,9 @@
 .invisible,
+.invisible * {
+    border-color: transparent !important;
+    background-color: transparent !important;
+    color: transparent !important;
+}
 #svg-defs,
 .ActiveSymbol .ActiveGroup {
     display: none;
