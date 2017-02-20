@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1346
-y 169
+x 342
+y 200
 w 500
 h 600
 font "helvetica-medium-r-18.0"
@@ -325,5 +325,108 @@ endObjectProperties
 
 endGroup
 
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 35
+y 479
+w 49
+h 69
+lineColor index 14
+lineAlarm
+fill
+fillColor index 51
+fillAlarm
+alarmPv "BOGUS"
+numPoints 3
+xPoints {
+  0 35
+  1 38
+  2 84
+}
+yPoints {
+  0 479
+  1 548
+  2 527
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 23
+y 574
+w 63
+h 1
+lineColor index 14
+lineAlarm
+fillColor index 51
+lineWidth 2
+alarmPv "VIP2T00B"
+numPoints 2
+xPoints {
+  0 23
+  1 86
+}
+yPoints {
+  0 574
+  1 575
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 199
+y 532
+w 128
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Alarm Sensitive Color"
+}
+autoSize
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 133
+y 511
+w 32
+h 57
+lineColor index 14
+fill
+fillColor index 51
+fillAlarm
+alarmPv "VIP2T00B"
+numPoints 3
+xPoints {
+  0 133
+  1 136
+  2 165
+}
+yPoints {
+  0 511
+  1 568
+  2 545
+}
 endObjectProperties
 

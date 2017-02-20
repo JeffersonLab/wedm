@@ -390,7 +390,7 @@ jlab.wedm.ShapePvWidget.prototype.handleInfo = function (info) {
     jlab.wedm.PvWidget.prototype.handleInfo.call(this, info);
 
     var $obj = $("#" + this.id),
-            $shape = $obj.find("rect, ellipse");
+            $shape = $obj.find("rect, ellipse, path");
 
     /*Disconnected Shape always has disconnectedAlarmColor border and transparent fill regardless of fillAlarm or lineAlarm*/
     if (!info.connected) {
@@ -407,7 +407,7 @@ jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function () {
             high = $obj.attr("data-high"),
             low = $obj.attr("data-low"),
             lolo = $obj.attr("data-lolo"),
-            $shape = $obj.find("rect, ellipse"),
+            $shape = $obj.find("rect, ellipse, path"),
             fillAlarm = $obj.attr("data-fill-alarm") === "true",
             lineAlarm = $obj.attr("data-line-alarm") === "true";
 
@@ -621,7 +621,9 @@ $(function () {
             } else if ($obj.attr("class").indexOf("ActiveBarMonitor") > -1) {
                 widget = new jlab.wedm.BarMeterPvWidget(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveRectangle") > -1 ||
-                    $obj.attr("class").indexOf("ActiveCircle") > -1) {
+                    $obj.attr("class").indexOf("ActiveCircle") > -1 ||
+                    $obj.attr("class").indexOf("ActiveLine") > -1 ||
+                    $obj.attr("class").indexOf("ActiveArc") > -1) {
                 widget = new jlab.wedm.ShapePvWidget(id, pvSet);
             } else {
                 /*console.log("other widget");*/
