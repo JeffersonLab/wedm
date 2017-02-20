@@ -49,12 +49,11 @@ jlab.wedm.PvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.prototype.handleInfo = function (info) {
         /*console.log('Datatype: ' + info.datatype + ": " + info.count);*/
 
-        /*TODO: ensure subclasses call this method too?*/
-
         var $obj = $("#" + this.id);
 
-        if (!info.connected) {
-            $obj.addClass("disconnected-pv");
+        if (!info.connected && $obj.length > 0) {
+            /*Can't use $obj.addClass on SVG with jquery 2*/
+            $obj[0].classList.add("disconnected-pv");
             $obj.css("border", "1px solid " + jlab.wedm.disconnectedAlarmColor);
         }
     };
@@ -379,25 +378,28 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
     }
 };
 
-jlab.wedm.RectanglePvWidget = function (id, pvSet) {
+jlab.wedm.ShapePvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.call(this, id, pvSet);
 };
 
-jlab.wedm.RectanglePvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.RectanglePvWidget.prototype.constructor = jlab.wedm.RectanglePvWidget;
+jlab.wedm.ShapePvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
+jlab.wedm.ShapePvWidget.prototype.constructor = jlab.wedm.ShapePvWidget;
 
-jlab.wedm.RectanglePvWidget.prototype.handleInfo = function (info) {
+jlab.wedm.ShapePvWidget.prototype.handleInfo = function (info) {
+
+    jlab.wedm.PvWidget.prototype.handleInfo.call(this, info);
+
     var $obj = $("#" + this.id),
-            $rect = $obj.find("rect");
+            $shape = $obj.find("rect, ellipse");
 
-    /*Disconnected Rect always has disconnectedAlarmColor border and transparent fill regardless of fillAlarm or lineAlarm*/
+    /*Disconnected Shape always has disconnectedAlarmColor border and transparent fill regardless of fillAlarm or lineAlarm*/
     if (!info.connected) {
-        $rect.attr("fill", "transparent");
-        $rect.attr("stroke", jlab.wedm.disconnectedAlarmColor);
+        $shape.attr("fill", "transparent");
+        $shape.attr("stroke", "transparent");
     }
 };
 
-jlab.wedm.RectanglePvWidget.prototype.handleAlarmUpdate = function () {
+jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function () {
     var pv = this.alarmPvs[0],
             value = this.pvNameToValueMap[pv],
             $obj = $("#" + this.id),
@@ -405,44 +407,44 @@ jlab.wedm.RectanglePvWidget.prototype.handleAlarmUpdate = function () {
             high = $obj.attr("data-high"),
             low = $obj.attr("data-low"),
             lolo = $obj.attr("data-lolo"),
-            $rect = $obj.find("rect"),
+            $shape = $obj.find("rect, ellipse"),
             fillAlarm = $obj.attr("data-fill-alarm") === "true",
             lineAlarm = $obj.attr("data-line-alarm") === "true";
 
     if (typeof hihi !== 'undefined' && value > hihi) {
         if (fillAlarm) {
-            $rect.attr("fill", jlab.wedm.majorAlarmColor);
+            $shape.attr("fill", jlab.wedm.majorAlarmColor);
         }
         if (lineAlarm) {
-            $rect.attr("stroke", jlab.wedm.majorAlarmColor);
+            $shape.attr("stroke", jlab.wedm.majorAlarmColor);
         }
     } else if (typeof high !== 'undefined' && value > high) {
         if (fillAlarm) {
-            $rect.attr("fill", jlab.wedm.minorAlarmColor);
+            $shape.attr("fill", jlab.wedm.minorAlarmColor);
         }
         if (lineAlarm) {
-            $rect.attr("stroke", jlab.wedm.minorAlarmColor);
+            $shape.attr("stroke", jlab.wedm.minorAlarmColor);
         }
     } else if (typeof lolo !== 'undefined' && value < lolo) {
         if (fillAlarm) {
-            $rect.attr("fill", jlab.wedm.minorAlarmColor);
+            $shape.attr("fill", jlab.wedm.minorAlarmColor);
         }
         if (lineAlarm) {
-            $rect.attr("stroke", jlab.wedm.minorAlarmColor);
+            $shape.attr("stroke", jlab.wedm.minorAlarmColor);
         }
     } else if (typeof low !== 'undefined' && value < low) {
         if (fillAlarm) {
-            $rect.attr("fill", jlab.wedm.majorAlarmColor);
+            $shape.attr("fill", jlab.wedm.majorAlarmColor);
         }
         if (lineAlarm) {
-            $rect.attr("stroke", jlab.wedm.majorAlarmColor);
+            $shape.attr("stroke", jlab.wedm.majorAlarmColor);
         }
     } else {
         if (fillAlarm) {
-            $rect.attr("fill", jlab.wedm.noAlarmColor);
+            $shape.attr("fill", jlab.wedm.noAlarmColor);
         }
         if (lineAlarm) {
-            $rect.attr("stroke", jlab.wedm.noAlarmColor);
+            $shape.attr("stroke", jlab.wedm.noAlarmColor);
         }
     }
 };
@@ -618,8 +620,9 @@ $(function () {
                 widget = new jlab.wedm.BytePvWidget(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveBarMonitor") > -1) {
                 widget = new jlab.wedm.BarMeterPvWidget(id, pvSet);
-            } else if ($obj.attr("class").indexOf("ActiveRectangle") > -1) {
-                widget = new jlab.wedm.RectanglePvWidget(id, pvSet);
+            } else if ($obj.attr("class").indexOf("ActiveRectangle") > -1 ||
+                    $obj.attr("class").indexOf("ActiveCircle") > -1) {
+                widget = new jlab.wedm.ShapePvWidget(id, pvSet);
             } else {
                 /*console.log("other widget");*/
                 widget = new jlab.wedm.PvWidget(id, pvSet);
