@@ -309,7 +309,7 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
             $baseline = $obj.find(".base-line"),
             max = $obj.attr("data-max"),
             min = $obj.attr("data-min"),
-            origin = parseFloat($obj.attr("data-origin")),
+            origin = parseFloat($obj.attr("data-origin") || "0.0"),
             magnitude = Math.abs(max - origin) + Math.abs(min - origin),
             alarmSensitive = $obj.attr("data-indicator-alarm") === "true",
             hihi = $obj.attr("data-hihi"),

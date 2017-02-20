@@ -24,7 +24,7 @@ public class ScreenObject {
     public Float lineWidth = null;
     public Float max = null;
     public Float min = null;
-    public Float origin = 0f;
+    public Float origin = null;
     public EDLColor bgColor;
     public EDLColor fgColor;
     public EDLColor topShadowColor;
