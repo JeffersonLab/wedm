@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 567
-y 155
+x 1187
+y 172
 w 500
 h 600
 font "helvetica-medium-r-18.0"
@@ -114,5 +114,75 @@ lineColor index 14
 fillColor index 51
 startAngle 270
 totalAngle 90
+endObjectProperties
+
+# (Arc)
+object activeArcClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 546
+w 55
+h 40
+lineColor index 14
+lineAlarm
+fillColor index 51
+alarmPv "BOGUS"
+endObjectProperties
+
+# (Arc)
+object activeArcClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 12
+y 483
+w 65
+h 40
+lineColor index 14
+lineAlarm
+fillColor index 51
+alarmPv "VIP2T00B"
+endObjectProperties
+
+# (Arc)
+object activeArcClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 10
+y 421
+w 93
+h 38
+lineColor index 14
+lineAlarm
+fill
+fillColor index 51
+fillAlarm
+alarmPv "VIP2T00B"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 110
+y 569
+w 128
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Alarm Sensitive Color"
+}
+autoSize
 endObjectProperties
 
