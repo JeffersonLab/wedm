@@ -5,15 +5,15 @@
          version="3.1">
     <context-param>
         <param-name>releaseNumber</param-name>
-        <param-value>0.1.0</param-value>
+        <param-value>0.2.0</param-value>
     </context-param>
     <context-param>
         <param-name>releaseDate</param-name>
-        <param-value>13 Feb 2017</param-value>
+        <param-value>20 Feb 2017</param-value>
     </context-param>
     <context-param>
         <param-name>epics2webReleaseNumber</param-name>
-        <param-value>1.1.1</param-value>
+        <param-value>1.1.2</param-value>
     </context-param>     
     <session-config>
         <session-timeout>
