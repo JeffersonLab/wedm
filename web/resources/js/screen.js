@@ -583,7 +583,8 @@ $(document).on("click", ".RelatedDisplay", function (event) {
         var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
 
         for (var i = 0; i < files.length; i++) {
-            $html.find("ul").append('<li><a href="' + path + files[i] + '" target="_blank">' + labels[i] + '</a></li>');
+            var unlabeledClass = labels[i] === '' ? ' class="unlabeled-anchor-li"' : '';
+            $html.find("ul").append('<li' + unlabeledClass + '><a href="' + path + files[i] + '" target="_blank">' + labels[i] + '</a></li>');
         }
 
         $(document.body).append($html);
@@ -599,6 +600,11 @@ $(document).mouseup(function (e)
     {
         container.remove();
     }
+});
+
+$(document).on("click", ".unlabeled-anchor-li", function () {
+    var href = $(this).find("a").attr("href");
+    window.open(href, '_blank');
 });
 
 $(function () {
@@ -691,7 +697,7 @@ $(function () {
                     $obj.attr("class").indexOf("ActiveLine") > -1 ||
                     $obj.attr("class").indexOf("ActiveArc") > -1) {
                 widget = new jlab.wedm.ShapePvWidget(id, pvSet);
-            } else if($obj.attr("class").indexOf("ActiveXText") > -1) {
+            } else if ($obj.attr("class").indexOf("ActiveXText") > -1) {
                 widget = new jlab.wedm.StaticTextPvWidget(id, pvSet);
             } else {
                 /*console.log("other widget");*/
