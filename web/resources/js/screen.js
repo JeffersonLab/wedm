@@ -574,8 +574,8 @@ $(document).on("click", ".RelatedDisplay", function (event) {
     var path = '/wedm/screen?edl=',
             //left = $obj.css("left"),
             //right = $obj.css("top");
-            left = event.clientX + "px",
-            top = event.clientY + "px";
+            left = event.pageX + "px",
+            top = event.pageY + "px";
 
     if (files.length === 1) {
         window.open(path + files[0], '_blank');
