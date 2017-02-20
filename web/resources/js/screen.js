@@ -449,6 +449,72 @@ jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function () {
     }
 };
 
+jlab.wedm.StaticTextPvWidget = function (id, pvSet) {
+    jlab.wedm.PvWidget.call(this, id, pvSet);
+};
+
+jlab.wedm.StaticTextPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
+jlab.wedm.StaticTextPvWidget.prototype.constructor = jlab.wedm.StaticTextPvWidget;
+
+jlab.wedm.StaticTextPvWidget.prototype.handleInfo = function (info) {
+
+    var $obj = $("#" + this.id);
+
+    if (!info.connected) {
+        $obj.css("color", jlab.wedm.disconnectedAlarmColor);
+        $obj.attr("background-color", "transparent");
+    }
+};
+
+jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function () {
+    var pv = this.alarmPvs[0],
+            value = this.pvNameToValueMap[pv],
+            $obj = $("#" + this.id),
+            hihi = $obj.attr("data-hihi"),
+            high = $obj.attr("data-high"),
+            low = $obj.attr("data-low"),
+            lolo = $obj.attr("data-lolo"),
+            fgAlarm = $obj.attr("data-fg-alarm") === "true",
+            bgAlarm = $obj.attr("data-bg-alarm") === "true";
+
+    if (typeof hihi !== 'undefined' && value > hihi) {
+        if (fgAlarm) {
+            $obj.css("color", jlab.wedm.majorAlarmColor);
+        }
+        if (bgAlarm) {
+            $obj.css("background-color", jlab.wedm.majorAlarmColor);
+        }
+    } else if (typeof high !== 'undefined' && value > high) {
+        if (fgAlarm) {
+            $obj.css("color", jlab.wedm.minorAlarmColor);
+        }
+        if (bgAlarm) {
+            $obj.css("background-color", jlab.wedm.minorAlarmColor);
+        }
+    } else if (typeof lolo !== 'undefined' && value < lolo) {
+        if (fgAlarm) {
+            $obj.css("color", jlab.wedm.minorAlarmColor);
+        }
+        if (bgAlarm) {
+            $obj.css("background-color", jlab.wedm.minorAlarmColor);
+        }
+    } else if (typeof low !== 'undefined' && value < low) {
+        if (fgAlarm) {
+            $obj.css("color", jlab.wedm.majorAlarmColor);
+        }
+        if (bgAlarm) {
+            $obj.css("background-color", jlab.wedm.majorAlarmColor);
+        }
+    } else {
+        if (fgAlarm) {
+            $obj.css("color", jlab.wedm.noAlarmColor);
+        }
+        if (bgAlarm) {
+            $obj.css("background-color", jlab.wedm.noAlarmColor);
+        }
+    }
+};
+
 var monitoredPvs = null,
         pvWidgetMap = null;
 
@@ -625,6 +691,8 @@ $(function () {
                     $obj.attr("class").indexOf("ActiveLine") > -1 ||
                     $obj.attr("class").indexOf("ActiveArc") > -1) {
                 widget = new jlab.wedm.ShapePvWidget(id, pvSet);
+            } else if($obj.attr("class").indexOf("ActiveXText") > -1) {
+                widget = new jlab.wedm.StaticTextPvWidget(id, pvSet);
             } else {
                 /*console.log("other widget");*/
                 widget = new jlab.wedm.PvWidget(id, pvSet);

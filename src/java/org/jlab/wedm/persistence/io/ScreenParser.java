@@ -325,6 +325,12 @@ public class ScreenParser extends EDMParser {
                             case "lineAlarm":
                                 last.lineAlarm = true;
                                 break;
+                            case "fgAlarm":
+                                last.fgAlarm = true;
+                                break;
+                            case "bgAlarm":
+                                last.bgAlarm = true;
+                                break;
                             case "limitsFromDb":
                                 last.limitsFromDb = true;
                                 break;

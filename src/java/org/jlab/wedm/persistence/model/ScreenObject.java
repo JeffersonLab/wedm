@@ -46,6 +46,8 @@ public class ScreenObject {
     public boolean indicatorAlarm = false;  
     public boolean lineAlarm = false;
     public boolean fillAlarm = false;
+    public boolean fgAlarm = false;
+    public boolean bgAlarm = false;
     public Boolean horizontal = null;    //ChoiceButton default = false, BarMeter default = true.
     public EDLFont font;
     public String controlPv;
@@ -123,6 +125,14 @@ public class ScreenObject {
         if(fillAlarm) {
             attributes.put("data-fill-alarm", "true");
         }                
+        
+        if(fgAlarm) {
+            attributes.put("data-fg-alarm", "true");
+        }     
+        
+        if(bgAlarm) {
+            attributes.put("data-bg-alarm", "true");
+        }                    
         
         if(max != null) {
             attributes.put("data-max", String.valueOf(max));
