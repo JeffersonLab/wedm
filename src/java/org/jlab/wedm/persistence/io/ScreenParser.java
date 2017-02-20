@@ -262,6 +262,9 @@ public class ScreenParser extends EDMParser {
                             case "autoSize":
                                 last.autoSize = true;
                                 break;
+                            case "indicatorAlarm":
+                                last.indicatorAlarm = true;
+                                break;
                             case "icon":
                                 ((RelatedDisplay) last).icon = true;
                                 break;

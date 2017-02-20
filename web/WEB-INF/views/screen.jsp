@@ -20,12 +20,12 @@
         <img class="ws-connecting connecting-spinner" title="Socket Connecting" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connecting.svg?v=${initParam.epics2webResourceVersionNumber}"/>                
         <img class="ws-connected" title="Socket Connected" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connected.svg?v=${initParam.epics2webResourceVersionNumber}"/>
     </div>        
-${screen.toHtml("        ", "    ")}
-    <script type="text/javascript">
-        ${screen.getColorStyleVariables()}
-    </script>    
+${screen.toHtml("        ", "    ")} 
     <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/epics2web/resources/js/epics2web.js?v=${initParam.epics2webReleaseNumber}"></script>    
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.resourceVersionNumber}"></script>
+    <script type="text/javascript">
+${screen.getColorStyleVariables()}
+    </script>       
 </body>
 </html>

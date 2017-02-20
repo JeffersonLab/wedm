@@ -43,6 +43,7 @@ public class ScreenObject {
     public boolean decimal = false;
     public boolean border = false;   
     public boolean limitsFromDb = false;
+    public boolean indicatorAlarm = false;    
     public Boolean horizontal = null;    //ChoiceButton default = false, BarMeter default = true.
     public EDLFont font;
     public String controlPv;
@@ -108,6 +109,10 @@ public class ScreenObject {
         if(limitsFromDb) {
             attributes.put("data-limits", "from-db");
         }
+        
+        if(indicatorAlarm) {
+            attributes.put("data-indicator-alarm", "true");
+        }        
         
         if(max != null) {
             attributes.put("data-max", String.valueOf(max));

@@ -69,11 +69,11 @@ public class Screen {
         
         AlarmColors alarmColors = colorList.getAlarmColors();
         
-        js = "var disconnectedAlarmColor = '" + alarmColors.disconnectedAlarm.toRgbString() + "',\n";
-        js = js + "invalidAlarmColor = '" + alarmColors.invalidAlarm.toRgbString() + "',\n";
-        js = js + "minorAlarmColor = '" + alarmColors.minorAlarm.toRgbString() + "',\n";
-        js = js + "majorAlarmColor = '" + alarmColors.majorAlarm.toRgbString() + "',\n";  
-        js = js + "noAlarmColor = '" + alarmColors.noAlarm.toRgbString() + "';\n";
+        js = "jlab.wedm.disconnectedAlarmColor = '" + alarmColors.disconnectedAlarm.toRgbString() + "',\n";
+        js = js + "jlab.wedm.invalidAlarmColor = '" + alarmColors.invalidAlarm.toRgbString() + "',\n";
+        js = js + "jlab.wedm.minorAlarmColor = '" + alarmColors.minorAlarm.toRgbString() + "',\n";
+        js = js + "jlab.wedm.majorAlarmColor = '" + alarmColors.majorAlarm.toRgbString() + "',\n";  
+        js = js + "jlab.wedm.noAlarmColor = '" + alarmColors.noAlarm.toRgbString() + "';\n";
         
         return js;
     }

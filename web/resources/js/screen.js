@@ -55,7 +55,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
         if (!info.connected) {
             $obj.addClass("disconnected-pv");
-            $obj.css("border", "1px solid " + disconnectedAlarmColor);
+            $obj.css("border", "1px solid " + jlab.wedm.disconnectedAlarmColor);
         }
     };
 
@@ -80,9 +80,9 @@ jlab.wedm.PvWidget = function (id, pvSet) {
          }*/
 
         if (alarmOn) {
-            $obj.find("path").attr('fill', majorAlarmColor);
+            $obj.find("path").attr('fill', jlab.wedm.majorAlarmColor);
         } else {
-            $obj.find("path").attr('fill', noAlarmColor);
+            $obj.find("path").attr('fill', jlab.wedm.noAlarmColor);
         }
     };
 
@@ -119,8 +119,18 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         var $obj = $("#" + this.id);
         if (update.pv.indexOf(".HOPR") > -1) {
             $obj.attr("data-max", update.value);
-        } else {
+        } else if (update.pv.indexOf(".LOPR") > -1) {
             $obj.attr("data-min", update.value);
+        } else if (update.pv.indexOf(".HIHI") > -1) {
+            $obj.attr("data-hihi", update.value);
+        } else if (update.pv.indexOf(".HIGH") > -1) {
+            $obj.attr("data-high", update.value);
+        } else if (update.pv.indexOf(".LOW") > -1) {
+            $obj.attr("data-low", update.value);
+        } else if (update.pv.indexOf(".LOLO") > -1) {
+            $obj.attr("data-lolo", update.value);
+        } else {
+            console.log('Unknown limit PV: ' + update.pv);
         }
     };
 };
@@ -295,10 +305,42 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
             horizontal = $obj.attr("data-orientation") === "horizontal",
             $holder = $obj.find(".bar-holder"),
             $bar = $obj.find(".bar"),
+            $box = $obj.find("> rect"),
+            $baseline = $obj.find(".base-line"),
             max = $obj.attr("data-max"),
             min = $obj.attr("data-min"),
             origin = parseFloat($obj.attr("data-origin")),
-            magnitude = Math.abs(max - origin) + Math.abs(min - origin);
+            magnitude = Math.abs(max - origin) + Math.abs(min - origin),
+            alarmSensitive = $obj.attr("data-indicator-alarm") === "true",
+            hihi = $obj.attr("data-hihi"),
+            high = $obj.attr("data-high"),
+            low = $obj.attr("data-low"),
+            lolo = $obj.attr("data-lolo");
+
+    if (alarmSensitive) {
+        if (typeof hihi !== 'undefined' && value > hihi) {
+            $bar.attr("fill", jlab.wedm.majorAlarmColor);
+            $box.attr("stroke", jlab.wedm.majorAlarmColor);
+            $baseline.attr("stroke", jlab.wedm.majorAlarmColor);
+        } else if (typeof high !== 'undefined' && value > high) {
+            $bar.attr("fill", jlab.wedm.minorAlarmColor);
+            $box.attr("stroke", jlab.wedm.minorAlarmColor);
+            $baseline.attr("stroke", jlab.wedm.minorAlarmColor);
+        } else if (typeof lolo !== 'undefined' && value < lolo) {
+            $bar.attr("fill", jlab.wedm.minorAlarmColor);
+            $box.attr("stroke", jlab.wedm.minorAlarmColor);
+            $baseline.attr("stroke", jlab.wedm.minorAlarmColor);
+        } else if (typeof low !== 'undefined' && value < low) {
+            $bar.attr("fill", jlab.wedm.majorAlarmColor);
+            $box.attr("stroke", jlab.wedm.majorAlarmColor);
+            $baseline.attr("stroke", jlab.wedm.majorAlarmColor);
+        } else {
+            $bar.attr("fill", jlab.wedm.noAlarmColor);
+            $box.attr("stroke", jlab.wedm.noAlarmColor);
+            $baseline.attr("stroke", jlab.wedm.noAlarmColor);
+        }
+    }
+
     /*console.log(value);*/
 
     if ($.isNumeric(max) && $.isNumeric(min)) {
@@ -317,8 +359,7 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
 
         } else { /*Vertical*/
 
-            var $baseline = $obj.find(".base-line"),
-                    maxMag = Math.abs(max - origin),
+            var maxMag = Math.abs(max - origin),
                     proportion = maxMag / magnitude,
                     baselineOffset = verticalPadding + (holderHeight * proportion),
                     upBarHolderOffset = verticalPadding - (holderHeight * (1 - proportion)),
@@ -485,11 +526,19 @@ $(function () {
                 visPvs = jlab.wedm.pvsFromExpr(visPvExpr),
                 indicatorPvs = jlab.wedm.pvsFromExpr(indicatorPvExpr),
                 limitPvs = [],
-                limitsFromDb = $obj.attr("data-limits") === "from-db";
+                limitsFromDb = $obj.attr("data-limits") === "from-db",
+                alarmSensitive = $obj.attr("data-indicator-alarm") === "true";
 
         if (limitsFromDb && indicatorPvs.length === 1) {
             limitPvs.push(indicatorPvs[0] + ".HOPR");
             limitPvs.push(indicatorPvs[0] + ".LOPR");
+        }
+
+        if (alarmSensitive && indicatorPvs.length === 1) {
+            limitPvs.push(indicatorPvs[0] + ".HIHI");
+            limitPvs.push(indicatorPvs[0] + ".HIGH");
+            limitPvs.push(indicatorPvs[0] + ".LOW");
+            limitPvs.push(indicatorPvs[0] + ".LOLO");
         }
 
         var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(indicatorPvs).concat(limitPvs)),
