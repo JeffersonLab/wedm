@@ -19,8 +19,8 @@ public class ScreenObject {
     public int w;
     public int h;
     public int numPvs;    
-    public Integer visMin = null;
-    public Integer visMax = null;
+    public Float visMin = null;
+    public Float visMax = null;
     public Float lineWidth = null;
     public Float max = null;
     public Float min = null;

@@ -513,10 +513,10 @@ public class ScreenParser extends EDMParser {
                                 ((TextScreenObject) last).align = stripQuotes(align);
                                 break;
                             case "visMin":
-                                last.visMin = Integer.parseInt(stripQuotes(tokens[1]));
+                                last.visMin = Float.parseFloat(stripQuotes(tokens[1]));
                                 break;
                             case "visMax":
-                                last.visMax = Integer.parseInt(stripQuotes(tokens[1]));
+                                last.visMax = Float.parseFloat(stripQuotes(tokens[1]));
                                 break;
                             case "visInvert":
                                 last.visInvert = true;
