@@ -319,6 +319,12 @@ public class ScreenParser extends EDMParser {
                                 //LOGGER.log(Level.FINEST, "Found fill");
                                 last.fill = true; // This means ignore bgColor and inherit screen background / transparent background                     
                                 break;
+                            case "fillAlarm":
+                                last.fillAlarm = true;
+                                break;
+                            case "lineAlarm":
+                                last.lineAlarm = true;
+                                break;
                             case "limitsFromDb":
                                 last.limitsFromDb = true;
                                 break;

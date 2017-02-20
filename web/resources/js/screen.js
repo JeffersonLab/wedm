@@ -64,26 +64,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
     };
 
     jlab.wedm.PvWidget.prototype.handleAlarmUpdate = function () {
-        var pv = this.alarmPvs[0],
-                value = this.pvNameToValueMap[pv],
-                $obj = $("#" + this.id),
-                alarmOn = false;
-
-        if (value != 0) {
-            alarmOn = true;
-        }
-
-        /*if(alarmOn) {
-         $obj.find("path").css({fill: majorAlarmColor});
-         } else {
-         $obj.find("path").css({fill: noAlarmColor});
-         }*/
-
-        if (alarmOn) {
-            $obj.find("path").attr('fill', jlab.wedm.majorAlarmColor);
-        } else {
-            $obj.find("path").attr('fill', jlab.wedm.noAlarmColor);
-        }
+        console.log('alarm update called - this should be overridden; id: ' + this.id);
     };
 
     jlab.wedm.PvWidget.prototype.handleIndicatorUpdate = function () {
@@ -398,6 +379,74 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
     }
 };
 
+jlab.wedm.RectanglePvWidget = function (id, pvSet) {
+    jlab.wedm.PvWidget.call(this, id, pvSet);
+};
+
+jlab.wedm.RectanglePvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
+jlab.wedm.RectanglePvWidget.prototype.constructor = jlab.wedm.RectanglePvWidget;
+
+jlab.wedm.RectanglePvWidget.prototype.handleInfo = function (info) {
+    var $obj = $("#" + this.id),
+            $rect = $obj.find("rect");
+
+    /*Disconnected Rect always has disconnectedAlarmColor border and transparent fill regardless of fillAlarm or lineAlarm*/
+    if (!info.connected) {
+        $rect.attr("fill", "transparent");
+        $rect.attr("stroke", jlab.wedm.disconnectedAlarmColor);
+    }
+};
+
+jlab.wedm.RectanglePvWidget.prototype.handleAlarmUpdate = function () {
+    var pv = this.alarmPvs[0],
+            value = this.pvNameToValueMap[pv],
+            $obj = $("#" + this.id),
+            hihi = $obj.attr("data-hihi"),
+            high = $obj.attr("data-high"),
+            low = $obj.attr("data-low"),
+            lolo = $obj.attr("data-lolo"),
+            $rect = $obj.find("rect"),
+            fillAlarm = $obj.attr("data-fill-alarm") === "true",
+            lineAlarm = $obj.attr("data-line-alarm") === "true";
+
+    if (typeof hihi !== 'undefined' && value > hihi) {
+        if (fillAlarm) {
+            $rect.attr("fill", jlab.wedm.majorAlarmColor);
+        }
+        if (lineAlarm) {
+            $rect.attr("stroke", jlab.wedm.majorAlarmColor);
+        }
+    } else if (typeof high !== 'undefined' && value > high) {
+        if (fillAlarm) {
+            $rect.attr("fill", jlab.wedm.minorAlarmColor);
+        }
+        if (lineAlarm) {
+            $rect.attr("stroke", jlab.wedm.minorAlarmColor);
+        }
+    } else if (typeof lolo !== 'undefined' && value < lolo) {
+        if (fillAlarm) {
+            $rect.attr("fill", jlab.wedm.minorAlarmColor);
+        }
+        if (lineAlarm) {
+            $rect.attr("stroke", jlab.wedm.minorAlarmColor);
+        }
+    } else if (typeof low !== 'undefined' && value < low) {
+        if (fillAlarm) {
+            $rect.attr("fill", jlab.wedm.majorAlarmColor);
+        }
+        if (lineAlarm) {
+            $rect.attr("stroke", jlab.wedm.majorAlarmColor);
+        }
+    } else {
+        if (fillAlarm) {
+            $rect.attr("fill", jlab.wedm.noAlarmColor);
+        }
+        if (lineAlarm) {
+            $rect.attr("stroke", jlab.wedm.noAlarmColor);
+        }
+    }
+};
+
 var monitoredPvs = null,
         pvWidgetMap = null;
 
@@ -534,11 +583,19 @@ $(function () {
             limitPvs.push(indicatorPvs[0] + ".LOPR");
         }
 
+        /*TODO: Should we be using .STAT enum instead? */
         if (alarmSensitive && indicatorPvs.length === 1) {
             limitPvs.push(indicatorPvs[0] + ".HIHI");
             limitPvs.push(indicatorPvs[0] + ".HIGH");
             limitPvs.push(indicatorPvs[0] + ".LOW");
             limitPvs.push(indicatorPvs[0] + ".LOLO");
+        }
+
+        if (alarmPvs.length === 1) {
+            limitPvs.push(alarmPvs[0] + ".HIHI");
+            limitPvs.push(alarmPvs[0] + ".HIGH");
+            limitPvs.push(alarmPvs[0] + ".LOW");
+            limitPvs.push(alarmPvs[0] + ".LOLO");
         }
 
         var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(indicatorPvs).concat(limitPvs)),
@@ -561,6 +618,8 @@ $(function () {
                 widget = new jlab.wedm.BytePvWidget(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveBarMonitor") > -1) {
                 widget = new jlab.wedm.BarMeterPvWidget(id, pvSet);
+            } else if ($obj.attr("class").indexOf("ActiveRectangle") > -1) {
+                widget = new jlab.wedm.RectanglePvWidget(id, pvSet);
             } else {
                 /*console.log("other widget");*/
                 widget = new jlab.wedm.PvWidget(id, pvSet);
