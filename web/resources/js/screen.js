@@ -583,8 +583,7 @@ $(document).on("click", ".RelatedDisplay", function (event) {
         var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
 
         for (var i = 0; i < files.length; i++) {
-            var unlabeledClass = labels[i] === '' ? ' class="unlabeled-anchor-li"' : '';
-            $html.find("ul").append('<li' + unlabeledClass + '><a href="' + path + files[i] + '" target="_blank">' + labels[i] + '</a></li>');
+            $html.find("ul").append('<li class="anchor-li"><a href="' + path + files[i] + '" target="_blank">' + labels[i] + '</a></li>');
         }
 
         $(document.body).append($html);
@@ -602,9 +601,10 @@ $(document).mouseup(function (e)
     }
 });
 
-$(document).on("click", ".unlabeled-anchor-li", function () {
+$(document).on("click", ".anchor-li", function () {
     var href = $(this).find("a").attr("href");
     window.open(href, '_blank');
+    return;
 });
 
 $(function () {

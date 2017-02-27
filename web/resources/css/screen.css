@@ -19,7 +19,8 @@
 .ActiveRectangle {
     pointer-events: none;
 }
-.RelatedDisplay {
+.RelatedDisplay,
+.anchor-li {
     cursor: pointer;
 }
 .related-display-menu {
