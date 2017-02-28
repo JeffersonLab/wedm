@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <param-name>releaseNumber</param-name>
-        <param-value>0.2.0</param-value>
+        <param-value>0.3.0</param-value>
     </context-param>
     <context-param>
         <param-name>releaseDate</param-name>
-        <param-value>20 Feb 2017</param-value>
+        <param-value>28 Feb 2017</param-value>
     </context-param>
     <context-param>
         <param-name>epics2webReleaseNumber</param-name>
-        <param-value>1.1.2</param-value>
-    </context-param>     
+        <param-value>1.2.1</param-value>
+    </context-param>
     <session-config>
         <session-timeout>
             30
