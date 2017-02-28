@@ -539,6 +539,17 @@ jlab.wedm.pvsFromExpr = function (expr) {
     return pvs;
 };
 
+jlab.wedm.basename = function (name) {
+    var basename = name,
+            fieldIndex = basename.lastIndexOf(".");
+
+    if (fieldIndex !== -1) {
+        basename = basename.substring(0, fieldIndex);
+    }
+
+    return basename;
+}
+
 jlab.wedm.uniqueArray = function (array) {
     var a = array.concat();
     for (var i = 0; i < a.length; ++i) {
@@ -660,9 +671,11 @@ $(function () {
         }
 
         if (alarmSensitive && indicatorPvs.length === 1) {
-            alarmPvs.push(indicatorPvs[0] + ".SEVR");
+            var basename = jlab.wedm.basename(indicatorPvs[0]);
+            alarmPvs.push(basename + ".SEVR");
         } else if (alarmPvs.length === 1) {
-            alarmPvs[0] = alarmPvs[0] + ".SEVR";
+            var basename = jlab.wedm.basename(alarmPvs[0]);
+            alarmPvs[0] = basename + ".SEVR";
         }
 
         var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(indicatorPvs).concat(limitPvs)),
