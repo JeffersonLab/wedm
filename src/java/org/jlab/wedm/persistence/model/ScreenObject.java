@@ -117,6 +117,7 @@ public class ScreenObject {
         
         if(indicatorAlarm) {
             attributes.put("data-indicator-alarm", "true");
+            classes.add("waiting-for-alarm-state");            
         }        
         
         if(lineAlarm) {

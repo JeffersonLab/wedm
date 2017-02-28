@@ -30,7 +30,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
         if (this.alarmPvs.indexOf(update.pv) > -1) {
             /*console.log('updating alarm');*/
-            this.handleAlarmUpdate.call(this);
+            this.handleAlarmUpdate.call(this, update);
         }
 
         if (this.indicatorPvs.indexOf(update.pv) > -1) {
@@ -102,23 +102,8 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             $obj.attr("data-max", update.value);
         } else if (update.pv.indexOf(".LOPR") > -1) {
             $obj.attr("data-min", update.value);
-        } else if (update.pv.indexOf(".HIHI") > -1) {
-            $obj.attr("data-hihi", update.value);
-        } else if (update.pv.indexOf(".HIGH") > -1) {
-            $obj.attr("data-high", update.value);
-        } else if (update.pv.indexOf(".LOW") > -1) {
-            $obj.attr("data-low", update.value);
-        } else if (update.pv.indexOf(".LOLO") > -1) {
-            $obj.attr("data-lolo", update.value);
         } else {
             console.log('Unknown limit PV: ' + update.pv);
-        }
-
-        if (typeof $obj.attr("data-lolo") !== 'undefined' &&
-                typeof $obj.attr("data-hihi") !== 'undefined' &&
-                typeof $obj.attr("data-low") !== 'undefined' &&
-                typeof $obj.attr("data-high") !== 'undefined') {
-            $obj[0].classList.remove("waiting-for-alarm-state");
         }
     };
 };
@@ -293,43 +278,11 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
             horizontal = $obj.attr("data-orientation") === "horizontal",
             $holder = $obj.find(".bar-holder"),
             $bar = $obj.find(".bar"),
-            $box = $obj.find("> rect"),
             $baseline = $obj.find(".base-line"),
             max = $obj.attr("data-max"),
             min = $obj.attr("data-min"),
             origin = parseFloat($obj.attr("data-origin") || "0.0"),
-            magnitude = Math.abs(max - origin) + Math.abs(min - origin),
-            alarmSensitive = $obj.attr("data-indicator-alarm") === "true",
-            hihi = $obj.attr("data-hihi"),
-            high = $obj.attr("data-high"),
-            low = $obj.attr("data-low"),
-            lolo = $obj.attr("data-lolo");
-
-    if (alarmSensitive) {
-        if (typeof hihi !== 'undefined' && value > hihi) {
-            $bar.attr("fill", jlab.wedm.majorAlarmColor);
-            $box.attr("stroke", jlab.wedm.majorAlarmColor);
-            $baseline.attr("stroke", jlab.wedm.majorAlarmColor);
-        } else if (typeof high !== 'undefined' && value > high) {
-            $bar.attr("fill", jlab.wedm.minorAlarmColor);
-            $box.attr("stroke", jlab.wedm.minorAlarmColor);
-            $baseline.attr("stroke", jlab.wedm.minorAlarmColor);
-        } else if (typeof lolo !== 'undefined' && value < lolo) {
-            $bar.attr("fill", jlab.wedm.minorAlarmColor);
-            $box.attr("stroke", jlab.wedm.minorAlarmColor);
-            $baseline.attr("stroke", jlab.wedm.minorAlarmColor);
-        } else if (typeof low !== 'undefined' && value < low) {
-            $bar.attr("fill", jlab.wedm.majorAlarmColor);
-            $box.attr("stroke", jlab.wedm.majorAlarmColor);
-            $baseline.attr("stroke", jlab.wedm.majorAlarmColor);
-        } else {
-            $bar.attr("fill", jlab.wedm.noAlarmColor);
-            $box.attr("stroke", jlab.wedm.noAlarmColor);
-            $baseline.attr("stroke", jlab.wedm.noAlarmColor);
-        }
-    }
-
-    /*console.log(value);*/
+            magnitude = Math.abs(max - origin) + Math.abs(min - origin);
 
     if ($.isNumeric(max) && $.isNumeric(min)) {
         var height = $bar.attr("height"),
@@ -386,6 +339,44 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
     }
 };
 
+jlab.wedm.BarMeterPvWidget.prototype.handleAlarmUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            sevr = update.value,
+            $bar = $obj.find(".bar"),
+            $box = $obj.find("> rect"),
+            $baseline = $obj.find(".base-line"),
+            invalid = false;
+
+    $obj.attr("data-sevr", sevr);
+    $obj[0].classList.remove("waiting-for-alarm-state");
+
+    if (typeof sevr !== 'undefined') {
+        if (sevr === 0) { // NO_ALARM
+            $bar.attr("fill", jlab.wedm.noAlarmColor);
+            $box.attr("stroke", jlab.wedm.noAlarmColor);
+            $baseline.attr("stroke", jlab.wedm.noAlarmColor);
+        } else if (sevr === 1) { // MINOR
+            $bar.attr("fill", jlab.wedm.minorAlarmColor);
+            $box.attr("stroke", jlab.wedm.minorAlarmColor);
+            $baseline.attr("stroke", jlab.wedm.minorAlarmColor);
+        } else if (sevr === 2) { // MAJOR
+            $bar.attr("fill", jlab.wedm.majorAlarmColor);
+            $box.attr("stroke", jlab.wedm.majorAlarmColor);
+            $baseline.attr("stroke", jlab.wedm.majorAlarmColor);
+        } else if (sevr === 3) { // INVALID
+            invalid = true;
+        }
+    } else {
+        invalid = true;
+    }
+
+    if (invalid) {
+        $bar.attr("fill", jlab.wedm.invalidAlarmColor);
+        $box.attr("stroke", jlab.wedm.invalidAlarmColor);
+        $baseline.attr("stroke", jlab.wedm.invalidAlarmColor);
+    }
+};
+
 jlab.wedm.ShapePvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.call(this, id, pvSet);
 };
@@ -407,52 +398,52 @@ jlab.wedm.ShapePvWidget.prototype.handleInfo = function (info) {
     }
 };
 
-jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function () {
-    var pv = this.alarmPvs[0],
-            value = this.pvNameToValueMap[pv],
-            $obj = $("#" + this.id),
-            hihi = $obj.attr("data-hihi"),
-            high = $obj.attr("data-high"),
-            low = $obj.attr("data-low"),
-            lolo = $obj.attr("data-lolo"),
+jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            sevr = update.value,
             $shape = $obj.find("rect, ellipse, path"),
             fillAlarm = $obj.attr("data-fill-alarm") === "true",
-            lineAlarm = $obj.attr("data-line-alarm") === "true";
+            lineAlarm = $obj.attr("data-line-alarm") === "true",
+            invalid = false;
 
-    if (typeof hihi !== 'undefined' && value > hihi) {
-        if (fillAlarm) {
-            $shape.attr("fill", jlab.wedm.majorAlarmColor);
-        }
-        if (lineAlarm) {
-            $shape.attr("stroke", jlab.wedm.majorAlarmColor);
-        }
-    } else if (typeof high !== 'undefined' && value > high) {
-        if (fillAlarm) {
-            $shape.attr("fill", jlab.wedm.minorAlarmColor);
-        }
-        if (lineAlarm) {
-            $shape.attr("stroke", jlab.wedm.minorAlarmColor);
-        }
-    } else if (typeof lolo !== 'undefined' && value < lolo) {
-        if (fillAlarm) {
-            $shape.attr("fill", jlab.wedm.minorAlarmColor);
-        }
-        if (lineAlarm) {
-            $shape.attr("stroke", jlab.wedm.minorAlarmColor);
-        }
-    } else if (typeof low !== 'undefined' && value < low) {
-        if (fillAlarm) {
-            $shape.attr("fill", jlab.wedm.majorAlarmColor);
-        }
-        if (lineAlarm) {
-            $shape.attr("stroke", jlab.wedm.majorAlarmColor);
+    $obj.attr("data-sevr", sevr);
+    $obj[0].classList.remove("waiting-for-alarm-state");
+
+    if (typeof sevr !== 'undefined') {
+        if (sevr === 0) { // NO_ALARM
+            if (fillAlarm) {
+                $shape.attr("fill", jlab.wedm.noAlarmColor);
+            }
+            if (lineAlarm) {
+                $shape.attr("stroke", jlab.wedm.noAlarmColor);
+            }
+        } else if (sevr === 1) { // MINOR
+            if (fillAlarm) {
+                $shape.attr("fill", jlab.wedm.minorAlarmColor);
+            }
+            if (lineAlarm) {
+                $shape.attr("stroke", jlab.wedm.minorAlarmColor);
+            }
+        } else if (sevr === 2) { // MAJOR
+            if (fillAlarm) {
+                $shape.attr("fill", jlab.wedm.majorAlarmColor);
+            }
+            if (lineAlarm) {
+                $shape.attr("stroke", jlab.wedm.majorAlarmColor);
+            }
+        } else if (sevr === 3) { // INVALID
+            invalid = true;
         }
     } else {
+        invalid = true;
+    }
+
+    if (invalid) {
         if (fillAlarm) {
-            $shape.attr("fill", jlab.wedm.noAlarmColor);
+            $shape.attr("fill", jlab.wedm.invalidAlarmColor);
         }
         if (lineAlarm) {
-            $shape.attr("stroke", jlab.wedm.noAlarmColor);
+            $shape.attr("stroke", jlab.wedm.invalidAlarmColor);
         }
     }
 };
@@ -472,55 +463,56 @@ jlab.wedm.StaticTextPvWidget.prototype.handleInfo = function (info) {
         $obj.css("color", jlab.wedm.disconnectedAlarmColor);
         $obj.attr("background-color", "transparent");
         $obj[0].classList.add("disconnected-pv");
-        $obj[0].classList.remove("waiting-for-alarm-state");        
+        $obj[0].classList.remove("waiting-for-alarm-state");
     }
 };
 
-jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function () {
-    var pv = this.alarmPvs[0],
-            value = this.pvNameToValueMap[pv],
-            $obj = $("#" + this.id),
-            hihi = $obj.attr("data-hihi"),
-            high = $obj.attr("data-high"),
-            low = $obj.attr("data-low"),
-            lolo = $obj.attr("data-lolo"),
+jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            sevr = update.value,
             fgAlarm = $obj.attr("data-fg-alarm") === "true",
-            bgAlarm = $obj.attr("data-bg-alarm") === "true";
+            bgAlarm = $obj.attr("data-bg-alarm") === "true",
+            invalid = false;
 
-    if (typeof hihi !== 'undefined' && value > hihi) {
-        if (fgAlarm) {
-            $obj.css("color", jlab.wedm.majorAlarmColor);
-        }
-        if (bgAlarm) {
-            $obj.css("background-color", jlab.wedm.majorAlarmColor);
-        }
-    } else if (typeof high !== 'undefined' && value > high) {
-        if (fgAlarm) {
-            $obj.css("color", jlab.wedm.minorAlarmColor);
-        }
-        if (bgAlarm) {
-            $obj.css("background-color", jlab.wedm.minorAlarmColor);
-        }
-    } else if (typeof lolo !== 'undefined' && value < lolo) {
-        if (fgAlarm) {
-            $obj.css("color", jlab.wedm.minorAlarmColor);
-        }
-        if (bgAlarm) {
-            $obj.css("background-color", jlab.wedm.minorAlarmColor);
-        }
-    } else if (typeof low !== 'undefined' && value < low) {
-        if (fgAlarm) {
-            $obj.css("color", jlab.wedm.majorAlarmColor);
-        }
-        if (bgAlarm) {
-            $obj.css("background-color", jlab.wedm.majorAlarmColor);
+
+    $obj.attr("data-sevr", sevr);
+    $obj[0].classList.remove("waiting-for-alarm-state");
+
+    if (typeof sevr !== 'undefined') {
+        if (sevr === 0) { // NO_ALARM
+            if (fgAlarm) {
+                $obj.css("color", jlab.wedm.noAlarmColor);
+            }
+            if (bgAlarm) {
+                $obj.css("background-color", jlab.wedm.noAlarmColor);
+            }
+        } else if (sevr === 1) { // MINOR
+            if (fgAlarm) {
+                $obj.css("color", jlab.wedm.minorAlarmColor);
+            }
+            if (bgAlarm) {
+                $obj.css("background-color", jlab.wedm.minorAlarmColor);
+            }
+        } else if (sevr === 2) { // MAJOR
+            if (fgAlarm) {
+                $obj.css("color", jlab.wedm.majorAlarmColor);
+            }
+            if (bgAlarm) {
+                $obj.css("background-color", jlab.wedm.majorAlarmColor);
+            }
+        } else if (sevr === 3) { // INVALID
+            invalid = true;
         }
     } else {
+        invalid = true;
+    }
+
+    if (invalid) {
         if (fgAlarm) {
-            $obj.css("color", jlab.wedm.noAlarmColor);
+            $obj.css("color", jlab.wedm.invalidAlarmColor);
         }
         if (bgAlarm) {
-            $obj.css("background-color", jlab.wedm.noAlarmColor);
+            $obj.css("background-color", jlab.wedm.invalidAlarmColor);
         }
     }
 };
@@ -667,19 +659,10 @@ $(function () {
             limitPvs.push(indicatorPvs[0] + ".LOPR");
         }
 
-        /*TODO: Should we be using .STAT enum instead? */
         if (alarmSensitive && indicatorPvs.length === 1) {
-            limitPvs.push(indicatorPvs[0] + ".HIHI");
-            limitPvs.push(indicatorPvs[0] + ".HIGH");
-            limitPvs.push(indicatorPvs[0] + ".LOW");
-            limitPvs.push(indicatorPvs[0] + ".LOLO");
-        }
-
-        if (alarmPvs.length === 1) {
-            limitPvs.push(alarmPvs[0] + ".HIHI");
-            limitPvs.push(alarmPvs[0] + ".HIGH");
-            limitPvs.push(alarmPvs[0] + ".LOW");
-            limitPvs.push(alarmPvs[0] + ".LOLO");
+            alarmPvs.push(indicatorPvs[0] + ".SEVR");
+        } else if (alarmPvs.length === 1) {
+            alarmPvs[0] = alarmPvs[0] + ".SEVR";
         }
 
         var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(indicatorPvs).concat(limitPvs)),
