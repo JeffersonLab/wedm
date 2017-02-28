@@ -534,7 +534,7 @@ public class ScreenParser extends EDMParser {
                                 last.visInvert = true;
                                 break;
                             case "visPv":
-                                last.visPv = stripQuotes(tokens[1]);
+                                last.visPv = stripQuotes(line.substring("visPv".length()));
                                 break;
                             case "file":
                                 //LOGGER.log(Level.FINEST, "Found file: {0}", tokens[1]);
