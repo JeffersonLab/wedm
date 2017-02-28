@@ -1,3 +1,5 @@
+.waiting-for-alarm-state,
+.waiting-for-alarm-state *,
 .invisible,
 .invisible * {
     border-color: transparent !important;

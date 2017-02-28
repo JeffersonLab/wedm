@@ -54,6 +54,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         if (!info.connected && $obj.length > 0) {
             /*Can't use $obj.addClass on SVG with jquery 2*/
             $obj[0].classList.add("disconnected-pv");
+            $obj[0].classList.remove("waiting-for-alarm-state");
             $obj.css("border", "1px solid " + jlab.wedm.disconnectedAlarmColor);
         }
     };
@@ -111,6 +112,13 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             $obj.attr("data-lolo", update.value);
         } else {
             console.log('Unknown limit PV: ' + update.pv);
+        }
+
+        if (typeof $obj.attr("data-lolo") !== 'undefined' &&
+                typeof $obj.attr("data-hihi") !== 'undefined' &&
+                typeof $obj.attr("data-low") !== 'undefined' &&
+                typeof $obj.attr("data-high") !== 'undefined') {
+            $obj[0].classList.remove("waiting-for-alarm-state");
         }
     };
 };
@@ -463,6 +471,8 @@ jlab.wedm.StaticTextPvWidget.prototype.handleInfo = function (info) {
     if (!info.connected) {
         $obj.css("color", jlab.wedm.disconnectedAlarmColor);
         $obj.attr("background-color", "transparent");
+        $obj[0].classList.add("disconnected-pv");
+        $obj[0].classList.remove("waiting-for-alarm-state");        
     }
 };
 

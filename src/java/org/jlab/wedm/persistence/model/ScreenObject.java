@@ -96,6 +96,7 @@ public class ScreenObject {
         
         if(alarmPv != null) {
             attributes.put("data-alarm-pv", alarmPv);
+            classes.add("waiting-for-alarm-state");
         }
         
         if(indicatorPv != null) {
