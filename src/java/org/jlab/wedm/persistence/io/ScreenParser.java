@@ -239,7 +239,7 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "min":
                                 last.min = Float.parseFloat(stripQuotes(tokens[1]));
-                                break;         
+                                break;
                             case "origin":
                                 last.origin = Float.parseFloat(stripQuotes(tokens[1]));
                                 break;
@@ -335,7 +335,6 @@ public class ScreenParser extends EDMParser {
                                 last.limitsFromDb = true;
                                 break;
                             case "fillColor":
-                                //LOGGER.log(Level.FINEST, "Found fillColor");
                                 Integer fcIndex = Integer.parseInt(tokens[2]);
                                 EDLColor fcColor = colorList.lookup(fcIndex);
                                 last.fillColor = fcColor;
@@ -374,8 +373,9 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "controlPv":
                                 //LOGGER.log(Level.FINEST, "Found value");
-                                if(last instanceof ActiveMessageButton) {
-                                    ((ActiveMessageButton)last).destinationPv = stripQuotes(tokens[1]);
+                                if (last instanceof ActiveMessageButton) {
+                                    ((ActiveMessageButton) last).destinationPv = stripQuotes(
+                                            tokens[1]);
                                 } else {
                                     last.controlPv = stripQuotes(tokens[1]);
                                 }
@@ -473,7 +473,7 @@ public class ScreenParser extends EDMParser {
                                                 "RelatedDisplay filename out of range: {0}",
                                                 rdIndex);
                                     }
-                                }                                
+                                }
                                 break;
                             case "menuLabel":
                                 RelatedDisplay rd2 = ((RelatedDisplay) last);
@@ -495,12 +495,16 @@ public class ScreenParser extends EDMParser {
                                                 "RelatedDisplay filename out of range: {0}",
                                                 rdIndex);
                                     }
-                                }                                
-                                break;                                
+                                }
+                                break;
                             case "onLabel":
                                 //LOGGER.log(Level.FINEST, "Found onLabel");
                                 ((ActiveButton) last).onLabel = stripQuotes(line.substring(
                                         "onLabel".length()));
+                                break;
+                            case "offLabel":
+                                ((ActiveButton) last).offLabel = stripQuotes(line.substring(
+                                        "offLabel".length()));
                                 break;
                             case "buttonLabel":
                                 //LOGGER.log(Level.FINEST, "Found buttonLabel");
@@ -550,6 +554,59 @@ public class ScreenParser extends EDMParser {
                             case "endGroup":
                                 groupStack.pop();
                                 break;
+                            case "ctlFont":
+                                String fStr = stripQuotes(line.substring("ctlFont".length()));
+
+                                EDLFont ctlFont;
+                                try {
+                                    ctlFont = parseFont(fStr);
+                                } catch (Exception e) {
+                                    LOGGER.log(Level.WARNING,
+                                            "Unable to parse font: {0}; using default",
+                                            fStr);
+                                    ctlFont = EDMParser.DEFAULT_FONT;
+                                }
+                                properties.ctlFont = ctlFont;
+                                break;
+                            case "btnFont":
+                                String bStr = stripQuotes(line.substring("btnFont".length()));
+
+                                EDLFont btnFont;
+                                try {
+                                    btnFont = parseFont(bStr);
+                                } catch (Exception e) {
+                                    LOGGER.log(Level.WARNING,
+                                            "Unable to parse font: {0}; using default",
+                                            bStr);
+                                    btnFont = EDMParser.DEFAULT_FONT;
+                                }
+                                properties.btnFont = btnFont;
+                                break;
+                            case "textColor":
+                                Integer textIndex = Integer.parseInt(tokens[2]);
+                                EDLColor textColor = colorList.lookup(textIndex);
+                                properties.textColor = textColor;
+                                break;
+                            case "ctlFgColor1":
+                                Integer fg1Index = Integer.parseInt(tokens[2]);
+                                EDLColor fg1Color = colorList.lookup(fg1Index);
+                                properties.ctlFgColor1 = fg1Color;
+                                break;
+                            case "ctlFgColor2":
+                                Integer fg2Index = Integer.parseInt(tokens[2]);
+                                EDLColor fg2Color = colorList.lookup(fg2Index);
+                                properties.ctlFgColor2 = fg2Color;
+                                break;
+                            case "ctlBgColor1":
+                                Integer bg1Index = Integer.parseInt(tokens[2]);
+                                EDLColor bg1Color = colorList.lookup(bg1Index);
+                                properties.ctlBgColor1 = bg1Color;
+                                break;
+                            case "ctlBgColor2":
+                                Integer bg2Index = Integer.parseInt(tokens[2]);
+                                EDLColor bg2Color = colorList.lookup(bg2Index);
+                                properties.ctlBgColor2 = bg2Color;
+                                break;
                             case "beginObjectProperties":
                             case "major":
                             case "minor":
@@ -561,6 +618,9 @@ public class ScreenParser extends EDMParser {
                             case "":
                             case "beginGroup":
                             case "4":
+                            case "pressValue":
+                            case "releaseValue":
+                            case "useEnumNumeric":
                                 break;
                             default:
                                 LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);
