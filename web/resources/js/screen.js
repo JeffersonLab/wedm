@@ -96,13 +96,13 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
         var invert = $obj.attr("data-vis-invert") === "true";
 
-        if (typeof value === 'boolean') {
-            result = value;
-        } else {
+        //if (typeof value === 'boolean') {
+        //    result = value;
+        //} else {
             var min = $obj.attr("data-vis-min");
             var max = $obj.attr("data-vis-max");
-            var result = (value >= min && value < max);
-        }
+            var result = (value >= min && value < max); /*boolean values automatically convert to 0 or 1*/
+        //}
 
         if (invert) {
             result = !result;
@@ -548,21 +548,23 @@ jlab.wedm.evalExpr = function (expr, pvs) {
 
     if (expr.indexOf("CALC\\") === 0) {
 
-        if (pvs.length > 10) {
-            console.log('Expression has more than 10 PVs, which is not supported');
+        if (pvs.length > 6) {
+            console.log('Expression has more than 6 PVs, which is not supported');
             return 0;
         }
-
-
-        /*TODO: if performance is an issue try consolidating to a single eval call?*/
  
         /*console.log(pvs);*/
 
         // Define vars
-        var A = pvs[0];
-        for (var i = 1; i < pvs.length; i++) {
+        var A = pvs[0],
+                B = pvs[1],
+                C = pvs[2],
+                D = pvs[3],
+                E = pvs[4],
+                F = pvs[5];
+        /*for (var i = 1; i < pvs.length; i++) {
             eval('var ' + String.fromCharCode("A".charCodeAt(0) + i) + ' = ' + pvs[i] + ';');
-        }
+        }*/
 
         /*console.log(A);
          console.log(B);
