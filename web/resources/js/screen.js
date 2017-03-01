@@ -76,13 +76,33 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         var value = this.pvNameToValueMap[pv];
         var $obj = $("#" + this.id);
 
+        if (jlab.wedm.isExpr(this.visPvExpr)) {
+            var pvs = [];
+            for (var i = 0; i < this.visPvs.length; i++) {
+                var name = this.visPvs[i],
+                        val = this.pvNameToValueMap[name];
+                if (typeof val === 'undefined') {
+                    /*Still more PVs we need values from*/
+                    return;
+                }
+                pvs.push(val);
+            }
+
+            value = jlab.wedm.evalExpr(this.visPvExpr, pvs);
+        }
+
         /*console.log('val: ' + value);
          $obj.attr("data-value", value);*/
 
-        var min = $obj.attr("data-vis-min");
-        var max = $obj.attr("data-vis-max");
         var invert = $obj.attr("data-vis-invert") === "true";
-        var result = (value >= min && value < max);
+
+        if (typeof value === 'boolean') {
+            result = value;
+        } else {
+            var min = $obj.attr("data-vis-min");
+            var max = $obj.attr("data-vis-max");
+            var result = (value >= min && value < max);
+        }
 
         if (invert) {
             result = !result;
@@ -520,10 +540,71 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
 var monitoredPvs = null,
         pvWidgetMap = null;
 
+jlab.wedm.isExpr = function (expr) {
+    return expr.indexOf("CALC\\") === 0;
+};
+
+jlab.wedm.evalExpr = function (expr, pvs) {
+
+    if (expr.indexOf("CALC\\") === 0) {
+
+        if (pvs.length > 10) {
+            console.log('Expression has more than 10 PVs, which is not supported');
+            return 0;
+        }
+
+
+        /*TODO: if performance is an issue try consolidating to a single eval call?*/
+ 
+        /*console.log(pvs);*/
+
+        // Define vars
+        var A = pvs[0];
+        for (var i = 1; i < pvs.length; i++) {
+            eval('var ' + String.fromCharCode("A".charCodeAt(0) + i) + ' = ' + pvs[i] + ';');
+        }
+
+        /*console.log(A);
+         console.log(B);
+         console.log(C);
+         console.log(D);*/
+
+        var stmt = expr.substring(8, expr.indexOf("}") - 1);
+
+        /*Convert EPICS Operators to JavaScript Operators*/
+        stmt = stmt.replace(new RegExp('=', 'g'), "==");
+        stmt = stmt.replace(new RegExp('#', 'g'), "!=");
+        stmt = stmt.replace(new RegExp('abs', 'gi'), "Math.abs");
+        stmt = stmt.replace(new RegExp('min', 'gi'), "Math.min");
+        stmt = stmt.replace(new RegExp('max', 'gi'), "Math.max");
+
+        /*console.log(stmt);*/
+
+        var result;
+
+        try {
+            result = eval(stmt);
+        } catch (e) {
+            result = 0;
+            console.log("Unable to eval: " + e.message + "; stmt: " + stmt);
+        }
+
+        /*console.log(result);*/
+
+        return result;
+
+    } else { // Just return value of first pv
+        return pvs[0];
+    }
+};
+
 jlab.wedm.pvsFromExpr = function (expr) {
     var pvs = [];
 
     if (expr !== undefined) {
+
+        /*console.log("parsing expr: " + expr);*/
+
         if (expr.indexOf("CALC\\") === 0) {
 
             expr.substring(expr.indexOf("}") + 2, expr.length - 1).split(",").forEach(function (pv) {
@@ -548,7 +629,7 @@ jlab.wedm.basename = function (name) {
     }
 
     return basename;
-}
+};
 
 jlab.wedm.uniqueArray = function (array) {
     var a = array.concat();
