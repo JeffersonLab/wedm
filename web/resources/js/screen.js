@@ -585,7 +585,9 @@ jlab.wedm.evalExpr = function (expr, pvs) {
         var result;
 
         try {
+            //console.time("eval");
             result = eval(stmt);
+            //console.timeEnd("eval");
         } catch (e) {
             result = 0;
             console.log("Unable to eval: " + e.message + "; stmt: " + stmt);
@@ -818,9 +820,11 @@ $(function () {
     };
 
     jlab.wedm.con.onupdate = function (e) {
+        //console.time("onupdate");
         $(pvWidgetMap[e.detail.pv]).each(function () {
             this.handleUpdate(e.detail);
         });
+        //console.timeEnd("onupdate");
     };
 
     jlab.wedm.con.oninfo = function (e) {
