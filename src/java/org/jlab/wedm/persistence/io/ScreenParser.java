@@ -374,7 +374,11 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "controlPv":
                                 //LOGGER.log(Level.FINEST, "Found value");
-                                last.controlPv = stripQuotes(tokens[1]);
+                                if(last instanceof ActiveMessageButton) {
+                                    ((ActiveMessageButton)last).destinationPv = stripQuotes(tokens[1]);
+                                } else {
+                                    last.controlPv = stripQuotes(tokens[1]);
+                                }
                                 break;
                             case "alarmPv":
                                 last.alarmPv = stripQuotes(tokens[1]);
