@@ -480,29 +480,46 @@ jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function (update) {
 jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
     var $obj = $("#" + this.id),
             $shape = $obj.find("rect, ellipse, path"),
-            fill = $obj.attr("data-fill") === "true",
             A = update.value, /*eval input*/
             B, /* eval output */
             color,
-            ruleIndex = $obj.attr("data-color-rule"),
-            stmt = jlab.wedm.colorRules[ruleIndex];
+            stmt,
+            lineRuleIndex = $obj.attr("data-line-color-rule"),
+            fillRuleIndex = $obj.attr("data-fill-color-rule");
 
     $obj[0].classList.remove("waiting-for-state");
 
-    try {
-        //console.time("color eval");
-        eval(stmt);
-        //console.timeEnd("color eval");
+    if (lineRuleIndex !== undefined) {
+        stmt = jlab.wedm.colorRules[lineRuleIndex];
 
-        color = jlab.wedm.colors[B];
-    } catch (e) {
-        color = "black";
-        console.log("Unable to color eval: " + e.message + "; stmt: " + stmt);
+        try {
+            //console.time("color eval");
+            eval(stmt);
+            //console.timeEnd("color eval");
+
+            color = jlab.wedm.colors[B];
+        } catch (e) {
+            color = "black";
+            console.log("Unable to color eval: " + e.message + "; stmt: " + stmt);
+        }
+
+        $shape.attr("stroke", color);
     }
 
-    $shape.attr("stroke", color);
+    if (fillRuleIndex !== undefined) {
+        stmt = jlab.wedm.colorRules[fillRuleIndex];
 
-    if (fill) {
+        try {
+            //console.time("color eval");
+            eval(stmt);
+            //console.timeEnd("color eval");
+
+            color = jlab.wedm.colors[B];
+        } catch (e) {
+            color = "black";
+            console.log("Unable to color eval: " + e.message + "; stmt: " + stmt);
+        }
+
         $shape.attr("fill", color);
     }
 };
@@ -581,7 +598,7 @@ jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
             A = update.value, /*eval input*/
             B, /* eval output */
             color,
-            ruleIndex = $obj.attr("data-color-rule"),
+            ruleIndex = $obj.attr("data-fg-color-rule"),
             stmt = jlab.wedm.colorRules[ruleIndex];
 
     $obj[0].classList.remove("waiting-for-state");

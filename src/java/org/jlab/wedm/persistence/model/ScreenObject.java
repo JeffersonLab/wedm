@@ -64,11 +64,6 @@ public class ScreenObject {
         classes.add(className);
         classes.add("ScreenObject");
 
-        // This is only needed on client for ColorPVs to know whether dynamic color affects fill as well
-        if(fill == true) {
-            attributes.put("data-fill", "true");
-        }
-        
         if (invisible) {
             classes.add("invisible");
         }
@@ -100,24 +95,24 @@ public class ScreenObject {
         }
 
         if (alarmPv != null) {
-            classes.add("waiting-for-state");          
-            
+            classes.add("waiting-for-state");
+
             if (lineAlarm || fillAlarm || fgAlarm || bgAlarm || indicatorAlarm) {
                 attributes.put("data-alarm-pv", alarmPv);
             } else {
                 attributes.put("data-color-pv", alarmPv);
+
+                if (lineColor != null && lineColor instanceof EDLColorRule) {
+                    attributes.put("data-line-color-rule", lineColor.toColorString());
+                } 
                 
-                String colorString = "unknown";
+                if (fillColor != null && fillColor instanceof EDLColorRule) {
+                    attributes.put("data-fill-color-rule", fillColor.toColorString());
+                } 
                 
-                if(lineColor != null) {
-                    colorString = lineColor.toColorString();
-                } else if(fillColor != null) {
-                    colorString = fillColor.toColorString();
-                } else if(fgColor != null) {
-                    colorString = fgColor.toColorString();
+                if (fgColor != null && fgColor instanceof EDLColorRule) {
+                    attributes.put("data-fg-color-rule", fgColor.toColorString());
                 }
-                
-                attributes.put("data-color-rule", colorString);
             }
         }
 
