@@ -548,8 +548,8 @@ jlab.wedm.evalExpr = function (expr, pvs) {
 
     if (expr.indexOf("CALC\\") === 0) {
 
-        if (pvs.length > 6) {
-            console.log('Expression has more than 6 PVs, which is not supported');
+        if (pvs.length > 10) {
+            console.log('Expression has more than 10 PVs, which is not supported: ' + expr);
             return 0;
         }
  
@@ -561,7 +561,11 @@ jlab.wedm.evalExpr = function (expr, pvs) {
                 C = pvs[2],
                 D = pvs[3],
                 E = pvs[4],
-                F = pvs[5];
+                F = pvs[5],
+                G = pvs[6],
+                H = pvs[7],
+                I = pvs[8],
+                J = pvs[9];
         /*for (var i = 1; i < pvs.length; i++) {
             eval('var ' + String.fromCharCode("A".charCodeAt(0) + i) + ' = ' + pvs[i] + ';');
         }*/
@@ -574,8 +578,9 @@ jlab.wedm.evalExpr = function (expr, pvs) {
         var stmt = expr.substring(8, expr.indexOf("}") - 1);
 
         /*Convert EPICS Operators to JavaScript Operators*/
-        stmt = stmt.replace(new RegExp('=', 'g'), "==");
+        stmt = stmt.replace(new RegExp('\\b=\\b', 'g'), "=="); /*Math =, but not >= or <=*/
         stmt = stmt.replace(new RegExp('#', 'g'), "!=");
+        stmt = stmt.replace(new RegExp('and', 'gi'), "&&");
         stmt = stmt.replace(new RegExp('abs', 'gi'), "Math.abs");
         stmt = stmt.replace(new RegExp('min', 'gi'), "Math.min");
         stmt = stmt.replace(new RegExp('max', 'gi'), "Math.max");
