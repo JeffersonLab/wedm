@@ -66,7 +66,7 @@ public class TextScreenObject extends HtmlScreenObject {
             String colorStr = "black";
 
             if (fgColor != null) {
-                colorStr = fgColor.toRgbString();
+                colorStr = fgColor.toColorString();
             }
 
             textStyles.put("border", px + "px " + style + " " + colorStr);
@@ -75,19 +75,19 @@ public class TextScreenObject extends HtmlScreenObject {
         String className = this.getClass().getSimpleName();         
         if (!("ActiveButton".equals(className) || "ActiveMessageButton".equals(className) || "ActiveXTextDsp".equals(className)) || threeDimensional) {
             if (topShadowColor != null) {
-                styles.put("border-top", "1px solid " + botShadowColor.toRgbString());
-                styles.put("border-left", "1px solid " + botShadowColor.toRgbString());
+                styles.put("border-top", "1px solid " + botShadowColor.toColorString());
+                styles.put("border-left", "1px solid " + botShadowColor.toColorString());
 
-                threeDStyles.put("border-top", "2px solid " + topShadowColor.toRgbString());
-                threeDStyles.put("border-left", "2px solid " + topShadowColor.toRgbString());
+                threeDStyles.put("border-top", "2px solid " + topShadowColor.toColorString());
+                threeDStyles.put("border-left", "2px solid " + topShadowColor.toColorString());
             }
 
             if (botShadowColor != null) {
-                styles.put("border-bottom", "1px solid " + topShadowColor.toRgbString());
-                styles.put("border-right", "1px solid " + topShadowColor.toRgbString());
+                styles.put("border-bottom", "1px solid " + topShadowColor.toColorString());
+                styles.put("border-right", "1px solid " + topShadowColor.toColorString());
 
-                threeDStyles.put("border-bottom", "2px solid " + botShadowColor.toRgbString());
-                threeDStyles.put("border-right", "2px solid " + botShadowColor.toRgbString());
+                threeDStyles.put("border-bottom", "2px solid " + botShadowColor.toColorString());
+                threeDStyles.put("border-right", "2px solid " + botShadowColor.toColorString());
             }
         }
 

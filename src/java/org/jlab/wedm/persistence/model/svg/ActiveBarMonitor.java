@@ -76,7 +76,7 @@ public class ActiveBarMonitor extends ActiveRectangle {
             String strokeColorStr = "black";
 
             if (indicatorColor != null) {
-                strokeColorStr = indicatorColor.toRgbString();
+                strokeColorStr = indicatorColor.toColorString();
             }
 
             svg = svg + "stroke=\"" + strokeColorStr + "\" ";
@@ -94,11 +94,11 @@ public class ActiveBarMonitor extends ActiveRectangle {
         String fillColorStr = "transparent";
 
         if (fill && fillColor != null) {
-            fillColorStr = fillColor.toRgbString();
+            fillColorStr = fillColor.toColorString();
         }
 
         if (indicatorColor != null) {
-            fillColorStr = indicatorColor.toRgbString();
+            fillColorStr = indicatorColor.toColorString();
         }
 
         svg = svg + "fill=\"" + fillColorStr + "\" ";

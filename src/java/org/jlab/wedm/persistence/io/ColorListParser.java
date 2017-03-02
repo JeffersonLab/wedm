@@ -2,13 +2,17 @@ package org.jlab.wedm.persistence.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.model.AlarmColors;
 import org.jlab.wedm.persistence.model.ColorList;
 import org.jlab.wedm.persistence.model.EDLColor;
+import org.jlab.wedm.persistence.model.EDLColorConstant;
+import org.jlab.wedm.persistence.model.EDLColorRule;
 
 /**
  *
@@ -22,6 +26,8 @@ public class ColorListParser extends EDMParser {
         Map<Integer, EDLColor> indexMap = new HashMap<>();
         Map<String, EDLColor> nameMap = new HashMap<>();
         AlarmColors alarmColors = new AlarmColors();
+        List<EDLColorConstant> staticColors = new ArrayList<>();
+        List<EDLColorRule> ruleColors = new ArrayList<>();
         int maxColors = 256;
 
         File clist = new File(EDL_ROOT_DIR + File.separator + filename);
@@ -55,36 +61,96 @@ public class ColorListParser extends EDMParser {
                                 b = downsampleRgb65kTo256(b);
                             }
 
-                            EDLColor color = new EDLColor(colorname, r, g, b);
+                            EDLColor color = new EDLColorConstant(index, colorname, r, g, b);
                             indexMap.put(index, color);
                             nameMap.put(colorname, color);
+                            staticColors.add((EDLColorConstant) color);
                             break;
                         case "alarm":
                             line = scanner.nextLine();
                             String[] pieces = line.split(":");
                             String disconnected = stripQuotes(pieces[1]);
                             EDLColor c = nameMap.get(disconnected);
-                            alarmColors.disconnectedAlarm = c;
+                            alarmColors.disconnectedAlarm = (EDLColorConstant) c;
                             line = scanner.nextLine();
                             pieces = line.split(":");
                             String invalid = stripQuotes(pieces[1]);
                             c = nameMap.get(invalid);
-                            alarmColors.invalidAlarm = c;
+                            alarmColors.invalidAlarm = (EDLColorConstant) c;
                             line = scanner.nextLine();
                             pieces = line.split(":");
                             String minor = stripQuotes(pieces[1]);
                             c = nameMap.get(minor);
-                            alarmColors.minorAlarm = c;
+                            alarmColors.minorAlarm = (EDLColorConstant) c;
                             line = scanner.nextLine();
                             pieces = line.split(":");
                             String major = stripQuotes(pieces[1]);
                             c = nameMap.get(major);
-                            alarmColors.majorAlarm = c;
+                            alarmColors.majorAlarm = (EDLColorConstant) c;
                             line = scanner.nextLine();
                             pieces = line.split(":");
                             String noalarm = stripQuotes(pieces[1]);
                             c = nameMap.get(noalarm);
-                            alarmColors.noAlarm = c;
+                            alarmColors.noAlarm = (EDLColorConstant) c;
+                            break;
+                        case "rule":
+                            index = Integer.parseInt(tokens[1]);
+                            colorname = stripQuotes(tokens[2]);
+
+                            // We convert EDL Color rules into JavaScript case statements with A = input and B = output
+                            String expression = "switch(true) {";
+
+                            String value = scanner.nextLine();
+                            value = value.trim();
+                            String[] parts = value.split(":");
+                            String condition = stripQuotes(parts[0]);
+                            if ("default".equals(condition)) {
+                                condition = condition + ": ";
+                            } else {
+                                condition = "case (A " + condition + "): ";
+                                condition = condition.replace("&&", "&& A");
+                                condition = condition.replace("||", "|| A");
+                            }
+                            String colorValue = stripQuotes(parts[1]);
+                            expression = expression + condition + "B = '" + colorValue
+                                    + "'; break;";
+
+                            while (true) {
+                                value = scanner.nextLine();
+
+                                value = value.trim();
+
+                                if ("}".equals(value)) {
+                                    break;
+                                }
+
+                                if ("".equals(value)) {
+                                    continue;
+                                }
+
+                                //System.out.println("line: " + value);
+                                parts = value.split(":");
+                                condition = stripQuotes(parts[0]);
+                                if ("default".equals(condition)) {
+                                    condition = condition + ": ";
+                                } else {
+                                    condition = "case (A " + condition + "): ";
+                                    condition = condition.replace("&&", "&& A");
+                                    condition = condition.replace("||", "|| A");
+                                }
+                                colorValue = stripQuotes(parts[1]);
+                                expression = expression + condition + "B = '" + colorValue
+                                        + "'; break;";
+                            }
+
+                            expression = expression + "}";
+
+                            //System.out.println("expression: " + expression);
+
+                            color = new EDLColorRule(index, colorname, expression);
+                            indexMap.put(index, color);
+                            nameMap.put(colorname, color);
+                            ruleColors.add((EDLColorRule) color);
                             break;
                         default:
                             //LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);
@@ -93,6 +159,6 @@ public class ColorListParser extends EDMParser {
                 }
             }
         }
-        return new ColorList(indexMap, nameMap, maxColors, alarmColors);
+        return new ColorList(indexMap, nameMap, maxColors, staticColors, alarmColors, ruleColors);
     }
 }

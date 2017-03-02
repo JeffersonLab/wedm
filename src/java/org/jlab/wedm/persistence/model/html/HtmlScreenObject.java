@@ -19,7 +19,7 @@ public class HtmlScreenObject extends ScreenObject {
         this.setCommonAttributes();
 
         if (bgColor != null && !useDisplayBg) {
-            styles.put("background-color", bgColor.toRgbString());
+            styles.put("background-color", bgColor.toColorString());
         } 
         
         if (lineColor != null) {
@@ -35,12 +35,12 @@ public class HtmlScreenObject extends ScreenObject {
                 style = "dotted";
             }
 
-            styles.put("border", px + "px " + style + " " + lineColor.toRgbString());
+            styles.put("border", px + "px " + style + " " + lineColor.toColorString());
         }             
         
         if (fill && fillColor != null && bgColor == null) {
             LOGGER.log(Level.INFO, "fill being using in HTML object!");
-            styles.put("background-color", fillColor.toRgbString());
+            styles.put("background-color", fillColor.toColorString());
         }                      
         
         int originX = x + translation.x;

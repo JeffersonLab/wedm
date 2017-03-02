@@ -10,6 +10,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
     this.ctrlPvs = pvSet.ctrlPvs;
     this.visPvs = pvSet.visPvs;
     this.alarmPvs = pvSet.alarmPvs;
+    this.colorPvs = pvSet.colorPvs;
     this.indicatorPvs = pvSet.indicatorPvs;
     this.limitPvs = pvSet.limitPvs;
     this.pvNameToValueMap = {};
@@ -33,6 +34,10 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             this.handleAlarmUpdate.call(this, update);
         }
 
+        if (this.colorPvs.indexOf(update.pv) > -1) {
+            this.handleColorUpdate.call(this, update);
+        }
+
         if (this.indicatorPvs.indexOf(update.pv) > -1) {
             /*console.log('updating indicator');*/
             this.handleIndicatorUpdate.call(this);
@@ -54,7 +59,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         if (!info.connected && $obj.length > 0) {
             /*Can't use $obj.addClass on SVG with jquery 2*/
             $obj[0].classList.add("disconnected-pv");
-            $obj[0].classList.remove("waiting-for-alarm-state");
+            $obj[0].classList.remove("waiting-for-state");
             $obj.css("border", "1px solid " + jlab.wedm.disconnectedAlarmColor);
         }
     };
@@ -65,6 +70,10 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
     jlab.wedm.PvWidget.prototype.handleAlarmUpdate = function () {
         console.log('alarm update called - this should be overridden; id: ' + this.id);
+    };
+
+    jlab.wedm.PvWidget.prototype.handleColorUpdate = function () {
+        console.log('color update called - this should be overridden; id: ' + this.id);
     };
 
     jlab.wedm.PvWidget.prototype.handleIndicatorUpdate = function () {
@@ -99,9 +108,9 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         //if (typeof value === 'boolean') {
         //    result = value;
         //} else {
-            var min = $obj.attr("data-vis-min");
-            var max = $obj.attr("data-vis-max");
-            var result = (value >= min && value < max); /*boolean values automatically convert to 0 or 1*/
+        var min = $obj.attr("data-vis-min");
+        var max = $obj.attr("data-vis-max");
+        var result = (value >= min && value < max); /*boolean values automatically convert to 0 or 1*/
         //}
 
         if (invert) {
@@ -368,7 +377,7 @@ jlab.wedm.BarMeterPvWidget.prototype.handleAlarmUpdate = function (update) {
             invalid = false;
 
     $obj.attr("data-sevr", sevr);
-    $obj[0].classList.remove("waiting-for-alarm-state");
+    $obj[0].classList.remove("waiting-for-state");
 
     if (typeof sevr !== 'undefined') {
         if (sevr === 0) { // NO_ALARM
@@ -427,7 +436,7 @@ jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function (update) {
             invalid = false;
 
     $obj.attr("data-sevr", sevr);
-    $obj[0].classList.remove("waiting-for-alarm-state");
+    $obj[0].classList.remove("waiting-for-state");
 
     if (typeof sevr !== 'undefined') {
         if (sevr === 0) { // NO_ALARM
@@ -468,6 +477,36 @@ jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function (update) {
     }
 };
 
+jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            $shape = $obj.find("rect, ellipse, path"),
+            fill = $obj.attr("data-fill") === "true",
+            A = update.value, /*eval input*/
+            B, /* eval output */
+            color,
+            ruleIndex = $obj.attr("data-color-rule"),
+            stmt = jlab.wedm.colorRules[ruleIndex];
+
+    $obj[0].classList.remove("waiting-for-state");
+
+    try {
+        //console.time("color eval");
+        eval(stmt);
+        //console.timeEnd("color eval");
+
+        color = jlab.wedm.colors[B];
+    } catch (e) {
+        color = "black";
+        console.log("Unable to color eval: " + e.message + "; stmt: " + stmt);
+    }
+
+    $shape.attr("stroke", color);
+
+    if (fill) {
+        $shape.attr("fill", color);
+    }
+};
+
 jlab.wedm.StaticTextPvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.call(this, id, pvSet);
 };
@@ -483,7 +522,7 @@ jlab.wedm.StaticTextPvWidget.prototype.handleInfo = function (info) {
         $obj.css("color", jlab.wedm.disconnectedAlarmColor);
         $obj.attr("background-color", "transparent");
         $obj[0].classList.add("disconnected-pv");
-        $obj[0].classList.remove("waiting-for-alarm-state");
+        $obj[0].classList.remove("waiting-for-state");
     }
 };
 
@@ -496,7 +535,7 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
 
 
     $obj.attr("data-sevr", sevr);
-    $obj[0].classList.remove("waiting-for-alarm-state");
+    $obj[0].classList.remove("waiting-for-state");
 
     if (typeof sevr !== 'undefined') {
         if (sevr === 0) { // NO_ALARM
@@ -537,6 +576,30 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
     }
 };
 
+jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            A = update.value, /*eval input*/
+            B, /* eval output */
+            color,
+            ruleIndex = $obj.attr("data-color-rule"),
+            stmt = jlab.wedm.colorRules[ruleIndex];
+
+    $obj[0].classList.remove("waiting-for-state");
+
+    try {
+        //console.time("color eval");
+        eval(stmt);
+        //console.timeEnd("color eval");
+
+        color = jlab.wedm.colors[B];
+    } catch (e) {
+        color = "black";
+        console.log("Unable to color eval: " + e.message + "; stmt: " + stmt);
+    }
+
+    $obj.css("color", color);
+};
+
 var monitoredPvs = null,
         pvWidgetMap = null;
 
@@ -552,7 +615,7 @@ jlab.wedm.evalExpr = function (expr, pvs) {
             console.log('Expression has more than 10 PVs, which is not supported: ' + expr);
             return 0;
         }
- 
+
         /*console.log(pvs);*/
 
         // Define vars
@@ -567,8 +630,8 @@ jlab.wedm.evalExpr = function (expr, pvs) {
                 I = pvs[8],
                 J = pvs[9];
         /*for (var i = 1; i < pvs.length; i++) {
-            eval('var ' + String.fromCharCode("A".charCodeAt(0) + i) + ' = ' + pvs[i] + ';');
-        }*/
+         eval('var ' + String.fromCharCode("A".charCodeAt(0) + i) + ' = ' + pvs[i] + ';');
+         }*/
 
         /*console.log(A);
          console.log(B);
@@ -746,8 +809,10 @@ $(function () {
                 ctrlPvExpr = $obj.attr("data-pv"),
                 visPvExpr = $obj.attr("data-vis-pv"),
                 alarmPvExpr = $obj.attr("data-alarm-pv"),
+                colorPvExpr = $obj.attr("data-color-pv"),
                 indicatorPvExpr = $obj.attr("data-indicator-pv"),
                 alarmPvs = jlab.wedm.pvsFromExpr(alarmPvExpr),
+                colorPvs = jlab.wedm.pvsFromExpr(colorPvExpr),
                 ctrlPvs = jlab.wedm.pvsFromExpr(ctrlPvExpr),
                 visPvs = jlab.wedm.pvsFromExpr(visPvExpr),
                 indicatorPvs = jlab.wedm.pvsFromExpr(indicatorPvExpr),
@@ -768,11 +833,11 @@ $(function () {
             alarmPvs[0] = basename + ".SEVR";
         }
 
-        var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(indicatorPvs).concat(limitPvs)),
+        var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(colorPvs).concat(indicatorPvs).concat(limitPvs)),
                 widget = null,
-                pvSet = {ctrlPvExpr: ctrlPvExpr, visPvExpr: visPvExpr, alarmPvExpr: alarmPvExpr, indicatorPvExpr: indicatorPvExpr, alarmPvs: alarmPvs, ctrlPvs: ctrlPvs, visPvs: visPvs, indicatorPvs: indicatorPvs, limitPvs: limitPvs};
+                pvSet = {ctrlPvExpr: ctrlPvExpr, visPvExpr: visPvExpr, alarmPvExpr: alarmPvExpr, indicatorPvExpr: indicatorPvExpr, alarmPvs: alarmPvs, colorPvs: colorPvs, ctrlPvs: ctrlPvs, visPvs: visPvs, indicatorPvs: indicatorPvs, limitPvs: limitPvs};
 
-        if (ctrlPvExpr !== undefined || visPvExpr !== undefined || alarmPvExpr !== undefined || indicatorPvExpr !== undefined) {
+        if (ctrlPvExpr !== undefined || visPvExpr !== undefined || alarmPvExpr !== undefined || colorPvExpr !== undefined || indicatorPvExpr !== undefined) {
             /*console.log($obj[0].className);*/
             if ($obj.hasClass("ActiveXTextDsp")) {
                 /*console.log("text widget");*/

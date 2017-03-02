@@ -19,6 +19,7 @@ import org.jlab.wedm.persistence.model.html.ActiveXText;
 import org.jlab.wedm.persistence.model.html.ActiveXTextDsp;
 import org.jlab.wedm.persistence.model.ColorList;
 import org.jlab.wedm.persistence.model.EDLColor;
+import org.jlab.wedm.persistence.model.EDLColorConstant;
 import org.jlab.wedm.persistence.model.EDLFont;
 import org.jlab.wedm.persistence.model.html.HtmlScreenObject;
 import org.jlab.wedm.persistence.model.html.RelatedDisplay;

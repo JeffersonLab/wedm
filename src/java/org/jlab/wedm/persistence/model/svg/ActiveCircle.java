@@ -24,7 +24,7 @@ public class ActiveCircle extends SvgScreenObject {
             String strokeColorStr = "black";
 
             if (lineColor != null) {
-                strokeColorStr = lineColor.toRgbString();
+                strokeColorStr = lineColor.toColorString();
             }
 
             svg = svg + "stroke=\"" + strokeColorStr + "\" ";
@@ -32,7 +32,7 @@ public class ActiveCircle extends SvgScreenObject {
             String fillColorStr = "transparent";
 
             if (fill && fillColor != null) {
-                fillColorStr = fillColor.toRgbString();
+                fillColorStr = fillColor.toColorString();
             }
 
             svg = svg + "fill=\"" + fillColorStr + "\" ";
