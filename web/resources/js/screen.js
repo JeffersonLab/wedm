@@ -144,11 +144,18 @@ jlab.wedm.TextPvWidget = function (id, pvSet) {
 jlab.wedm.TextPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
 jlab.wedm.TextPvWidget.prototype.constructor = jlab.wedm.TextPvWidget;
 
+jlab.wedm.TextPvWidget.prototype.handleInfo = function (info) {
+    this.enumValuesArray = info['enum-labels'] || [];
+};
+
 jlab.wedm.TextPvWidget.prototype.handleControlUpdate = function () {
     var pv = this.ctrlPvs[0];
     var value = this.pvNameToValueMap[pv];
+    var enumVal = this.enumValuesArray[value];
 
-    if ($.isNumeric(value)) {
+    if (typeof enumVal !== 'undefined') {
+        value = enumVal;
+    } else if ($.isNumeric(value)) {
         value = value * 1; // could use parseFloat too; just need to ensure is numeric
         value = value.toFixed(2);
     }
