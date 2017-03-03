@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WEDM - ${param.edl}</title>
-        <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/epics2web.css?v=${initParam.epics2webResourceVersionNumber}"/>        
+        <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/epics2web.css?v=${initParam.epics2webReleaseNumber}"/>        
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.resourceVersionNumber}"/>
     </head>
     <body>
@@ -16,9 +16,9 @@
     </defs>
     </svg>
     <div class="connection-state-panel">
-        <img class="ws-disconnected" title="Socket Disconnected" width="24px" height="24px" style="vertical-align: middle;" src="/epics2web/resources/img/disconnected.svg?v=${initParam.epics2webResourceVersionNumber}"/>
-        <img class="ws-connecting connecting-spinner" title="Socket Connecting" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connecting.svg?v=${initParam.epics2webResourceVersionNumber}"/>                
-        <img class="ws-connected" title="Socket Connected" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connected.svg?v=${initParam.epics2webResourceVersionNumber}"/>
+        <img class="ws-disconnected" title="Socket Disconnected" width="24px" height="24px" style="vertical-align: middle;" src="/epics2web/resources/img/disconnected.svg?v=${initParam.epics2webReleaseNumber}"/>
+        <img class="ws-connecting connecting-spinner" title="Socket Connecting" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connecting.svg?v=${initParam.epics2webReleaseNumber}"/>                
+        <img class="ws-connected" title="Socket Connected" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connected.svg?v=${initParam.epics2webReleaseNumber}"/>
     </div>        
 ${screen.toHtml("        ", "    ")} 
     <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
