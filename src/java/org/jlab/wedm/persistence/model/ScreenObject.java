@@ -106,7 +106,7 @@ public class ScreenObject {
                     attributes.put("data-line-color-rule", lineColor.toColorString());
                 } 
                 
-                if (fillColor != null && fillColor instanceof EDLColorRule) {
+                if (fill && fillColor != null && fillColor instanceof EDLColorRule) {
                     attributes.put("data-fill-color-rule", fillColor.toColorString());
                 } 
                 
