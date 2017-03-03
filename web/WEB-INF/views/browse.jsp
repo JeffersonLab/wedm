@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WEDM - Browse for EDL Files</title>
-        <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/site.css?v=${initParam.epics2webResourceVersionNumber}"/> 
+        <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/site.css?v=${initParam.epics2webReleaseNumber}"/> 
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/browse.css?v=${initParam.releaseNumber}"/>
     </head>
     <body>

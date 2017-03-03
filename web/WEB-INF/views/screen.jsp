@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WEDM - ${param.edl}</title>
         <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/epics2web.css?v=${initParam.epics2webReleaseNumber}"/>        
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.resourceVersionNumber}"/>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
     </head>
     <body>
         <svg id="svg-defs">
@@ -23,7 +23,7 @@
 ${screen.toHtml("        ", "    ")} 
     <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/epics2web/resources/js/epics2web.js?v=${initParam.epics2webReleaseNumber}"></script>    
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.resourceVersionNumber}"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
     <script type="text/javascript">
 ${screen.getColorStyleVariables()}
     </script>       
