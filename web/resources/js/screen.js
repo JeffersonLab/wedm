@@ -85,7 +85,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         var value = this.pvNameToValueMap[pv];
         var $obj = $("#" + this.id);
 
-        if (jlab.wedm.isExpr(this.visPvExpr)) {
+        if (jlab.wedm.isCalcExpr(this.visPvExpr)) {
             var pvs = [];
             for (var i = 0; i < this.visPvs.length; i++) {
                 var name = this.visPvs[i],
@@ -97,7 +97,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
                 pvs.push(val);
             }
 
-            value = jlab.wedm.evalExpr(this.visPvExpr, pvs);
+            value = jlab.wedm.evalCalcExpr(this.visPvExpr, pvs);
         }
 
         /*console.log('val: ' + value);
@@ -480,8 +480,6 @@ jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function (update) {
 jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
     var $obj = $("#" + this.id),
             $shape = $obj.find("rect, ellipse, path"),
-            A = update.value, /*eval input*/
-            B, /* eval output */
             color,
             stmt,
             lineRuleIndex = $obj.attr("data-line-color-rule"),
@@ -492,16 +490,7 @@ jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
     if (lineRuleIndex !== undefined) {
         stmt = jlab.wedm.colorRules[lineRuleIndex];
 
-        try {
-            //console.time("color eval");
-            eval(stmt);
-            //console.timeEnd("color eval");
-
-            color = jlab.wedm.colors[B];
-        } catch (e) {
-            color = "black";
-            console.log("Unable to color eval: " + e.message + "; stmt: " + stmt);
-        }
+        color = jlab.wedm.evalColorExpr(stmt, update.value);
 
         $shape.attr("stroke", color);
     }
@@ -509,16 +498,7 @@ jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
     if (fillRuleIndex !== undefined) {
         stmt = jlab.wedm.colorRules[fillRuleIndex];
 
-        try {
-            //console.time("color eval");
-            eval(stmt);
-            //console.timeEnd("color eval");
-
-            color = jlab.wedm.colors[B];
-        } catch (e) {
-            color = "black";
-            console.log("Unable to color eval: " + e.message + "; stmt: " + stmt);
-        }
+        color = jlab.wedm.evalColorExpr(stmt, update.value);
 
         $shape.attr("fill", color);
     }
@@ -595,13 +575,34 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
 
 jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
     var $obj = $("#" + this.id),
-            A = update.value, /*eval input*/
-            B, /* eval output */
             color,
             ruleIndex = $obj.attr("data-fg-color-rule"),
             stmt = jlab.wedm.colorRules[ruleIndex];
 
     $obj[0].classList.remove("waiting-for-state");
+
+    color = jlab.wedm.evalColorExpr(stmt, update.value);
+
+    $obj.css("color", color);
+};
+
+var monitoredPvs = null,
+        pvWidgetMap = null;
+
+jlab.wedm.isCalcExpr = function (expr) {
+    return expr.indexOf("CALC\\") === 0;
+};
+
+jlab.wedm.evalColorExpr = function (stmt, A) {
+    var B, color;
+
+    /*Convert EPICS Operators to JavaScript Operators*/
+    stmt = stmt.replace(new RegExp('\\b=\\b', 'g'), "=="); /*Math =, but not >= or <=*/
+    stmt = stmt.replace(new RegExp('#', 'g'), "!=");
+    stmt = stmt.replace(new RegExp('and', 'gi'), "&&");
+    stmt = stmt.replace(new RegExp('abs', 'gi'), "Math.abs");
+    stmt = stmt.replace(new RegExp('min', 'gi'), "Math.min");
+    stmt = stmt.replace(new RegExp('max', 'gi'), "Math.max");
 
     try {
         //console.time("color eval");
@@ -611,20 +612,13 @@ jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
         color = jlab.wedm.colors[B];
     } catch (e) {
         color = "black";
-        console.log("Unable to color eval: " + e.message + "; stmt: " + stmt);
+        console.log("Unable to color eval: " + e.message + "; expr: " + stmt);
     }
 
-    $obj.css("color", color);
+    return color;
 };
 
-var monitoredPvs = null,
-        pvWidgetMap = null;
-
-jlab.wedm.isExpr = function (expr) {
-    return expr.indexOf("CALC\\") === 0;
-};
-
-jlab.wedm.evalExpr = function (expr, pvs) {
+jlab.wedm.evalCalcExpr = function (expr, pvs) {
 
     if (expr.indexOf("CALC\\") === 0) {
 
