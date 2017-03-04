@@ -89,7 +89,14 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             var pvs = [];
             for (var i = 0; i < this.visPvs.length; i++) {
                 var name = this.visPvs[i],
-                        val = this.pvNameToValueMap[name];
+                        val;
+
+                if (jlab.wedm.isLocalExpr(name)) {
+                    console.log(this.id + ' - LOC expressions inside CALC expressions are not supported');
+                } else {
+                    val = this.pvNameToValueMap[name];
+                }
+
                 if (typeof val === 'undefined') {
                     /*Still more PVs we need values from*/
                     return;
@@ -98,6 +105,8 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             }
 
             value = jlab.wedm.evalCalcExpr(this.visPvExpr, pvs);
+        } else if (jlab.wedm.isLocalExpr(this.visPvExpr)) {
+            console.log(this.id + ' - LOC expressions are not supported');
         }
 
         /*console.log('val: ' + value);
@@ -155,9 +164,35 @@ jlab.wedm.TextPvWidget.prototype.handleControlUpdate = function () {
 
     if (typeof enumVal !== 'undefined') {
         value = enumVal;
-    } else if ($.isNumeric(value)) {
-        value = value * 1; // could use parseFloat too; just need to ensure is numeric
-        value = value.toFixed(2);
+    } else { /*Not an enum*/
+        if (jlab.wedm.isCalcExpr(this.ctrlPvExpr)) {
+            var pvs = [];
+            for (var i = 0; i < this.ctrlPvs.length; i++) {
+                var name = this.ctrlPvs[i],
+                        val;
+
+                if (jlab.wedm.isLocalExpr(name)) {
+                    console.log(this.id + ' - LOC expressions inside CALC expressions are not supported');
+                } else {
+                    val = this.pvNameToValueMap[name];
+                }
+
+                if (typeof val === 'undefined') {
+                    /*Still more PVs we need values from*/
+                    return;
+                }
+                pvs.push(val);
+            }
+
+            value = jlab.wedm.evalCalcExpr(this.ctrlPvExpr, pvs);
+        } else if (jlab.wedm.isLocalExpr(this.ctrlPvExpr)) {
+            console.log(this.id + ' - LOC expressions are not supported');
+        }
+
+        if ($.isNumeric(value)) { /*Could still be a string at this point*/
+            value = value * 1; // could use parseFloat too; just need to ensure is numeric
+            value = value.toFixed(2);
+        }
     }
 
     $("#" + this.id + " .screen-text").text(value);
@@ -596,6 +631,10 @@ jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
 var monitoredPvs = null,
         pvWidgetMap = null;
 
+jlab.wedm.isLocalExpr = function (expr) {
+    return expr.indexOf("LOC\\") === 0;
+};
+
 jlab.wedm.isCalcExpr = function (expr) {
     return expr.indexOf("CALC\\") === 0;
 };
@@ -884,7 +923,7 @@ $(function () {
             }
 
             allPvs.forEach(function (pv) {
-                if (monitoredPvs.indexOf(pv) === -1) {
+                if (!jlab.wedm.isLocalExpr(pv) && monitoredPvs.indexOf(pv) === -1) {
                     /*console.log('monitoring pv: ' + pv);*/
                     monitoredPvs.push(pv);
                 }
