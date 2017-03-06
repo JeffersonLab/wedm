@@ -96,6 +96,7 @@ public class ColorListParser extends EDMParser {
                         case "rule":
                             index = Integer.parseInt(tokens[1]);
                             colorname = stripQuotes(tokens[2]);
+                            String firstColor;
 
                             // We convert EDL Color rules into JavaScript case statements with A = input and B = output
                             String expression = "switch(true) {";
@@ -115,6 +116,8 @@ public class ColorListParser extends EDMParser {
                             expression = expression + condition + "B = '" + colorValue
                                     + "'; break;";
 
+                            firstColor = colorValue;
+                            
                             while (true) {
                                 value = scanner.nextLine();
 
@@ -147,7 +150,7 @@ public class ColorListParser extends EDMParser {
 
                             //System.out.println("expression: " + expression);
 
-                            color = new EDLColorRule(index, colorname, expression);
+                            color = new EDLColorRule(index, colorname, expression, firstColor);
                             indexMap.put(index, color);
                             nameMap.put(colorname, color);
                             ruleColors.add((EDLColorRule) color);

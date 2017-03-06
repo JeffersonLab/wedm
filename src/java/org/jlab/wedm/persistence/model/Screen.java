@@ -56,6 +56,7 @@ public class Screen {
         Point translation = new Point(0, 0);
 
         for (ScreenObject obj : screenObjects) {
+            checkForColorRuleWithNoPv(obj);
             html = html + obj.toHtml(indentPlusOne, indentStep, translation);
         }
 
@@ -80,19 +81,42 @@ public class Screen {
         List<EDLColorRule> rules = colorList.getRuleColors();
 
         js = js + "jlab.wedm.colorRules = {};\n";
-        
+
         for (EDLColorRule rule : rules) {
-            js = js + "jlab.wedm.colorRules[" + rule.getIndex() + "] = \"" + rule.getExpression() + "\";\n";
+            js = js + "jlab.wedm.colorRules[" + rule.getIndex() + "] = \"" + rule.getExpression()
+                    + "\";\n";
         }
-        
+
         js = js + "jlab.wedm.colors = {};\n";
-        
+
         List<EDLColorConstant> constants = colorList.getStaticColors();
-        
+
         for (EDLColorConstant constant : constants) {
-            js = js + "jlab.wedm.colors['" + constant.getName() + "'] = '" + constant.toRgbString() + "';\n";
-        }        
+            js = js + "jlab.wedm.colors['" + constant.getName() + "'] = '" + constant.toRgbString()
+                    + "';\n";
+        }
 
         return js;
+    }
+
+    private void checkForColorRuleWithNoPv(ScreenObject obj) {
+        String name;
+
+        if (obj.alarmPv == null) {
+            if (obj.lineColor != null && obj.lineColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.lineColor).getFirstColor();
+                obj.lineColor = colorList.lookup(name);
+            }
+
+            if (obj.fill && obj.fillColor != null && obj.fillColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.fillColor).getFirstColor();
+                obj.fillColor = colorList.lookup(name);
+            }
+
+            if (obj.fgColor != null && obj.fgColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.fgColor).getFirstColor();
+                obj.fgColor = colorList.lookup(name);
+            }
+        }
     }
 }

@@ -7,10 +7,12 @@ package org.jlab.wedm.persistence.model;
 public class EDLColorRule extends EDLColor {
     
     private final String expression;
+    private final String firstColor;
     
-    public EDLColorRule(int index, String name, String expression) {
+    public EDLColorRule(int index, String name, String expression, String firstColor) {
         super(index, name);
         this.expression = expression;
+        this.firstColor = firstColor;
     }
 
     public String getExpression() {
@@ -20,5 +22,9 @@ public class EDLColorRule extends EDLColor {
     @Override
     public String toColorString() {
         return String.valueOf(index);
+    }
+
+    public String getFirstColor() {
+        return firstColor;
     }
 }
