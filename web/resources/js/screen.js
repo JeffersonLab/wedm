@@ -736,7 +736,14 @@ jlab.wedm.pvsFromExpr = function (expr) {
 
         if (expr.indexOf("CALC\\") === 0) {
 
-            expr.substring(expr.indexOf("}") + 2, expr.length - 1).split(",").forEach(function (pv) {
+            var end = expr.length - 1;
+
+            /*EDM allows end parenthesis to be optional*/
+            if(expr.lastIndexOf(")") !== end) {
+                end = expr.length;
+            }
+
+            expr.substring(expr.indexOf("}") + 2, end).split(",").forEach(function (pv) {
                 pvs.push($.trim(pv));
             });
         } else if (expr.indexOf("EPICS\\") === 0) {
