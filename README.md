@@ -10,8 +10,9 @@ Overview
 Browse
 ![Browse](/doc/img/Browse.png?raw=true "Browse")
 
-## Supported EDM Objects
-[Supported EDM Objects](https://github.com/JeffersonLab/wedm/wiki/Supported-EDM-Objects)
+## EDM Features / Objects
+[WEDM Objects](https://github.com/JeffersonLab/wedm/wiki/WEDM-Objects)   
+[WEDM Features](https://github.com/JeffersonLab/wedm/wiki/WEDM-Features)
 
 ## Installation
    1. Install [epics2web](https://github.com/JeffersonLab/epics2web)
