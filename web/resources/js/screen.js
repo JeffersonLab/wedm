@@ -146,18 +146,101 @@ jlab.wedm.PvWidget = function (id, pvSet) {
     };
 };
 
-jlab.wedm.TextPvWidget = function (id, pvSet) {
+jlab.wedm.StaticTextPvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.call(this, id, pvSet);
 };
 
-jlab.wedm.TextPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.TextPvWidget.prototype.constructor = jlab.wedm.TextPvWidget;
+jlab.wedm.StaticTextPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
+jlab.wedm.StaticTextPvWidget.prototype.constructor = jlab.wedm.StaticTextPvWidget;
 
-jlab.wedm.TextPvWidget.prototype.handleInfo = function (info) {
+jlab.wedm.StaticTextPvWidget.prototype.handleInfo = function (info) {
+
+    var $obj = $("#" + this.id);
+
+    if (!info.connected) {
+        $obj.css("color", jlab.wedm.disconnectedAlarmColor);
+        $obj.attr("background-color", "transparent");
+        $obj[0].classList.add("disconnected-pv");
+        $obj[0].classList.remove("waiting-for-state");
+    }
+};
+
+jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            sevr = update.value,
+            fgAlarm = $obj.attr("data-fg-alarm") === "true",
+            bgAlarm = $obj.attr("data-bg-alarm") === "true",
+            invalid = false;
+
+    $obj.attr("data-sevr", sevr);
+    $obj[0].classList.remove("waiting-for-state");
+
+    if (typeof sevr !== 'undefined') {
+        if (sevr === 0) { // NO_ALARM
+            if (fgAlarm) {
+                $obj.css("color", jlab.wedm.noAlarmColor);
+            }
+            if (bgAlarm) {
+                $obj.css("background-color", jlab.wedm.noAlarmColor);
+            }
+        } else if (sevr === 1) { // MINOR
+            if (fgAlarm) {
+                $obj.css("color", jlab.wedm.minorAlarmColor);
+            }
+            if (bgAlarm) {
+                $obj.css("background-color", jlab.wedm.minorAlarmColor);
+            }
+        } else if (sevr === 2) { // MAJOR
+            if (fgAlarm) {
+                $obj.css("color", jlab.wedm.majorAlarmColor);
+            }
+            if (bgAlarm) {
+                $obj.css("background-color", jlab.wedm.majorAlarmColor);
+            }
+        } else if (sevr === 3) { // INVALID
+            invalid = true;
+        }
+    } else {
+        invalid = true;
+    }
+
+    if (invalid) {
+        if (fgAlarm) {
+            $obj.css("color", jlab.wedm.invalidAlarmColor);
+        }
+        if (bgAlarm) {
+            $obj.css("background-color", jlab.wedm.invalidAlarmColor);
+        }
+    }
+};
+
+jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            color,
+            ruleIndex = $obj.attr("data-fg-color-rule"),
+            stmt = jlab.wedm.colorRules[ruleIndex];
+
+    $obj[0].classList.remove("waiting-for-state");
+
+    color = jlab.wedm.evalColorExpr(stmt, update.value);
+
+    $obj.css("color", color);
+};
+
+jlab.wedm.ControlTextPvWidget = function (id, pvSet) {
+    jlab.wedm.StaticTextPvWidget.call(this, id, pvSet);
+};
+
+jlab.wedm.ControlTextPvWidget.prototype = Object.create(jlab.wedm.StaticTextPvWidget.prototype);
+jlab.wedm.ControlTextPvWidget.prototype.constructor = jlab.wedm.ControlTextPvWidget;
+
+jlab.wedm.ControlTextPvWidget.prototype.handleInfo = function (info) {
+    jlab.wedm.StaticTextPvWidget.prototype.handleInfo.call(this, info);    
+    
     this.enumValuesArray = info['enum-labels'] || [];
 };
 
-jlab.wedm.TextPvWidget.prototype.handleControlUpdate = function () {
+jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
     var pv = this.ctrlPvs[0];
     var value = this.pvNameToValueMap[pv];
     var enumVal = this.enumValuesArray[value];
@@ -559,88 +642,6 @@ jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
     }
 };
 
-jlab.wedm.StaticTextPvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
-};
-
-jlab.wedm.StaticTextPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.StaticTextPvWidget.prototype.constructor = jlab.wedm.StaticTextPvWidget;
-
-jlab.wedm.StaticTextPvWidget.prototype.handleInfo = function (info) {
-
-    var $obj = $("#" + this.id);
-
-    if (!info.connected) {
-        $obj.css("color", jlab.wedm.disconnectedAlarmColor);
-        $obj.attr("background-color", "transparent");
-        $obj[0].classList.add("disconnected-pv");
-        $obj[0].classList.remove("waiting-for-state");
-    }
-};
-
-jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            sevr = update.value,
-            fgAlarm = $obj.attr("data-fg-alarm") === "true",
-            bgAlarm = $obj.attr("data-bg-alarm") === "true",
-            invalid = false;
-
-
-    $obj.attr("data-sevr", sevr);
-    $obj[0].classList.remove("waiting-for-state");
-
-    if (typeof sevr !== 'undefined') {
-        if (sevr === 0) { // NO_ALARM
-            if (fgAlarm) {
-                $obj.css("color", jlab.wedm.noAlarmColor);
-            }
-            if (bgAlarm) {
-                $obj.css("background-color", jlab.wedm.noAlarmColor);
-            }
-        } else if (sevr === 1) { // MINOR
-            if (fgAlarm) {
-                $obj.css("color", jlab.wedm.minorAlarmColor);
-            }
-            if (bgAlarm) {
-                $obj.css("background-color", jlab.wedm.minorAlarmColor);
-            }
-        } else if (sevr === 2) { // MAJOR
-            if (fgAlarm) {
-                $obj.css("color", jlab.wedm.majorAlarmColor);
-            }
-            if (bgAlarm) {
-                $obj.css("background-color", jlab.wedm.majorAlarmColor);
-            }
-        } else if (sevr === 3) { // INVALID
-            invalid = true;
-        }
-    } else {
-        invalid = true;
-    }
-
-    if (invalid) {
-        if (fgAlarm) {
-            $obj.css("color", jlab.wedm.invalidAlarmColor);
-        }
-        if (bgAlarm) {
-            $obj.css("background-color", jlab.wedm.invalidAlarmColor);
-        }
-    }
-};
-
-jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            color,
-            ruleIndex = $obj.attr("data-fg-color-rule"),
-            stmt = jlab.wedm.colorRules[ruleIndex];
-
-    $obj[0].classList.remove("waiting-for-state");
-
-    color = jlab.wedm.evalColorExpr(stmt, update.value);
-
-    $obj.css("color", color);
-};
-
 var monitoredPvs = null,
         pvWidgetMap = null;
 
@@ -955,7 +956,7 @@ $(function () {
             /*console.log($obj[0].className);*/
             if ($obj.hasClass("ActiveXTextDsp")) {
                 /*console.log("text widget");*/
-                widget = new jlab.wedm.TextPvWidget(id, pvSet);
+                widget = new jlab.wedm.ControlTextPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveSymbol")) {
                 /*console.log("symbol widget");*/
                 widget = new jlab.wedm.SymbolPvWidget(id, pvSet);
