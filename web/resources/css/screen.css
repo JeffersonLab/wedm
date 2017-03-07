@@ -73,7 +73,7 @@
     display: table-cell;
     vertical-align: middle;
 }
-.border-3d {
+.text-wrap {
     box-sizing: border-box;
     display: table;
     width: 100%;

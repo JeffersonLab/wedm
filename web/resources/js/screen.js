@@ -739,7 +739,7 @@ jlab.wedm.pvsFromExpr = function (expr) {
             var end = expr.length - 1;
 
             /*EDM allows end parenthesis to be optional*/
-            if(expr.lastIndexOf(")") !== end) {
+            if (expr.lastIndexOf(")") !== end) {
                 end = expr.length;
             }
 
@@ -842,25 +842,60 @@ $(function () {
 
     $(".screen-text").each(function () {
         var $obj = $(this),
-                $parent = $obj.closest(".ScreenObject");
+                $parent = $obj.closest(".ScreenObject"),
+                $wrap = $parent.find(".text-wrap"),
+                wrapHeight = 0,
+                wrapWidth = 0,
+                waitingForState = ($parent.attr("class").indexOf("waiting-for-state") > -1);
 
-        /*console.log("Screen Object Height: " + $parent.height());
-         console.log("Text Height: " + $obj.height());*/
+        /*We temporarily remove waiting-for-state class so we can resize (can't resize invisible items)*/
+        $parent[0].classList.remove("waiting-for-state");
+
+        /*$parent[0].classList.contains() has limited support*/
+        if ($parent.attr("class").indexOf("invisible") > -1) {
+            /*console.log("permanently invisible text can't/won't be resized");*/
+            return true; /*This is like a loop continue statement*/
+        }
+
+        /*Some text widgets are wrapped in a "3d border div" which adds 2px border all around */
+        if ($wrap.length > 0) {
+            wrapHeight = $wrap.outerHeight() - $wrap.innerHeight(); // get border width
+            wrapWidth = $wrap.outerWidth() - $wrap.innerWidth();
+            /*console.log("wrapHeight: " + wrapHeight);*/
+        }
+
+        /**
+         * Height = no padding; no border; no margin
+         * InnerHeight = padding included 
+         * OuterHeight = padding and border included
+         * OuterHeight(true) = padding, border, and margin included
+         */
+
+        /*console.log($parent.attr("id") + " - Screen Object Height: " + $parent.outerHeight());
+         console.log($parent.attr("id") + " - Text OuterHeight(true) + wrapHeight: " + ($obj.outerHeight(true) + wrapHeight));*/
 
         var i = 0;
 
-        while ($obj.outerHeight() > $parent.outerHeight() || $obj.outerWidth() > $parent.outerWidth()) {
+        while (($obj.outerHeight(true) + wrapHeight) > $parent.outerHeight() || ($obj.outerWidth(true) + wrapWidth) > $parent.outerWidth()) {
             if (i > 6) {
-                console.log('font size difference too big; aborting resize');
+                console.log($parent.attr("id") + ' - font size difference too big; aborting resize');
                 break;
             }
 
-            /*console.log('shrinkng font size for text obj' + $parent.attr("id"));*/
+            /*console.log($parent.attr("id") + ' - Shrinkng font size for text obj');*/
             var smallerSize = parseFloat($parent.css("font-size")) - 1;
             $parent.css("font-size", smallerSize);
             i++;
+
+            /*console.log($parent.attr("id") + " - Modified Text OuterHeight(true) + wrapHeight: " + ($obj.outerHeight(true) + wrapHeight));*/
         }
 
+
+        if (waitingForState === true) {
+            /*console.log("Adding waiting for state class back");*/
+            /*Add class back if it was there to start with*/
+            $parent[0].classList.add("waiting-for-state");
+        }
     });
 
     monitoredPvs = [];

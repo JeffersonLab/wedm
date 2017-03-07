@@ -104,7 +104,7 @@ public class TextScreenObject extends HtmlScreenObject {
             val = " ";
         }
         
-        html = html + indentPlusOne + "<div class=\"border-3d\" " + threeDStyleStr + ">\n";
+        html = html + indentPlusOne + "<div class=\"text-wrap\" " + threeDStyleStr + ">\n";
         html = html + indentPlusTwo + "<div class=\"screen-text\" " + textStyleStr + ">";
         html = html + val  + "</div>\n";
         html = html + indentPlusOne + "</div>\n";
