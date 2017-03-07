@@ -643,12 +643,14 @@ jlab.wedm.evalColorExpr = function (stmt, A) {
     var B, color;
 
     /*Convert EPICS Operators to JavaScript Operators*/
-    stmt = stmt.replace(new RegExp('\\b=\\b', 'g'), "=="); /*Math =, but not >= or <=*/
+    stmt = stmt.replace(new RegExp('\\b\\s*=\\s*\\b', 'g'), "=="); /*Match =, but not >= or <=*/
     stmt = stmt.replace(new RegExp('#', 'g'), "!=");
     stmt = stmt.replace(new RegExp('and', 'gi'), "&&");
     stmt = stmt.replace(new RegExp('abs', 'gi'), "Math.abs");
     stmt = stmt.replace(new RegExp('min', 'gi'), "Math.min");
     stmt = stmt.replace(new RegExp('max', 'gi'), "Math.max");
+
+    /*console.log("stmt: " + stmt);*/
 
     try {
         //console.time("color eval");
