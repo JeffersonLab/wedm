@@ -564,6 +564,9 @@ public class ScreenParser extends EDMParser {
                             case "shift":
                                 ((ActiveByte) last).shift = Integer.parseInt(tokens[1]);
                                 break;
+                            case "endian":
+                                ((ActiveByte) last).littleEndian = "little".equals(stripQuotes(tokens[1]));
+                                break;
                             case "ctlFont":
                                 String fStr = stripQuotes(line.substring("ctlFont".length()));
 

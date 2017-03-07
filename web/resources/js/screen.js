@@ -315,12 +315,20 @@ jlab.wedm.BytePvWidget.prototype.handleControlUpdate = function () {
             onColor = $obj.attr("data-on-color"),
             offColor = $obj.attr("data-off-color"),
             shift = $obj.attr("data-shift"),
-            $bits = $obj.find(".bit");
+            littleEndian = $obj.attr("data-little-endian") === "true",
+            $bits = $obj.find(".bit"),
+            index;
 
     /*console.log("value: " + value);*/
 
     //$(".ActiveByte[data-pv='" + this.pv + "']").text(value);
-    var index = $bits.length - 1;
+
+    if (littleEndian) {
+        index = 0;
+    } else {
+        index = $bits.length - 1;
+    }
+
     $bits.each(function () {
         var mask = 1 << shift << index,
                 bit = mask & value;
@@ -332,7 +340,11 @@ jlab.wedm.BytePvWidget.prototype.handleControlUpdate = function () {
             $(this).css("fill", offColor);
         }
 
-        index = index - 1;
+        if (littleEndian) {
+            index = index + 1;
+        } else {
+            index = index - 1;
+        }
     });
 };
 

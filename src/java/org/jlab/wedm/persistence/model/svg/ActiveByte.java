@@ -9,16 +9,18 @@ import static org.jlab.wedm.persistence.model.svg.SvgScreenObject.DASH_SPACING;
  */
 public class ActiveByte extends ActiveRectangle {
 
-    public int bits;
-    public int shift;
+    public int bits = 0;
+    public int shift = 0;
+    public boolean littleEndian = false;
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
         attributes.put("data-shift", String.valueOf(shift));
-
+        attributes.put("data-little-endian", String.valueOf(littleEndian));
+        
         return super.toHtml(indent, indentStep, translation);
-    }    
-    
+    }
+
     @Override
     public String toSvg(String indent, String indentStep, Point translation) {
         String svg = "";
@@ -27,17 +29,25 @@ public class ActiveByte extends ActiveRectangle {
         int originX = x + translation.x;
         int originY = y + translation.y;
 
-        int width = w;
-
         if (bits < 1) {
             bits = 1;
         }
 
-        int bitHeight = h / bits;
-        
+        int bitWidth, bitHeight;
+        boolean vertical = true;
+
+        if (h > w) {
+            bitWidth = w;
+            bitHeight = h / bits;
+        } else {
+            bitWidth = w / bits;
+            bitHeight = h;
+            vertical = false;
+        }
+
         for (int i = 0; i < bits; i++) {
             svg = svg + indent + "<rect class=\"bit\" x=\"" + originX + "\" y=\"" + originY
-                    + "\" width=\"" + width
+                    + "\" width=\"" + bitWidth
                     + "\" height=\"" + bitHeight + "\" ";
 
             String strokeColorStr = "black";
@@ -65,8 +75,12 @@ public class ActiveByte extends ActiveRectangle {
             }
 
             svg = svg + "/>\n";
-            
-            originY = originY + bitHeight;
+
+            if (vertical) {
+                originY = originY + bitHeight;
+            } else {
+                originX = originX + bitWidth;
+            }
         }
 
         return svg;
