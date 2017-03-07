@@ -19,7 +19,6 @@ import org.jlab.wedm.persistence.model.html.ActiveXText;
 import org.jlab.wedm.persistence.model.html.ActiveXTextDsp;
 import org.jlab.wedm.persistence.model.ColorList;
 import org.jlab.wedm.persistence.model.EDLColor;
-import org.jlab.wedm.persistence.model.EDLColorConstant;
 import org.jlab.wedm.persistence.model.EDLFont;
 import org.jlab.wedm.persistence.model.html.HtmlScreenObject;
 import org.jlab.wedm.persistence.model.html.RelatedDisplay;
@@ -170,6 +169,16 @@ public class ScreenParser extends EDMParser {
                                         obj.getClass().getSimpleName());
 
                                 last = obj;
+                                break;
+                            case "endObjectProperties":
+                                LOGGER.log(Level.FINEST, "Ending Widget: {0}",
+                                        last.getClass().getSimpleName());
+                                last = null;
+                                break;
+                            case "endGroup":
+                                last = groupStack.pop();
+                                LOGGER.log(Level.FINEST, "Re-Handling Widget: {0}",
+                                        last.getClass().getSimpleName());
                                 break;
                             case "w":
                                 //LOGGER.log(Level.FINEST, "Found w");
@@ -552,9 +561,6 @@ public class ScreenParser extends EDMParser {
                             case "numBits":
                                 ((ActiveByte) last).bits = Integer.parseInt(tokens[1]);
                                 break;
-                            case "endGroup":
-                                groupStack.pop();
-                                break;
                             case "ctlFont":
                                 String fStr = stripQuotes(line.substring("ctlFont".length()));
 
@@ -612,7 +618,6 @@ public class ScreenParser extends EDMParser {
                             case "major":
                             case "minor":
                             case "release":
-                            case "endObjectProperties":
                             case "endScreenProperties":
                             case "#":
                             case "}":

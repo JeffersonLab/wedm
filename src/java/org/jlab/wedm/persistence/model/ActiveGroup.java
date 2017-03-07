@@ -14,16 +14,23 @@ public class ActiveGroup extends ScreenObject {
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
-        String html = indent + "<div class=\"ActiveGroup ScreenObject\" ";
+        this.setCommonAttributes(); // Visibility, ID, and classes       
 
-        // html = html + "/>";
         int originX = x + translation.x;
         int originY = y + translation.y;
 
-        html = html + "style=\"";
-        html = html + "width: " + w + "px; "
-                + "height: " + h + "px; left: " + originX + "px; top: " + originY + "px;\">\n";
-
+        styles.put("width", w + "px");
+        styles.put("height", h + "px");
+        styles.put("left", originX + "px");
+        styles.put("top", originY + "px");
+        
+        String attrStr = this.getAttributesString(attributes);
+        String classStr = this.getClassString(classes);
+        String styleStr = this.getStyleString(styles);
+        
+        String html = indent + "<div " + attrStr + " " + classStr
+                + " " + styleStr + ">\n";        
+        
         Point childTranslation = new Point(-x, -y);
 
         if (!children.isEmpty()) {
