@@ -63,6 +63,7 @@
     border-bottom: 2px solid rgb(105, 105, 105);    
 }
 .ActiveButton:hover,
+.ShellCommand:hover,
 .ActiveMessageButton:hover,
 .ActiveChoiceButton:hover,
 .RelatedDisplay:hover {
