@@ -17,36 +17,34 @@ public class TextScreenObject extends HtmlScreenObject {
     public String value = null;
     public String align;
     public int numLines = 1;
+    protected Map<String, String> threeDStyles = new HashMap<>();
+    protected Map<String, String> textStyles = new HashMap<>();
 
-    @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    protected void set3DStyles() {
+        String className = this.getClass().getSimpleName();         
+        if (!("ActiveButton".equals(className) || "ActiveMessageButton".equals(className) || "ActiveXTextDsp".equals(className)) || threeDimensional) {
+            if (topShadowColor != null) {
+                styles.put("border-top", "1px solid " + botShadowColor.toColorString());
+                styles.put("border-left", "1px solid " + botShadowColor.toColorString());
 
-        //String className = this.getClass().getSimpleName();        
-        /*if (threeDimensional && (className.equals("ActiveButton") || className.equals(
-                "ActiveMessageButton"))) {*/
-
- /*} else if (!threeDimensional && className.equals("ActiveMessageButton")) {
-            styles.put("border", "1px solid black");
-        } else if (className.equals("ActiveXTextDsp")) {
-            //"border: 1px solid black;";
-        }         */
- /*if (topShadowColor != null) {       
-                styles.put("border-top", "2px solid " + topShadowColor.toRgbString());
-                styles.put("border-left", "2px solid " + topShadowColor.toRgbString());
+                threeDStyles.put("border-top", "2px solid " + topShadowColor.toColorString());
+                threeDStyles.put("border-left", "2px solid " + topShadowColor.toColorString());
             }
 
             if (botShadowColor != null) {
-                styles.put("border-bottom", "2px solid " + botShadowColor.toRgbString());
-                styles.put("border-right", "2px solid " + botShadowColor.toRgbString());
-            }      */
-        Map<String, String> threeDStyles = new HashMap<>();
-        Map<String, String> textStyles = new HashMap<>();
+                styles.put("border-bottom", "1px solid " + topShadowColor.toColorString());
+                styles.put("border-right", "1px solid " + topShadowColor.toColorString());
 
-        /*float lineHeight = h / numLines;
-        if (border && lineWidth != null) {
-            lineHeight = lineHeight - (lineWidth * 2);
-        }
-        textStyles.put("line-height", lineHeight + "px");*/
+                threeDStyles.put("border-bottom", "2px solid " + botShadowColor.toColorString());
+                threeDStyles.put("border-right", "2px solid " + botShadowColor.toColorString());
+            }
+        }        
+    }
+    
+    @Override
+    public String toHtml(String indent, String indentStep, Point translation) {
+        
+        set3DStyles();
         
         if (align != null) {
             textStyles.put("text-align", align);
@@ -71,26 +69,7 @@ public class TextScreenObject extends HtmlScreenObject {
 
             textStyles.put("border", px + "px " + style + " " + colorStr);
         }
-
-        String className = this.getClass().getSimpleName();         
-        if (!("ActiveButton".equals(className) || "ActiveMessageButton".equals(className) || "ActiveXTextDsp".equals(className)) || threeDimensional) {
-            if (topShadowColor != null) {
-                styles.put("border-top", "1px solid " + botShadowColor.toColorString());
-                styles.put("border-left", "1px solid " + botShadowColor.toColorString());
-
-                threeDStyles.put("border-top", "2px solid " + topShadowColor.toColorString());
-                threeDStyles.put("border-left", "2px solid " + topShadowColor.toColorString());
-            }
-
-            if (botShadowColor != null) {
-                styles.put("border-bottom", "1px solid " + topShadowColor.toColorString());
-                styles.put("border-right", "1px solid " + topShadowColor.toColorString());
-
-                threeDStyles.put("border-bottom", "2px solid " + botShadowColor.toColorString());
-                threeDStyles.put("border-right", "2px solid " + botShadowColor.toColorString());
-            }
-        }
-
+        
         String html = startHtml(indent, indentStep, translation);
 
         String threeDStyleStr = getStyleString(threeDStyles);

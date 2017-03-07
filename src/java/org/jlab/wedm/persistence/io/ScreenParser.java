@@ -260,6 +260,9 @@ public class ScreenParser extends EDMParser {
                             case "invisible":
                                 last.invisible = true;
                                 break;
+                            case "motifWidget":
+                                last.motifWidget = true;
+                                break;
                             case "buttonType":
                                 ((ActiveButton) last).push = "push".equals(stripQuotes(tokens[1]));
                                 break;

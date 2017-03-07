@@ -36,6 +36,7 @@ public class ScreenObject {
     public EDLColor indicatorColor;
     public boolean useDisplayBg = false;
     public boolean invisible = false;
+    public boolean motifWidget = false;
     public boolean fill = false;
     public boolean dash = false;
     public boolean visInvert = false;
