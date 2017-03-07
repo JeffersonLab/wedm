@@ -10,7 +10,15 @@ import static org.jlab.wedm.persistence.model.svg.SvgScreenObject.DASH_SPACING;
 public class ActiveByte extends ActiveRectangle {
 
     public int bits;
+    public int shift;
 
+    @Override
+    public String toHtml(String indent, String indentStep, Point translation) {
+        attributes.put("data-shift", String.valueOf(shift));
+
+        return super.toHtml(indent, indentStep, translation);
+    }    
+    
     @Override
     public String toSvg(String indent, String indentStep, Point translation) {
         String svg = "";

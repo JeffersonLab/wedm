@@ -314,6 +314,7 @@ jlab.wedm.BytePvWidget.prototype.handleControlUpdate = function () {
             value = this.pvNameToValueMap[pv],
             onColor = $obj.attr("data-on-color"),
             offColor = $obj.attr("data-off-color"),
+            shift = $obj.attr("data-shift"),
             $bits = $obj.find(".bit");
 
     /*console.log("value: " + value);*/
@@ -321,7 +322,7 @@ jlab.wedm.BytePvWidget.prototype.handleControlUpdate = function () {
     //$(".ActiveByte[data-pv='" + this.pv + "']").text(value);
     var index = $bits.length - 1;
     $bits.each(function () {
-        var mask = 1 << index,
+        var mask = 1 << shift << index,
                 bit = mask & value;
         /*console.log('mask: ' + mask);
          console.log('bit: ' + bit);*/
