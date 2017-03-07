@@ -21,6 +21,9 @@
 .ActiveRectangle {
     pointer-events: none;
 }
+.RelatedDisplay.invisible {
+    z-index: 2;
+}
 .RelatedDisplay,
 .anchor-li {
     cursor: pointer;
