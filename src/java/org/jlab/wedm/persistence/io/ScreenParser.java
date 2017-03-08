@@ -87,8 +87,8 @@ public class ScreenParser extends EDMParser {
                                         //LOGGER.log(Level.FINEST, "Type: activeXTextClass");
                                         obj = new ActiveXText();
                                         break;
-                                    case "activeXTextDspClass":
-                                    case "activeXTextDspClass:noedit":
+                                    case "activeXTextDspClass": // CONTROL
+                                    case "activeXTextDspClass:noedit": // MONITOR
                                         //LOGGER.log(Level.FINEST, "Type: activeXTextDspClass");
                                         obj = new ActiveXTextDsp();
                                         break;
