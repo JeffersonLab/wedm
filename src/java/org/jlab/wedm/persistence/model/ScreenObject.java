@@ -153,7 +153,7 @@ public class ScreenObject {
         }
 
         if (limitsFromDb) {
-            attributes.put("data-limits", "from-db");
+            attributes.put("data-db-limits", "true");
         }
 
         if (indicatorAlarm) {

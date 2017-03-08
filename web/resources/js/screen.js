@@ -142,6 +142,10 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             $obj.attr("data-max", update.value);
         } else if (update.pv.indexOf(".LOPR") > -1) {
             $obj.attr("data-min", update.value);
+        } else if (update.pv.indexOf(".PREC") > -1) {
+            $obj.attr("data-precision", update.value);
+            var pv = $obj.attr("data-pv");
+            this.handleControlUpdate.call(this, {pv: pv, value: this.pvNameToValueMap[pv]});
         } else {
             console.log('Unknown limit PV: ' + update.pv);
         }
@@ -833,8 +837,10 @@ jlab.wedm.resizeText = function () {
         /*We temporarily remove waiting-for-state class so we can resize (can't resize invisible items)*/
         $parent[0].classList.remove("waiting-for-state");
 
+        /*TODO: if EDM object is hidden due to an ancestor hidden Group then we need to unhide temporarily?*/
+        
         /*$parent[0].classList.contains() has limited support*/
-        if ($parent.attr("class").indexOf("invisible") > -1) {
+        if (($parent.attr("class").indexOf("invisible") > -1)) {
             /*console.log("permanently invisible text can't/won't be resized");*/
             return true; /*This is like a loop continue statement*/
         }
@@ -903,19 +909,28 @@ jlab.wedm.createWidgets = function () {
                 visPvs = jlab.wedm.pvsFromExpr(visPvExpr),
                 indicatorPvs = jlab.wedm.pvsFromExpr(indicatorPvExpr),
                 limitPvs = [],
-                limitsFromDb = $obj.attr("data-limits") === "from-db",
+                basename,
+                limitsFromDb = $obj.attr("data-db-limits") === "true",
                 alarmSensitive = $obj.attr("data-indicator-alarm") === "true";
 
-        if (limitsFromDb && indicatorPvs.length === 1) {
-            limitPvs.push(indicatorPvs[0] + ".HOPR");
-            limitPvs.push(indicatorPvs[0] + ".LOPR");
+        if (limitsFromDb) {
+            if (indicatorPvs.length === 1) {
+                basename = jlab.wedm.basename(indicatorPvs[0]);
+                limitPvs.push(basename + ".HOPR");
+                limitPvs.push(basename + ".LOPR");
+            }
+
+            if (ctrlPvs.length === 1 && typeof $obj.find(".screen-text") !== 'undefined') {
+                basename = jlab.wedm.basename(ctrlPvs[0]);
+                limitPvs.push(basename + ".PREC");
+            }
         }
 
         if (alarmSensitive && indicatorPvs.length === 1) {
-            var basename = jlab.wedm.basename(indicatorPvs[0]);
+            basename = jlab.wedm.basename(indicatorPvs[0]);
             alarmPvs.push(basename + ".SEVR");
         } else if (alarmPvs.length === 1) {
-            var basename = jlab.wedm.basename(alarmPvs[0]);
+            basename = jlab.wedm.basename(alarmPvs[0]);
             alarmPvs[0] = basename + ".SEVR";
         }
 
