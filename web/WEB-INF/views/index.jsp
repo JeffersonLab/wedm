@@ -68,7 +68,7 @@
                     <td><a href="screen?edl=wedm/Button.edl">Button</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/MessageButton.edl">Message Button</a></td>
+                    <td><a href="screen?edl=wedm/TextControl.edl">Text Control</a></td>
                 </tr>
                 <tr>
                     <td><a href="screen?edl=wedm/ChoiceButton.edl">Choice Button</a></td>

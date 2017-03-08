@@ -1,0 +1,303 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 1205
+y 104
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 18
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 10
+y 10
+w 60
+h 15
+controlPv "ILI2L_PHASEerror"
+format "decimal"
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 1
+fgAlarm
+bgColor index 54
+topShadowColor index 0
+botShadowColor index 0
+editable
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 10
+y 100
+w 70
+h 19
+controlPv "R1XXPSET"
+format "decimal"
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+editable
+autoHeight
+motifWidget
+precision 3
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 13
+y 197
+w 90
+h 24
+controlPv "comm9"
+format "string"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 19
+useDisplayBg
+editable
+precision 2
+fieldLen "2"
+nullColor index 14
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 11
+y 45
+w 71
+h 21
+controlPv "ILI2L_PHASEerror"
+format "float"
+font "helvetica-medium-r-18.0"
+fontAlign "right"
+fgColor index 14
+fgAlarm
+bgColor index 125
+topShadowColor index 50
+botShadowColor index 10
+limitsFromDb
+nullColor index 14
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 17
+y 254
+w 159
+h 20
+controlPv "R1XXPSET"
+format "hex"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+motifWidget
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 96
+y 13
+w 166
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Border Alarm; center aligned"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 185
+y 199
+w 113
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Inherit Background"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 104
+y 45
+w 141
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Text Alarm; right aligned"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 133
+y 98
+w 207
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Motif Styling; left aligned; precision 3"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 211
+y 258
+w 141
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Hex Format & Hex Prefix"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 14
+y 150
+w 70
+h 19
+controlPv "R1XXPSET"
+format "decimal"
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+motifWidget
+limitsFromDb
+nullColor index 32
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 132
+y 152
+w 109
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< precision from DB"
+}
+autoSize
+endObjectProperties
+

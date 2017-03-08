@@ -643,6 +643,9 @@ public class ScreenParser extends EDMParser {
                             case "fastUpdate":
                             case "smartRefresh":
                             case "fieldLen":
+                            case "numCmds": // ShellCommand not supported
+                            case "command":
+                            case "commandLabel":
                             case "autoHeight":
                             case "nullColor": // TODO: support null color at some point
                             case "#":
