@@ -19,7 +19,7 @@ public class ScreenObject {
     public int w;
     public int h;
     public int numPvs;
-    public Integer precision = null;    
+    public Integer precision = null;
     public Float visMin = null;
     public Float visMax = null;
     public Float lineWidth = null;
@@ -49,11 +49,12 @@ public class ScreenObject {
     public boolean fillAlarm = false;
     public boolean fgAlarm = false;
     public boolean bgAlarm = false;
-    public boolean editable = false;   
-    public boolean useHexPrefix = false;    
+    public boolean useAlarmBorder = false;
+    public boolean editable = false;
+    public boolean useHexPrefix = false;
     public Boolean horizontal = null;    //ChoiceButton default = false, BarMeter default = true.
     public EDLFont font;
-    public String format;    
+    public String format;
     public String controlPv;
     public String visPv;
     public String alarmPv;
@@ -71,25 +72,25 @@ public class ScreenObject {
         if (invisible) {
             classes.add("invisible");
         }
-        
+
         if (editable) {
             classes.add("editable");
-        }        
+        }
 
         attributes.put("id", "obj-" + objectId);
 
-        if(format != null) {
+        if (format != null) {
             attributes.put("data-format", format);
-            
-            if("hex".equals(format) && useHexPrefix) {
+
+            if ("hex".equals(format) && useHexPrefix) {
                 attributes.put("data-hex-prefix", "true");
             }
         }
-        
-        if(precision != null) {
+
+        if (precision != null) {
             attributes.put("data-precision", String.valueOf(precision));
         }
-        
+
         if (controlPv != null) {
             attributes.put("data-pv", controlPv);
         }
@@ -110,22 +111,29 @@ public class ScreenObject {
             attributes.put("data-vis-max", String.valueOf(visMax));
         }
 
+        if (useAlarmBorder) { // Make sure this statement is executed before fgAlarm statement below
+            attributes.put("data-border-alarm", "true");
+            fgAlarm = false; // EDM ignores foreground alarms if there is a border alarm!
+            h = h + 2;
+            //w = w + 2;
+        }
+
         if (alarmPv != null) {
             classes.add("waiting-for-state");
 
-            if (lineAlarm || fillAlarm || fgAlarm || bgAlarm || indicatorAlarm) {
+            if (lineAlarm || fillAlarm || fgAlarm || bgAlarm || indicatorAlarm || useAlarmBorder) {
                 attributes.put("data-alarm-pv", alarmPv);
             } else {
                 attributes.put("data-color-pv", alarmPv);
 
                 if (lineColor != null && lineColor instanceof EDLColorRule) {
                     attributes.put("data-line-color-rule", lineColor.toColorString());
-                } 
-                
+                }
+
                 if (fill && fillColor != null && fillColor instanceof EDLColorRule) {
                     attributes.put("data-fill-color-rule", fillColor.toColorString());
-                } 
-                
+                }
+
                 if (fgColor != null && fgColor instanceof EDLColorRule) {
                     attributes.put("data-fg-color-rule", fgColor.toColorString());
                 }
@@ -167,7 +175,7 @@ public class ScreenObject {
 
         if (bgAlarm) {
             attributes.put("data-bg-alarm", "true");
-        }      
+        }
 
         if (max != null) {
             attributes.put("data-max", String.valueOf(max));

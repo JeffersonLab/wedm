@@ -170,6 +170,7 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
             sevr = update.value,
             fgAlarm = $obj.attr("data-fg-alarm") === "true",
             bgAlarm = $obj.attr("data-bg-alarm") === "true",
+            borderAlarm = $obj.attr("data-border-alarm") === "true",
             invalid = false;
 
     $obj.attr("data-sevr", sevr);
@@ -183,6 +184,9 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
             if (bgAlarm) {
                 $obj.css("background-color", jlab.wedm.noAlarmColor);
             }
+            if (borderAlarm) { /*EDM hides border if no alarm*/
+                $obj.css("border", "2px solid transparent");
+            }
         } else if (sevr === 1) { // MINOR
             if (fgAlarm) {
                 $obj.css("color", jlab.wedm.minorAlarmColor);
@@ -190,12 +194,18 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
             if (bgAlarm) {
                 $obj.css("background-color", jlab.wedm.minorAlarmColor);
             }
+            if (borderAlarm) {
+                $obj.css("border", "2px solid " + jlab.wedm.minorAlarmColor);
+            }
         } else if (sevr === 2) { // MAJOR
             if (fgAlarm) {
                 $obj.css("color", jlab.wedm.majorAlarmColor);
             }
             if (bgAlarm) {
                 $obj.css("background-color", jlab.wedm.majorAlarmColor);
+            }
+            if (borderAlarm) {
+                $obj.css("border", "2px solid " + jlab.wedm.majorAlarmColor);
             }
         } else if (sevr === 3) { // INVALID
             invalid = true;
@@ -210,6 +220,9 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
         }
         if (bgAlarm) {
             $obj.css("background-color", jlab.wedm.invalidAlarmColor);
+        }
+        if (borderAlarm) {
+            $obj.css("border", "2px solid " + jlab.wedm.invalidAlarmColor);
         }
     }
 };
@@ -284,11 +297,11 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
             }
         } else if ($.isNumeric(value)) { /*Could still be a string at this point*/
             value = value * 1; // could use parseFloat too; just need to ensure is numeric
-            
-            if(typeof precision === 'undefined') {
+
+            if (typeof precision === 'undefined') {
                 precision = 2;
             }
-            
+
             value = value.toFixed(precision);
         }
     }
@@ -893,6 +906,11 @@ $(function () {
             wrapWidth = $wrap.outerWidth() - $wrap.innerWidth();
             /*console.log("wrapHeight: " + wrapHeight);*/
         }
+        
+        /*See TextScreenObject class for explanation*/
+        if($parent.attr("data-border-alarm") === "true") {
+            wrapHeight = wrapHeight - 2;
+        }
 
         /**
          * Height = no padding; no border; no margin
@@ -906,7 +924,7 @@ $(function () {
 
         var i = 0;
 
-        while (($obj.outerHeight(true) + wrapHeight) > $parent.outerHeight() || ($obj.outerWidth(true) + wrapWidth) > $parent.outerWidth()) {
+        while (($obj.outerHeight(true) + wrapHeight) > $parent.height() || ($obj.outerWidth(true) + wrapWidth) > $parent.width()) {
             if (i > 6) {
                 console.log($parent.attr("id") + ' - font size difference too big; aborting resize');
                 break;
