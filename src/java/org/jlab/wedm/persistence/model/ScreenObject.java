@@ -19,6 +19,7 @@ public class ScreenObject {
     public int w;
     public int h;
     public int numPvs;
+    public Integer precision = null;    
     public Float visMin = null;
     public Float visMax = null;
     public Float lineWidth = null;
@@ -41,7 +42,6 @@ public class ScreenObject {
     public boolean dash = false;
     public boolean visInvert = false;
     public boolean autoSize = false;
-    public boolean decimal = false;
     public boolean border = false;
     public boolean limitsFromDb = false;
     public boolean indicatorAlarm = false;
@@ -49,8 +49,11 @@ public class ScreenObject {
     public boolean fillAlarm = false;
     public boolean fgAlarm = false;
     public boolean bgAlarm = false;
+    public boolean editable = false;   
+    public boolean useHexPrefix = false;    
     public Boolean horizontal = null;    //ChoiceButton default = false, BarMeter default = true.
     public EDLFont font;
+    public String format;    
     public String controlPv;
     public String visPv;
     public String alarmPv;
@@ -68,13 +71,25 @@ public class ScreenObject {
         if (invisible) {
             classes.add("invisible");
         }
-
-        if (decimal) {
-            classes.add("decimal");
-        }
+        
+        if (editable) {
+            classes.add("editable");
+        }        
 
         attributes.put("id", "obj-" + objectId);
 
+        if(format != null) {
+            attributes.put("data-format", format);
+            
+            if("hex".equals(format) && useHexPrefix) {
+                attributes.put("data-hex-prefix", "true");
+            }
+        }
+        
+        if(precision != null) {
+            attributes.put("data-precision", String.valueOf(precision));
+        }
+        
         if (controlPv != null) {
             attributes.put("data-pv", controlPv);
         }
@@ -152,7 +167,7 @@ public class ScreenObject {
 
         if (bgAlarm) {
             attributes.put("data-bg-alarm", "true");
-        }
+        }      
 
         if (max != null) {
             attributes.put("data-max", String.valueOf(max));

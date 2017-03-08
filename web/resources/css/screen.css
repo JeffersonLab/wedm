@@ -15,7 +15,8 @@
 .ActiveButton,
 .ActiveMessageButton,
 .ActiveChoiceButton,
-.ShellCommand {
+.ShellCommand,
+.ActiveXTextDsp.editable {
     cursor: not-allowed;
 }
 .ActiveRectangle {

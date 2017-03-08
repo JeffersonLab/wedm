@@ -235,15 +235,19 @@ jlab.wedm.ControlTextPvWidget.prototype = Object.create(jlab.wedm.StaticTextPvWi
 jlab.wedm.ControlTextPvWidget.prototype.constructor = jlab.wedm.ControlTextPvWidget;
 
 jlab.wedm.ControlTextPvWidget.prototype.handleInfo = function (info) {
-    jlab.wedm.StaticTextPvWidget.prototype.handleInfo.call(this, info);    
-    
+    jlab.wedm.StaticTextPvWidget.prototype.handleInfo.call(this, info);
+
     this.enumValuesArray = info['enum-labels'] || [];
 };
 
 jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
-    var pv = this.ctrlPvs[0];
-    var value = this.pvNameToValueMap[pv];
-    var enumVal = this.enumValuesArray[value];
+    var $obj = $("#" + this.id),
+            pv = this.ctrlPvs[0],
+            value = this.pvNameToValueMap[pv],
+            enumVal = this.enumValuesArray[value],
+            format = $obj.attr("data-format"),
+            precision = $obj.attr("data-precision"),
+            hexPrefix = $obj.attr("data-hex-prefix") === "true";
 
     if (typeof enumVal !== 'undefined') {
         value = enumVal;
@@ -272,9 +276,20 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
             console.log(this.id + ' - LOC expressions are not supported');
         }
 
-        if ($.isNumeric(value)) { /*Could still be a string at this point*/
+        if ("hex" === format) {
+            value = (value >>> 0).toString(16).toUpperCase();
+
+            if (hexPrefix) {
+                value = "0x" + value;
+            }
+        } else if ($.isNumeric(value)) { /*Could still be a string at this point*/
             value = value * 1; // could use parseFloat too; just need to ensure is numeric
-            value = value.toFixed(2);
+            
+            if(typeof precision === 'undefined') {
+                precision = 2;
+            }
+            
+            value = value.toFixed(precision);
         }
     }
 
@@ -289,13 +304,12 @@ jlab.wedm.SymbolPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype)
 jlab.wedm.SymbolPvWidget.prototype.constructor = jlab.wedm.SymbolPvWidget;
 
 jlab.wedm.SymbolPvWidget.prototype.handleControlUpdate = function () {
-    var $obj = $("#" + this.id);
-    var pv = this.ctrlPvs[0];
-    var value = this.pvNameToValueMap[pv];
-
-    var minVals = $obj.attr("data-min-values").split(" ");
-    var maxVals = $obj.attr("data-max-values").split(" ");
-    var state = 1;
+    var $obj = $("#" + this.id),
+            pv = this.ctrlPvs[0],
+            value = this.pvNameToValueMap[pv],
+            minVals = $obj.attr("data-min-values").split(" "),
+            maxVals = $obj.attr("data-max-values").split(" "),
+            state = 1;
 
     /*console.log("comparing value: " + value);*/
 
@@ -714,7 +728,7 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
         var stmt = expr.substring(8, expr.indexOf("}") - 1);
 
         /*Convert EPICS Operators to JavaScript Operators*/
-        stmt = stmt.replace(new RegExp('\\b=\\b', 'g'), "=="); /*Math =, but not >= or <=*/
+        stmt = stmt.replace(new RegExp('\\b\\s*=\\s*\\b', 'g'), "=="); /*Math =, but not >= or <=*/
         stmt = stmt.replace(new RegExp('#', 'g'), "!=");
         stmt = stmt.replace(new RegExp('and', 'gi'), "&&");
         stmt = stmt.replace(new RegExp('abs', 'gi'), "Math.abs");

@@ -347,6 +347,15 @@ public class ScreenParser extends EDMParser {
                             case "limitsFromDb":
                                 last.limitsFromDb = true;
                                 break;
+                            case "editable":
+                                last.editable = true;
+                                break;
+                            case "useHexPrefix":
+                                last.useHexPrefix = true;
+                                break;
+                            case "useAlarmBorder":
+                                ((ActiveXTextDsp)last).useAlarmBorder = true;
+                                break;
                             case "fillColor":
                                 Integer fcIndex = Integer.parseInt(tokens[2]);
                                 EDLColor fcColor = colorList.lookup(fcIndex);
@@ -358,10 +367,7 @@ public class ScreenParser extends EDMParser {
                                         "horizontal");
                                 break;
                             case "format":
-                                String format = stripQuotes(tokens[1]);
-                                if (format.equals("decimal")) {
-                                    last.decimal = true;
-                                } // TODO: what about values: float, gfloat, exponential, default, string?
+                                last.format = stripQuotes(tokens[1]);
                                 break;
                             case "value":
                                 //LOGGER.log(Level.FINEST, "Found controlPv");
@@ -401,6 +407,9 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "numPvs":
                                 last.numPvs = Integer.parseInt(tokens[1]);
+                                break;
+                            case "precision":
+                                last.precision = Integer.parseInt(tokens[1]);
                                 break;
                             case "numStates":
                                 ((ActiveSymbol) last).numStates = Integer.parseInt(tokens[1]);
@@ -628,6 +637,14 @@ public class ScreenParser extends EDMParser {
                             case "minor":
                             case "release":
                             case "endScreenProperties":
+                            case "objType":
+                            case "noExecuteClipMask":
+                            case "newPos":
+                            case "fastUpdate":
+                            case "smartRefresh":
+                            case "fieldLen":
+                            case "autoHeight":
+                            case "nullColor": // TODO: support null color at some point
                             case "#":
                             case "}":
                             case "":

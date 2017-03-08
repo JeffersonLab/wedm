@@ -8,10 +8,17 @@ import java.awt.Point;
  * @author ryans
  */
 public class ActiveXTextDsp extends ActiveXText {
+    
+    public boolean useAlarmBorder = false;
+    
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
         if(alarmPv == null && controlPv != null && (fgAlarm || bgAlarm)) {
             alarmPv = controlPv;
+        }
+        
+        if(useAlarmBorder) {
+            attributes.put("data-alarm-border", "true");
         }
         
         return super.toHtml(indent, indentStep, translation);
