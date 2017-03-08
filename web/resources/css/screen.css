@@ -67,7 +67,8 @@
 .ShellCommand:hover,
 .ActiveMessageButton:hover,
 .ActiveChoiceButton:hover,
-.RelatedDisplay:hover {
+.RelatedDisplay:hover,
+.ActiveXTextDsp.editable:not(.motif):hover {
     outline: 2px solid black;
 }
 .ActiveXTextDsp,

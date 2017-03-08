@@ -6,6 +6,9 @@
         <title>WEDM - ${param.edl}</title>
         <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/epics2web.css?v=${initParam.epics2webReleaseNumber}"/>        
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
+        <style type="text/css">
+${screen.getDynamicCss()}      
+        </style>
     </head>
     <body>
         <svg id="svg-defs">

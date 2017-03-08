@@ -1,5 +1,7 @@
 var jlab = jlab || {};
 jlab.wedm = jlab.wedm || {};
+jlab.wedm.monitoredPvs = [];
+jlab.wedm.pvWidgetMap = {};
 
 jlab.wedm.PvWidget = function (id, pvSet) {
     this.id = id;
@@ -669,9 +671,6 @@ jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
     }
 };
 
-var monitoredPvs = null,
-        pvWidgetMap = null;
-
 jlab.wedm.isLocalExpr = function (expr) {
     return expr.indexOf("LOC\\") === 0;
 };
@@ -822,67 +821,7 @@ jlab.wedm.uniqueArray = function (array) {
     return a;
 };
 
-$(document).on("click", ".RelatedDisplay", function (event) {
-    var files = [],
-            labels = [],
-            $obj = $(this);
-
-    for (var i = 0; i < 64; i++) {
-        var file = $obj.attr("data-linked-file-" + i),
-                label = $obj.attr("data-linked-label-" + i);
-
-        if (file === undefined) {
-            break;
-        } else {
-            files.push(file);
-
-            if (label === undefined || label === '') {
-                labels.push("");
-            } else {
-                labels.push(label);
-            }
-        }
-    }
-
-    var path = '/wedm/screen?edl=',
-            //left = $obj.css("left"),
-            //right = $obj.css("top");
-            left = event.pageX + "px",
-            top = event.pageY + "px";
-
-    if (files.length === 1) {
-        window.open(path + files[0], '_blank');
-    } else {
-        var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
-
-        for (var i = 0; i < files.length; i++) {
-            $html.find("ul").append('<li class="anchor-li"><a href="' + path + files[i] + '" target="_blank">' + labels[i] + '</a></li>');
-        }
-
-        $(document.body).append($html);
-    }
-});
-
-$(document).mouseup(function (e)
-{
-    var container = $(".related-display-menu");
-
-    if (!container.is(e.target) // if the target of the click isn't the container...
-            && container.has(e.target).length === 0) // ... nor a descendant of the container
-    {
-        container.remove();
-    }
-});
-
-$(document).on("click", ".anchor-li", function () {
-    var href = $(this).find("a").attr("href");
-    window.open(href, '_blank');
-    return;
-});
-
-$(function () {
-    $(".ActiveSymbol .ActiveGroup:nth-child(2)").show();
-
+jlab.wedm.resizeText = function () {
     $(".screen-text").each(function () {
         var $obj = $(this),
                 $parent = $obj.closest(".ScreenObject"),
@@ -906,9 +845,9 @@ $(function () {
             wrapWidth = $wrap.outerWidth() - $wrap.innerWidth();
             /*console.log("wrapHeight: " + wrapHeight);*/
         }
-        
+
         /*See TextScreenObject class for explanation*/
-        if($parent.attr("data-border-alarm") === "true") {
+        if ($parent.attr("data-border-alarm") === "true") {
             wrapHeight = wrapHeight - 2;
         }
 
@@ -945,9 +884,9 @@ $(function () {
             $parent[0].classList.add("waiting-for-state");
         }
     });
+};
 
-    monitoredPvs = [];
-    pvWidgetMap = {};
+jlab.wedm.createWidgets = function () {
 
     $(".ScreenObject").each(function () {
         /*console.log("Attr: " + $(this).attr("data-pv"));*/
@@ -1013,40 +952,109 @@ $(function () {
             }
 
             allPvs.forEach(function (pv) {
-                if (!jlab.wedm.isLocalExpr(pv) && monitoredPvs.indexOf(pv) === -1) {
+                if (!jlab.wedm.isLocalExpr(pv) && jlab.wedm.monitoredPvs.indexOf(pv) === -1) {
                     /*console.log('monitoring pv: ' + pv);*/
-                    monitoredPvs.push(pv);
+                    jlab.wedm.monitoredPvs.push(pv);
                 }
 
-                pvWidgetMap[pv] = pvWidgetMap[pv] || [];
-                pvWidgetMap[pv].push(widget);
+                jlab.wedm.pvWidgetMap[pv] = jlab.wedm.pvWidgetMap[pv] || [];
+                jlab.wedm.pvWidgetMap[pv].push(widget);
             });
         }
     });
+};
 
-
+jlab.wedm.initializeWebsocket = function () {
     var options = {};
 
     jlab.wedm.con = new jlab.epics2web.ClientConnection(options);
 
     jlab.wedm.con.onopen = function (e) {
         /*This is for re-connect - on inital connect array will be empty*/
-        if (monitoredPvs.length > 0) {
-            jlab.wedm.con.monitorPvs(monitoredPvs);
+        if (jlab.wedm.monitoredPvs.length > 0) {
+            jlab.wedm.con.monitorPvs(jlab.wedm.monitoredPvs);
         }
     };
 
     jlab.wedm.con.onupdate = function (e) {
         //console.time("onupdate");
-        $(pvWidgetMap[e.detail.pv]).each(function () {
+        $(jlab.wedm.pvWidgetMap[e.detail.pv]).each(function () {
             this.handleUpdate(e.detail);
         });
         //console.timeEnd("onupdate");
     };
 
     jlab.wedm.con.oninfo = function (e) {
-        $(pvWidgetMap[e.detail.pv]).each(function () {
+        $(jlab.wedm.pvWidgetMap[e.detail.pv]).each(function () {
             this.handleInfo(e.detail);
         });
     };
+};
+
+$(document).on("click", ".RelatedDisplay", function (event) {
+    var files = [],
+            labels = [],
+            $obj = $(this);
+
+    for (var i = 0; i < 64; i++) {
+        var file = $obj.attr("data-linked-file-" + i),
+                label = $obj.attr("data-linked-label-" + i);
+
+        if (file === undefined) {
+            break;
+        } else {
+            files.push(file);
+
+            if (label === undefined || label === '') {
+                labels.push("");
+            } else {
+                labels.push(label);
+            }
+        }
+    }
+
+    var path = '/wedm/screen?edl=',
+            //left = $obj.css("left"),
+            //right = $obj.css("top");
+            left = event.pageX + "px",
+            top = event.pageY + "px";
+
+    if (files.length === 1) {
+        window.open(path + files[0], '_blank');
+    } else {
+        var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
+
+        for (var i = 0; i < files.length; i++) {
+            $html.find("ul").append('<li class="anchor-li"><a href="' + path + files[i] + '" target="_blank">' + labels[i] + '</a></li>');
+        }
+
+        $(document.body).append($html);
+    }
+});
+
+$(document).mouseup(function (e)
+{
+    var container = $(".related-display-menu");
+
+    if (!container.is(e.target) // if the target of the click isn't the container...
+            && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.remove();
+    }
+});
+
+$(document).on("click", ".anchor-li", function () {
+    var href = $(this).find("a").attr("href");
+    window.open(href, '_blank');
+    return;
+});
+
+$(function () {
+    $(".ActiveSymbol .ActiveGroup:nth-child(2)").show();
+
+    jlab.wedm.resizeText();
+
+    jlab.wedm.createWidgets();
+
+    jlab.wedm.initializeWebsocket();
 });

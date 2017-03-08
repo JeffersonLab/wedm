@@ -98,6 +98,17 @@ public class Screen {
 
         return js;
     }
+    
+    public String getDynamicCss() {
+        String css = "";
+        
+        if (properties.fgColor != null && properties.fgColor instanceof EDLColorConstant) {
+            css = css + ".ScreenObject:hover {\noutline-color: "
+                    + ((EDLColorConstant) properties.fgColor).toRgbString() + " !important;\n}\n";
+        }        
+        
+        return css;
+    }
 
     private void checkForColorRuleWithNoPv(ScreenObject obj) {
         String name;
