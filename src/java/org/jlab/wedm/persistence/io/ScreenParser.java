@@ -22,6 +22,8 @@ import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLFont;
 import org.jlab.wedm.persistence.model.html.HtmlScreenObject;
 import org.jlab.wedm.persistence.model.html.RelatedDisplay;
+import org.jlab.wedm.persistence.model.ActivePictureInPicture;
+import org.jlab.wedm.persistence.model.EmbeddedScreen;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.ScreenObject;
 import org.jlab.wedm.persistence.model.ScreenProperties;
@@ -136,6 +138,9 @@ public class ScreenParser extends EDMParser {
                                         }
                                         groupStack.push((ActiveGroup) obj);
                                         added = true;
+                                        break;
+                                    case "activePipClass":
+                                        obj = new ActivePictureInPicture();
                                         break;
                                     case "activeSymbolClass":
                                         obj = new ActiveSymbol();
@@ -354,7 +359,7 @@ public class ScreenParser extends EDMParser {
                                 last.useHexPrefix = true;
                                 break;
                             case "useAlarmBorder":
-                                ((ActiveXTextDsp)last).useAlarmBorder = true;
+                                ((ActiveXTextDsp) last).useAlarmBorder = true;
                                 break;
                             case "fillColor":
                                 Integer fcIndex = Integer.parseInt(tokens[2]);
@@ -414,8 +419,8 @@ public class ScreenParser extends EDMParser {
                             case "numStates":
                                 ((ActiveSymbol) last).numStates = Integer.parseInt(tokens[1]);
                                 break;
-                            case "numDsps":
-                                ((RelatedDisplay) last).numDsps = Integer.parseInt(tokens[1]);
+                            case "numDsps": // RelatedDisplay and PictureInPicture
+                                last.numDsps = Integer.parseInt(tokens[1]);
                                 break;
                             case "controlPvs":
                                 ActiveSymbol sym = ((ActiveSymbol) last);
@@ -476,8 +481,6 @@ public class ScreenParser extends EDMParser {
                                 }
                                 break;
                             case "displayFileName":
-                                RelatedDisplay rd = ((RelatedDisplay) last);
-
                                 while (scanner.hasNext()) {
                                     String val = scanner.nextLine();
 
@@ -489,7 +492,7 @@ public class ScreenParser extends EDMParser {
                                     int rdIndex = Integer.parseInt(tks[0].trim());
 
                                     if (rdIndex >= 0 && rdIndex <= 64) {
-                                        rd.displayFileNames[rdIndex] = tks[1].trim();  //stripQuotes(tks[1].trim());
+                                        last.displayFileNames[rdIndex] = tks[1].trim();  //stripQuotes(tks[1].trim());
                                     } else {
                                         LOGGER.log(Level.WARNING,
                                                 "RelatedDisplay filename out of range: {0}",
@@ -498,8 +501,6 @@ public class ScreenParser extends EDMParser {
                                 }
                                 break;
                             case "menuLabel":
-                                RelatedDisplay rd2 = ((RelatedDisplay) last);
-
                                 while (scanner.hasNext()) {
                                     String val = scanner.nextLine();
 
@@ -511,10 +512,10 @@ public class ScreenParser extends EDMParser {
                                     int rdIndex = Integer.parseInt(tks[0].trim());
 
                                     if (rdIndex >= 0 && rdIndex <= 64) {
-                                        rd2.menuLabels[rdIndex] = tks[1].trim(); //stripQuotes(tks[1].trim());
+                                        last.menuLabels[rdIndex] = tks[1].trim(); //stripQuotes(tks[1].trim());
                                     } else {
                                         LOGGER.log(Level.WARNING,
-                                                "RelatedDisplay filename out of range: {0}",
+                                                "menuLabel filename out of range: {0}",
                                                 rdIndex);
                                     }
                                 }
@@ -568,7 +569,7 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "file":
                                 //LOGGER.log(Level.FINEST, "Found file: {0}", tokens[1]);
-                                ((ActiveSymbol) last).file = stripQuotes(tokens[1]);
+                                ((EmbeddedScreen) last).file = stripQuotes(tokens[1]);
                                 break;
                             case "numBits":
                                 ((ActiveByte) last).bits = Integer.parseInt(tokens[1]);
@@ -577,7 +578,11 @@ public class ScreenParser extends EDMParser {
                                 ((ActiveByte) last).shift = Integer.parseInt(tokens[1]);
                                 break;
                             case "endian":
-                                ((ActiveByte) last).littleEndian = "little".equals(stripQuotes(tokens[1]));
+                                ((ActiveByte) last).littleEndian = "little".equals(stripQuotes(
+                                        tokens[1]));
+                                break;
+                            case "title":
+                                properties.title = stripQuotes(line.substring("title".length()));
                                 break;
                             case "ctlFont":
                                 String fStr = stripQuotes(line.substring("ctlFont".length()));

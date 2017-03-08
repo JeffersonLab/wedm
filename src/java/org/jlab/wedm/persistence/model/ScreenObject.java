@@ -18,7 +18,10 @@ public class ScreenObject {
     public int y;
     public int w;
     public int h;
-    public int numPvs;
+    public int numPvs = 0;
+    public int numDsps = 0;       
+    public String[] displayFileNames = new String[64];
+    public String[] menuLabels = new String[64];    
     public Integer precision = null;
     public Float visMin = null;
     public Float visMax = null;

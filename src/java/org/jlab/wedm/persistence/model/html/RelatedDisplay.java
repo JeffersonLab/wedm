@@ -8,10 +8,6 @@ import java.awt.Point;
  */
 public class RelatedDisplay extends ActiveButton {
 
-    public int numDsps = 0;
-    public String[] displayFileNames = new String[64];
-    public String[] menuLabels = new String[64];
-
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
 

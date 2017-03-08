@@ -8,16 +8,14 @@ import java.util.List;
  *
  * @author ryans
  */
-public class ActiveSymbol extends ScreenProperties {
+public class ActiveSymbol extends EmbeddedScreen {
 
-    public String file;
     public int numStates;
     public int[] minValues = new int[64];
     public int[] maxValues = new int[64];
     public List<String> controlPvs = new ArrayList<>();
     public boolean useOriginalSize;
     public boolean useOriginalColors;
-    public Screen screen;
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {

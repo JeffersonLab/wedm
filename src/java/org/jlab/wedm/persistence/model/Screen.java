@@ -22,6 +22,10 @@ public class Screen {
         this.screenObjects = screenObjects;
         this.colorList = colorList;
     }
+    
+    public String getTitle() {
+        return properties.title;
+    }
 
     public void setScreenProperties(ScreenProperties properties) {
         this.properties = properties;

@@ -12,4 +12,5 @@ public class ScreenProperties extends ScreenObject {
     public EDLColor ctlBgColor2;
     public EDLFont ctlFont;
     public EDLFont btnFont;
+    public String title;
 }
