@@ -683,16 +683,26 @@ jlab.wedm.isCalcExpr = function (expr) {
     return expr.indexOf("CALC\\") === 0;
 };
 
+/**
+ * TODO: Should this be done on the server?  Or at least only do it once and cache the result.
+ */
+jlab.wedm.convertEDMExpressionToJavaScript = function (expr) {
+    /*Convert EPICS Operators to JavaScript Operators*/
+    expr = expr.replace(new RegExp('\\b\\s*=\\s*\\b', 'g'), "=="); /*Match =, but not >= or <=*/
+    expr = expr.replace(new RegExp('#', 'g'), "!=");
+    expr = expr.replace(new RegExp('and', 'gi'), "&&");
+    expr = expr.replace(new RegExp('or', 'gi'), "||");
+    expr = expr.replace(new RegExp('abs', 'gi'), "Math.abs");
+    expr = expr.replace(new RegExp('min', 'gi'), "Math.min");
+    expr = expr.replace(new RegExp('max', 'gi'), "Math.max");
+
+    return expr;
+};
+
 jlab.wedm.evalColorExpr = function (stmt, A) {
     var B, color;
 
-    /*Convert EPICS Operators to JavaScript Operators*/
-    stmt = stmt.replace(new RegExp('\\b\\s*=\\s*\\b', 'g'), "=="); /*Match =, but not >= or <=*/
-    stmt = stmt.replace(new RegExp('#', 'g'), "!=");
-    stmt = stmt.replace(new RegExp('and', 'gi'), "&&");
-    stmt = stmt.replace(new RegExp('abs', 'gi'), "Math.abs");
-    stmt = stmt.replace(new RegExp('min', 'gi'), "Math.min");
-    stmt = stmt.replace(new RegExp('max', 'gi'), "Math.max");
+    stmt = jlab.wedm.convertEDMExpressionToJavaScript(stmt);
 
     /*console.log("stmt: " + stmt);*/
 
@@ -743,13 +753,7 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
 
         var stmt = expr.substring(8, expr.indexOf("}") - 1);
 
-        /*Convert EPICS Operators to JavaScript Operators*/
-        stmt = stmt.replace(new RegExp('\\b\\s*=\\s*\\b', 'g'), "=="); /*Math =, but not >= or <=*/
-        stmt = stmt.replace(new RegExp('#', 'g'), "!=");
-        stmt = stmt.replace(new RegExp('and', 'gi'), "&&");
-        stmt = stmt.replace(new RegExp('abs', 'gi'), "Math.abs");
-        stmt = stmt.replace(new RegExp('min', 'gi'), "Math.min");
-        stmt = stmt.replace(new RegExp('max', 'gi'), "Math.max");
+        stmt = jlab.wedm.convertEDMExpressionToJavaScript(stmt);
 
         /*console.log(stmt);*/
 
@@ -838,7 +842,7 @@ jlab.wedm.resizeText = function () {
         $parent[0].classList.remove("waiting-for-state");
 
         /*TODO: if EDM object is hidden due to an ancestor hidden Group then we need to unhide temporarily?*/
-        
+
         /*$parent[0].classList.contains() has limited support*/
         if (($parent.attr("class").indexOf("invisible") > -1)) {
             /*console.log("permanently invisible text can't/won't be resized");*/
