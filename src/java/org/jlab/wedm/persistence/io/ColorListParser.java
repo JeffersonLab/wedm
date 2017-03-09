@@ -108,6 +108,7 @@ public class ColorListParser extends EDMParser {
                             if ("default".equals(condition)) {
                                 condition = condition + ": ";
                             } else {
+                                condition = convertEDMExpressionToJavaScript(condition);
                                 condition = "case (A " + condition + "): ";
                                 condition = condition.replace("&&", "&& A");
                                 condition = condition.replace("||", "|| A");
@@ -117,7 +118,7 @@ public class ColorListParser extends EDMParser {
                                     + "'; break;";
 
                             firstColor = colorValue;
-                            
+
                             while (true) {
                                 value = scanner.nextLine();
 
@@ -149,7 +150,6 @@ public class ColorListParser extends EDMParser {
                             expression = expression + "}";
 
                             //System.out.println("expression: " + expression);
-
                             color = new EDLColorRule(index, colorname, expression, firstColor);
                             indexMap.put(index, color);
                             nameMap.put(colorname, color);
@@ -163,5 +163,29 @@ public class ColorListParser extends EDMParser {
             }
         }
         return new ColorList(indexMap, nameMap, maxColors, staticColors, alarmColors, ruleColors);
+    }
+
+    private String convertEDMExpressionToJavaScript(String expr) {
+        //System.out.println("before: " + expr);
+        
+        // Not sure why this doesn't work.  Using brute force instead...
+        //expr = expr.replaceAll("([^<>])=", "$1=="); // Match =, but not >= or <=        
+        
+        expr = expr.replaceAll(">=", "P1");
+        expr = expr.replaceAll("<=", "P2");
+        expr = expr.replaceAll("=", "==");
+        expr = expr.replaceAll("P1", ">=");
+        expr = expr.replaceAll("P2", "<=");
+        
+        expr = expr.replaceAll("#", "!=");
+        expr = expr.replaceAll("and", "&&");
+        expr = expr.replaceAll("or", "||");
+        expr = expr.replaceAll("abs", "Math.abs");
+        expr = expr.replaceAll("min", "Math.min");
+        expr = expr.replaceAll("max", "Math.max");
+
+        //System.out.println("after: " + expr);        
+        
+        return expr;
     }
 }

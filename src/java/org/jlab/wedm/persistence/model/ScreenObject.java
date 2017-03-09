@@ -140,6 +140,10 @@ public class ScreenObject {
                 if (fgColor != null && fgColor instanceof EDLColorRule) {
                     attributes.put("data-fg-color-rule", fgColor.toColorString());
                 }
+                
+                if(bgColor != null && bgColor instanceof EDLColorRule) {
+                    attributes.put("data-bg-color-rule", bgColor.toColorString());
+                }
             }
         }
 

@@ -236,14 +236,23 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
 jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
     var $obj = $("#" + this.id),
             color,
-            ruleIndex = $obj.attr("data-fg-color-rule"),
-            stmt = jlab.wedm.colorRules[ruleIndex];
+            fgRuleIndex = $obj.attr("data-fg-color-rule"),
+            bgRuleIndex = $obj.attr("data-bg-color-rule"),
+            stmt;
 
     $obj[0].classList.remove("waiting-for-state");
 
-    color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
-
-    $obj.css("color", color);
+    if (typeof fgRuleIndex !== 'undefined') {
+        stmt = jlab.wedm.colorRules[fgRuleIndex];
+        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
+        $obj.css("color", color);
+    }
+    
+    if (typeof bgRuleIndex !== 'undefined') {
+        stmt = jlab.wedm.colorRules[bgRuleIndex];
+        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
+        $obj.css("background-color", color);
+    }
 };
 
 jlab.wedm.ControlTextPvWidget = function (id, pvSet) {
@@ -685,6 +694,10 @@ jlab.wedm.isCalcExpr = function (expr) {
 
 /**
  * TODO: Should this be done on the server?  Or at least only do it once and cache the result.
+ * 
+ * TODO: Watch out for LOC = as that should be = and not ==
+ * 
+ * NOTE: We are already doing this same thing for color expr on server...
  */
 jlab.wedm.convertEDMExpressionToJavaScript = function (expr) {
     /*Convert EPICS Operators to JavaScript Operators*/
@@ -706,8 +719,6 @@ jlab.wedm.evalColorExpr = function (stmt, A) {
         console.log(this.id + " - undefined color expression");
         return "black";
     }
-
-    stmt = jlab.wedm.convertEDMExpressionToJavaScript(stmt);
 
     /*console.log("stmt: " + stmt);*/
 
