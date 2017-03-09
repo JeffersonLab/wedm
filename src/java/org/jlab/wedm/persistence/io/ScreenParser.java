@@ -38,6 +38,12 @@ import org.jlab.wedm.persistence.model.svg.ActiveRectangle;
 
 public class ScreenParser extends EDMParser {
 
+    /**
+     * We want embedded screens to NOT repeat IDs - so we share the same counter across multiple
+     * parse method calls.
+     */
+    private int objectId = 0;
+
     private static final Logger LOGGER = Logger.getLogger(ScreenParser.class.getName());
 
     public Screen parse(String name, ColorList colorList, boolean isSymbolFile) throws
@@ -56,8 +62,6 @@ public class ScreenParser extends EDMParser {
         if (!edl.isAbsolute()) {
             edl = new File(EDL_ROOT_DIR + File.separator + name);
         }
-
-        int objectId = 0;
 
         ScreenProperties properties = new ScreenProperties();
         List<ScreenObject> screenObjects = new ArrayList<>();
@@ -267,6 +271,12 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "motifWidget":
                                 last.motifWidget = true;
+                                break;
+                            case "useOriginalSize":
+                                ((ActiveSymbol) last).useOriginalSize = true;
+                                break;
+                            case "useOriginalColors":
+                                ((ActiveSymbol) last).useOriginalColors = true;
                                 break;
                             case "buttonType":
                                 ((ActiveButton) last).push = "push".equals(stripQuotes(tokens[1]));

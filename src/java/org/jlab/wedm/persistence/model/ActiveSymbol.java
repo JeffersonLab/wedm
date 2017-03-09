@@ -14,8 +14,8 @@ public class ActiveSymbol extends EmbeddedScreen {
     public int[] minValues = new int[64];
     public int[] maxValues = new int[64];
     public List<String> controlPvs = new ArrayList<>();
-    public boolean useOriginalSize;
-    public boolean useOriginalColors;
+    public boolean useOriginalSize = false;
+    public boolean useOriginalColors = false;
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
@@ -24,7 +24,7 @@ public class ActiveSymbol extends EmbeddedScreen {
         int originY = y + translation.y;
 
         attributes.put("id", "obj-" + objectId);
-        
+
         classes.add("ActiveSymbol");
         classes.add("ScreenObject");
 
@@ -37,29 +37,43 @@ public class ActiveSymbol extends EmbeddedScreen {
                     minStr = minStr + " " + minValues[i];
                 }
                 attributes.put("data-min-values", minStr);
-                
+
                 String maxStr = String.valueOf(maxValues[0]);
                 for (int i = 1; i < numStates; i++) {
                     maxStr = maxStr + " " + maxValues[i];
                 }
-                attributes.put("data-max-values", maxStr);                
+                attributes.put("data-max-values", maxStr);
             }
         }
 
+        styles.put("width", w + "px");
+        styles.put("height", h + "px");
+        styles.put("left", originX + "px");
+        styles.put("top", originY + "px");
+
         String attrStr = getAttributesString(attributes);
         String classStr = getClassString(classes);
+        String styleStr = getStyleString(styles);
 
-        String html = indent + "<div " + classStr + " " + attrStr;
-
-        html = html + " style=\"";
-        html = html + "width: " + w + "px; "
-                + "height: " + h + "px; left: " + originX + "px; top: " + originY + "px;\"/>";
+        String html = indent + "<div " + classStr + " " + attrStr + " " + styleStr + "/>";
 
         if (screen != null && !screen.screenObjects.isEmpty()) {
 
             for (ScreenObject obj : screen.screenObjects) {
 
                 Point childTranslation = new Point(-obj.x, -obj.y);
+
+                if (!useOriginalSize) {
+                    float xScale = (float) w / obj.w;
+                    float yScale = (float) h / obj.h;
+
+                    obj.styles.put("transform", "scale(" + xScale + ", " + yScale + ")");
+                    obj.styles.put("transform-origin", "0 0");
+                }
+
+                if (!useOriginalColors) {
+                    overrideColorsRecursive(obj);
+                }
 
                 html = html + obj.toHtml(indent + indentStep, indentStep, childTranslation);
             }
@@ -68,5 +82,21 @@ public class ActiveSymbol extends EmbeddedScreen {
         html = html + indent + "</div>\n";
 
         return html;
+    }
+
+    private void overrideColorsRecursive(ScreenObject obj) {
+        obj.fgColor = fgColor;
+        obj.lineColor = fgColor;
+        
+        obj.bgColor = bgColor;        
+        obj.fillColor = bgColor;
+        
+        if (obj instanceof ActiveGroup) {
+            List<ScreenObject> children = ((ActiveGroup) obj).children;
+
+            for (ScreenObject child : children) {
+                overrideColorsRecursive(child);
+            }
+        }
     }
 }

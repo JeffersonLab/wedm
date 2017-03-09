@@ -35,11 +35,6 @@ public class ActiveRectangle extends SvgScreenObject {
         svg = svg + "fill=\"" + fillColorStr + "\" ";
 
         if (lineWidth != null) {
-            
-            if(lineWidth < 1.8) {
-                lineWidth = 1.8f; // This is due to EDM rendering 0 width border as 1.8
-            }
-            
             svg = svg + "stroke-width=\"" + lineWidth + "\" ";
         }
 

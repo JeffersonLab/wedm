@@ -8,9 +8,17 @@ import org.jlab.wedm.persistence.model.ScreenObject;
  * @author ryans
  */
 public class SvgScreenObject extends ScreenObject {
-    public static final String DASH_SPACING = "4, 4"; 
+    public static final String DASH_SPACING = "4, 4";     
     
     public String startSvg(String indent, String indentStep, Point translation) {
+        
+        // EDM Oddity
+        if (lineWidth != null) {
+            if (lineWidth < 1.0) {
+                lineWidth = 1.0f; // This is due to EDM rendering 0 width border as 1+
+            }
+        }     
+        
         this.setCommonAttributes();       
 
         int originX = x + translation.x;
