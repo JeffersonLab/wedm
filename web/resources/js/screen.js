@@ -241,7 +241,7 @@ jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
 
     $obj[0].classList.remove("waiting-for-state");
 
-    color = jlab.wedm.evalColorExpr(stmt, update.value);
+    color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
 
     $obj.css("color", color);
 };
@@ -661,7 +661,7 @@ jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
     if (lineRuleIndex !== undefined) {
         stmt = jlab.wedm.colorRules[lineRuleIndex];
 
-        color = jlab.wedm.evalColorExpr(stmt, update.value);
+        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
 
         $shape.attr("stroke", color);
     }
@@ -669,7 +669,7 @@ jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
     if (fillRuleIndex !== undefined) {
         stmt = jlab.wedm.colorRules[fillRuleIndex];
 
-        color = jlab.wedm.evalColorExpr(stmt, update.value);
+        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
 
         $shape.attr("fill", color);
     }
@@ -688,7 +688,7 @@ jlab.wedm.isCalcExpr = function (expr) {
  */
 jlab.wedm.convertEDMExpressionToJavaScript = function (expr) {
     /*Convert EPICS Operators to JavaScript Operators*/
-    expr = expr.replace(new RegExp('\\b\\s*=\\s*\\b', 'g'), "=="); /*Match =, but not >= or <=*/
+    expr = expr.replace(new RegExp('([^<>])=', 'g'), "$1=="); /*Match =, but not >= or <=*/
     expr = expr.replace(new RegExp('#', 'g'), "!=");
     expr = expr.replace(new RegExp('and', 'gi'), "&&");
     expr = expr.replace(new RegExp('or', 'gi'), "||");
@@ -701,6 +701,11 @@ jlab.wedm.convertEDMExpressionToJavaScript = function (expr) {
 
 jlab.wedm.evalColorExpr = function (stmt, A) {
     var B, color;
+
+    if (typeof stmt === 'undefined') {
+        console.log(this.id + " - undefined color expression");
+        return "black";
+    }
 
     stmt = jlab.wedm.convertEDMExpressionToJavaScript(stmt);
 
@@ -753,9 +758,11 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
 
         var stmt = expr.substring(8, expr.indexOf("}") - 1);
 
+        //console.log("before: " + stmt);
+
         stmt = jlab.wedm.convertEDMExpressionToJavaScript(stmt);
 
-        /*console.log(stmt);*/
+        //console.log("after: " + stmt);
 
         var result;
 
