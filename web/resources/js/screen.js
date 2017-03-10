@@ -247,7 +247,7 @@ jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
         color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
         $obj.css("color", color);
     }
-    
+
     if (typeof bgRuleIndex !== 'undefined') {
         stmt = jlab.wedm.colorRules[bgRuleIndex];
         color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
@@ -315,6 +315,16 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
 
             if (typeof precision === 'undefined') {
                 precision = 2;
+
+                $obj.attr("data-precision", precision);
+
+                if ($obj.attr("data-db-limits") !== "true" && this.ctrlPvs.length === 1 && typeof $obj.find(".screen-text") !== 'undefined') {
+                    $obj.attr("data-db-limits", "true");
+                    var basename = jlab.wedm.basename(pv),
+                            precPv = basename + ".PREC";
+                    this.limitPvs.push(precPv);
+                    jlab.wedm.addPvWithWidget(precPv, this, true);
+                }
             }
 
             value = value.toFixed(precision);
@@ -989,16 +999,24 @@ jlab.wedm.createWidgets = function () {
             }
 
             allPvs.forEach(function (pv) {
-                if (!jlab.wedm.isLocalExpr(pv) && jlab.wedm.monitoredPvs.indexOf(pv) === -1) {
-                    /*console.log('monitoring pv: ' + pv);*/
-                    jlab.wedm.monitoredPvs.push(pv);
-                }
-
-                jlab.wedm.pvWidgetMap[pv] = jlab.wedm.pvWidgetMap[pv] || [];
-                jlab.wedm.pvWidgetMap[pv].push(widget);
+                jlab.wedm.addPvWithWidget(pv, widget, false);
             });
         }
     });
+};
+
+jlab.wedm.addPvWithWidget = function (pv, widget, immediate) {
+    
+    if (!jlab.wedm.isLocalExpr(pv) && jlab.wedm.monitoredPvs.indexOf(pv) === -1) {
+        jlab.wedm.monitoredPvs.push(pv);
+    }
+
+    jlab.wedm.pvWidgetMap[pv] = jlab.wedm.pvWidgetMap[pv] || [];
+    jlab.wedm.pvWidgetMap[pv].push(widget);
+    
+    if(immediate) {
+        jlab.wedm.con.monitorPvs([pv]);
+    }
 };
 
 jlab.wedm.initializeWebsocket = function () {
@@ -1007,7 +1025,7 @@ jlab.wedm.initializeWebsocket = function () {
     jlab.wedm.con = new jlab.epics2web.ClientConnection(options);
 
     jlab.wedm.con.onopen = function (e) {
-        /*This is for re-connect - on inital connect array will be empty*/
+        /*This is for re-connect - and for initial batch of PVs*/
         if (jlab.wedm.monitoredPvs.length > 0) {
             jlab.wedm.con.monitorPvs(jlab.wedm.monitoredPvs);
         }
