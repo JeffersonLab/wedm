@@ -701,7 +701,7 @@ jlab.wedm.isCalcExpr = function (expr) {
  */
 jlab.wedm.convertEDMExpressionToJavaScript = function (expr) {
     /*Convert EPICS Operators to JavaScript Operators*/
-    expr = expr.replace(new RegExp('([^<>])=', 'g'), "$1=="); /*Match =, but not >= or <=*/
+    expr = expr.replace(new RegExp('([^<>\!])=', 'g'), "$1=="); /*Match =, but not >= or <= or !=*/
     expr = expr.replace(new RegExp('#', 'g'), "!=");
     expr = expr.replace(new RegExp('and', 'gi'), "&&");
     expr = expr.replace(new RegExp('or', 'gi'), "||");

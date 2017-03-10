@@ -108,10 +108,11 @@ public class ColorListParser extends EDMParser {
                             if ("default".equals(condition)) {
                                 condition = condition + ": ";
                             } else {
-                                condition = convertEDMExpressionToJavaScript(condition);
                                 condition = "case (A " + condition + "): ";
                                 condition = condition.replace("&&", "&& A");
                                 condition = condition.replace("||", "|| A");
+                                // Must wait until we have varibles in place to do following as "=" replace must be preceded by something
+                                condition = convertEDMExpressionToJavaScript(condition);                                
                             }
                             String colorValue = stripQuotes(parts[1]);
                             expression = expression + condition + "B = '" + colorValue
@@ -141,6 +142,7 @@ public class ColorListParser extends EDMParser {
                                     condition = "case (A " + condition + "): ";
                                     condition = condition.replace("&&", "&& A");
                                     condition = condition.replace("||", "|| A");
+                                    condition = convertEDMExpressionToJavaScript(condition);                                    
                                 }
                                 colorValue = stripQuotes(parts[1]);
                                 expression = expression + condition + "B = '" + colorValue
@@ -168,14 +170,7 @@ public class ColorListParser extends EDMParser {
     private String convertEDMExpressionToJavaScript(String expr) {
         //System.out.println("before: " + expr);
         
-        // Not sure why this doesn't work.  Using brute force instead...
-        //expr = expr.replaceAll("([^<>])=", "$1=="); // Match =, but not >= or <=        
-        
-        expr = expr.replaceAll(">=", "P1");
-        expr = expr.replaceAll("<=", "P2");
-        expr = expr.replaceAll("=", "==");
-        expr = expr.replaceAll("P1", ">=");
-        expr = expr.replaceAll("P2", "<=");
+        expr = expr.replaceAll("([^<>\\!])=", "$1=="); // Match =, but not >= or <= or !=      
         
         expr = expr.replaceAll("#", "!=");
         expr = expr.replaceAll("and", "&&");
