@@ -36,7 +36,8 @@ public class ActiveByte extends ActiveRectangle {
         int bitWidth, bitHeight;
         boolean vertical = true;
 
-        if (h > w) {
+        /*If equal h & w EDM makes vertical widget*/
+        if (h >= w) {
             bitWidth = w;
             bitHeight = h / bits;
         } else {
