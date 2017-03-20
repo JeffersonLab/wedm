@@ -819,6 +819,9 @@ jlab.wedm.pvsFromExpr = function (expr) {
             /*EDM allows end parenthesis to be optional*/
             if (expr.lastIndexOf(")") !== end) {
                 end = expr.length;
+            } else if(expr.indexOf(")", expr.lastIndexOf("(")) !== -1) {
+                /*EDM allows multiple parenthesis at the end too*/
+                end = expr.indexOf(")", expr.lastIndexOf("("));
             }
 
             expr.substring(expr.indexOf("}") + 2, end).split(",").forEach(function (pv) {
