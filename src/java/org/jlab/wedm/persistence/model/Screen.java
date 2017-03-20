@@ -15,6 +15,7 @@ public class Screen {
 
     private ScreenProperties properties;
     public final List<ScreenObject> screenObjects;
+    public Integer embeddedIndex = null;
     private final ColorList colorList;
 
     public Screen(ScreenProperties properties, List<ScreenObject> screenObjects, ColorList colorList) {
@@ -45,9 +46,14 @@ public class Screen {
 
         String widthAndHeight = "width: " + properties.w + "px; height: " + properties.h + "px; ";
         String indentPlusOne = indent + indentStep;
-
+        String embeddedIndexStr = "";
+        
+        if(embeddedIndex != null) {
+            embeddedIndexStr = "data-index=\"" + embeddedIndex + "\"";
+        }
+        
         String html
-                = indent + "<div class=\"screen\" style=\"position: relative; " + widthAndHeight
+                = indent + "<div class=\"screen\" " +  embeddedIndexStr + " style=\"position: relative; " + widthAndHeight
                 + " ";
 
         if (properties.bgColor != null && properties.bgColor instanceof EDLColorConstant) {

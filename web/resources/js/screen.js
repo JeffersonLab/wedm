@@ -1046,6 +1046,10 @@ jlab.wedm.initializeWebsocket = function () {
     };
 };
 
+jlab.wedm.initEmbedded = function() {
+    $(".ActivePictureInPicture .screen:not(:first-child)").hide();   
+};
+
 $(document).on("click", ".RelatedDisplay", function (event) {
     var files = [],
             labels = [],
@@ -1108,6 +1112,8 @@ $(function () {
     $(".ActiveSymbol .ActiveGroup:nth-child(2)").show();
 
     jlab.wedm.resizeText();
+
+    jlab.wedm.initEmbedded();
 
     jlab.wedm.createWidgets();
 

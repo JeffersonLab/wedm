@@ -46,7 +46,7 @@ public class ScreenParser extends EDMParser {
 
     private static final Logger LOGGER = Logger.getLogger(ScreenParser.class.getName());
 
-    public Screen parse(String name, ColorList colorList, boolean isSymbolFile) throws
+    public Screen parse(String name, ColorList colorList, boolean isEmbeddedFile) throws
             FileNotFoundException {
 
         if (name == null) {
@@ -65,7 +65,7 @@ public class ScreenParser extends EDMParser {
 
         ScreenProperties properties = new ScreenProperties();
         List<ScreenObject> screenObjects = new ArrayList<>();
-        List<ActiveSymbol> symbolObjects = new ArrayList<>();
+        List<EmbeddedScreen> embeddedScreens = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(edl)) {
 
@@ -170,8 +170,8 @@ public class ScreenParser extends EDMParser {
                                     }
                                 }
 
-                                if (obj instanceof ActiveSymbol) {
-                                    symbolObjects.add((ActiveSymbol) obj);
+                                if (obj instanceof EmbeddedScreen) {
+                                    embeddedScreens.add((EmbeddedScreen) obj);
                                 }
 
                                 LOGGER.log(Level.FINEST, "Handling Widget: {0}",
@@ -577,6 +577,10 @@ public class ScreenParser extends EDMParser {
                             case "visPv":
                                 last.visPv = stripQuotes(line.substring("visPv".length()));
                                 break;
+                            case "filePv":
+                                ((ActivePictureInPicture) last).filePv = stripQuotes(line.substring(
+                                        "filePv".length()));
+                                break;
                             case "file":
                                 //LOGGER.log(Level.FINEST, "Found file: {0}", tokens[1]);
                                 ((EmbeddedScreen) last).file = stripQuotes(tokens[1]);
@@ -683,8 +687,11 @@ public class ScreenParser extends EDMParser {
 
         }
 
-        if (!isSymbolFile) { // Don't recurse more than one file deep
-            for (ActiveSymbol symbol : symbolObjects) {
+        if (!isEmbeddedFile) { // Don't recurse more than one file deep
+            for (EmbeddedScreen embedded : embeddedScreens) {
+
+                System.out.println("embedded file: " + embedded.file);
+
                 try {
                     /*File symbolFile = new File(symbol.file);
 
@@ -692,11 +699,35 @@ public class ScreenParser extends EDMParser {
                         symbolFile = new File(edl.getParent() + File.separator + symbol.file);
                     }*/
 
-                    Screen s = this.parse(symbol.file, colorList, true);
-                    s.setScreenProperties(symbol);
-                    symbol.screen = s;
+                    if (embedded.file != null) {
+                        Screen s = this.parse(embedded.file, colorList, true);
+                        s.setScreenProperties(embedded);
+                        embedded.screen = s;
+                    } else {
+                        LOGGER.log(Level.FINEST, "filePv directed");
+                        if (embedded.numDsps > 0 && embedded.numDsps <= 64) {
+                            for (int i = 0; i < embedded.numDsps; i++) {
+                                String f = embedded.displayFileNames[i];
+
+                                LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
+
+                                if (f != null) {
+                                    try {
+                                        Screen s2 = this.parse(f, colorList, true);
+
+                                        s2.embeddedIndex = i;
+                                        
+                                        ((ActivePictureInPicture) embedded).screenList.add(s2);
+                                    } catch (Exception e) {
+                                        LOGGER.log(Level.WARNING,
+                                                "Unable to load embedded menu file: " + f, e);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } catch (Exception e) {
-                    LOGGER.log(Level.WARNING, "Unable to load symbol file: " + symbol.file, e);
+                    LOGGER.log(Level.WARNING, "Unable to load embedded file: " + embedded.file, e);
                 }
             }
         }
