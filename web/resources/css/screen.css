@@ -75,6 +75,9 @@
 .screen {
     overflow: hidden;
 }
+.ActiveChoiceButton .ScreenObject span {
+    white-space: nowrap;
+}
 .screen-text {
     white-space: pre;
     display: table-cell;
