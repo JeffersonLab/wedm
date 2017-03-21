@@ -1,6 +1,8 @@
 package org.jlab.wedm.presentation.controller;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,8 @@ import org.jlab.wedm.persistence.model.Screen;
 @WebServlet(name = "Screen", urlPatterns = {"/screen"})
 public class ScreenController extends HttpServlet {
 
+    private static final Logger LOGGER = Logger.getLogger(ScreenController.class.getName());    
+    
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -33,7 +37,11 @@ public class ScreenController extends HttpServlet {
         
         ScreenService service = new ScreenService();
         
+        long start = System.currentTimeMillis();
         Screen screen = service.load(edlname);
+        long end = System.currentTimeMillis();
+        
+        LOGGER.log(Level.FINEST, "Parse Time: (seconds) {0}", (end - start) / 1000.0);
         
         request.setAttribute("screen", screen);
         

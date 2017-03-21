@@ -23,7 +23,7 @@ public class ScreenService {
         
         ScreenParser parser = new ScreenParser();
         
-        return parser.parse(name, colorList, false);
+        return parser.parse(name, colorList, 0);
     }
     
     private void loadColorFile(String colorfile) throws FileNotFoundException {

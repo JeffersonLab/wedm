@@ -46,7 +46,7 @@ public class ScreenParser extends EDMParser {
 
     private static final Logger LOGGER = Logger.getLogger(ScreenParser.class.getName());
 
-    public Screen parse(String name, ColorList colorList, boolean isEmbeddedFile) throws
+    public Screen parse(String name, ColorList colorList, int recursionLevel) throws
             FileNotFoundException {
 
         if (name == null) {
@@ -687,7 +687,7 @@ public class ScreenParser extends EDMParser {
 
         }
 
-        if (!isEmbeddedFile) { // Don't recurse more than one file deep
+        if (recursionLevel < 5) { // Don't recurse more than five files deep
             for (EmbeddedScreen embedded : embeddedScreens) {
 
                 System.out.println("embedded file: " + embedded.file);
@@ -700,7 +700,7 @@ public class ScreenParser extends EDMParser {
                     }*/
 
                     if (embedded.file != null) {
-                        Screen s = this.parse(embedded.file, colorList, true);
+                        Screen s = this.parse(embedded.file, colorList, recursionLevel + 1);
                         s.setScreenProperties(embedded);
                         embedded.screen = s;
                     } else {
@@ -713,7 +713,7 @@ public class ScreenParser extends EDMParser {
 
                                 if (f != null) {
                                     try {
-                                        Screen s2 = this.parse(f, colorList, true);
+                                        Screen s2 = this.parse(f, colorList, recursionLevel + 1);
 
                                         s2.embeddedIndex = i;
                                         
