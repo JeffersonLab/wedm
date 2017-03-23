@@ -658,6 +658,12 @@ public class ScreenParser extends EDMParser {
                                 EDLColor bg2Color = colorList.lookup(bg2Index);
                                 properties.ctlBgColor2 = bg2Color;
                                 break;
+                            case "id":
+                            case "fillMode":
+                            case "symbolTag":
+                            case "symbol0":
+                            case "value0":
+                            case "replaceSymbols":
                             case "beginObjectProperties":
                             case "major":
                             case "minor":
