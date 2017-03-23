@@ -12,27 +12,34 @@ import java.util.logging.Logger;
 public class Screen {
 
     private static final Logger LOGGER = Logger.getLogger(Screen.class.getName());
-
+    public String indent = "        ";
+    
+    private final String canonicalPath;
     private ScreenProperties properties;
     public final List<ScreenObject> screenObjects;
     public Integer embeddedIndex = null;
     private final ColorList colorList;
 
-    public Screen(ScreenProperties properties, List<ScreenObject> screenObjects, ColorList colorList) {
+    public Screen(String canonicalPath, ScreenProperties properties,
+            List<ScreenObject> screenObjects, ColorList colorList) {
+        this.canonicalPath = canonicalPath;
         this.properties = properties;
         this.screenObjects = screenObjects;
         this.colorList = colorList;
-    }
-    
-    public String getTitle() {
-        return properties.title;
     }
 
     public void setScreenProperties(ScreenProperties properties) {
         this.properties = properties;
     }
 
-    public String toHtml(String indent, String indentStep) {
+    public HtmlScreen toHtmlScreen() {
+        String html = toHtmlBody();
+        String css = toCssHead();
+        String js = this.getColorStyleVariables(); // TODO: this is wasteful to redo every time
+        return new HtmlScreen(canonicalPath, html, css, js, properties.title);
+    }
+    
+    String toHtmlBody() {
 
         if (properties.w <= 0) {
             properties.w = 800;
@@ -45,15 +52,16 @@ public class Screen {
         }
 
         String widthAndHeight = "width: " + properties.w + "px; height: " + properties.h + "px; ";
-        String indentPlusOne = indent + indentStep;
+        String indentPlusOne = indent + HtmlScreen.INDENT_STEP;
         String embeddedIndexStr = "";
-        
-        if(embeddedIndex != null) {
+
+        if (embeddedIndex != null) {
             embeddedIndexStr = "data-index=\"" + embeddedIndex + "\"";
         }
-        
+
         String html
-                = indent + "<div class=\"screen\" " +  embeddedIndexStr + " style=\"position: relative; " + widthAndHeight
+                = indent + "<div class=\"screen\" " + embeddedIndexStr
+                + " style=\"position: relative; " + widthAndHeight
                 + " ";
 
         if (properties.bgColor != null && properties.bgColor instanceof EDLColorConstant) {
@@ -67,7 +75,7 @@ public class Screen {
 
         for (ScreenObject obj : screenObjects) {
             checkForColorRuleWithNoPv(obj);
-            html = html + obj.toHtml(indentPlusOne, indentStep, translation);
+            html = html + obj.toHtml(indentPlusOne, HtmlScreen.INDENT_STEP, translation);
         }
 
         html = html + indent + "</div>\n";
@@ -108,15 +116,15 @@ public class Screen {
 
         return js;
     }
-    
-    public String getDynamicCss() {
+
+    private String toCssHead() {
         String css = "";
-        
+
         if (properties.fgColor != null && properties.fgColor instanceof EDLColorConstant) {
             css = css + ".ScreenObject:hover {\noutline-color: "
                     + ((EDLColorConstant) properties.fgColor).toRgbString() + " !important;\n}\n";
-        }        
-        
+        }
+
         return css;
     }
 

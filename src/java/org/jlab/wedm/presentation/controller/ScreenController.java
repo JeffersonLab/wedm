@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jlab.wedm.business.service.ScreenService;
-import org.jlab.wedm.persistence.model.Screen;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
  *
@@ -38,10 +38,10 @@ public class ScreenController extends HttpServlet {
         ScreenService service = new ScreenService();
         
         long start = System.currentTimeMillis();
-        Screen screen = service.load(edlname);
+        HtmlScreen screen = service.load(edlname);
         long end = System.currentTimeMillis();
         
-        LOGGER.log(Level.FINEST, "Parse Time: (seconds) {0}", (end - start) / 1000.0);
+        LOGGER.log(Level.FINEST, "Screen Service Load Time: (seconds) {0}", (end - start) / 1000.0);
         
         request.setAttribute("screen", screen);
         

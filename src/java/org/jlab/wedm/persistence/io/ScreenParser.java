@@ -2,6 +2,7 @@ package org.jlab.wedm.persistence.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -47,7 +48,7 @@ public class ScreenParser extends EDMParser {
     private static final Logger LOGGER = Logger.getLogger(ScreenParser.class.getName());
 
     public Screen parse(String name, ColorList colorList, int recursionLevel) throws
-            FileNotFoundException {
+            FileNotFoundException, IOException {
 
         if (name == null) {
             return null; // TODO: should we return a screen that says no file name given?
@@ -62,6 +63,8 @@ public class ScreenParser extends EDMParser {
         if (!edl.isAbsolute()) {
             edl = new File(EDL_ROOT_DIR + File.separator + name);
         }
+        
+        String canonicalPath = edl.getCanonicalPath();
 
         ScreenProperties properties = new ScreenProperties();
         List<ScreenObject> screenObjects = new ArrayList<>();
@@ -174,20 +177,20 @@ public class ScreenParser extends EDMParser {
                                     embeddedScreens.add((EmbeddedScreen) obj);
                                 }
 
-                                LOGGER.log(Level.FINEST, "Handling Widget: {0}",
-                                        obj.getClass().getSimpleName());
+                                //LOGGER.log(Level.FINEST, "Handling Widget: {0}",
+                                //        obj.getClass().getSimpleName());
 
                                 last = obj;
                                 break;
                             case "endObjectProperties":
-                                LOGGER.log(Level.FINEST, "Ending Widget: {0}",
-                                        last.getClass().getSimpleName());
+                                //LOGGER.log(Level.FINEST, "Ending Widget: {0}",
+                                //        last.getClass().getSimpleName());
                                 last = null;
                                 break;
                             case "endGroup":
                                 last = groupStack.pop();
-                                LOGGER.log(Level.FINEST, "Re-Handling Widget: {0}",
-                                        last.getClass().getSimpleName());
+                                //LOGGER.log(Level.FINEST, "Re-Handling Widget: {0}",
+                                //        last.getClass().getSimpleName());
                                 break;
                             case "w":
                                 //LOGGER.log(Level.FINEST, "Found w");
@@ -690,7 +693,7 @@ public class ScreenParser extends EDMParser {
         if (recursionLevel < 5) { // Don't recurse more than five files deep
             for (EmbeddedScreen embedded : embeddedScreens) {
 
-                System.out.println("embedded file: " + embedded.file);
+                //LOGGER.log(Level.FINEST, "Embedded file: {0}", embedded.file);
 
                 try {
                     /*File symbolFile = new File(symbol.file);
@@ -704,12 +707,12 @@ public class ScreenParser extends EDMParser {
                         s.setScreenProperties(embedded);
                         embedded.screen = s;
                     } else {
-                        LOGGER.log(Level.FINEST, "filePv directed");
+                        //LOGGER.log(Level.FINEST, "filePv directed");
                         if (embedded.numDsps > 0 && embedded.numDsps <= 64) {
                             for (int i = 0; i < embedded.numDsps; i++) {
                                 String f = embedded.displayFileNames[i];
 
-                                LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
+                                //LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
 
                                 if (f != null) {
                                     try {
@@ -732,7 +735,7 @@ public class ScreenParser extends EDMParser {
             }
         }
 
-        return new Screen(properties, screenObjects, colorList);
+        return new Screen(canonicalPath, properties, screenObjects, colorList);
     }
 
 }

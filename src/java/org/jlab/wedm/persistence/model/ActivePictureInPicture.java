@@ -45,7 +45,8 @@ public class ActivePictureInPicture extends EmbeddedScreen {
             }
         } else if (!screenList.isEmpty()) {
             for (Screen s : screenList) {
-                html = html + s.toHtml(indent + indentStep, indentStep);
+                s.indent = indent + indentStep;
+                html = html + s.toHtmlBody();
             }
         }
 

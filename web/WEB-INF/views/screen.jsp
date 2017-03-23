@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/epics2web.css?v=${initParam.epics2webReleaseNumber}"/>        
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
         <style type="text/css">
-${screen.getDynamicCss()}      
+${screen.getCss()}      
         </style>
     </head>
     <body>
@@ -23,12 +23,12 @@ ${screen.getDynamicCss()}
         <img class="ws-connecting connecting-spinner" title="Socket Connecting" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connecting.svg?v=${initParam.epics2webReleaseNumber}"/>                
         <img class="ws-connected" title="Socket Connected" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connected.svg?v=${initParam.epics2webReleaseNumber}"/>
     </div>        
-${screen.toHtml("        ", "    ")} 
+${screen.getHtml()} 
     <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/epics2web/resources/js/epics2web.js?v=${initParam.epics2webReleaseNumber}"></script>    
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
     <script type="text/javascript">
-${screen.getColorStyleVariables()}
+${screen.getJs()}
     </script>       
 </body>
 </html>
