@@ -14,6 +14,7 @@
 }
 .ActiveButton,
 .ActiveMessageButton,
+.ActiveMenuButton,
 .ActiveChoiceButton,
 .ShellCommand,
 .ActiveXTextDsp.editable {
@@ -66,6 +67,7 @@
 .ActiveButton:hover,
 .ShellCommand:hover,
 .ActiveMessageButton:hover,
+.ActiveMenuButton:hover,
 .ActiveChoiceButton:hover,
 .RelatedDisplay:hover,
 .ActiveXTextDsp.editable:not(.motif):hover {
@@ -98,4 +100,25 @@ svg.ScreenObject {
 }
 .connection-state-panel {
     float: right;
+}
+.menu-button-container {
+    display: table;
+    width: 100%;
+}
+.menu-button-container > div {
+    display: table-cell;
+}
+.menu-button-container > .screen-text {
+    width: 85%;
+}
+.menu-button-box {
+    text-align: center;
+    vertical-align: middle;
+}
+.menu-button-box > div {
+    width: 50%;
+}
+.menu-button-box > div > div {
+    height: 0;
+    padding-bottom: 100%;
 }

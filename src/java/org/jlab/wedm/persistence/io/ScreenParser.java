@@ -28,6 +28,7 @@ import org.jlab.wedm.persistence.model.EmbeddedScreen;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.ScreenObject;
 import org.jlab.wedm.persistence.model.ScreenProperties;
+import org.jlab.wedm.persistence.model.html.ActiveMenuButton;
 import org.jlab.wedm.persistence.model.html.ActiveMessageButton;
 import org.jlab.wedm.persistence.model.html.ShellCommand;
 import org.jlab.wedm.persistence.model.html.TextScreenObject;
@@ -107,6 +108,9 @@ public class ScreenParser extends EDMParser {
                                     case "activeMessageButtonClass":
                                         //LOGGER.log(Level.FINEST, "Type: activeMessageButton");
                                         obj = new ActiveMessageButton();
+                                        break;
+                                    case "activeMenuButtonClass":
+                                        obj = new ActiveMenuButton();
                                         break;
                                     case "relatedDisplayClass":
                                         //LOGGER.log(Level.FINEST, "Type: relatedDisplayClass");

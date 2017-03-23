@@ -24,15 +24,13 @@ public class TextScreenObject extends HtmlScreenObject {
         String className = this.getClass().getSimpleName();
         if (!("ActiveButton".equals(className) || "ActiveMessageButton".equals(className)
                 || "ActiveXTextDsp".equals(className)) || threeDimensional) {
-            if (topShadowColor != null) {
+            if (topShadowColor != null && botShadowColor != null) {
                 styles.put("border-top", "1px solid " + botShadowColor.toColorString());
                 styles.put("border-left", "1px solid " + botShadowColor.toColorString());
 
                 threeDStyles.put("border-top", "2px solid " + topShadowColor.toColorString());
                 threeDStyles.put("border-left", "2px solid " + topShadowColor.toColorString());
-            }
 
-            if (botShadowColor != null) {
                 styles.put("border-bottom", "1px solid " + topShadowColor.toColorString());
                 styles.put("border-right", "1px solid " + topShadowColor.toColorString());
 
@@ -90,11 +88,25 @@ public class TextScreenObject extends HtmlScreenObject {
         }
 
         html = html + indentPlusOne + "<div class=\"text-wrap\" " + threeDStyleStr + ">\n";
-        html = html + indentPlusTwo + "<div class=\"screen-text\" " + textStyleStr + ">";
-        html = html + val + "</div>\n";
+        html = getButtonFaceHtml(html, indentPlusTwo);
         html = html + indentPlusOne + "</div>\n";
         html = html + endHtml(indent, indentStep);
 
+        return html;
+    }
+    
+    public String getButtonFaceHtml(String html, String indent) {
+        String textStyleStr = getStyleString(textStyles);
+        
+        String val = org.apache.taglibs.standard.functions.Functions.escapeXml(value);
+
+        if (val == null || "".equals(val)) {
+            val = " ";
+        }        
+        
+        html = html + indent + "<div class=\"screen-text\" " + textStyleStr + ">";
+        html = html + val + "</div>\n";
+        
         return html;
     }
 }
