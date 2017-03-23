@@ -57,7 +57,7 @@ public class TextScreenObject extends HtmlScreenObject {
             // We could have had an overlay to fake this, but instead we use negative margins and a border on the text wrap element.
             threeDStyles.put("margin", "-1px 0");
         } else if (border) {
-            LOGGER.log(Level.INFO, "border being using in html text object!");
+            //LOGGER.log(Level.INFO, "border being using in html text object!");
 
             float px = 1;
 

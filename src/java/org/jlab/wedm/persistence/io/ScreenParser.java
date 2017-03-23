@@ -218,19 +218,19 @@ public class ScreenParser extends EDMParser {
 
                                 for (int i = 0; i < alx.numPoints; i++) {
                                     String val = scanner.nextLine();
-                                    String[] tks = val.split("\\s+");
-                                    alx.xValues[i] = Integer.parseInt(tks[2]);
+                                    String[] tks = val.trim().split("\\s");
+                                    alx.xValues[i] = Integer.parseInt(tks[1].trim());
                                 }
                                 break;
                             case "yPoints":
                                 ActiveLine aly = ((ActiveLine) last);
-
+                                
                                 aly.yValues = new int[aly.numPoints];
-
+                                
                                 for (int i = 0; i < aly.numPoints; i++) {
                                     String val = scanner.nextLine();
-                                    String[] tks = val.split("\\s+");
-                                    aly.yValues[i] = Integer.parseInt(tks[2]);
+                                    String[] tks = val.trim().split("\\s");
+                                    aly.yValues[i] = Integer.parseInt(tks[1].trim());
                                 }
                                 break;
                             case "arrows":
@@ -501,11 +501,11 @@ public class ScreenParser extends EDMParser {
                                         break;
                                     }
 
-                                    String[] tks = val.split("\"");
+                                    String[] tks = val.trim().split("\\s");
                                     int rdIndex = Integer.parseInt(tks[0].trim());
 
                                     if (rdIndex >= 0 && rdIndex <= 64) {
-                                        last.displayFileNames[rdIndex] = tks[1].trim();  //stripQuotes(tks[1].trim());
+                                        last.displayFileNames[rdIndex] = stripQuotes(val.substring(val.indexOf(tks[0]) + 1));
                                     } else {
                                         LOGGER.log(Level.WARNING,
                                                 "RelatedDisplay filename out of range: {0}",
@@ -513,7 +513,7 @@ public class ScreenParser extends EDMParser {
                                     }
                                 }
                                 break;
-                            case "menuLabel":
+                            case "menuLabel": // Quotes are optional so parsing is harder than it has to be
                                 while (scanner.hasNext()) {
                                     String val = scanner.nextLine();
 
@@ -521,11 +521,11 @@ public class ScreenParser extends EDMParser {
                                         break;
                                     }
 
-                                    String[] tks = val.split("\"");
+                                    String[] tks = val.trim().split("\\s");
                                     int rdIndex = Integer.parseInt(tks[0].trim());
 
                                     if (rdIndex >= 0 && rdIndex <= 64) {
-                                        last.menuLabels[rdIndex] = tks[1].trim(); //stripQuotes(tks[1].trim());
+                                        last.menuLabels[rdIndex] = stripQuotes(val.substring(val.indexOf(tks[0]) + 1));
                                     } else {
                                         LOGGER.log(Level.WARNING,
                                                 "menuLabel filename out of range: {0}",
@@ -678,6 +678,35 @@ public class ScreenParser extends EDMParser {
                             case "pressValue":
                             case "releaseValue":
                             case "useEnumNumeric":
+                            case "includeHelpIcon":
+                            case "selectColor":
+                            case "inconsistentColor":
+                            case "allowDups":
+                            case "symbols":
+                            case "noEdit":
+                            case "gridSize":
+                            case "execCursor":
+                            case "scaleMax":
+                            case "scaleMin":
+                            case "controlLabelType":
+                            case "increment":
+                            case "2ndBgColor":
+                            case "snapToGrid":
+                            case "setPosition":
+                            case "swapButtons":
+                            case "setSize":
+                            case "displaySource":
+                            case "sizeOfs":
+                            case "noScroll":
+                            case "showUnits":
+                            case "center":
+                            case "ignoreMultiplexors":
+                            case "colorPv":
+                            case "helpCommand":
+                            case "multipleInstances":
+                            case "labelTicks":
+                            case "majorTicks":
+                            case "scaleFormat":
                                 break;
                             default:
                                 LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);
