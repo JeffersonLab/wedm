@@ -426,8 +426,8 @@ public class ScreenParser extends EDMParser {
                             case "numPvs":
                                 last.numPvs = Integer.parseInt(tokens[1]);
                                 break;
-                            case "precision":
-                                last.precision = Integer.parseInt(tokens[1]);
+                            case "precision": // Quotes are usually not there, but sometimes are
+                                last.precision = Integer.parseInt(stripQuotes(tokens[1]));
                                 break;
                             case "numStates":
                                 ((ActiveSymbol) last).numStates = Integer.parseInt(tokens[1]);
@@ -707,6 +707,13 @@ public class ScreenParser extends EDMParser {
                             case "labelTicks":
                             case "majorTicks":
                             case "scaleFormat":
+                            case "yPosOffset":
+                            case "xPosOffset":
+                            case "propagateMacros":
+                            case "labelType":
+                            case "numItems":
+                            case "inputFocusUpdates":     
+                            case "nullCondition":
                                 break;
                             default:
                                 LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);
