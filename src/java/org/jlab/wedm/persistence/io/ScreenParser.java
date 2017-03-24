@@ -16,8 +16,8 @@ import org.jlab.wedm.persistence.model.ActiveSymbol;
 import org.jlab.wedm.persistence.model.html.ActiveChoiceButton;
 import org.jlab.wedm.persistence.model.svg.ActiveLine;
 import org.jlab.wedm.persistence.model.html.ActiveButton;
-import org.jlab.wedm.persistence.model.html.ActiveXText;
-import org.jlab.wedm.persistence.model.html.ActiveXTextDsp;
+import org.jlab.wedm.persistence.model.html.ActiveStaticText;
+import org.jlab.wedm.persistence.model.html.ActiveControlText;
 import org.jlab.wedm.persistence.model.ColorList;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLFont;
@@ -30,6 +30,8 @@ import org.jlab.wedm.persistence.model.ScreenObject;
 import org.jlab.wedm.persistence.model.ScreenProperties;
 import org.jlab.wedm.persistence.model.html.ActiveMenuButton;
 import org.jlab.wedm.persistence.model.html.ActiveMessageButton;
+import org.jlab.wedm.persistence.model.html.ActiveRegExText;
+import org.jlab.wedm.persistence.model.html.ActiveUpdateText;
 import org.jlab.wedm.persistence.model.html.ShellCommand;
 import org.jlab.wedm.persistence.model.html.TextScreenObject;
 import org.jlab.wedm.persistence.model.svg.ActiveArc;
@@ -95,12 +97,18 @@ public class ScreenParser extends EDMParser {
                                 switch (tokens[1]) {
                                     case "activeXTextClass":
                                         //LOGGER.log(Level.FINEST, "Type: activeXTextClass");
-                                        obj = new ActiveXText();
+                                        obj = new ActiveStaticText();
+                                        break;
+                                    case "activeXRegTextClass":
+                                        obj = new ActiveRegExText();
                                         break;
                                     case "activeXTextDspClass": // CONTROL
                                     case "activeXTextDspClass:noedit": // MONITOR
                                         //LOGGER.log(Level.FINEST, "Type: activeXTextDspClass");
-                                        obj = new ActiveXTextDsp();
+                                        obj = new ActiveControlText();
+                                        break;
+                                    case "TextupdateClass":
+                                        obj = new ActiveUpdateText();
                                         break;
                                     case "activeButtonClass":
                                         obj = new ActiveButton();
@@ -376,7 +384,7 @@ public class ScreenParser extends EDMParser {
                                 last.useHexPrefix = true;
                                 break;
                             case "useAlarmBorder":
-                                ((ActiveXTextDsp) last).useAlarmBorder = true;
+                                ((ActiveControlText) last).useAlarmBorder = true;
                                 break;
                             case "fillColor":
                                 Integer fcIndex = Integer.parseInt(tokens[2]);
@@ -724,6 +732,7 @@ public class ScreenParser extends EDMParser {
                             case "numItems":
                             case "inputFocusUpdates":     
                             case "nullCondition":
+                            case "pv":
                                 break;
                             default:
                                 LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);

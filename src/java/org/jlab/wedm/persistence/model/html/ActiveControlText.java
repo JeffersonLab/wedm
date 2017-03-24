@@ -7,7 +7,7 @@ import java.awt.Point;
  *
  * @author ryans
  */
-public class ActiveXTextDsp extends ActiveXText {
+public class ActiveControlText extends ActiveStaticText {
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
