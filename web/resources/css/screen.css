@@ -17,7 +17,7 @@
 .ActiveMenuButton,
 .ActiveChoiceButton,
 .ShellCommand,
-.ActiveXTextDsp.editable {
+.ActiveControlText.editable {
     cursor: not-allowed;
 }
 .ActiveRectangle {
@@ -70,10 +70,10 @@
 .ActiveMenuButton:hover,
 .ActiveChoiceButton:hover,
 .RelatedDisplay:hover,
-.ActiveXTextDsp.editable:not(.motif):hover {
+.ActiveControlText.editable:not(.motif):hover {
     outline: 2px solid black;
 }
-.ActiveXTextDsp,
+.ActiveControlText,
 .screen {
     overflow: hidden;
 }

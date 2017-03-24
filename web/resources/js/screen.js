@@ -975,7 +975,8 @@ jlab.wedm.createWidgets = function () {
 
         if (ctrlPvExpr !== undefined || visPvExpr !== undefined || alarmPvExpr !== undefined || colorPvExpr !== undefined || indicatorPvExpr !== undefined) {
             /*console.log($obj[0].className);*/
-            if ($obj.hasClass("ActiveXTextDsp")) {
+            if ($obj.hasClass("ActiveControlText") || 
+                    $obj.hasClass("ActiveUpdateText")) {
                 /*console.log("text widget");*/
                 widget = new jlab.wedm.ControlTextPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveSymbol")) {
@@ -994,7 +995,9 @@ jlab.wedm.createWidgets = function () {
                     $obj.attr("class").indexOf("ActiveLine") > -1 ||
                     $obj.attr("class").indexOf("ActiveArc") > -1) {
                 widget = new jlab.wedm.ShapePvWidget(id, pvSet);
-            } else if ($obj.attr("class").indexOf("ActiveXText") > -1) {
+            } else if ($obj.attr("class").indexOf("ActiveStaticText") > -1 || 
+                    $obj.attr("class").indexOf("ActiveRegExText") > -1) {
+                
                 widget = new jlab.wedm.StaticTextPvWidget(id, pvSet);
             } else {
                 /*console.log("other widget");*/
