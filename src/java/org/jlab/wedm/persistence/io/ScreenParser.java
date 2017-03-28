@@ -418,6 +418,9 @@ public class ScreenParser extends EDMParser {
                                     finalString = finalString + "\n" + stripQuotes(value);
                                 }
 
+                                // Replace escaped double quotes \" with just double quotes
+                                finalString = finalString.replace("\\" + "\"", "\"");                                
+                                
                                 ((TextScreenObject) last).value = finalString;
                                 break;
                             case "controlPv":
