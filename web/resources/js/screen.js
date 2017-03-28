@@ -334,6 +334,17 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
     $("#" + this.id + " .screen-text").text(value);
 };
 
+jlab.wedm.MenuButtonPvWidget = function (id, pvSet) {
+    jlab.wedm.ControlTextPvWidget.call(this, id, pvSet);
+};
+
+jlab.wedm.MenuButtonPvWidget.prototype = Object.create(jlab.wedm.ControlTextPvWidget.prototype);
+jlab.wedm.MenuButtonPvWidget.prototype.constructor = jlab.wedm.MenuButtonPvWidget;
+
+jlab.wedm.MenuButtonPvWidget.prototype.handleIndicatorUpdate = function () {
+    
+};
+
 jlab.wedm.SymbolPvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.call(this, id, pvSet);
 };
@@ -979,6 +990,8 @@ jlab.wedm.createWidgets = function () {
                     $obj.hasClass("ActiveUpdateText")) {
                 /*console.log("text widget");*/
                 widget = new jlab.wedm.ControlTextPvWidget(id, pvSet);
+            } else if($obj.hasClass("ActiveMenuButton")) {    
+                widget = new jlab.wedm.MenuButtonPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveSymbol")) {
                 /*console.log("symbol widget");*/
                 widget = new jlab.wedm.SymbolPvWidget(id, pvSet);
