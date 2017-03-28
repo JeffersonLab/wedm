@@ -899,13 +899,13 @@ jlab.wedm.resizeText = function () {
          * OuterHeight(true) = padding, border, and margin included
          */
 
-        /*console.log($parent.attr("id") + " - Screen Object Height: " + $parent.outerHeight());
+         /*console.log($parent.attr("id") + " - Screen Object Height: " + $parent.outerHeight());
          console.log($parent.attr("id") + " - Text OuterHeight(true) + wrapHeight: " + ($obj.outerHeight(true) + wrapHeight));*/
 
         var i = 0;
 
         while (($obj.outerHeight(true) + wrapHeight) > $parent.height() || ($obj.outerWidth(true) + wrapWidth) > $parent.width()) {
-            if (i > 6) {
+            if (i > 10) {
                 console.log($parent.attr("id") + ' - font size difference too big; aborting resize');
                 break;
             }
