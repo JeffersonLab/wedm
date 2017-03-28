@@ -2,11 +2,11 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <param-name>releaseNumber</param-name>
-        <param-value>0.7.0</param-value>
+        <param-value>0.8.0</param-value>
     </context-param>
     <context-param>
         <param-name>releaseDate</param-name>
-        <param-value>10 Mar 2017</param-value>
+        <param-value>28 Mar 2017</param-value>
     </context-param>
     <context-param>
         <param-name>epics2webReleaseNumber</param-name>
