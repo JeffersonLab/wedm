@@ -517,7 +517,7 @@ public class ScreenParser extends EDMParser {
                                     int rdIndex = Integer.parseInt(tks[0].trim());
 
                                     if (rdIndex >= 0 && rdIndex <= 64) {
-                                        last.displayFileNames[rdIndex] = stripQuotes(val.substring(val.indexOf(tks[0]) + 1));
+                                        last.displayFileNames[rdIndex] = stripQuotes(val.substring(val.indexOf(tks[0]) + tks[0].length()));
                                     } else {
                                         LOGGER.log(Level.WARNING,
                                                 "RelatedDisplay filename out of range: {0}",
@@ -537,7 +537,7 @@ public class ScreenParser extends EDMParser {
                                     int rdIndex = Integer.parseInt(tks[0].trim());
 
                                     if (rdIndex >= 0 && rdIndex <= 64) {
-                                        last.menuLabels[rdIndex] = stripQuotes(val.substring(val.indexOf(tks[0]) + 1));
+                                        last.menuLabels[rdIndex] = stripQuotes(val.substring(val.indexOf(tks[0]) + tks[0].length()));
                                     } else {
                                         LOGGER.log(Level.WARNING,
                                                 "menuLabel filename out of range: {0}",
