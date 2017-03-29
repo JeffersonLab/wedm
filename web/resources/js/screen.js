@@ -339,6 +339,13 @@ jlab.wedm.MenuButtonPvWidget.prototype.handleIndicatorUpdate = function () {
 
 };
 
+jlab.wedm.ButtonPvWidget = function (id, pvSet) {
+    jlab.wedm.StaticTextPvWidget.call(this, id, pvSet);
+};
+
+jlab.wedm.ButtonPvWidget.prototype = Object.create(jlab.wedm.StaticTextPvWidget.prototype);
+jlab.wedm.ButtonPvWidget.prototype.constructor = jlab.wedm.ButtonPvWidget;
+
 jlab.wedm.SymbolPvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.call(this, id, pvSet);
 };
@@ -844,7 +851,7 @@ jlab.wedm.parseLocalVar = function (expr) {
 
             jlab.wedm.localPvMap[name] = local;
         } else { /*Reference to an undeclared local variable encountered*/
-            console.log("Reference to undeclared local variable encountered: " + name);            
+            console.log("Reference to undeclared local variable encountered: " + name);
             local = {};
             local.name = name;
             local.type = "d";
@@ -1028,18 +1035,16 @@ jlab.wedm.createWidgets = function () {
             /*console.log($obj[0].className);*/
             if ($obj.hasClass("ActiveControlText") ||
                     $obj.hasClass("ActiveUpdateText")) {
-                /*console.log("text widget");*/
                 widget = new jlab.wedm.ControlTextPvWidget(id, pvSet);
+            } else if ($obj.hasClass("ActiveSymbol")) {
+                widget = new jlab.wedm.SymbolPvWidget(id, pvSet);    
+            } else if($obj.hasClass("ActiveButton")) {
+                widget = new jlab.wedm.ButtonPvWidget(id, pvSet);                
             } else if ($obj.hasClass("ActiveMenuButton")) {
                 widget = new jlab.wedm.MenuButtonPvWidget(id, pvSet);
-            } else if ($obj.hasClass("ActiveSymbol")) {
-                /*console.log("symbol widget");*/
-                widget = new jlab.wedm.SymbolPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveChoiceButton")) {
-                /*console.log("choice widget");*/
                 widget = new jlab.wedm.ChoicePvWidget(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveByte") > -1) { /*SVG class handling is different*/
-                /*console.log("byte widget");*/
                 widget = new jlab.wedm.BytePvWidget(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveBarMonitor") > -1) {
                 widget = new jlab.wedm.BarMeterPvWidget(id, pvSet);
@@ -1196,6 +1201,11 @@ $(document).on("click", ".local-control.ActiveButton", function () {
     if ($obj.hasClass("toggle-button-off")) {
         $obj.removeClass("toggle-button-off");
         $obj.addClass("toggle-button-on");
+        if ($obj.attr("data-bg-color-rule")) {
+            $obj.attr("data-bg-color-rule", $obj.attr("data-on-color"));
+        } else {
+            $obj.css("background-color", $obj.attr("data-on-color"));
+        }
         $obj.find(".screen-text").text($obj.attr("data-on-label"));
         $obj.find(".text-wrap").css("border-width", "0");
         var local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
@@ -1204,6 +1214,11 @@ $(document).on("click", ".local-control.ActiveButton", function () {
     } else if ($obj.hasClass("toggle-button-on")) {
         $obj.removeClass("toggle-button-on");
         $obj.addClass("toggle-button-off");
+        if ($obj.attr("data-bg-color-rule")) {
+            $obj.attr("data-bg-color-rule", $obj.attr("data-off-color"));
+        } else {
+            $obj.css("background-color", $obj.attr("data-off-color"));
+        }
         $obj.find(".screen-text").text($obj.attr("data-off-label"));
         $obj.find(".text-wrap").css("border-width", "2px");
         var local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));

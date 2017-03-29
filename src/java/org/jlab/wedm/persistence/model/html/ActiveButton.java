@@ -17,22 +17,23 @@ public class ActiveButton extends TextScreenObject {
     public static final String ICON_SYMBOL = "⧉";
 
     @Override
-    public String startHtml(String indent, String indentStep, Point translation) {
-        if(!push) { // if toggle
+    public String toHtml(String indent, String indentStep, Point translation) {
+        if (!push) { // if toggle
             classes.add("toggle-button-off");
             attributes.put("data-on-label", onLabel);
             attributes.put("data-off-label", offLabel);
+            if (onColor != null) {
+                attributes.put("data-on-color", onColor.toColorString());
+            }
+            if (offColor != null) {
+                attributes.put("data-off-color", offColor.toColorString());
+            }
         }
-        
-        if(controlPv != null && controlPv.startsWith("LOC\\")) {
+
+        if (controlPv != null && controlPv.startsWith("LOC\\")) {
             classes.add("local-control");
         }
         
-        return super.startHtml(indent, indentStep, translation);
-    }    
-    
-    @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
         if (icon) {
             if (buttonLabel == null) {
                 buttonLabel = ICON_SYMBOL;
@@ -40,18 +41,18 @@ public class ActiveButton extends TextScreenObject {
                 buttonLabel = ICON_SYMBOL + " " + buttonLabel;
             }
         }
-        
+
         if (buttonLabel != null) {
             value = buttonLabel;
         } else {
             value = offLabel;
         }
-        
+
         align = "center";
 
         if (bgColor == null) {
-            bgColor = onColor;
-        }
+            bgColor = offColor;
+        }        
 
         return super.toHtml(indent, indentStep, translation);
     }

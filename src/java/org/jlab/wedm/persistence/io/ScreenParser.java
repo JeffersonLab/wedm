@@ -432,6 +432,7 @@ public class ScreenParser extends EDMParser {
                                     last.controlPv = stripQuotes(tokens[1]);
                                 }
                                 break;
+                            case "colorPv": // ActiveButton uses colorPv; all others seem to use alarmPv;  alarmPv acts as alarm or color PV based other config
                             case "alarmPv":
                                 last.alarmPv = stripQuotes(tokens[1]);
                                 break;
@@ -722,7 +723,6 @@ public class ScreenParser extends EDMParser {
                             case "showUnits":
                             case "center":
                             case "ignoreMultiplexors":
-                            case "colorPv":
                             case "helpCommand":
                             case "multipleInstances":
                             case "labelTicks":

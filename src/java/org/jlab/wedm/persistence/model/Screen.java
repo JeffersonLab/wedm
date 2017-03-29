@@ -13,7 +13,7 @@ public class Screen {
 
     private static final Logger LOGGER = Logger.getLogger(Screen.class.getName());
     public String indent = "        ";
-    
+
     private final String canonicalPath;
     private ScreenProperties properties;
     public final List<ScreenObject> screenObjects;
@@ -38,7 +38,7 @@ public class Screen {
         String js = this.getColorStyleVariables(); // TODO: this is wasteful to redo every time
         return new HtmlScreen(canonicalPath, html, css, js, properties.title);
     }
-    
+
     String toHtmlBody() {
 
         if (properties.w <= 0) {
@@ -146,6 +146,16 @@ public class Screen {
                 name = ((EDLColorRule) obj.fgColor).getFirstColor();
                 obj.fgColor = colorList.lookup(name);
             }
+
+            if (obj.onColor != null && obj.onColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.onColor).getFirstColor();
+                obj.onColor = colorList.lookup(name);
+            }
+            
+            if (obj.offColor != null && obj.offColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.offColor).getFirstColor();
+                obj.offColor = colorList.lookup(name);
+            }            
         }
     }
 }

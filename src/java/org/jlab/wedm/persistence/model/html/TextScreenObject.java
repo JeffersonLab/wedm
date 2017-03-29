@@ -77,15 +77,8 @@ public class TextScreenObject extends HtmlScreenObject {
         String html = startHtml(indent, indentStep, translation);
 
         String threeDStyleStr = getStyleString(threeDStyles);
-        String textStyleStr = getStyleString(textStyles);
         String indentPlusOne = indent + indentStep;
         String indentPlusTwo = indentPlusOne + indentStep;
-
-        String val = org.apache.taglibs.standard.functions.Functions.escapeXml(value);
-
-        if (val == null || "".equals(val)) {
-            val = " ";
-        }
 
         html = html + indentPlusOne + "<div class=\"text-wrap\" " + threeDStyleStr + ">\n";
         html = getButtonFaceHtml(html, indentPlusTwo);
