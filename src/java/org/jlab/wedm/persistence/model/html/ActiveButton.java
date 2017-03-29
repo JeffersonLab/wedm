@@ -17,6 +17,21 @@ public class ActiveButton extends TextScreenObject {
     public static final String ICON_SYMBOL = "⧉";
 
     @Override
+    public String startHtml(String indent, String indentStep, Point translation) {
+        if(!push) { // if toggle
+            classes.add("toggle-button-off");
+            attributes.put("data-on-label", onLabel);
+            attributes.put("data-off-label", offLabel);
+        }
+        
+        if(controlPv != null && controlPv.startsWith("LOC\\")) {
+            classes.add("local-control");
+        }
+        
+        return super.startHtml(indent, indentStep, translation);
+    }    
+    
+    @Override
     public String toHtml(String indent, String indentStep, Point translation) {
         if (icon) {
             if (buttonLabel == null) {
@@ -28,9 +43,8 @@ public class ActiveButton extends TextScreenObject {
         
         if (buttonLabel != null) {
             value = buttonLabel;
-            onLabel = value;
         } else {
-            value = onLabel;
+            value = offLabel;
         }
         
         align = "center";

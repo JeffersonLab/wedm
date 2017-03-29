@@ -2,6 +2,7 @@ var jlab = jlab || {};
 jlab.wedm = jlab.wedm || {};
 jlab.wedm.monitoredPvs = [];
 jlab.wedm.pvWidgetMap = {};
+jlab.wedm.localVars = {};
 
 jlab.wedm.PvWidget = function (id, pvSet) {
     this.id = id;
@@ -816,6 +817,28 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
     }
 };
 
+jlab.wedm.parseLocalVar = function(expr) {
+    var name = expr.substring(7, expr.indexOf("="));
+    var type = expr.substring(expr.indexOf("=") + 1, expr.indexOf(":"));
+    var value = expr.substring(expr.indexOf(":") + 1);
+    var local = jlab.wedm.localVars[name] || {};
+    
+    local.name = name;
+    local.type = type;
+    local.value = value;
+    
+    if(type === "e") {
+        local.enumLabels = value.split(",");
+        local.value = 0;
+    }
+    
+    console.log(local);    
+    
+    jlab.wedm.localVars[name] = local;
+    
+    return local;
+};
+
 jlab.wedm.pvsFromExpr = function (expr) {
     var pvs = [];
 
@@ -1125,6 +1148,26 @@ $(document).on("click", ".anchor-li", function () {
     var href = $(this).find("a").attr("href");
     window.open(href, '_blank');
     return;
+});
+
+$(document).on("click", ".local-control.ActiveButton", function() {
+    var $obj = $(this);
+    
+    if($obj.hasClass("toggle-button-off")) {
+        $obj.removeClass("toggle-button-off");
+        $obj.addClass("toggle-button-on");
+        $obj.find(".screen-text").text($obj.attr("data-on-label"));
+        $obj.find(".text-wrap").css("border-width", "0");
+        var local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
+        local.value = 1;        
+    } else if($obj.hasClass("toggle-button-on")) {
+        $obj.removeClass("toggle-button-on");
+        $obj.addClass("toggle-button-off");
+        $obj.find(".screen-text").text($obj.attr("data-off-label"));
+        $obj.find(".text-wrap").css("border-width", "2px");
+        var local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
+        local.value = 0;        
+    }
 });
 
 $(function () {
