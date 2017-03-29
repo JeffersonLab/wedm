@@ -2,7 +2,8 @@ var jlab = jlab || {};
 jlab.wedm = jlab.wedm || {};
 jlab.wedm.monitoredPvs = [];
 jlab.wedm.pvWidgetMap = {};
-jlab.wedm.localVars = {};
+jlab.wedm.localPvMap = {};
+jlab.wedm.localPvs = [];
 
 jlab.wedm.PvWidget = function (id, pvSet) {
     this.id = id;
@@ -92,13 +93,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             var pvs = [];
             for (var i = 0; i < this.visPvs.length; i++) {
                 var name = this.visPvs[i],
-                        val;
-
-                if (jlab.wedm.isLocalExpr(name)) {
-                    console.log(this.id + ' - LOC expressions inside CALC expressions are not supported');
-                } else {
-                    val = this.pvNameToValueMap[name];
-                }
+                        val = this.pvNameToValueMap[name];
 
                 if (typeof val === 'undefined') {
                     /*Still more PVs we need values from*/
@@ -108,8 +103,6 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             }
 
             value = jlab.wedm.evalCalcExpr(this.visPvExpr, pvs);
-        } else if (jlab.wedm.isLocalExpr(this.visPvExpr)) {
-            console.log(this.id + ' - LOC expressions are not supported');
         }
 
         /*console.log('val: ' + value);
@@ -343,7 +336,7 @@ jlab.wedm.MenuButtonPvWidget.prototype = Object.create(jlab.wedm.ControlTextPvWi
 jlab.wedm.MenuButtonPvWidget.prototype.constructor = jlab.wedm.MenuButtonPvWidget;
 
 jlab.wedm.MenuButtonPvWidget.prototype.handleIndicatorUpdate = function () {
-    
+
 };
 
 jlab.wedm.SymbolPvWidget = function (id, pvSet) {
@@ -817,25 +810,49 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
     }
 };
 
-jlab.wedm.parseLocalVar = function(expr) {
-    var name = expr.substring(7, expr.indexOf("="));
-    var type = expr.substring(expr.indexOf("=") + 1, expr.indexOf(":"));
-    var value = expr.substring(expr.indexOf(":") + 1);
-    var local = jlab.wedm.localVars[name] || {};
-    
-    local.name = name;
-    local.type = type;
-    local.value = value;
-    
-    if(type === "e") {
-        local.enumLabels = value.split(",");
-        local.value = 0;
+jlab.wedm.parseLocalVar = function (expr) {
+
+    var name, /*Includes LOC prefix to avoid collision with EPICS PVs which are stored without prefix */
+            declaration = false,
+            end = expr.indexOf("=");
+
+    if (end === -1) {
+        name = expr;
+    } else {
+        name = expr.substring(0, end);
+        declaration = true;
     }
-    
-    console.log(local);    
-    
-    jlab.wedm.localVars[name] = local;
-    
+
+    var local = jlab.wedm.localPvMap[name];
+
+    if (typeof local === 'undefined') {
+
+        if (declaration) {
+            var type = expr.substring(expr.indexOf("=") + 1, expr.indexOf(":")),
+                    value = expr.substring(expr.indexOf(":") + 1);
+
+            local = {};
+
+            local.name = name;
+            local.type = type;
+            local.value = value;
+
+            if (type === "e") {
+                local.enumLabels = value.split(",");
+                local.value = 0;
+            }
+
+            jlab.wedm.localPvMap[name] = local;
+        } else { /*Reference to an undeclared local variable encountered*/
+            console.log("Reference to undeclared local variable encountered: " + name);            
+            local = {};
+            local.name = name;
+            local.type = "d";
+            local.value = 0;
+            jlab.wedm.localPvMap[name] = local;
+        }
+    }
+
     return local;
 };
 
@@ -853,7 +870,7 @@ jlab.wedm.pvsFromExpr = function (expr) {
             /*EDM allows end parenthesis to be optional*/
             if (expr.lastIndexOf(")") !== end) {
                 end = expr.length;
-            } else if(expr.indexOf(")", expr.lastIndexOf("(")) !== -1) {
+            } else if (expr.indexOf(")", expr.lastIndexOf("(")) !== -1) {
                 /*EDM allows multiple parenthesis at the end too*/
                 end = expr.indexOf(")", expr.lastIndexOf("("));
             }
@@ -933,7 +950,7 @@ jlab.wedm.resizeText = function () {
          * OuterHeight(true) = padding, border, and margin included
          */
 
-         /*console.log($parent.attr("id") + " - Screen Object Height: " + $parent.outerHeight());
+        /*console.log($parent.attr("id") + " - Screen Object Height: " + $parent.outerHeight());
          console.log($parent.attr("id") + " - Text OuterHeight(true) + wrapHeight: " + ($obj.outerHeight(true) + wrapHeight));*/
 
         var i = 0;
@@ -1009,11 +1026,11 @@ jlab.wedm.createWidgets = function () {
 
         if (ctrlPvExpr !== undefined || visPvExpr !== undefined || alarmPvExpr !== undefined || colorPvExpr !== undefined || indicatorPvExpr !== undefined) {
             /*console.log($obj[0].className);*/
-            if ($obj.hasClass("ActiveControlText") || 
+            if ($obj.hasClass("ActiveControlText") ||
                     $obj.hasClass("ActiveUpdateText")) {
                 /*console.log("text widget");*/
                 widget = new jlab.wedm.ControlTextPvWidget(id, pvSet);
-            } else if($obj.hasClass("ActiveMenuButton")) {    
+            } else if ($obj.hasClass("ActiveMenuButton")) {
                 widget = new jlab.wedm.MenuButtonPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveSymbol")) {
                 /*console.log("symbol widget");*/
@@ -1031,9 +1048,9 @@ jlab.wedm.createWidgets = function () {
                     $obj.attr("class").indexOf("ActiveLine") > -1 ||
                     $obj.attr("class").indexOf("ActiveArc") > -1) {
                 widget = new jlab.wedm.ShapePvWidget(id, pvSet);
-            } else if ($obj.attr("class").indexOf("ActiveStaticText") > -1 || 
+            } else if ($obj.attr("class").indexOf("ActiveStaticText") > -1 ||
                     $obj.attr("class").indexOf("ActiveRegExText") > -1) {
-                
+
                 widget = new jlab.wedm.StaticTextPvWidget(id, pvSet);
             } else {
                 /*console.log("other widget");*/
@@ -1048,20 +1065,40 @@ jlab.wedm.createWidgets = function () {
 };
 
 jlab.wedm.addPvWithWidget = function (pv, widget, immediate) {
-    
-    if (!jlab.wedm.isLocalExpr(pv) && jlab.wedm.monitoredPvs.indexOf(pv) === -1) {
-        jlab.wedm.monitoredPvs.push(pv);
-    }
 
-    jlab.wedm.pvWidgetMap[pv] = jlab.wedm.pvWidgetMap[pv] || [];
-    jlab.wedm.pvWidgetMap[pv].push(widget);
-    
-    if(immediate) {
-        jlab.wedm.con.monitorPvs([pv]);
+    if (jlab.wedm.isLocalExpr(pv)) {
+        var local = jlab.wedm.parseLocalVar(pv);
+
+        jlab.wedm.pvWidgetMap[local.name] = jlab.wedm.pvWidgetMap[local.name] || [];
+        jlab.wedm.pvWidgetMap[local.name].push(widget);
+
+        if (jlab.wedm.localPvs.indexOf(local.name) === -1) {
+            jlab.wedm.localPvs.push(local.name);
+        }
+    } else { /*EPICS PV*/
+
+        jlab.wedm.pvWidgetMap[pv] = jlab.wedm.pvWidgetMap[pv] || [];
+        jlab.wedm.pvWidgetMap[pv].push(widget);
+
+        if (jlab.wedm.monitoredPvs.indexOf(pv) === -1) {
+            jlab.wedm.monitoredPvs.push(pv);
+
+            if (immediate) {
+                jlab.wedm.con.monitorPvs([pv]);
+            }
+        }
     }
 };
 
-jlab.wedm.initializeWebsocket = function () {
+jlab.wedm.updatePv = function (detail) {
+    //console.time("onupdate");
+    $(jlab.wedm.pvWidgetMap[detail.pv]).each(function () {
+        this.handleUpdate(detail);
+    });
+    //console.timeEnd("onupdate");    
+};
+
+jlab.wedm.initWebsocket = function () {
     var options = {};
 
     jlab.wedm.con = new jlab.epics2web.ClientConnection(options);
@@ -1074,11 +1111,7 @@ jlab.wedm.initializeWebsocket = function () {
     };
 
     jlab.wedm.con.onupdate = function (e) {
-        //console.time("onupdate");
-        $(jlab.wedm.pvWidgetMap[e.detail.pv]).each(function () {
-            this.handleUpdate(e.detail);
-        });
-        //console.timeEnd("onupdate");
+        jlab.wedm.updatePv(e.detail);
     };
 
     jlab.wedm.con.oninfo = function (e) {
@@ -1088,8 +1121,15 @@ jlab.wedm.initializeWebsocket = function () {
     };
 };
 
-jlab.wedm.initEmbedded = function() {
-    $(".ActivePictureInPicture .screen:not(:first-child)").hide();   
+jlab.wedm.initEmbedded = function () {
+    $(".ActivePictureInPicture .screen:not(:first-child)").hide();
+};
+
+jlab.wedm.initLocalPVs = function () {
+    $(jlab.wedm.localPvs).each(function () {
+        var local = jlab.wedm.localPvMap[this];
+        jlab.wedm.updatePv({pv: local.name, value: local.value});
+    });
 };
 
 $(document).on("click", ".RelatedDisplay", function (event) {
@@ -1150,23 +1190,25 @@ $(document).on("click", ".anchor-li", function () {
     return;
 });
 
-$(document).on("click", ".local-control.ActiveButton", function() {
+$(document).on("click", ".local-control.ActiveButton", function () {
     var $obj = $(this);
-    
-    if($obj.hasClass("toggle-button-off")) {
+
+    if ($obj.hasClass("toggle-button-off")) {
         $obj.removeClass("toggle-button-off");
         $obj.addClass("toggle-button-on");
         $obj.find(".screen-text").text($obj.attr("data-on-label"));
         $obj.find(".text-wrap").css("border-width", "0");
         var local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
-        local.value = 1;        
-    } else if($obj.hasClass("toggle-button-on")) {
+        local.value = 1;
+        jlab.wedm.updatePv({pv: local.name, value: local.value});
+    } else if ($obj.hasClass("toggle-button-on")) {
         $obj.removeClass("toggle-button-on");
         $obj.addClass("toggle-button-off");
         $obj.find(".screen-text").text($obj.attr("data-off-label"));
         $obj.find(".text-wrap").css("border-width", "2px");
         var local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
-        local.value = 0;        
+        local.value = 0;
+        jlab.wedm.updatePv({pv: local.name, value: local.value});
     }
 });
 
@@ -1179,5 +1221,7 @@ $(function () {
 
     jlab.wedm.createWidgets();
 
-    jlab.wedm.initializeWebsocket();
+    jlab.wedm.initWebsocket();
+
+    jlab.wedm.initLocalPVs();
 });
