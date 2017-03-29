@@ -124,3 +124,8 @@ svg.ScreenObject {
     height: 0;
     padding-bottom: 100%;
 }
+.ActivePictureInPicture .screen {
+    margin: 0 auto;
+    top: 50%;
+    transform: translateY(-50%);    
+}
