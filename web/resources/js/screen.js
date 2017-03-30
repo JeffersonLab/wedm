@@ -346,6 +346,10 @@ jlab.wedm.ButtonPvWidget = function (id, pvSet) {
 jlab.wedm.ButtonPvWidget.prototype = Object.create(jlab.wedm.StaticTextPvWidget.prototype);
 jlab.wedm.ButtonPvWidget.prototype.constructor = jlab.wedm.ButtonPvWidget;
 
+jlab.wedm.ButtonPvWidget.prototype.handleControlUpdate = function () {
+
+};
+
 jlab.wedm.SymbolPvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.call(this, id, pvSet);
 };
@@ -376,6 +380,22 @@ jlab.wedm.SymbolPvWidget.prototype.handleControlUpdate = function () {
 
     $obj.find(".ActiveGroup").hide();
     $obj.find(".ActiveGroup:nth-child(" + state + ")").show();
+};
+
+jlab.wedm.PiPPvWidget = function (id, pvSet) {
+    jlab.wedm.PvWidget.call(this, id, pvSet);
+};
+
+jlab.wedm.PiPPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
+jlab.wedm.SymbolPvWidget.prototype.constructor = jlab.wedm.PiPPvWidget;
+
+jlab.wedm.PiPPvWidget.prototype.handleControlUpdate = function () {
+    var $obj = $("#" + this.id),
+            pv = this.ctrlPvs[0],
+            value = this.pvNameToValueMap[pv];
+
+    $obj.find(".screen").hide();
+    $obj.find(".screen[data-index=" + value + "]").show();
 };
 
 jlab.wedm.ChoicePvWidget = function (id, pvSet) {
@@ -1037,9 +1057,12 @@ jlab.wedm.createWidgets = function () {
                     $obj.hasClass("ActiveUpdateText")) {
                 widget = new jlab.wedm.ControlTextPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveSymbol")) {
-                widget = new jlab.wedm.SymbolPvWidget(id, pvSet);    
-            } else if($obj.hasClass("ActiveButton")) {
-                widget = new jlab.wedm.ButtonPvWidget(id, pvSet);                
+                widget = new jlab.wedm.SymbolPvWidget(id, pvSet);
+            } else if ($obj.hasClass("ActivePictureInPicture")) {
+                widget = new jlab.wedm.PiPPvWidget(id, pvSet);
+            } else if ($obj.hasClass("ActiveButton") ||
+                    $obj.hasClass("ActiveMessageButton")) {
+                widget = new jlab.wedm.ButtonPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveMenuButton")) {
                 widget = new jlab.wedm.MenuButtonPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveChoiceButton")) {
@@ -1137,6 +1160,40 @@ jlab.wedm.initLocalPVs = function () {
     });
 };
 
+jlab.wedm.doButtonDown = function ($obj) {
+    $obj.addClass("button-down");
+    if ($obj.attr("data-bg-color-rule")) {
+        $obj.attr("data-bg-color-rule", $obj.attr("data-on-color"));
+    } else {
+        $obj.css("background-color", $obj.attr("data-on-color"));
+    }
+    $obj.find(".screen-text").text($obj.attr("data-on-label"));
+    $obj.find(".text-wrap").css("border-width", "0");
+    var local = jlab.wedm.parseLocalVar($obj.attr("data-pv")),
+            pressValue = $obj.attr("data-press-value");
+    if (typeof pressValue !== 'undefined') {
+        local.value = pressValue;
+        jlab.wedm.updatePv({pv: local.name, value: local.value});
+    }
+};
+
+jlab.wedm.doButtonUp = function ($obj) {
+    $obj.removeClass("button-down");
+    if ($obj.attr("data-bg-color-rule")) {
+        $obj.attr("data-bg-color-rule", $obj.attr("data-off-color"));
+    } else {
+        $obj.css("background-color", $obj.attr("data-off-color"));
+    }
+    $obj.find(".screen-text").text($obj.attr("data-off-label"));
+    $obj.find(".text-wrap").css("border-width", "2px");
+    var local = jlab.wedm.parseLocalVar($obj.attr("data-pv")),
+            releaseValue = $obj.attr("data-release-value");
+    if (typeof releaseValue !== 'undefined') {
+        local.value = releaseValue;
+        jlab.wedm.updatePv({pv: local.name, value: local.value});
+    }
+};
+
 $(document).on("click", ".RelatedDisplay", function (event) {
     var files = [],
             labels = [],
@@ -1195,35 +1252,27 @@ $(document).on("click", ".anchor-li", function () {
     return;
 });
 
-$(document).on("click", ".local-control.ActiveButton", function () {
+$(document).on("mousedown", ".local-control.push-button", function () {
+    jlab.wedm.doButtonDown($(this));
+});
+
+$(document).on("mouseup mouseout", ".local-control.push-button", function () {
+    if ($(this).hasClass("button-down")) {
+        jlab.wedm.doButtonUp($(this));
+    }
+});
+
+$(document).on("click", ".local-control.toggle-button", function () {
     var $obj = $(this);
 
     if ($obj.hasClass("toggle-button-off")) {
         $obj.removeClass("toggle-button-off");
         $obj.addClass("toggle-button-on");
-        if ($obj.attr("data-bg-color-rule")) {
-            $obj.attr("data-bg-color-rule", $obj.attr("data-on-color"));
-        } else {
-            $obj.css("background-color", $obj.attr("data-on-color"));
-        }
-        $obj.find(".screen-text").text($obj.attr("data-on-label"));
-        $obj.find(".text-wrap").css("border-width", "0");
-        var local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
-        local.value = 1;
-        jlab.wedm.updatePv({pv: local.name, value: local.value});
+        jlab.wedm.doButtonDown($obj);
     } else if ($obj.hasClass("toggle-button-on")) {
         $obj.removeClass("toggle-button-on");
         $obj.addClass("toggle-button-off");
-        if ($obj.attr("data-bg-color-rule")) {
-            $obj.attr("data-bg-color-rule", $obj.attr("data-off-color"));
-        } else {
-            $obj.css("background-color", $obj.attr("data-off-color"));
-        }
-        $obj.find(".screen-text").text($obj.attr("data-off-label"));
-        $obj.find(".text-wrap").css("border-width", "2px");
-        var local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
-        local.value = 0;
-        jlab.wedm.updatePv({pv: local.name, value: local.value});
+        jlab.wedm.doButtonUp($obj);
     }
 });
 

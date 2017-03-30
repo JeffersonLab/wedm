@@ -28,6 +28,7 @@
 }
 .RelatedDisplay,
 .local-control.ActiveButton,
+.local-control.ActiveMessageButton,
 .anchor-li,
 .anchor-li a {
     cursor: default;

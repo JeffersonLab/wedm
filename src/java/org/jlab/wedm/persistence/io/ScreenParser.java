@@ -66,7 +66,7 @@ public class ScreenParser extends EDMParser {
         if (!edl.isAbsolute()) {
             edl = new File(EDL_ROOT_DIR + File.separator + name);
         }
-        
+
         String canonicalPath = edl.getCanonicalPath();
 
         ScreenProperties properties = new ScreenProperties();
@@ -191,7 +191,6 @@ public class ScreenParser extends EDMParser {
 
                                 //LOGGER.log(Level.FINEST, "Handling Widget: {0}",
                                 //        obj.getClass().getSimpleName());
-
                                 last = obj;
                                 break;
                             case "endObjectProperties":
@@ -236,9 +235,9 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "yPoints":
                                 ActiveLine aly = ((ActiveLine) last);
-                                
+
                                 aly.yValues = new int[aly.numPoints];
-                                
+
                                 for (int i = 0; i < aly.numPoints; i++) {
                                     String val = scanner.nextLine();
                                     String[] tks = val.trim().split("\\s");
@@ -293,8 +292,17 @@ public class ScreenParser extends EDMParser {
                             case "useOriginalColors":
                                 ((ActiveSymbol) last).useOriginalColors = true;
                                 break;
-                            case "buttonType":
+                            case "buttonType": // ActiveButton looks for buttonType: "push" and has default of toggle
                                 ((ActiveButton) last).push = "push".equals(stripQuotes(tokens[1]));
+                                break;
+                            case "toggle": // ActiveMessageButton looks for toggle and has default of push
+                                ((ActiveMessageButton) last).push = false;
+                                break;
+                            case "pressValue":
+                                ((ActiveButton) last).pressValue = stripQuotes(tokens[1]);
+                                break;
+                            case "releaseValue":
+                                ((ActiveButton) last).releaseValue = stripQuotes(tokens[1]);
                                 break;
                             case "3d":
                                 ((HtmlScreenObject) last).threeDimensional = true;
@@ -419,18 +427,13 @@ public class ScreenParser extends EDMParser {
                                 }
 
                                 // Replace escaped double quotes \" with just double quotes
-                                finalString = finalString.replace("\\" + "\"", "\"");                                
-                                
+                                finalString = finalString.replace("\\" + "\"", "\"");
+
                                 ((TextScreenObject) last).value = finalString;
                                 break;
                             case "controlPv":
-                                //LOGGER.log(Level.FINEST, "Found value");
-                                if (last instanceof ActiveMessageButton) {
-                                    ((ActiveMessageButton) last).destinationPv = stripQuotes(
-                                            tokens[1]);
-                                } else {
-                                    last.controlPv = stripQuotes(tokens[1]);
-                                }
+                                // ActiveMessageButton GUI tool calls this "destinationPv" on the interface.
+                                last.controlPv = stripQuotes(tokens[1]);
                                 break;
                             case "colorPv": // ActiveButton uses colorPv; all others seem to use alarmPv;  alarmPv acts as alarm or color PV based other config
                             case "alarmPv":
@@ -521,7 +524,8 @@ public class ScreenParser extends EDMParser {
                                     int rdIndex = Integer.parseInt(tks[0].trim());
 
                                     if (rdIndex >= 0 && rdIndex <= 64) {
-                                        last.displayFileNames[rdIndex] = stripQuotes(val.substring(val.indexOf(tks[0]) + tks[0].length()));
+                                        last.displayFileNames[rdIndex] = stripQuotes(val.substring(
+                                                val.indexOf(tks[0]) + tks[0].length()));
                                     } else {
                                         LOGGER.log(Level.WARNING,
                                                 "RelatedDisplay filename out of range: {0}",
@@ -541,7 +545,8 @@ public class ScreenParser extends EDMParser {
                                     int rdIndex = Integer.parseInt(tks[0].trim());
 
                                     if (rdIndex >= 0 && rdIndex <= 64) {
-                                        last.menuLabels[rdIndex] = stripQuotes(val.substring(val.indexOf(tks[0]) + tks[0].length()));
+                                        last.menuLabels[rdIndex] = stripQuotes(val.substring(
+                                                val.indexOf(tks[0]) + tks[0].length()));
                                     } else {
                                         LOGGER.log(Level.WARNING,
                                                 "menuLabel filename out of range: {0}",
@@ -697,8 +702,6 @@ public class ScreenParser extends EDMParser {
                             case "":
                             case "beginGroup":
                             case "4":
-                            case "pressValue":
-                            case "releaseValue":
                             case "useEnumNumeric":
                             case "includeHelpIcon":
                             case "selectColor":
@@ -733,7 +736,7 @@ public class ScreenParser extends EDMParser {
                             case "propagateMacros":
                             case "labelType":
                             case "numItems":
-                            case "inputFocusUpdates":     
+                            case "inputFocusUpdates":
                             case "nullCondition":
                             case "pv":
                                 break;
@@ -752,7 +755,6 @@ public class ScreenParser extends EDMParser {
             for (EmbeddedScreen embedded : embeddedScreens) {
 
                 //LOGGER.log(Level.FINEST, "Embedded file: {0}", embedded.file);
-
                 try {
                     /*File symbolFile = new File(symbol.file);
 
@@ -764,25 +766,22 @@ public class ScreenParser extends EDMParser {
                         Screen s = this.parse(embedded.file, colorList, recursionLevel + 1);
                         s.setScreenProperties(embedded);
                         embedded.screen = s;
-                    } else {
-                        //LOGGER.log(Level.FINEST, "filePv directed");
-                        if (embedded.numDsps > 0 && embedded.numDsps <= 64) {
-                            for (int i = 0; i < embedded.numDsps; i++) {
-                                String f = embedded.displayFileNames[i];
+                    } else //LOGGER.log(Level.FINEST, "filePv directed");
+                    if (embedded.numDsps > 0 && embedded.numDsps <= 64) {
+                        for (int i = 0; i < embedded.numDsps; i++) {
+                            String f = embedded.displayFileNames[i];
 
-                                //LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
+                            //LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
+                            if (f != null) {
+                                try {
+                                    Screen s2 = this.parse(f, colorList, recursionLevel + 1);
 
-                                if (f != null) {
-                                    try {
-                                        Screen s2 = this.parse(f, colorList, recursionLevel + 1);
+                                    s2.embeddedIndex = i;
 
-                                        s2.embeddedIndex = i;
-                                        
-                                        ((ActivePictureInPicture) embedded).screenList.add(s2);
-                                    } catch (Exception e) {
-                                        LOGGER.log(Level.WARNING,
-                                                "Unable to load embedded menu file: " + f, e);
-                                    }
+                                    ((ActivePictureInPicture) embedded).screenList.add(s2);
+                                } catch (Exception e) {
+                                    LOGGER.log(Level.WARNING,
+                                            "Unable to load embedded menu file: " + f, e);
                                 }
                             }
                         }
