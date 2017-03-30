@@ -20,7 +20,10 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         int originY = y + translation.y;
 
         attributes.put("id", "obj-" + objectId);
-        attributes.put("data-pv", filePv);
+        
+        if(filePv != null) {
+            attributes.put("data-pv", filePv);
+        }
         
         classes.add("ActivePictureInPicture");
         classes.add("ScreenObject");

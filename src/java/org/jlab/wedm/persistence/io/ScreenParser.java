@@ -299,10 +299,10 @@ public class ScreenParser extends EDMParser {
                                 ((ActiveMessageButton) last).push = false;
                                 break;
                             case "pressValue":
-                                ((ActiveButton) last).pressValue = stripQuotes(tokens[1]);
+                                ((ActiveButton) last).pressValue = stripQuotes(line.substring("pressValue".length()));
                                 break;
                             case "releaseValue":
-                                ((ActiveButton) last).releaseValue = stripQuotes(tokens[1]);
+                                ((ActiveButton) last).releaseValue = stripQuotes(line.substring("releaseValue".length()));                            
                                 break;
                             case "3d":
                                 ((HtmlScreenObject) last).threeDimensional = true;
@@ -425,9 +425,6 @@ public class ScreenParser extends EDMParser {
                                     ((TextScreenObject) last).numLines++;
                                     finalString = finalString + "\n" + stripQuotes(value);
                                 }
-
-                                // Replace escaped double quotes \" with just double quotes
-                                finalString = finalString.replace("\\" + "\"", "\"");
 
                                 ((TextScreenObject) last).value = finalString;
                                 break;
@@ -744,7 +741,7 @@ public class ScreenParser extends EDMParser {
                                 LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);
                         }
                     } catch (Exception e) {
-                        LOGGER.log(Level.WARNING, "Unable to parse line '" + line + "'; ignoring", e);
+                        LOGGER.log(Level.WARNING, "Unable to parse line '" + line + "'; file '" + canonicalPath + "'; ignoring", e);
                     }
                 }
             }
