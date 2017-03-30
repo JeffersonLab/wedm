@@ -433,14 +433,14 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "controlPv":
                                 // ActiveMessageButton GUI tool calls this "destinationPv" on the interface.
-                                last.controlPv = stripQuotes(tokens[1]);
+                                last.controlPv = stripQuotes(line.substring("controlPv".length()));
                                 break;
                             case "colorPv": // ActiveButton uses colorPv; all others seem to use alarmPv;  alarmPv acts as alarm or color PV based other config
                             case "alarmPv":
-                                last.alarmPv = stripQuotes(tokens[1]);
+                                last.alarmPv = stripQuotes(line.substring("alarmPv".length())); // this works because colorPv has same length of alarmPv
                                 break;
-                            case "indicatorPv":
-                                last.indicatorPv = stripQuotes(tokens[1]);
+                            case "indicatorPv": // We don't simply stripQuotes(tokens[1]); because PV name sometimes has spaces (LOC// <space> NAME) is acceptable
+                                last.indicatorPv = stripQuotes(line.substring("indicatorPv".length()));
                                 break;
                             case "numPvs":
                                 last.numPvs = Integer.parseInt(tokens[1]);
