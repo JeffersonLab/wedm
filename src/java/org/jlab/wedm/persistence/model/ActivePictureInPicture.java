@@ -37,7 +37,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         String classStr = getClassString(classes);
         String styleStr = getStyleString(styles);
 
-        String html = indent + "<div " + classStr + " " + attrStr + " " + styleStr + "/>";
+        String html = indent + "<div " + classStr + " " + attrStr + " " + styleStr + ">\n";
 
         if (screen != null && !screen.screenObjects.isEmpty()) {
 

@@ -33,6 +33,13 @@ public class EDMParser {
             value = value.substring(0, value.length() - 1);
         }
 
+        // Replace escaped double quotes \" with just double quotes
+        value = value.replace("\\" + "\"", "\"");
+
+        // Replace escaped left and right bracket (this is weird, but sometimes happens in EDL)
+        value = value.replace("\\" + "{", "{");
+        value = value.replace("\\" + "}", "}");
+
         return value;
     }
 

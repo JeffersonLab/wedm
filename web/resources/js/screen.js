@@ -809,7 +809,7 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
          console.log(C);
          console.log(D);*/
 
-        var stmt = expr.substring(8, expr.indexOf("}") - 1);
+        var stmt = expr.substring(7, expr.indexOf("}"));
 
         //console.log("before: " + stmt);
 
