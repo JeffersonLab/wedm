@@ -1249,7 +1249,7 @@ $(document).mouseup(function (e)
 $(document).on("click", ".anchor-li", function () {
     var href = $(this).find("a").attr("href");
     window.open(href, '_blank');
-    return;
+    return false; // Don't let anchor open another
 });
 
 $(document).on("mousedown", ".local-control.push-button", function () {
