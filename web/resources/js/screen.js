@@ -112,19 +112,19 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
         var min = $obj.attr("data-vis-min");
         var max = $obj.attr("data-vis-max");
-        
+
         /*Must ensure we are dealing with numbers; floating point too*/
         min = parseFloat(min);
         max = parseFloat(max);
         //console.log(this.id + ' value: ' + value);
         value = parseFloat(value);
-        
-        if(isNaN(value)) {
+
+        if (isNaN(value)) {
             value = 0.0;
         }
-        
+
         //console.log(this.id + " - vis value: " + value + "; min: " + min + "; max: " + max + "; value >= min: " + (value >= min) + "; value < max: " + (value < max));
-        
+
         var result = ((value >= min) && value < max);
 
         if (invert) {
@@ -892,6 +892,10 @@ jlab.wedm.parseLocalVar = function (expr) {
                 } else {
                     local.value = 0;
                 }
+            } else if (type !== "s") { // if not enum or string must be integer or double
+                if (local.value === '') { // Default is zero for numbers
+                    local.value = 0;
+                }
             }
 
             jlab.wedm.localPvMap[name] = local;
@@ -933,7 +937,7 @@ jlab.wedm.pvsFromExpr = function (expr) {
             });
         } else if (expr.indexOf("EPICS\\") === 0) {
             pvs.push(expr.substring(6));
-        } else if(expr.indexOf("LOC\\") === 0) {
+        } else if (expr.indexOf("LOC\\") === 0) {
             var local = jlab.wedm.parseLocalVar(expr);
             pvs.push(local.name);
         } else {
