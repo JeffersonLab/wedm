@@ -28,6 +28,7 @@ import org.jlab.wedm.persistence.model.EmbeddedScreen;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.ScreenObject;
 import org.jlab.wedm.persistence.model.ScreenProperties;
+import org.jlab.wedm.persistence.model.html.ActiveImage;
 import org.jlab.wedm.persistence.model.html.ActiveMenuButton;
 import org.jlab.wedm.persistence.model.html.ActiveMessageButton;
 import org.jlab.wedm.persistence.model.html.ActiveRegExText;
@@ -169,6 +170,10 @@ public class ScreenParser extends EDMParser {
                                         break;
                                     case "activeBarClass":
                                         obj = new ActiveBarMonitor();
+                                        break;
+                                    case "activePngClass":
+                                    case "cfcf6c8a_dbeb_11d2_8a97_00104b8742df":
+                                        obj = new ActiveImage();
                                         break;
                                     default:
                                         LOGGER.log(Level.FINEST, "Type: Unknown: {0}", tokens[1]);
@@ -606,8 +611,11 @@ public class ScreenParser extends EDMParser {
                                         "filePv".length()));
                                 break;
                             case "file":
-                                //LOGGER.log(Level.FINEST, "Found file: {0}", tokens[1]);
-                                ((EmbeddedScreen) last).file = stripQuotes(tokens[1]);
+                                if (last instanceof ActiveImage) {
+                                    ((ActiveImage) last).file = stripQuotes(tokens[1]);
+                                } else {
+                                    ((EmbeddedScreen) last).file = stripQuotes(tokens[1]);
+                                }
                                 break;
                             case "displaySource":
                                 ((EmbeddedScreen) last).displaySource = stripQuotes(tokens[1]);
