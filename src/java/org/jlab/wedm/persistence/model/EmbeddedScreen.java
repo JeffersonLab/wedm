@@ -8,4 +8,5 @@ public class EmbeddedScreen extends ScreenProperties {
 
     public String file;
     public Screen screen;
+    public String displaySource;
 }

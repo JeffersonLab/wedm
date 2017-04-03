@@ -299,10 +299,12 @@ public class ScreenParser extends EDMParser {
                                 ((ActiveMessageButton) last).push = false;
                                 break;
                             case "pressValue":
-                                ((ActiveButton) last).pressValue = stripQuotes(line.substring("pressValue".length()));
+                                ((ActiveButton) last).pressValue = stripQuotes(line.substring(
+                                        "pressValue".length()));
                                 break;
                             case "releaseValue":
-                                ((ActiveButton) last).releaseValue = stripQuotes(line.substring("releaseValue".length()));                            
+                                ((ActiveButton) last).releaseValue = stripQuotes(line.substring(
+                                        "releaseValue".length()));
                                 break;
                             case "3d":
                                 ((HtmlScreenObject) last).threeDimensional = true;
@@ -437,7 +439,8 @@ public class ScreenParser extends EDMParser {
                                 last.alarmPv = stripQuotes(line.substring("alarmPv".length())); // this works because colorPv has same length of alarmPv
                                 break;
                             case "indicatorPv": // We don't simply stripQuotes(tokens[1]); because PV name sometimes has spaces (LOC// <space> NAME) is acceptable
-                                last.indicatorPv = stripQuotes(line.substring("indicatorPv".length()));
+                                last.indicatorPv = stripQuotes(
+                                        line.substring("indicatorPv".length()));
                                 break;
                             case "numPvs":
                                 last.numPvs = Integer.parseInt(tokens[1]);
@@ -606,6 +609,9 @@ public class ScreenParser extends EDMParser {
                                 //LOGGER.log(Level.FINEST, "Found file: {0}", tokens[1]);
                                 ((EmbeddedScreen) last).file = stripQuotes(tokens[1]);
                                 break;
+                            case "displaySource":
+                                ((EmbeddedScreen) last).displaySource = stripQuotes(tokens[1]);
+                                break;
                             case "numBits":
                                 ((ActiveByte) last).bits = Integer.parseInt(tokens[1]);
                                 break;
@@ -717,7 +723,6 @@ public class ScreenParser extends EDMParser {
                             case "setPosition":
                             case "swapButtons":
                             case "setSize":
-                            case "displaySource":
                             case "sizeOfs":
                             case "noScroll":
                             case "showUnits":
@@ -741,7 +746,8 @@ public class ScreenParser extends EDMParser {
                                 LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);
                         }
                     } catch (Exception e) {
-                        LOGGER.log(Level.WARNING, "Unable to parse line '" + line + "'; file '" + canonicalPath + "'; ignoring", e);
+                        LOGGER.log(Level.WARNING, "Unable to parse line '" + line + "'; file '"
+                                + canonicalPath + "'; ignoring", e);
                     }
                 }
             }
@@ -759,29 +765,44 @@ public class ScreenParser extends EDMParser {
                         symbolFile = new File(edl.getParent() + File.separator + symbol.file);
                     }*/
 
-                    if (embedded.file != null) {
-                        Screen s = this.parse(embedded.file, colorList, recursionLevel + 1);
-                        s.setScreenProperties(embedded);
-                        embedded.screen = s;
-                    } else //LOGGER.log(Level.FINEST, "filePv directed");
-                    if (embedded.numDsps > 0 && embedded.numDsps <= 64) {
-                        for (int i = 0; i < embedded.numDsps; i++) {
-                            String f = embedded.displayFileNames[i];
+                    if (embedded instanceof ActiveSymbol) {
+                        if (embedded.file != null) {
+                            Screen s = this.parse(embedded.file, colorList, recursionLevel + 1);
+                            s.setScreenProperties(embedded);
+                            embedded.screen = s;
+                        } else {
+                            LOGGER.log(Level.WARNING, "Symbol with no file: {0}", embedded.objectId);
+                        }
+                    } else if (embedded instanceof ActivePictureInPicture) {
+                        if (embedded.file != null && "file".equals(embedded.displaySource)) {
+                            Screen s = this.parse(embedded.file, colorList, recursionLevel + 1);
+                            s.setScreenProperties(embedded);
+                            embedded.screen = s;
+                        } else if ("menu".equals(embedded.displaySource)) { // Use filePv to determine which menu item to use
+                            if (embedded.numDsps > 0 && embedded.numDsps <= 64) {
+                                for (int i = 0; i < embedded.numDsps; i++) {
+                                    String f = embedded.displayFileNames[i];
 
-                            //LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
-                            if (f != null) {
-                                try {
-                                    Screen s2 = this.parse(f, colorList, recursionLevel + 1);
+                                    //LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
+                                    if (f != null) {
+                                        try {
+                                            Screen s2 = this.parse(f, colorList, recursionLevel + 1);
 
-                                    s2.embeddedIndex = i;
+                                            s2.embeddedIndex = i;
 
-                                    ((ActivePictureInPicture) embedded).screenList.add(s2);
-                                } catch (Exception e) {
-                                    LOGGER.log(Level.WARNING,
-                                            "Unable to load embedded menu file: " + f, e);
+                                            ((ActivePictureInPicture) embedded).screenList.add(s2);
+                                        } catch (Exception e) {
+                                            LOGGER.log(Level.WARNING,
+                                                    "Unable to load embedded menu file: " + f, e);
+                                        }
+                                    }
                                 }
                             }
+                        } else { // We don't currently handle embedded with source file name from PV
+                            LOGGER.log(Level.WARNING, "Unknown PIP: {0}", embedded.objectId);
                         }
+                    } else {
+                        LOGGER.log(Level.WARNING, "Unknown embedded type: {0}", embedded.objectId);
                     }
                 } catch (Exception e) {
                     LOGGER.log(Level.WARNING, "Unable to load embedded file: " + embedded.file, e);
