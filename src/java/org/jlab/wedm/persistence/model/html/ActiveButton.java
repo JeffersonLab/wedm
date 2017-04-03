@@ -23,7 +23,7 @@ public class ActiveButton extends TextScreenObject {
             push = false;
         }
 
-        if (!(this instanceof ActiveMessageButton)) {
+        if (!(this instanceof ActiveMessageButton) && !(this instanceof RelatedDisplay)) {
             if (pressValue == null) {
                 pressValue = "1";
             }
@@ -47,8 +47,14 @@ public class ActiveButton extends TextScreenObject {
             attributes.put("data-release-value", releaseValue);
         }
 
-        attributes.put("data-on-label", onLabel);
-        attributes.put("data-off-label", offLabel);
+        if (onLabel != null) {
+            attributes.put("data-on-label", onLabel);
+        }
+
+        if (offLabel != null) {
+            attributes.put("data-off-label", offLabel);
+        }
+
         if (onColor != null) {
             attributes.put("data-on-color", onColor.toColorString());
         }

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 177
-y 221
+x 185
+y 251
 w 500
 h 600
 font "helvetica-medium-r-18.0"
@@ -37,8 +37,9 @@ offColor index 51
 inconsistentColor index 8
 topShadowColor index 50
 botShadowColor index 10
+controlPv "LOC\\\\TEST1=e:0,OFF,ON"
 onLabel "3D"
-offLabel "OK"
+offLabel "3D"
 labelType "literal"
 buttonType "push"
 3d
@@ -62,7 +63,9 @@ offColor index 51
 inconsistentColor index 8
 topShadowColor index 50
 botShadowColor index 10
+controlPv "LOC\\\\TEST2=e:0,OFF,ON"
 onLabel "Not 3D"
+offLabel "Not 3D"
 labelType "literal"
 font "helvetica-medium-r-18.0"
 objType "controls"
