@@ -116,19 +116,16 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         /*Must ensure we are dealing with numbers; floating point too*/
         min = parseFloat(min);
         max = parseFloat(max);
+        //console.log(this.id + ' value: ' + value);
         value = parseFloat(value);
         
         if(isNaN(value)) {
             value = 0.0;
         }
         
+        //console.log(this.id + " - vis value: " + value + "; min: " + min + "; max: " + max + "; value >= min: " + (value >= min) + "; value < max: " + (value < max));
         
-        // Floating point === or <= doesn't work so we find difference from epsilon
-        var valueEqualMin = (Math.abs(value - min) < 0.00000001);
-        
-        /*console.log(this.id + " - vis value: " + value + "; min: " + min + "; max: " + max + "; value ~= min: " + valueEqualMin + "; value >= min: " + (value >= min) + "; value < max: " + (value < max));*/
-        
-        var result = ((valueEqualMin || value > min) && value < max);
+        var result = ((value >= min) && value < max);
 
         if (invert) {
             result = !result;
