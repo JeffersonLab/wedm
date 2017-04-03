@@ -23,10 +23,18 @@ public class ActiveButton extends TextScreenObject {
             push = false;
         }
 
+        if (!(this instanceof ActiveMessageButton)) {
+            if (pressValue == null) {
+                pressValue = "1";
+            }
+
+            if (releaseValue == null) {
+                releaseValue = "0";
+            }
+        }
+
         if (!push) { // if toggle
             classes.add("toggle-button toggle-button-off");
-            pressValue = "1"; // By default toggle has default press/release values
-            releaseValue = "0";
         } else { // push button
             classes.add("push-button");
         }

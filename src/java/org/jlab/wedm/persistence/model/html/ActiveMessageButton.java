@@ -13,7 +13,7 @@ public class ActiveMessageButton extends ActiveButton {
         if (push == null) {
             push = true;
         }
-
+        
         return super.toHtml(indent, indentStep, translation);
     }
 }

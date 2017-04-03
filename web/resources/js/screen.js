@@ -110,13 +110,25 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
         var invert = $obj.attr("data-vis-invert") === "true";
 
-        //if (typeof value === 'boolean') {
-        //    result = value;
-        //} else {
         var min = $obj.attr("data-vis-min");
         var max = $obj.attr("data-vis-max");
-        var result = (value >= min && value < max); /*boolean values automatically convert to 0 or 1*/
-        //}
+        
+        /*Must ensure we are dealing with numbers; floating point too*/
+        min = parseFloat(min);
+        max = parseFloat(max);
+        value = parseFloat(value);
+        
+        if(isNaN(value)) {
+            value = 0.0;
+        }
+        
+        
+        // Floating point === or <= doesn't work so we find difference from epsilon
+        var valueEqualMin = (Math.abs(value - min) < 0.00000001);
+        
+        /*console.log(this.id + " - vis value: " + value + "; min: " + min + "; max: " + max + "; value ~= min: " + valueEqualMin + "; value >= min: " + (value >= min) + "; value < max: " + (value < max));*/
+        
+        var result = ((valueEqualMin || value > min) && value < max);
 
         if (invert) {
             result = !result;
@@ -280,11 +292,7 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
                 var name = this.ctrlPvs[i],
                         val;
 
-                if (jlab.wedm.isLocalExpr(name)) {
-                    console.log(this.id + ' - LOC expressions inside CALC expressions are not supported');
-                } else {
-                    val = this.pvNameToValueMap[name];
-                }
+                val = this.pvNameToValueMap[name];
 
                 if (typeof val === 'undefined') {
                     /*Still more PVs we need values from*/
@@ -294,8 +302,6 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
             }
 
             value = jlab.wedm.evalCalcExpr(this.ctrlPvExpr, pvs);
-        } else if (jlab.wedm.isLocalExpr(this.ctrlPvExpr)) {
-            console.log(this.id + ' - LOC expressions are not supported');
         }
 
         if ("hex" === format) {
@@ -312,7 +318,7 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
 
                 $obj.attr("data-precision", precision);
 
-                if ($obj.attr("data-db-limits") !== "true" && this.ctrlPvs.length === 1 && typeof $obj.find(".screen-text") !== 'undefined') {
+                if ($obj.attr("data-db-limits") !== "true" && this.ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(this.ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
                     $obj.attr("data-db-limits", "true");
                     var basename = jlab.wedm.basename(pv),
                             precPv = basename + ".PREC";
@@ -347,7 +353,24 @@ jlab.wedm.ButtonPvWidget.prototype = Object.create(jlab.wedm.StaticTextPvWidget.
 jlab.wedm.ButtonPvWidget.prototype.constructor = jlab.wedm.ButtonPvWidget;
 
 jlab.wedm.ButtonPvWidget.prototype.handleControlUpdate = function () {
+    var $obj = $("#" + this.id),
+            pv = this.ctrlPvs[0],
+            value = this.pvNameToValueMap[pv],
+            pressValue = $obj.attr("data-press-value"),
+            releaseValue = $obj.attr("data-release-value");
 
+    /*Only ActiveButton.toggle-buttons actually have visible state to update*/
+    if ($obj.hasClass("ActiveButton") && $obj.hasClass("toggle-button")) {
+
+        /*if press and release have same value we only do press*/
+        if (typeof pressValue !== undefined && pressValue === value) {
+            /*console.log("press state");*/
+            jlab.wedm.doButtonDown($obj);
+        } else if (typeof releaseValue !== undefined && releaseValue === value) {
+            /*console.log("release state");*/
+            jlab.wedm.doButtonUp($obj);
+        }
+    }
 };
 
 jlab.wedm.SymbolPvWidget = function (id, pvSet) {
@@ -866,7 +889,12 @@ jlab.wedm.parseLocalVar = function (expr) {
 
             if (type === "e") {
                 local.enumLabels = value.split(",");
-                local.value = 0;
+                if (typeof local.enumLabels !== 'undefined' && local.enumLabels.length > 0) {
+                    local.value = local.enumLabels[0];
+                    local.enumLabels.shift();
+                } else {
+                    local.value = 0;
+                }
             }
 
             jlab.wedm.localPvMap[name] = local;
@@ -903,10 +931,14 @@ jlab.wedm.pvsFromExpr = function (expr) {
             }
 
             expr.substring(expr.indexOf("}") + 2, end).split(",").forEach(function (pv) {
+                /*We assume LOC declaration/assignments are not possible inside CALC otherwise we would need to parse out assignment*/
                 pvs.push($.trim(pv));
             });
         } else if (expr.indexOf("EPICS\\") === 0) {
             pvs.push(expr.substring(6));
+        } else if(expr.indexOf("LOC\\") === 0) {
+            var local = jlab.wedm.parseLocalVar(expr);
+            pvs.push(local.name);
         } else {
             pvs.push(expr);
         }
@@ -1027,19 +1059,19 @@ jlab.wedm.createWidgets = function () {
                 alarmSensitive = $obj.attr("data-indicator-alarm") === "true";
 
         if (limitsFromDb) {
-            if (indicatorPvs.length === 1) {
+            if (indicatorPvs.length === 1 && !jlab.wedm.isLocalExpr(indicatorPvs[0])) {
                 basename = jlab.wedm.basename(indicatorPvs[0]);
                 limitPvs.push(basename + ".HOPR");
                 limitPvs.push(basename + ".LOPR");
             }
 
-            if (ctrlPvs.length === 1 && typeof $obj.find(".screen-text") !== 'undefined') {
+            if (ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
                 basename = jlab.wedm.basename(ctrlPvs[0]);
                 limitPvs.push(basename + ".PREC");
             }
         }
 
-        if (alarmSensitive && indicatorPvs.length === 1) {
+        if (alarmSensitive && indicatorPvs.length === 1 && !jlab.wedm.isLocalExpr(indicatorPvs[0])) {
             basename = jlab.wedm.basename(indicatorPvs[0]);
             alarmPvs.push(basename + ".SEVR");
         } else if (alarmPvs.length === 1) {
@@ -1126,6 +1158,12 @@ jlab.wedm.updatePv = function (detail) {
     //console.timeEnd("onupdate");    
 };
 
+jlab.wedm.infoPv = function (detail) {
+    $(jlab.wedm.pvWidgetMap[detail.pv]).each(function () {
+        this.handleInfo(detail);
+    });
+};
+
 jlab.wedm.initWebsocket = function () {
     var options = {};
 
@@ -1143,9 +1181,7 @@ jlab.wedm.initWebsocket = function () {
     };
 
     jlab.wedm.con.oninfo = function (e) {
-        $(jlab.wedm.pvWidgetMap[e.detail.pv]).each(function () {
-            this.handleInfo(e.detail);
-        });
+        jlab.wedm.infoPv(e.detail);
     };
 };
 
@@ -1154,8 +1190,18 @@ jlab.wedm.initEmbedded = function () {
 };
 
 jlab.wedm.initLocalPVs = function () {
+
+    /*It seems button PV widgets must have enum PV with first item being selected index and second item is Pressed label and third item is Released label*/
+
     $(jlab.wedm.localPvs).each(function () {
         var local = jlab.wedm.localPvMap[this];
+
+        if (typeof local.enumLabels !== 'undefined' && local.enumLabels.length > 0) {
+            var info = {pv: local.name, connected: true, datatype: 'DBR_ENUM', 'enum-labels': local.enumLabels};
+            jlab.wedm.infoPv(info);
+        }
+
+        /*console.log("settting local pv initial value: " + local.name + " = " + local.value);*/
         jlab.wedm.updatePv({pv: local.name, value: local.value});
     });
 };
@@ -1172,8 +1218,11 @@ jlab.wedm.doButtonDown = function ($obj) {
     var local = jlab.wedm.parseLocalVar($obj.attr("data-pv")),
             pressValue = $obj.attr("data-press-value");
     if (typeof pressValue !== 'undefined') {
-        local.value = pressValue;
-        jlab.wedm.updatePv({pv: local.name, value: local.value});
+        if (local.value !== pressValue) {
+            local.value = pressValue;
+            /*console.log("settting local pv down value: " + local.name + " = " + local.value);*/
+            jlab.wedm.updatePv({pv: local.name, value: local.value});
+        }
     }
 };
 
@@ -1189,8 +1238,11 @@ jlab.wedm.doButtonUp = function ($obj) {
     var local = jlab.wedm.parseLocalVar($obj.attr("data-pv")),
             releaseValue = $obj.attr("data-release-value");
     if (typeof releaseValue !== 'undefined') {
-        local.value = releaseValue;
-        jlab.wedm.updatePv({pv: local.name, value: local.value});
+        if (local.value !== releaseValue) {
+            local.value = releaseValue;
+            /*console.log("settting local pv up value: " + local.name + " = " + local.value);*/
+            jlab.wedm.updatePv({pv: local.name, value: local.value});
+        }
     }
 };
 
