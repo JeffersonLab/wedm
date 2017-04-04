@@ -173,8 +173,8 @@ public class ColorListParser extends EDMParser {
         expr = expr.replaceAll("([^<>\\!])=", "$1=="); // Match =, but not >= or <= or !=      
         
         expr = expr.replaceAll("#", "!=");
-        expr = expr.replaceAll("and", "&&");
-        expr = expr.replaceAll("or", "||");
+        expr = expr.replaceAll("and", "&");
+        expr = expr.replaceAll("or", "|");
         expr = expr.replaceAll("abs", "Math.abs");
         expr = expr.replaceAll("min", "Math.min");
         expr = expr.replaceAll("max", "Math.max");

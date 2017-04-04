@@ -765,8 +765,8 @@ jlab.wedm.convertEDMExpressionToJavaScript = function (expr) {
     /*Convert EPICS Operators to JavaScript Operators*/
     expr = expr.replace(new RegExp('([^<>\!])=', 'g'), "$1=="); /*Match =, but not >= or <= or !=*/
     expr = expr.replace(new RegExp('#', 'g'), "!=");
-    expr = expr.replace(new RegExp('and', 'gi'), "&&");
-    expr = expr.replace(new RegExp('or', 'gi'), "||");
+    expr = expr.replace(new RegExp('and', 'gi'), "&");
+    expr = expr.replace(new RegExp('or', 'gi'), "|");
     expr = expr.replace(new RegExp('abs', 'gi'), "Math.abs");
     expr = expr.replace(new RegExp('min', 'gi'), "Math.min");
     expr = expr.replace(new RegExp('max', 'gi'), "Math.max");
