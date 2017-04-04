@@ -801,7 +801,7 @@ public class ScreenParser extends EDMParser {
                                             ((ActivePictureInPicture) embedded).screenList.add(s2);
                                         } catch (Exception e) {
                                             LOGGER.log(Level.WARNING,
-                                                    "Unable to load embedded menu file: " + f, e);
+                                                    "Unable to load embedded menu file from: " + canonicalPath, e);
                                         }
                                     }
                                 }
