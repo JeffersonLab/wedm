@@ -1334,7 +1334,6 @@ jlab.wedm.propogateMouseEventToStackedElements = function (e, type) {
         if (depth > 5) {
             break;
         }
-        $obj.show();
         depth++;
         switch (type) {
             case "mousedown":
