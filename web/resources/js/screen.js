@@ -1247,7 +1247,7 @@ jlab.wedm.doButtonUp = function ($obj) {
     }
 };
 
-$(document).on("click", ".RelatedDisplay", function (event) {
+$(document).on("click", ".RelatedDisplay", function (e) {
     var files = [],
             labels = [],
             $obj = $(this);
@@ -1272,8 +1272,8 @@ $(document).on("click", ".RelatedDisplay", function (event) {
     var path = '/wedm/screen?edl=',
             //left = $obj.css("left"),
             //right = $obj.css("top");
-            left = event.pageX + "px",
-            top = event.pageY + "px";
+            left = e.pageX + "px",
+            top = e.pageY + "px";
 
     if (files.length === 1) {
         window.open(path + files[0], '_blank');
@@ -1286,6 +1286,8 @@ $(document).on("click", ".RelatedDisplay", function (event) {
 
         $(document.body).append($html);
     }
+    
+    jlab.wedm.propogateMouseEventToStackedElements(e, "click");     
 });
 
 $(document).mouseup(function (e)
@@ -1305,17 +1307,81 @@ $(document).on("click", ".anchor-li", function () {
     return false; // Don't let anchor open another
 });
 
-$(document).on("mousedown", ".local-control.push-button", function () {
+jlab.wedm.propogatingMouseEvent = false;
+
+jlab.wedm.propogateMouseEventToStackedElements = function (e, type) {
+    
+    if(jlab.wedm.propogatingMouseEvent === true) {
+        return true;
+    }
+
+    jlab.wedm.propogatingMouseEvent = true;
+    
+    var depth = 0,
+            stack = [],
+            /*viewport coordinates are what this function wants (to work even if viewport changes due to resize/scrolling)*/
+            element = document.elementFromPoint(e.clientX, e.clientY),
+            $obj = $(element).closest(".ScreenObject");
+    stack.push($obj);
+    $obj.hide();
+    // No event since top element already got it
+
+    var element = document.elementFromPoint(e.clientX, e.clientY),
+            $obj = $(element).closest(".ScreenObject"),
+            previous = null;
+
+    while (element !== previous) {
+        if (depth > 5) {
+            break;
+        }
+        $obj.show();
+        depth++;
+        switch (type) {
+            case "mousedown":
+                $obj.mousedown();
+                break;
+            case "mouseup":
+                $obj.mouseup();
+                break;
+            case "click":
+                $obj.click();
+                break;
+            default:
+                console.log("unknown event type: " + type);
+                break;
+        }
+
+        stack.push($obj);
+        $obj.hide();
+        previous = element;
+
+        var element = document.elementFromPoint(e.clientX, e.clientY),
+                $obj = $(element).closest(".ScreenObject");
+    }
+
+    for (var i in stack) {
+        $obj = stack[i];
+        $obj.show();
+    }
+    
+    jlab.wedm.propogatingMouseEvent = false;
+};
+
+$(document).on("mousedown", ".local-control.push-button", function (e) {
     jlab.wedm.doButtonDown($(this));
+
+    jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");
 });
 
-$(document).on("mouseup mouseout", ".local-control.push-button", function () {
+$(document).on("mouseup mouseout", ".local-control.push-button", function (e) {
     if ($(this).hasClass("button-down")) {
         jlab.wedm.doButtonUp($(this));
     }
+        
+    jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");    
 });
 
-$(document).on("click", ".local-control.toggle-button", function () {
+$(document).on("click", ".local-control.toggle-button", function (e) {
     var $obj = $(this);
 
     if ($obj.hasClass("toggle-button-off")) {
@@ -1327,6 +1393,8 @@ $(document).on("click", ".local-control.toggle-button", function () {
         $obj.addClass("toggle-button-off");
         jlab.wedm.doButtonUp($obj);
     }
+    
+    jlab.wedm.propogateMouseEventToStackedElements(e, "click");    
 });
 
 $(function () {
