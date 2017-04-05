@@ -106,9 +106,9 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         }
 
         /*From a visibility perspective true = 1 and false = 0*/
-        if(value === true) {
+        if (value === true) {
             value = 1;
-        } else if(value === false) {
+        } else if (value === false) {
             value = 0;
         }
 
@@ -501,6 +501,19 @@ jlab.wedm.BytePvWidget = function (id, pvSet) {
 jlab.wedm.BytePvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
 jlab.wedm.BytePvWidget.prototype.constructor = jlab.wedm.BytePvWidget;
 
+jlab.wedm.BytePvWidget.prototype.handleInfo = function (info) {
+    /*console.log('Datatype: ' + info.datatype + ": " + info.count);*/
+
+    var $obj = $("#" + this.id);
+
+    if (!info.connected && $obj.length > 0) {
+        /*Can't use $obj.addClass on SVG with jquery 2*/
+        $obj[0].classList.add("disconnected-pv");
+        $obj[0].classList.remove("waiting-for-state");
+        $obj.find(".bit").css("fill", "black");
+    }
+};
+
 jlab.wedm.BytePvWidget.prototype.handleControlUpdate = function () {
     var $obj = $("#" + this.id);
 
@@ -831,7 +844,7 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
          eval('var ' + String.fromCharCode("A".charCodeAt(0) + i) + ' = ' + pvs[i] + ';');
          }*/
 
-         /*console.log(A);
+        /*console.log(A);
          console.log(B);
          console.log(C);
          console.log(D);
@@ -1255,7 +1268,7 @@ jlab.wedm.doButtonUp = function ($obj) {
     }
 };
 
-jlab.wedm.macroQueryString = function(macros) {
+jlab.wedm.macroQueryString = function (macros) {
     var url = "",
             tokens = macros.split(",");
 
@@ -1266,7 +1279,7 @@ jlab.wedm.macroQueryString = function(macros) {
             url = url + "&%24(" + encodeURIComponent(pieces[0]) + ")=" + encodeURIComponent(pieces[1]);
         }
     }
-    
+
     return url;
 };
 
@@ -1291,8 +1304,8 @@ $(document).on("click", ".RelatedDisplay", function (e) {
             } else {
                 labels.push(label);
             }
-            
-            if(macro === undefined || macro === '') {
+
+            if (macro === undefined || macro === '') {
                 macros.push("");
             } else {
                 macros.push(macro);
@@ -1317,8 +1330,8 @@ $(document).on("click", ".RelatedDisplay", function (e) {
 
         $(document.body).append($html);
     }
-    
-    jlab.wedm.propogateMouseEventToStackedElements(e, "click");     
+
+    jlab.wedm.propogateMouseEventToStackedElements(e, "click");
 });
 
 $(document).mouseup(function (e)
@@ -1341,13 +1354,13 @@ $(document).on("click", ".anchor-li", function () {
 jlab.wedm.propogatingMouseEvent = false;
 
 jlab.wedm.propogateMouseEventToStackedElements = function (e, type) {
-    
-    if(jlab.wedm.propogatingMouseEvent === true) {
+
+    if (jlab.wedm.propogatingMouseEvent === true) {
         return true;
     }
 
     jlab.wedm.propogatingMouseEvent = true;
-    
+
     var depth = 0,
             stack = [],
             /*viewport coordinates are what this function wants (to work even if viewport changes due to resize/scrolling)*/
@@ -1393,7 +1406,7 @@ jlab.wedm.propogateMouseEventToStackedElements = function (e, type) {
         $obj = stack[i];
         $obj.show();
     }
-    
+
     jlab.wedm.propogatingMouseEvent = false;
 };
 
@@ -1407,8 +1420,8 @@ $(document).on("mouseup mouseout", ".local-control.push-button", function (e) {
     if ($(this).hasClass("button-down")) {
         jlab.wedm.doButtonUp($(this));
     }
-        
-    jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");    
+
+    jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");
 });
 
 $(document).on("click", ".local-control.toggle-button", function (e) {
@@ -1423,8 +1436,8 @@ $(document).on("click", ".local-control.toggle-button", function (e) {
         $obj.addClass("toggle-button-off");
         jlab.wedm.doButtonUp($obj);
     }
-    
-    jlab.wedm.propogateMouseEventToStackedElements(e, "click");    
+
+    jlab.wedm.propogateMouseEventToStackedElements(e, "click");
 });
 
 $(function () {
