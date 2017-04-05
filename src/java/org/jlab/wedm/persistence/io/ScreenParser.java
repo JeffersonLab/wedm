@@ -24,6 +24,7 @@ import org.jlab.wedm.persistence.model.EDLFont;
 import org.jlab.wedm.persistence.model.html.HtmlScreenObject;
 import org.jlab.wedm.persistence.model.html.RelatedDisplay;
 import org.jlab.wedm.persistence.model.ActivePictureInPicture;
+import org.jlab.wedm.persistence.model.EDLColorRule;
 import org.jlab.wedm.persistence.model.EmbeddedScreen;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.ScreenObject;
@@ -40,6 +41,7 @@ import org.jlab.wedm.persistence.model.svg.ActiveBarMonitor;
 import org.jlab.wedm.persistence.model.svg.ActiveByte;
 import org.jlab.wedm.persistence.model.svg.ActiveCircle;
 import org.jlab.wedm.persistence.model.svg.ActiveRectangle;
+import org.jlab.wedm.persistence.model.svg.SvgScreenObject;
 
 public class ScreenParser extends EDMParser {
 
@@ -578,7 +580,7 @@ public class ScreenParser extends EDMParser {
                                                 "symbols (menu macro list) out of range: {0}",
                                                 rdIndex);
                                     }
-                                }                                
+                                }
                                 break;
                             case "onLabel":
                                 //LOGGER.log(Level.FINEST, "Found onLabel");
@@ -778,9 +780,11 @@ public class ScreenParser extends EDMParser {
                                 + canonicalPath + "'; ignoring", e);
                     }
                 }
-            }
+            } // end while line
+        } // end scanner try with resources
 
-        }
+        // Make sure any color rules with no PV result in first color of rule
+        doColorCheckRecursive(colorList, screenObjects);
 
         if (recursionLevel < 5) { // Don't recurse more than five files deep
             for (EmbeddedScreen embedded : embeddedScreens) {
@@ -842,4 +846,46 @@ public class ScreenParser extends EDMParser {
         return new Screen(canonicalPath, properties, screenObjects, colorList);
     }
 
+    private void doColorCheckRecursive(ColorList colorList, List<ScreenObject> screenObjects) {
+        for (ScreenObject obj : screenObjects) {
+            if (obj instanceof ActiveGroup) {
+                ActiveGroup grp = (ActiveGroup) obj;
+                doColorCheckRecursive(colorList, grp.children);
+            } else {
+                checkForColorRuleWithNoPv(colorList, obj);
+            }
+        }
+    }
+
+    private void checkForColorRuleWithNoPv(ColorList colorList, ScreenObject obj) {
+        String name;
+
+        if (obj.alarmPv == null) {
+            if (obj.lineColor != null && obj.lineColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.lineColor).getFirstColor();
+                obj.lineColor = colorList.lookup(name);
+            }
+
+            if (obj.fill && obj.fillColor != null
+                    && obj.fillColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.fillColor).getFirstColor();
+                obj.fillColor = colorList.lookup(name);
+            }
+
+            if (obj.fgColor != null && obj.fgColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.fgColor).getFirstColor();
+                obj.fgColor = colorList.lookup(name);
+            }
+
+            if (obj.onColor != null && obj.onColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.onColor).getFirstColor();
+                obj.onColor = colorList.lookup(name);
+            }
+
+            if (obj.offColor != null && obj.offColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) obj.offColor).getFirstColor();
+                obj.offColor = colorList.lookup(name);
+            }
+        }
+    }
 }

@@ -293,4 +293,16 @@ public class ScreenObject {
 
         return classStr;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("ID: ");
+        builder.append(objectId);
+        builder.append(", FillColor: ");
+        builder.append(fillColor == null ? "" : fillColor.toColorString());
+        
+        return builder.toString();
+    }
 }

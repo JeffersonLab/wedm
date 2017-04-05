@@ -74,7 +74,6 @@ public class Screen {
         Point translation = new Point(0, 0);
 
         for (ScreenObject obj : screenObjects) {
-            checkForColorRuleWithNoPv(obj);
             html = html + obj.toHtml(indentPlusOne, HtmlScreen.INDENT_STEP, translation);
         }
 
@@ -126,36 +125,5 @@ public class Screen {
         }
 
         return css;
-    }
-
-    private void checkForColorRuleWithNoPv(ScreenObject obj) {
-        String name;
-
-        if (obj.alarmPv == null) {
-            if (obj.lineColor != null && obj.lineColor instanceof EDLColorRule) {
-                name = ((EDLColorRule) obj.lineColor).getFirstColor();
-                obj.lineColor = colorList.lookup(name);
-            }
-
-            if (obj.fill && obj.fillColor != null && obj.fillColor instanceof EDLColorRule) {
-                name = ((EDLColorRule) obj.fillColor).getFirstColor();
-                obj.fillColor = colorList.lookup(name);
-            }
-
-            if (obj.fgColor != null && obj.fgColor instanceof EDLColorRule) {
-                name = ((EDLColorRule) obj.fgColor).getFirstColor();
-                obj.fgColor = colorList.lookup(name);
-            }
-
-            if (obj.onColor != null && obj.onColor instanceof EDLColorRule) {
-                name = ((EDLColorRule) obj.onColor).getFirstColor();
-                obj.onColor = colorList.lookup(name);
-            }
-            
-            if (obj.offColor != null && obj.offColor instanceof EDLColorRule) {
-                name = ((EDLColorRule) obj.offColor).getFirstColor();
-                obj.offColor = colorList.lookup(name);
-            }            
-        }
     }
 }
