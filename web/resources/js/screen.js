@@ -383,18 +383,18 @@ jlab.wedm.SymbolPvWidget.prototype.handleControlUpdate = function () {
             value = this.pvNameToValueMap[pv],
             minVals = $obj.attr("data-min-values").split(" "),
             maxVals = $obj.attr("data-max-values").split(" "),
-            state = 1;
+            state = 0;
 
     /*console.log("comparing value: " + value);*/
 
     for (var i = 0; i < minVals.length; i++) {
-        if ((value * 1) >= (minVals[i] * 1) && ((value * 1) <= (maxVals[i] * 1))) {
+        if ((value * 1) >= (minVals[i] * 1) && ((value * 1) < (maxVals[i] * 1))) {
             state = i;
             break;
         }
     }
 
-    state = state + 2;
+    state = state + 1; // nth-child starts at 1, not zero
 
     /*console.log('state: ' + state);*/
 
@@ -1420,7 +1420,7 @@ $(document).on("click", ".local-control.toggle-button", function (e) {
 });
 
 $(function () {
-    $(".ActiveSymbol .ActiveGroup:nth-child(2)").show();
+    $(".ActiveSymbol .ActiveGroup:nth-child(1)").show();
 
     jlab.wedm.resizeText();
 
