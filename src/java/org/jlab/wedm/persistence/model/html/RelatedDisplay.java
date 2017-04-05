@@ -27,6 +27,11 @@ public class RelatedDisplay extends ActiveButton {
                         //labels = labels + " ~~NONE~~";
                         attributes.put("data-linked-label-" + i, "");
                     }
+                    
+                    
+                    if(symbols[i] != null) {
+                        attributes.put("data-symbols-" + i, symbols[i]);
+                    }
                 }
             }
 

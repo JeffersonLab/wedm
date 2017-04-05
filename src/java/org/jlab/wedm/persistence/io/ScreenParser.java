@@ -55,7 +55,7 @@ public class ScreenParser extends EDMParser {
             FileNotFoundException, IOException {
 
         if (name == null) {
-            return null; // TODO: should we return a screen that says no file name given?
+            throw new RuntimeException("An EDL file is required");
         }
 
         if (!name.endsWith(".edl")) {
@@ -559,6 +559,27 @@ public class ScreenParser extends EDMParser {
                                     }
                                 }
                                 break;
+                            case "symbols":
+                                while (scanner.hasNext()) {
+                                    String val = scanner.nextLine();
+
+                                    if ("}".equals(val)) {
+                                        break;
+                                    }
+
+                                    String[] tks = val.trim().split("\\s");
+                                    int rdIndex = Integer.parseInt(tks[0].trim());
+
+                                    if (rdIndex >= 0 && rdIndex <= 64) {
+                                        last.symbols[rdIndex] = stripQuotes(val.substring(
+                                                val.indexOf(tks[0]) + tks[0].length()));
+                                    } else {
+                                        LOGGER.log(Level.WARNING,
+                                                "symbols (menu macro list) out of range: {0}",
+                                                rdIndex);
+                                    }
+                                }                                
+                                break;
                             case "onLabel":
                                 //LOGGER.log(Level.FINEST, "Found onLabel");
                                 ((ActiveButton) last).onLabel = stripQuotes(line.substring(
@@ -718,7 +739,6 @@ public class ScreenParser extends EDMParser {
                             case "selectColor":
                             case "inconsistentColor":
                             case "allowDups":
-                            case "symbols":
                             case "noEdit":
                             case "gridSize":
                             case "execCursor":
@@ -801,7 +821,8 @@ public class ScreenParser extends EDMParser {
                                             ((ActivePictureInPicture) embedded).screenList.add(s2);
                                         } catch (Exception e) {
                                             LOGGER.log(Level.WARNING,
-                                                    "Unable to load embedded menu file from: " + canonicalPath, e);
+                                                    "Unable to load embedded menu file from: "
+                                                    + canonicalPath, e);
                                         }
                                     }
                                 }

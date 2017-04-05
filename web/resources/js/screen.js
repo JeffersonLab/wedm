@@ -1247,14 +1247,31 @@ jlab.wedm.doButtonUp = function ($obj) {
     }
 };
 
+jlab.wedm.macroQueryString = function(macros) {
+    var url = "",
+            tokens = macros.split(",");
+
+    for (var i = 0; i < tokens.length; i++) {
+        var kvPair = tokens[i],
+                pieces = kvPair.split("=");
+        if (pieces.length === 2) {
+            url = url + "&%24(" + encodeURIComponent(pieces[0]) + ")=" + encodeURIComponent(pieces[1]);
+        }
+    }
+    
+    return url;
+};
+
 $(document).on("click", ".RelatedDisplay", function (e) {
     var files = [],
             labels = [],
+            macros = [],
             $obj = $(this);
 
     for (var i = 0; i < 64; i++) {
         var file = $obj.attr("data-linked-file-" + i),
-                label = $obj.attr("data-linked-label-" + i);
+                label = $obj.attr("data-linked-label-" + i),
+                macro = $obj.attr("data-symbols-" + i);
 
         if (file === undefined) {
             break;
@@ -1266,6 +1283,12 @@ $(document).on("click", ".RelatedDisplay", function (e) {
             } else {
                 labels.push(label);
             }
+            
+            if(macro === undefined || macro === '') {
+                macros.push("");
+            } else {
+                macros.push(macro);
+            }
         }
     }
 
@@ -1276,12 +1299,12 @@ $(document).on("click", ".RelatedDisplay", function (e) {
             top = e.pageY + "px";
 
     if (files.length === 1) {
-        window.open(path + files[0], '_blank');
+        window.open(path + files[0] + jlab.wedm.macroQueryString(macros[0]), '_blank');
     } else {
         var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
 
         for (var i = 0; i < files.length; i++) {
-            $html.find("ul").append('<li class="anchor-li"><a href="' + path + files[i] + '" target="_blank">' + labels[i] + '</a></li>');
+            $html.find("ul").append('<li class="anchor-li"><a href="' + path + files[i] + jlab.wedm.macroQueryString(macros[i]) + '" target="_blank">' + labels[i] + '</a></li>');
         }
 
         $(document.body).append($html);

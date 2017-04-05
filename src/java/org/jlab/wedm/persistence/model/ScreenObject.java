@@ -21,7 +21,8 @@ public class ScreenObject {
     public int numPvs = 0;
     public int numDsps = 0;       
     public String[] displayFileNames = new String[64];
-    public String[] menuLabels = new String[64];    
+    public String[] menuLabels = new String[64];   
+    public String[] symbols = new String[64];
     public Integer precision = null;
     public Float visMin = null;
     public Float visMax = null;
@@ -66,7 +67,7 @@ public class ScreenObject {
     public Map<String, String> attributes = new HashMap<>();
     public Map<String, String> styles = new HashMap<>();
     public List<String> classes = new ArrayList<>();
-
+    
     protected void setCommonAttributes() {
         String className = this.getClass().getSimpleName();
         classes.add(className);

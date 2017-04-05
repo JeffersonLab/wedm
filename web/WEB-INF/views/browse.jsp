@@ -11,6 +11,7 @@
     <body>
         <h1>WEB Extensible Display Manager (WEDM)</h1>
         <h2>Browse for EDL Files</h2>
+        <label for="macros">Macros (optional): </label><input id="macros" type="text" placeholder="comma separated name=value pairs"/>
         <h3>
             <span id="up-directory-widget">
                 <c:url var="url" value="browse">
@@ -38,7 +39,7 @@
                                     <c:url var="url" value="screen">
                                         <c:param name="edl" value="${file.absolutePath}"/>
                                     </c:url>
-                                    <a href="${url}"><c:out value="${file.name}"/></a>
+                                    <a href="${url}" class="edl-file"><c:out value="${file.name}"/></a>
                                 </c:when>
                                 <c:otherwise>
                                     <c:out value="${file.name}"/>
@@ -46,8 +47,10 @@
                             </c:choose>
                         </td>
                     </tr>
-                </c:forEach>
+                </c:forEach>                    
             </tbody>
         </table>
+        <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>        
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/browse.js?v=${initParam.releaseNumber}"></script>        
     </body>
 </html>
