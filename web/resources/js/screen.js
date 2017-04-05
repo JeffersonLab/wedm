@@ -105,6 +105,13 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             value = jlab.wedm.evalCalcExpr(this.visPvExpr, pvs);
         }
 
+        /*From a visibility perspective true = 1 and false = 0*/
+        if(value === true) {
+            value = 1;
+        } else if(value === false) {
+            value = 0;
+        }
+
         /*console.log('val: ' + value);
          $obj.attr("data-value", value);*/
 
@@ -824,10 +831,11 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
          eval('var ' + String.fromCharCode("A".charCodeAt(0) + i) + ' = ' + pvs[i] + ';');
          }*/
 
-        /*console.log(A);
+         /*console.log(A);
          console.log(B);
          console.log(C);
-         console.log(D);*/
+         console.log(D);
+         console.log(E);*/
 
         var stmt = expr.substring(7, expr.indexOf("}"));
 
@@ -835,7 +843,7 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
 
         stmt = jlab.wedm.convertEDMExpressionToJavaScript(stmt);
 
-        //console.log("after: " + stmt);
+        //console.log("Expression: " + stmt);
 
         var result;
 
@@ -848,7 +856,7 @@ jlab.wedm.evalCalcExpr = function (expr, pvs) {
             console.log("Unable to eval: " + e.message + "; stmt: " + stmt);
         }
 
-        /*console.log(result);*/
+        //console.log("Result: " + result);
 
         return result;
 
