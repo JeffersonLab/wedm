@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1205
-y 104
+x 886
+y 237
 w 500
 h 600
 font "helvetica-medium-r-18.0"
@@ -297,6 +297,51 @@ bgColor index 51
 useDisplayBg
 value {
   "< precision from DB"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 21
+y 304
+w 124
+h 20
+controlPv "IBC0R08CRCUR1"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 170
+y 307
+w 66
+h 15
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< With Units"
 }
 autoSize
 endObjectProperties
