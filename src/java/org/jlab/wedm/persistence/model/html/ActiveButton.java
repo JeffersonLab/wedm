@@ -23,6 +23,8 @@ public class ActiveButton extends TextScreenObject {
             push = false;
         }
 
+        classes.add("MouseSensitive");
+        
         if (!(this instanceof ActiveMessageButton) && !(this instanceof RelatedDisplay)) {
             if (pressValue == null) {
                 pressValue = "1";

@@ -20,8 +20,13 @@
 .ActiveControlText.editable {
     cursor: not-allowed;
 }
-.ActiveRectangle {
+/*By default mouse events propogate through ScreenObjects as if they didn't exist*/
+.ScreenObject {
     pointer-events: none;
+}
+/*Objects that must handle mouse events and must manually propogate to those below*/
+.ScreenObject.MouseSensitive {
+    pointer-events: auto;
 }
 .RelatedDisplay.invisible {
     z-index: 2;

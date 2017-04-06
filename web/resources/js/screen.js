@@ -1378,8 +1378,6 @@ $(document).on("click", ".RelatedDisplay", function (e) {
 
         $(document.body).append($html);
     }
-
-    jlab.wedm.propogateMouseEventToStackedElements(e, "click");
 });
 
 $(document).mouseup(function (e)
@@ -1459,18 +1457,27 @@ jlab.wedm.propogateMouseEventToStackedElements = function (e, type) {
     jlab.wedm.propogatingMouseEvent = false;
 };
 
+$(document).on("click", ".MouseSensitive", function(e){
+    jlab.wedm.propogateMouseEventToStackedElements(e, "click");    
+});
+
+
+$(document).on("mousedown", ".MouseSensitive", function(e){
+    jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");    
+});
+
+$(document).on("mouseup", ".MouseSensitive", function(e){
+    jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");    
+});
+
 $(document).on("mousedown", ".local-control.push-button", function (e) {
     jlab.wedm.doButtonDown($(this));
-
-    jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");
 });
 
 $(document).on("mouseup mouseout", ".local-control.push-button", function (e) {
     if ($(this).hasClass("button-down")) {
         jlab.wedm.doButtonUp($(this));
     }
-
-    jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");
 });
 
 $(document).on("click", ".local-control.toggle-button", function (e) {
@@ -1485,8 +1492,6 @@ $(document).on("click", ".local-control.toggle-button", function (e) {
         $obj.addClass("toggle-button-off");
         jlab.wedm.doButtonUp($obj);
     }
-
-    jlab.wedm.propogateMouseEventToStackedElements(e, "click");
 });
 
 $(function () {
