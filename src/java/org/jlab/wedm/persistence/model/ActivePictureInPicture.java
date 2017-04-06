@@ -12,6 +12,8 @@ public class ActivePictureInPicture extends EmbeddedScreen {
 
     public String filePv = null;
     public List<Screen> screenList = new ArrayList<>();
+    public boolean noscroll = false;
+    public boolean center = false;
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
@@ -20,11 +22,19 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         int originY = y + translation.y;
 
         attributes.put("id", "obj-" + objectId);
-        
-        if(filePv != null) {
+
+        if (filePv != null) {
             attributes.put("data-pv", filePv);
         }
+
+        if (noscroll) {
+            classes.add("noscroll");
+        }
         
+        if(center) {
+            classes.add("pip-center");
+        }
+
         classes.add("ActivePictureInPicture");
         classes.add("ScreenObject");
 
@@ -32,6 +42,14 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         styles.put("height", h + "px");
         styles.put("left", originX + "px");
         styles.put("top", originY + "px");
+
+        if (topShadowColor != null && botShadowColor != null) {
+            styles.put("border-top", "2px solid " + botShadowColor.toColorString());
+            styles.put("border-left", "2px solid " + botShadowColor.toColorString());
+
+            styles.put("border-bottom", "2px solid " + topShadowColor.toColorString());
+            styles.put("border-right", "2px solid " + topShadowColor.toColorString());
+        }
 
         String attrStr = getAttributesString(attributes);
         String classStr = getClassString(classes);

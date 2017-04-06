@@ -7,15 +7,15 @@ jlab.wedm.localPvs = [];
 
 /*Polyfill for IE and Opera to add String.endsWith function*/
 if (!String.prototype.endsWith) {
-  String.prototype.endsWith = function(searchString, position) {
-      var subjectString = this.toString();
-      if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
-        position = subjectString.length;
-      }
-      position -= searchString.length;
-      var lastIndex = subjectString.lastIndexOf(searchString, position);
-      return lastIndex !== -1 && lastIndex === position;
-  };
+    String.prototype.endsWith = function (searchString, position) {
+        var subjectString = this.toString();
+        if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
+            position = subjectString.length;
+        }
+        position -= searchString.length;
+        var lastIndex = subjectString.lastIndexOf(searchString, position);
+        return lastIndex !== -1 && lastIndex === position;
+    };
 }
 
 jlab.wedm.PvWidget = function (id, pvSet) {
@@ -160,7 +160,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
     jlab.wedm.PvWidget.prototype.handleLimitUpdate = function (update) {
         /*console.log('limit update ' + update.pv + ": " + update.value);*/
-        
+
         var $obj = $("#" + this.id);
         if (update.pv.endsWith(".HOPR")) {
             $obj.attr("data-max", update.value);
@@ -170,10 +170,10 @@ jlab.wedm.PvWidget = function (id, pvSet) {
             $obj.attr("data-precision", update.value);
             var pv = $obj.attr("data-pv");
             this.handleControlUpdate.call(this, {pv: pv, value: this.pvNameToValueMap[pv]});
-        } else if(update.pv.endsWith(".EGU")) {
+        } else if (update.pv.endsWith(".EGU")) {
             $obj.attr("data-units", update.value);
             var pv = $obj.attr("data-pv");
-            this.handleControlUpdate.call(this, {pv: pv, value: this.pvNameToValueMap[pv]});            
+            this.handleControlUpdate.call(this, {pv: pv, value: this.pvNameToValueMap[pv]});
         } else {
             console.log('Unknown limit PV: ' + update.pv);
         }
@@ -353,8 +353,8 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
             value = value.toFixed(precision);
         }
     }
-    
-    if(typeof units !== 'undefined') {
+
+    if (typeof units !== 'undefined') {
         value = value + " " + units;
     }
 
@@ -1124,10 +1124,10 @@ jlab.wedm.createWidgets = function () {
             basename = jlab.wedm.basename(alarmPvs[0]);
             alarmPvs[0] = basename + ".SEVR";
         }
-        
-        if(showUnits && ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
-                basename = jlab.wedm.basename(ctrlPvs[0]);
-                limitPvs.push(basename + ".EGU");            
+
+        if (showUnits && ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
+            basename = jlab.wedm.basename(ctrlPvs[0]);
+            limitPvs.push(basename + ".EGU");
         }
 
         var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(colorPvs).concat(indicatorPvs).concat(limitPvs)),
@@ -1236,8 +1236,18 @@ jlab.wedm.initWebsocket = function () {
     };
 };
 
-jlab.wedm.initEmbedded = function () {
-    $(".ActivePictureInPicture .screen:not(:first-child)").hide();
+jlab.wedm.initEmbedded = function () {  
+    /*Only vertically center screens shorter than their parent*/
+    $(".ActivePictureInPicture.pip-center .screen").each(function () {
+        var $screen = $(this),
+                $container = $screen.closest(".ActivePictureInPicture");
+        if ($screen.outerHeight(true) < $container.height()) {
+            $screen.addClass("vertical-center");
+        }
+    });
+    
+    /*Initially just how first screen in the stack*/
+    $(".ActivePictureInPicture .screen:not(:first-child)").hide();      
 };
 
 jlab.wedm.initLocalPVs = function () {

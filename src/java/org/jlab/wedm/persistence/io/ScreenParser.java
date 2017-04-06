@@ -287,6 +287,12 @@ public class ScreenParser extends EDMParser {
                                 //LOGGER.log(Level.FINEST, "Found useDisplayBg");
                                 last.useDisplayBg = true; // This means ignore bgColor and inherit screen background / transparent background
                                 break;
+                            case "noScroll":
+                                ((ActivePictureInPicture)last).noscroll = true;
+                                break;
+                            case "center":
+                                ((ActivePictureInPicture)last).center = true;
+                                break;
                             case "invisible":
                                 last.invisible = true;
                                 break;
@@ -757,8 +763,6 @@ public class ScreenParser extends EDMParser {
                             case "swapButtons":
                             case "setSize":
                             case "sizeOfs":
-                            case "noScroll":
-                            case "center":
                             case "ignoreMultiplexors":
                             case "helpCommand":
                             case "multipleInstances":
