@@ -392,9 +392,18 @@ jlab.wedm.ButtonPvWidget.prototype.handleControlUpdate = function () {
         /*if press and release have same value we only do press*/
         if (typeof pressValue !== undefined && pressValue === value) {
             /*console.log("press state");*/
+
+            $obj.removeClass("toggle-button-off");
+            $obj.addClass("toggle-button-on");
+
+
             jlab.wedm.doButtonDown($obj);
         } else if (typeof releaseValue !== undefined && releaseValue === value) {
             /*console.log("release state");*/
+
+            $obj.removeClass("toggle-button-on");
+            $obj.addClass("toggle-button-off");
+
             jlab.wedm.doButtonUp($obj);
         }
     }
@@ -1236,7 +1245,7 @@ jlab.wedm.initWebsocket = function () {
     };
 };
 
-jlab.wedm.initEmbedded = function () {  
+jlab.wedm.initEmbedded = function () {
     /*Only vertically center screens shorter than their parent*/
     $(".ActivePictureInPicture.pip-center .screen").each(function () {
         var $screen = $(this),
@@ -1245,9 +1254,9 @@ jlab.wedm.initEmbedded = function () {
             $screen.addClass("vertical-center");
         }
     });
-    
+
     /*Initially just how first screen in the stack*/
-    $(".ActivePictureInPicture .screen:not(:first-child)").hide();      
+    $(".ActivePictureInPicture .screen:not(:first-child)").hide();
 };
 
 jlab.wedm.initLocalPVs = function () {
