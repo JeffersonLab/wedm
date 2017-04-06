@@ -1,0 +1,308 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 297
+y 148
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 39
+y 23
+w 67
+h 42
+fgColor index 14
+onColor index 129
+offColor index 50
+inconsistentColor index 8
+topShadowColor index 50
+botShadowColor index 10
+controlPv "LOC\\\\TEST1=e:1,Off,On"
+onLabel "On"
+offLabel "Off"
+labelType "literal"
+3d
+font "helvetica-medium-r-18.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 40
+y 112
+w 131
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+visPv "LOC\\\\TEST1"
+visInvert
+visMin "0"
+visMax "1"
+value {
+  "Visible when \"ON\""
+}
+autoSize
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 326
+y 26
+w 62
+h 45
+fgColor index 0
+onColor index 20
+offColor index 125
+inconsistentColor index 8
+topShadowColor index 50
+botShadowColor index 10
+controlPv "LOC\\\\TEST2=e:JUNK"
+onLabel "Red"
+offLabel "Blue"
+labelType "literal"
+buttonType "push"
+3d
+font "helvetica-medium-r-18.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 331
+y 106
+w 120
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+visPv "LOC\\\\TEST2"
+visInvert
+visMin "0"
+visMax "1"
+value {
+  "Visible when red"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 41
+y 143
+w 140
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+visPv "LOC\\\\TEST1"
+visMin "0"
+visMax "1"
+value {
+  "Visible when \"OFF\""
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 332
+y 136
+w 126
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+visPv "LOC\\\\TEST2"
+visMin "0"
+visMax "1"
+value {
+  "Visible when blue"
+}
+autoSize
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 64
+y 317
+w 84
+h 61
+fgColor index 14
+onColor index 51
+offColor index 51
+inconsistentColor index 8
+topShadowColor index 50
+botShadowColor index 10
+controlPv "LOC\\\\TEST3=e:0,False,True"
+onLabel "True"
+offLabel "False"
+labelType "literal"
+3d
+font "helvetica-medium-r-18.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 158
+y 338
+w 93
+h 19
+controlPv "LOC\\\\TEST3"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+nullColor index 14
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 121
+y 35
+w 94
+h 20
+controlPv "LOC\\\\TEST1"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+nullColor index 14
+newPos
+objType "controls"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 67
+y 437
+w 79
+h 46
+fgColor index 14
+onColor index 51
+offColor index 51
+topShadowColor index 50
+botShadowColor index 10
+controlPv "LOC\\\\TEST4=e:0,OFF,ON"
+pressValue "ON"
+releaseValue "OFF"
+onLabel "ON"
+offLabel "OFF"
+toggle
+3d
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 155
+y 455
+w 97
+h 13
+controlPv "LOC\\\\TEST4"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+nullColor index 14
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 303
+y 448
+w 131
+h 19
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+visPv "LOC\\\\TEST4"
+visInvert
+visMin "0"
+visMax "1"
+value {
+  "Visible when \"ON\""
+}
+autoSize
+endObjectProperties
+

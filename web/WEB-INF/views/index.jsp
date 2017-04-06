@@ -10,7 +10,6 @@
     </head>
     <body>
         <h1>WEB Extensible Display Manager (WEDM)</h1>
-        <div id="version">Version: ${initParam.releaseNumber} (${initParam.releaseDate})</div>
         <table>
             <tbody>
                 <tr>
@@ -23,27 +22,27 @@
                 </tr>
             </tbody>
         </table>
-        <h2>EDM Object Demos</h2>
+        <h2>Objects</h2>
         <h3>Graphics</h3>
         <table>
             <tbody>
                 <tr>
-                    <td><a href="screen?edl=wedm/Line.edl">Line (Path)</a></td>
+                    <td><a href="screen?edl=wedm/objects/Line.edl">Line (Path)</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/Rectangle.edl">Rectangle</a></td>
+                    <td><a href="screen?edl=wedm/objects/Rectangle.edl">Rectangle</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/Circle.edl">Circle (Ellipse)</a></td>
+                    <td><a href="screen?edl=wedm/objects/Circle.edl">Circle (Ellipse)</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/Arc.edl">Arc</a></td>
+                    <td><a href="screen?edl=wedm/objects/Arc.edl">Arc</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/Text.edl">Text</a></td>
+                    <td><a href="screen?edl=wedm/objects/Text.edl">Text</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/Embedded.edl">Embedded</a></td>
+                    <td><a href="screen?edl=wedm/objects/Embedded.edl">Embedded</a></td>
                 </tr>                
             </tbody>
         </table>
@@ -51,16 +50,16 @@
         <table>
             <tbody>
                 <tr>
-                    <td><a href="screen?edl=wedm/DynamicText.edl">Dynamic Text</a></td>
+                    <td><a href="screen?edl=wedm/objects/DynamicText.edl">Dynamic Text</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/Byte.edl">Byte</a></td>
+                    <td><a href="screen?edl=wedm/objects/Byte.edl">Byte</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/BarMeter.edl">Bar Meter</a></td>
+                    <td><a href="screen?edl=wedm/objects/BarMeter.edl">Bar Meter</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/DynamicSymbol.edl">Dynamic Symbol</a></td>
+                    <td><a href="screen?edl=wedm/objects/DynamicSymbol.edl">Dynamic Symbol</a></td>
                 </tr>
             </tbody>
         </table>        
@@ -68,18 +67,33 @@
         <table>
             <tbody>
                 <tr>
-                    <td><a href="screen?edl=wedm/Button.edl">Button</a></td>
+                    <td><a href="screen?edl=wedm/objects/Button.edl">Button</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/TextControl.edl">Text Control</a></td>
+                    <td><a href="screen?edl=wedm/objects/TextControl.edl">Text Control</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/ChoiceButton.edl">Choice Button</a></td>
+                    <td><a href="screen?edl=wedm/objects/ChoiceButton.edl">Choice Button</a></td>
                 </tr>
                 <tr>
-                    <td><a href="screen?edl=wedm/RelatedDisplay.edl">Related Display</a></td>
+                    <td><a href="screen?edl=wedm/objects/RelatedDisplay.edl">Related Display</a></td>
                 </tr>                
             </tbody>
-        </table>       
+        </table> 
+        <h2>Features</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td><a href="screen?edl=wedm/features/LocalVariable.edl">Local Variables</a></td>
+                </tr>
+                <tr>
+                    <td><a href="screen?edl=wedm/features/Macro.edl&%24(A)=World">Macros</a></td>
+                </tr>
+                <tr>
+                    <td><a href="screen?edl=wedm/features/TextResize.edl">Text Resize</a></td>
+                </tr>            
+            </tbody>
+        </table>
+        <div id="version">Version: ${initParam.releaseNumber} (${initParam.releaseDate})</div>        
     </body>
 </html>
