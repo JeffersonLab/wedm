@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 71
-y 44
+x 79
+y 74
 w 1800
 h 1000
 font "helvetica-medium-r-18.0"
@@ -87,8 +87,8 @@ center
 sizeOfs 5
 numDsps 2
 displayFileName {
-  0 "wedm/Line.edl"
-  1 "wedm/Arc.edl"
+  0 "wedm/objects/Line.edl"
+  1 "wedm/objects/Arc.edl"
 }
 menuLabel {
   0 "Line"
@@ -116,8 +116,8 @@ center
 sizeOfs 5
 numDsps 2
 displayFileName {
-  0 "wedm/Line.edl"
-  1 "wedm/Arc.edl"
+  0 "wedm/objects/Line.edl"
+  1 "wedm/objects/Arc.edl"
 }
 menuLabel {
   0 "Line"
@@ -145,8 +145,8 @@ center
 sizeOfs 5
 numDsps 2
 displayFileName {
-  0 "wedm/Line.edl"
-  1 "wedm/Arc.edl"
+  0 "wedm/objects/Line.edl"
+  1 "wedm/objects/Arc.edl"
 }
 menuLabel {
   0 "Line"
@@ -174,8 +174,8 @@ filePv "LOC\\\\TEST"
 sizeOfs 5
 numDsps 2
 displayFileName {
-  0 "wedm/Line.edl"
-  1 "wedm/Arc.edl"
+  0 "wedm/objects/Line.edl"
+  1 "wedm/objects/Arc.edl"
 }
 menuLabel {
   0 "Line"
