@@ -1348,6 +1348,7 @@ $(document).mouseup(function (e)
 $(document).on("click", ".anchor-li", function () {
     var href = $(this).find("a").attr("href");
     window.open(href, '_blank');
+    $(this).closest(".related-display-menu").remove();
     return false; // Don't let anchor open another
 });
 
