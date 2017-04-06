@@ -316,6 +316,9 @@ public class ScreenParser extends EDMParser {
                             case "3d":
                                 ((HtmlScreenObject) last).threeDimensional = true;
                                 break;
+                            case "showUnits":
+                                ((ActiveControlText) last).showUnits = true;
+                                break;
                             case "border":
                                 last.border = true;
                                 break;
@@ -755,7 +758,6 @@ public class ScreenParser extends EDMParser {
                             case "setSize":
                             case "sizeOfs":
                             case "noScroll":
-                            case "showUnits":
                             case "center":
                             case "ignoreMultiplexors":
                             case "helpCommand":

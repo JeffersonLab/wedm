@@ -5,6 +5,19 @@ jlab.wedm.pvWidgetMap = {};
 jlab.wedm.localPvMap = {};
 jlab.wedm.localPvs = [];
 
+/*Polyfill for IE and Opera to add String.endsWith function*/
+if (!String.prototype.endsWith) {
+  String.prototype.endsWith = function(searchString, position) {
+      var subjectString = this.toString();
+      if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
+        position = subjectString.length;
+      }
+      position -= searchString.length;
+      var lastIndex = subjectString.lastIndexOf(searchString, position);
+      return lastIndex !== -1 && lastIndex === position;
+  };
+}
+
 jlab.wedm.PvWidget = function (id, pvSet) {
     this.id = id;
     this.ctrlPvExpr = pvSet.ctrlPvExpr;
@@ -147,15 +160,20 @@ jlab.wedm.PvWidget = function (id, pvSet) {
 
     jlab.wedm.PvWidget.prototype.handleLimitUpdate = function (update) {
         /*console.log('limit update ' + update.pv + ": " + update.value);*/
+        
         var $obj = $("#" + this.id);
-        if (update.pv.indexOf(".HOPR") > -1) {
+        if (update.pv.endsWith(".HOPR")) {
             $obj.attr("data-max", update.value);
-        } else if (update.pv.indexOf(".LOPR") > -1) {
+        } else if (update.pv.endsWith(".LOPR")) {
             $obj.attr("data-min", update.value);
-        } else if (update.pv.indexOf(".PREC") > -1) {
+        } else if (update.pv.endsWith(".PREC")) {
             $obj.attr("data-precision", update.value);
             var pv = $obj.attr("data-pv");
             this.handleControlUpdate.call(this, {pv: pv, value: this.pvNameToValueMap[pv]});
+        } else if(update.pv.endsWith(".EGU")) {
+            $obj.attr("data-units", update.value);
+            var pv = $obj.attr("data-pv");
+            this.handleControlUpdate.call(this, {pv: pv, value: this.pvNameToValueMap[pv]});            
         } else {
             console.log('Unknown limit PV: ' + update.pv);
         }
@@ -285,7 +303,8 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
             enumVal = this.enumValuesArray[value],
             format = $obj.attr("data-format"),
             precision = $obj.attr("data-precision"),
-            hexPrefix = $obj.attr("data-hex-prefix") === "true";
+            hexPrefix = $obj.attr("data-hex-prefix") === "true",
+            units = $obj.attr("data-units");
 
     if (typeof enumVal !== 'undefined') {
         value = enumVal;
@@ -333,6 +352,10 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
 
             value = value.toFixed(precision);
         }
+    }
+    
+    if(typeof units !== 'undefined') {
+        value = value + " " + units;
     }
 
     $("#" + this.id + " .screen-text").text(value);
@@ -1078,7 +1101,8 @@ jlab.wedm.createWidgets = function () {
                 limitPvs = [],
                 basename,
                 limitsFromDb = $obj.attr("data-db-limits") === "true",
-                alarmSensitive = $obj.attr("data-indicator-alarm") === "true";
+                alarmSensitive = $obj.attr("data-indicator-alarm") === "true",
+                showUnits = $obj.attr("data-show-units") === "true";
 
         if (limitsFromDb) {
             if (indicatorPvs.length === 1 && !jlab.wedm.isLocalExpr(indicatorPvs[0])) {
@@ -1099,6 +1123,11 @@ jlab.wedm.createWidgets = function () {
         } else if (alarmPvs.length === 1) {
             basename = jlab.wedm.basename(alarmPvs[0]);
             alarmPvs[0] = basename + ".SEVR";
+        }
+        
+        if(showUnits && ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
+                basename = jlab.wedm.basename(ctrlPvs[0]);
+                limitPvs.push(basename + ".EGU");            
         }
 
         var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(colorPvs).concat(indicatorPvs).concat(limitPvs)),

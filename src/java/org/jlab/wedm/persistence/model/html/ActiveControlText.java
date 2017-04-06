@@ -9,8 +9,14 @@ import java.awt.Point;
  */
 public class ActiveControlText extends ActiveStaticText {
 
+    public boolean showUnits = false;    
+    
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
+        if(showUnits) {
+            attributes.put("data-show-units", "true");
+        }
+        
         if (alarmPv == null && controlPv != null && (fgAlarm || bgAlarm)) {
             alarmPv = controlPv;
         }
