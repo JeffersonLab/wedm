@@ -1,7 +1,9 @@
 package org.jlab.wedm.presentation.controller;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,8 +50,19 @@ public class BrowseController extends HttpServlet {
                 }
             }
 
-            File[] files = dir.listFiles();
+            File[] files = dir.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    if(f.isDirectory() || f.getName().endsWith(".edl")) {
+                        return true;
+                    }
+                    
+                    return false;
+                }
+            });
 
+            Arrays.sort(files);
+            
             request.setAttribute("files", files);
             request.setAttribute("parent", parent);
             request.setAttribute("parentOutside", parentOutside);
