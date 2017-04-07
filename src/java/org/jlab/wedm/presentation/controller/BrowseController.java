@@ -61,7 +61,9 @@ public class BrowseController extends HttpServlet {
                 }
             });
 
-            Arrays.sort(files);
+            if(files != null) {
+                Arrays.sort(files);
+            }
             
             request.setAttribute("files", files);
             request.setAttribute("parent", parent);
