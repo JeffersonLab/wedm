@@ -91,7 +91,10 @@
                 </tr>
                 <tr>
                     <td><a href="screen?edl=wedm/features/TextResize.edl">Text Resize</a></td>
-                </tr>            
+                </tr>    
+                <tr>
+                    <td><a href="screen?edl=wedm/features/Stack.edl">Stack</a></td>
+                </tr>                
             </tbody>
         </table>
         <div id="version">Version: ${initParam.releaseNumber} (${initParam.releaseDate})</div>        
