@@ -13,6 +13,8 @@ public class ActiveChoiceButton extends HtmlScreenObject {
     
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
+        classes.add("MouseSensitive");
+        
         return super.toHtml(indent, indentStep, translation);
     }
 }
