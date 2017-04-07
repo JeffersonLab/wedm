@@ -8,6 +8,10 @@
     fill: transparent !important;
     stroke: transparent !important;
 }
+/*Otherwise hover outline enlarged*/
+.invisible .text-wrap {
+    display: none;
+}
 #svg-defs,
 .ActiveSymbol .ActiveGroup {
     display: none;
