@@ -24,6 +24,8 @@ public class ActiveImage extends HtmlScreenObject {
 
         // TODO: it would be faster to load pages if we allowed the browser to fetch images asyncronously
         try {
+            file = EDMParser.rewriteFileName(file);
+            
             File path = new File(file);
 
             if (!path.isAbsolute()) {

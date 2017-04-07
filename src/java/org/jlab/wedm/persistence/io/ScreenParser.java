@@ -41,7 +41,6 @@ import org.jlab.wedm.persistence.model.svg.ActiveBarMonitor;
 import org.jlab.wedm.persistence.model.svg.ActiveByte;
 import org.jlab.wedm.persistence.model.svg.ActiveCircle;
 import org.jlab.wedm.persistence.model.svg.ActiveRectangle;
-import org.jlab.wedm.persistence.model.svg.SvgScreenObject;
 
 public class ScreenParser extends EDMParser {
 
@@ -56,19 +55,7 @@ public class ScreenParser extends EDMParser {
     public Screen parse(String name, ColorList colorList, int recursionLevel) throws
             FileNotFoundException, IOException {
 
-        if (name == null) {
-            throw new RuntimeException("An EDL file is required");
-        }
-
-        if (!name.endsWith(".edl")) {
-            name = name + ".edl";
-        }
-
-        File edl = new File(name);
-
-        if (!edl.isAbsolute()) {
-            edl = new File(EDL_ROOT_DIR + File.separator + name);
-        }
+        File edl = getEdlFile(name);
 
         String canonicalPath = edl.getCanonicalPath();
 

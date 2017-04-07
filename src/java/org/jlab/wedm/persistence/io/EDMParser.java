@@ -1,5 +1,6 @@
 package org.jlab.wedm.persistence.io;
 
+import java.io.File;
 import org.jlab.wedm.persistence.model.EDLFont;
 
 /**
@@ -9,16 +10,52 @@ import org.jlab.wedm.persistence.model.EDLFont;
 public class EDMParser {
 
     public static final String EDL_ROOT_DIR;
+    public static final String REWRITE_FROM_DIR;
+    public static final String REWRITE_TO_DIR;
     public static final EDLFont DEFAULT_FONT = new EDLFont("helvetica", false, false, 12);
 
     static {
-        final String defaultValue = "C:\\EDL";
-        String value = System.getenv("EDL_DIR");
-        if (value == null) {
-            value = defaultValue;
+        final String defaultRoot = "C:\\EDL";
+        String root = System.getenv("EDL_DIR");
+        if (root == null) {
+            root = defaultRoot;
         }
 
-        EDL_ROOT_DIR = value;
+        EDL_ROOT_DIR = root;
+
+        REWRITE_FROM_DIR = System.getenv("REWRITE_FROM_DIR");
+        REWRITE_TO_DIR = System.getenv("REWRITE_TO_DIR");
+    }
+
+    public static String rewriteFileName(String name) {
+        if (REWRITE_FROM_DIR != null && REWRITE_TO_DIR != null) {
+            if (name.startsWith(REWRITE_FROM_DIR)) {
+                name = name.substring(REWRITE_FROM_DIR.length());
+                name = REWRITE_TO_DIR + name;
+            }
+        }
+        
+        return name;
+    }
+
+    public File getEdlFile(String name) {
+        if (name == null) {
+            throw new RuntimeException("An EDL file is required");
+        }
+
+        if (!name.endsWith(".edl")) {
+            name = name + ".edl";
+        }
+
+        name = EDMParser.rewriteFileName(name);
+
+        File edl = new File(name);
+
+        if (!edl.isAbsolute()) {
+            edl = new File(EDL_ROOT_DIR + File.separator + name);
+        }
+
+        return edl;
     }
 
     protected String stripQuotes(String value) {
