@@ -409,6 +409,34 @@ jlab.wedm.ButtonPvWidget.prototype.handleControlUpdate = function () {
     }
 };
 
+jlab.wedm.MotifSliderPvWidget = function (id, pvSet) {
+    jlab.wedm.PvWidget.call(this, id, pvSet);
+};
+
+jlab.wedm.MotifSliderPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
+jlab.wedm.MotifSliderPvWidget.prototype.constructor = jlab.wedm.MotifSliderPvWidget;
+
+jlab.wedm.MotifSliderPvWidget.prototype.handleControlUpdate = function () {
+    var $obj = $("#" + this.id),
+            pv = this.ctrlPvs[0],
+            value = this.pvNameToValueMap[pv],
+            min = $obj.attr("data-scale-min"),
+            max = $obj.attr("data-scale-max"),
+            range = max - min,
+            ratio = value / range,
+            horizontal = $obj.attr("data-orientation") === "horizontal",
+            $track = $obj.find(".slider-track"),
+            $knob = $track.find(".knob");
+
+    if (horizontal) {
+        var trackWidth = $track.width();
+        $knob.css("left", ((trackWidth * ratio)) + "px");
+    } else { /*Vertical*/
+        var trackHeight = $track.height();
+        $knob.css("top", (trackHeight - (trackHeight * ratio)) + "px");
+    }
+};
+
 jlab.wedm.SymbolPvWidget = function (id, pvSet) {
     jlab.wedm.PvWidget.call(this, id, pvSet);
 };
@@ -1152,6 +1180,8 @@ jlab.wedm.createWidgets = function () {
                 widget = new jlab.wedm.SymbolPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActivePictureInPicture")) {
                 widget = new jlab.wedm.PiPPvWidget(id, pvSet);
+            } else if ($obj.hasClass("ActiveMotifSlider")) {
+                widget = new jlab.wedm.MotifSliderPvWidget(id, pvSet);
             } else if ($obj.hasClass("ActiveButton") ||
                     $obj.hasClass("ActiveMessageButton")) {
                 widget = new jlab.wedm.ButtonPvWidget(id, pvSet);
@@ -1334,8 +1364,8 @@ jlab.wedm.macroQueryString = function (macros) {
 $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
 
     var expected = 1;
-    
-    if($(this).hasClass("swapped-buttons")) {
+
+    if ($(this).hasClass("swapped-buttons")) {
         expected = 3;
     }
 
@@ -1400,7 +1430,7 @@ $(document).mouseup(function (e)
     }
 });
 
-$(document).on("contextmenu", ".screen", function(e) {
+$(document).on("contextmenu", ".screen", function (e) {
     e.preventDefault();
 });
 

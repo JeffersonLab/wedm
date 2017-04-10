@@ -18,6 +18,7 @@ import org.jlab.wedm.persistence.model.svg.ActiveLine;
 import org.jlab.wedm.persistence.model.html.ActiveButton;
 import org.jlab.wedm.persistence.model.html.ActiveStaticText;
 import org.jlab.wedm.persistence.model.html.ActiveControlText;
+import org.jlab.wedm.persistence.model.html.ActiveMotifSlider;
 import org.jlab.wedm.persistence.model.ColorList;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLFont;
@@ -133,6 +134,9 @@ public class ScreenParser extends EDMParser {
                                     case "activeChoiceButtonClass":
                                         //LOGGER.log(Level.FINEST, "Type: activeChoiceButtonClass");
                                         obj = new ActiveChoiceButton();
+                                        break;
+                                    case "activeMotifSliderClass":
+                                        obj = new ActiveMotifSlider();
                                         break;
                                     case "activeLineClass":
                                         //LOGGER.log(Level.FINEST, "Type: activeLineClass");
@@ -616,6 +620,24 @@ public class ScreenParser extends EDMParser {
                                 String align = tokens[1];
                                 ((TextScreenObject) last).align = stripQuotes(align);
                                 break;
+                            case "scaleMax":
+                                ((ActiveMotifSlider) last).scaleMax = Float.parseFloat(stripQuotes(
+                                        tokens[1]));
+                                break;
+                            case "scaleMin":
+                                ((ActiveMotifSlider) last).scaleMin = Float.parseFloat(stripQuotes(
+                                        tokens[1]));
+                                break;
+                            case "controlLabel":
+                                ((ActiveMotifSlider) last).controlLabel = stripQuotes(
+                                        line.substring("controlLabel".length()));
+                                break;
+                            case "showLimits":
+                                ((ActiveMotifSlider) last).showLimits = true;
+                                break;
+                            case "showLabel":
+                                ((ActiveMotifSlider) last).showLabel = true;
+                                break;
                             case "visMin":
                                 last.visMin = Float.parseFloat(stripQuotes(tokens[1]));
                                 break;
@@ -708,6 +730,11 @@ public class ScreenParser extends EDMParser {
                                 EDLColor bg2Color = colorList.lookup(bg2Index);
                                 properties.ctlBgColor2 = bg2Color;
                                 break;
+                            case "2ndBgColor":
+                                Integer back2Index = Integer.parseInt(tokens[2]);
+                                EDLColor back2Color = colorList.lookup(back2Index);
+                                ((ActiveMotifSlider) last).secondBgColor = back2Color;
+                                break;
                             case "id":
                             case "fillMode":
                             case "symbolTag":
@@ -743,11 +770,8 @@ public class ScreenParser extends EDMParser {
                             case "noEdit":
                             case "gridSize":
                             case "execCursor":
-                            case "scaleMax":
-                            case "scaleMin":
                             case "controlLabelType":
                             case "increment":
-                            case "2ndBgColor":
                             case "snapToGrid":
                             case "setPosition":
                             case "setSize":

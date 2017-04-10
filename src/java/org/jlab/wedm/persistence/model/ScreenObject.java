@@ -56,7 +56,7 @@ public class ScreenObject {
     public boolean useAlarmBorder = false;
     public boolean editable = false;
     public boolean useHexPrefix = false;
-    public Boolean horizontal = null;    //ChoiceButton default = false, BarMeter default = true.
+    public Boolean horizontal = null;    //ChoiceButton default = false, BarMeter default = true, MotifSlider default = true
     public EDLFont font;
     public String format;
     public String controlPv;

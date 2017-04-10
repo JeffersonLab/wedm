@@ -21,7 +21,8 @@
 .ActiveMenuButton,
 .ActiveChoiceButton,
 .ShellCommand,
-.ActiveControlText.editable {
+.ActiveControlText.editable,
+.ActiveMotifSlider .slider-track {
     cursor: not-allowed;
 }
 /*By default mouse events propogate through ScreenObjects as if they didn't exist*/
@@ -82,7 +83,8 @@
 .ActiveMenuButton:hover,
 .ActiveChoiceButton:hover,
 .RelatedDisplay:hover,
-.ActiveControlText.editable:not(.motif):hover {
+.ActiveControlText.editable:not(.motif):hover,
+.ActiveMotifSlider .slider-track:hover {
     outline: 2px solid black;
 }
 .ActiveControlText,
@@ -147,4 +149,11 @@ svg.ScreenObject {
 .vertical-center {
     top: 50%;
     transform: translateY(-50%);
+}
+.knob {
+    position: absolute;
+}
+.knob-handle {
+    box-sizing: border-box;
+    position: absolute;
 }
