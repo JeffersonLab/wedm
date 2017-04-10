@@ -8,8 +8,6 @@ import java.awt.Point;
  */
 public class RelatedDisplay extends ActiveButton {
 
-    public boolean swapButtons = false;
-
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
 

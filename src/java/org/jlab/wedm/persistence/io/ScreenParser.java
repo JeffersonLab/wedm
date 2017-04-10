@@ -391,7 +391,7 @@ public class ScreenParser extends EDMParser {
                                 last.limitsFromDb = true;
                                 break;
                             case "swapButtons":
-                                ((RelatedDisplay) last).swapButtons = true;
+                                ((ActiveButton) last).swapButtons = true;
                                 break;
                             case "editable":
                                 last.editable = true;

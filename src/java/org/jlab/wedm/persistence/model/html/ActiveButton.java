@@ -12,9 +12,10 @@ public class ActiveButton extends TextScreenObject {
     public String pressValue = null;
     public String releaseValue = null;
     public String onLabel;
-    public String offLabel;
+    public String offLabel;    
     public Boolean push = null; // default is different for different widgets!  ActiveButton is false while ActiveMessageButton is true.
     public boolean icon = false;
+    public boolean swapButtons = false; /*Only RelatedDisplay and ShellCommand use this*/    
     public static final String ICON_SYMBOL = "⧉";
 
     @Override
