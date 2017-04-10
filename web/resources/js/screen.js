@@ -953,7 +953,7 @@ jlab.wedm.parseLocalVar = function (expr) {
 
     var local = jlab.wedm.localPvMap[name];
 
-    if (typeof local === 'undefined') {
+    if (typeof local === 'undefined' || (local.type === 'unresolved' && declaration)) {
 
         if (declaration) {
             var type = expr.substring(expr.indexOf("=") + 1, expr.indexOf(":")),
@@ -981,10 +981,10 @@ jlab.wedm.parseLocalVar = function (expr) {
 
             jlab.wedm.localPvMap[name] = local;
         } else { /*Reference to an undeclared local variable encountered*/
-            console.log("Reference to undeclared local variable encountered: " + name);
+            /*console.log("Reference to undeclared local variable encountered: " + name);*/
             local = {};
             local.name = name;
-            local.type = "d";
+            local.type = "unresolved";
             local.value = 0;
             jlab.wedm.localPvMap[name] = local;
         }
