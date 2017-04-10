@@ -30,11 +30,11 @@ public class ActiveMotifSlider extends HtmlScreenObject {
         }
 
         if (scaleMin != null) {
-            attributes.put("data-scale-min", String.valueOf(scaleMin));
+            attributes.put("data-min", String.valueOf(scaleMin));
         }
 
         if (scaleMax != null) {
-            attributes.put("data-scale-max", String.valueOf(scaleMax));
+            attributes.put("data-max", String.valueOf(scaleMax));
         }
 
         classes.add("MouseSensitive");
@@ -67,9 +67,11 @@ public class ActiveMotifSlider extends HtmlScreenObject {
         
         String leftHandleStyleStr;
         String rightHandleStyleStr;
+        
+        final float handleSize = 15.0f;
 
         if (horizontal) {
-            float handleWidth = (this.w - 10) / 16.0f;
+            float handleWidth = handleSize;
             
             handleStyles.put("width", String.valueOf(handleWidth) + "px");
             handleStyles.put("height", String.valueOf(this.h - 10) + "px");
@@ -85,7 +87,7 @@ public class ActiveMotifSlider extends HtmlScreenObject {
             
             trackStyles.put("padding", "0 " + handleWidth + "px");
         } else { // vertical
-            float handleHeight = (this.h - 10) / 16.0f;
+            float handleHeight = handleSize;
 
             handleStyles.put("width", String.valueOf(this.w - 10) + "px");
             handleStyles.put("height", String.valueOf(handleHeight) + "px");

@@ -164,8 +164,16 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         var $obj = $("#" + this.id);
         if (update.pv.endsWith(".HOPR")) {
             $obj.attr("data-max", update.value);
+            var pv = $obj.attr("data-pv");
+            if (pv) {
+                this.handleControlUpdate.call(this, {pv: pv, value: this.pvNameToValueMap[pv]});
+            }
         } else if (update.pv.endsWith(".LOPR")) {
             $obj.attr("data-min", update.value);
+            var pv = $obj.attr("data-pv");
+            if (pv) {
+                this.handleControlUpdate.call(this, {pv: pv, value: this.pvNameToValueMap[pv]});
+            }
         } else if (update.pv.endsWith(".PREC")) {
             $obj.attr("data-precision", update.value);
             var pv = $obj.attr("data-pv");
@@ -420,8 +428,8 @@ jlab.wedm.MotifSliderPvWidget.prototype.handleControlUpdate = function () {
     var $obj = $("#" + this.id),
             pv = this.ctrlPvs[0],
             value = this.pvNameToValueMap[pv],
-            min = $obj.attr("data-scale-min"),
-            max = $obj.attr("data-scale-max"),
+            min = $obj.attr("data-min"),
+            max = $obj.attr("data-max"),
             range = Math.abs(max - min),
             adjValue = Math.abs(value - min),
             ratio = Math.abs(adjValue / range),
@@ -429,18 +437,20 @@ jlab.wedm.MotifSliderPvWidget.prototype.handleControlUpdate = function () {
             $track = $obj.find(".slider-track"),
             $knob = $track.find(".knob");
 
-    if (horizontal) {
-        var trackWidth = $track.width(),
-                offset = ((trackWidth * ratio));
-                //offset = Math.max(0, offset),
-                //offset = Math.min(range, offset);
-        $knob.css("left", offset + "px");
-    } else { /*Vertical*/
-        var trackHeight = $track.height(),
-                offset = (trackHeight - (trackHeight * ratio));
-                //offset = Math.max(0, offset),
-                //offset = Math.min(range, offset);
-        $knob.css("top", offset + "px");
+    if ($.isNumeric(max) && $.isNumeric(min)) {
+        if (horizontal) {
+            var trackWidth = $track.width(),
+                    offset = ((trackWidth * ratio));
+            //offset = Math.max(0, offset),
+            //offset = Math.min(range, offset);
+            $knob.css("left", offset + "px");
+        } else { /*Vertical*/
+            var trackHeight = $track.height(),
+                    offset = (trackHeight - (trackHeight * ratio));
+            //offset = Math.max(0, offset),
+            //offset = Math.min(range, offset);
+            $knob.css("top", offset + "px");
+        }
     }
 };
 
@@ -1155,9 +1165,18 @@ jlab.wedm.createWidgets = function () {
                 limitPvs.push(basename + ".LOPR");
             }
 
-            if (ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
-                basename = jlab.wedm.basename(ctrlPvs[0]);
-                limitPvs.push(basename + ".PREC");
+            if (ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(ctrlPvs[0])) {
+
+                if ($obj.hasClass("ActiveMotifSlider")) {
+                    basename = jlab.wedm.basename(ctrlPvs[0]);
+                    limitPvs.push(basename + ".HOPR");
+                    limitPvs.push(basename + ".LOPR");
+                }
+
+                if (typeof $obj.find(".screen-text") !== 'undefined') {
+                    basename = jlab.wedm.basename(ctrlPvs[0]);
+                    limitPvs.push(basename + ".PREC");
+                }
             }
         }
 
