@@ -275,10 +275,10 @@ public class ScreenParser extends EDMParser {
                                 last.useDisplayBg = true; // This means ignore bgColor and inherit screen background / transparent background
                                 break;
                             case "noScroll":
-                                ((ActivePictureInPicture)last).noscroll = true;
+                                ((ActivePictureInPicture) last).noscroll = true;
                                 break;
                             case "center":
-                                ((ActivePictureInPicture)last).center = true;
+                                ((ActivePictureInPicture) last).center = true;
                                 break;
                             case "invisible":
                                 last.invisible = true;
@@ -389,6 +389,9 @@ public class ScreenParser extends EDMParser {
                                 break;
                             case "limitsFromDb":
                                 last.limitsFromDb = true;
+                                break;
+                            case "swapButtons":
+                                ((RelatedDisplay) last).swapButtons = true;
                                 break;
                             case "editable":
                                 last.editable = true;
@@ -747,7 +750,6 @@ public class ScreenParser extends EDMParser {
                             case "2ndBgColor":
                             case "snapToGrid":
                             case "setPosition":
-                            case "swapButtons":
                             case "setSize":
                             case "sizeOfs":
                             case "ignoreMultiplexors":

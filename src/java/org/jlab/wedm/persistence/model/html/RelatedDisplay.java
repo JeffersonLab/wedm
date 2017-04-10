@@ -8,12 +8,18 @@ import java.awt.Point;
  */
 public class RelatedDisplay extends ActiveButton {
 
+    public boolean swapButtons = false;
+
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
 
+        if(swapButtons) {
+            classes.add("swapped-buttons");
+        }
+        
         String files = "";
         String labels = "";
-
+        
         if (numDsps > 0 && numDsps <= 64) {
             for (int i = 0; i < displayFileNames.length; i++) {
                 if (displayFileNames[i] != null) {

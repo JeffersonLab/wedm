@@ -1331,52 +1331,61 @@ jlab.wedm.macroQueryString = function (macros) {
     return url;
 };
 
-$(document).on("click", ".RelatedDisplay", function (e) {
-    var files = [],
-            labels = [],
-            macros = [],
-            $obj = $(this);
+$(document).on("click contextmenu", ".RelatedDisplay", function (e) {
 
-    for (var i = 0; i < 64; i++) {
-        var file = $obj.attr("data-linked-file-" + i),
-                label = $obj.attr("data-linked-label-" + i),
-                macro = $obj.attr("data-symbols-" + i);
-
-        if (file === undefined) {
-            break;
-        } else {
-            files.push(file);
-
-            if (label === undefined || label === '') {
-                labels.push("");
-            } else {
-                labels.push(label);
-            }
-
-            if (macro === undefined || macro === '') {
-                macros.push("");
-            } else {
-                macros.push(macro);
-            }
-        }
+    var expected = 1;
+    
+    if($(this).hasClass("swapped-buttons")) {
+        expected = 3;
     }
 
-    var path = '/wedm/screen?edl=',
-            //left = $obj.css("left"),
-            //right = $obj.css("top");
-            left = e.pageX + "px",
-            top = e.pageY + "px";
+    if (e.which === expected) {
+        var files = [],
+                labels = [],
+                macros = [],
+                $obj = $(this);
 
-    if (files.length === 1) {
-        window.open(path + files[0] + jlab.wedm.macroQueryString(macros[0]), '_blank');
-    } else {
-        var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
+        for (var i = 0; i < 64; i++) {
+            var file = $obj.attr("data-linked-file-" + i),
+                    label = $obj.attr("data-linked-label-" + i),
+                    macro = $obj.attr("data-symbols-" + i);
 
-        for (var i = 0; i < files.length; i++) {
-            $html.find("ul").append('<li class="anchor-li"><a href="' + path + files[i] + jlab.wedm.macroQueryString(macros[i]) + '" target="_blank">' + labels[i] + '</a></li>');
+            if (file === undefined) {
+                break;
+            } else {
+                files.push(file);
+
+                if (label === undefined || label === '') {
+                    labels.push("");
+                } else {
+                    labels.push(label);
+                }
+
+                if (macro === undefined || macro === '') {
+                    macros.push("");
+                } else {
+                    macros.push(macro);
+                }
+            }
         }
 
-        $(document.body).append($html);
+        var path = '/wedm/screen?edl=',
+                //left = $obj.css("left"),
+                //right = $obj.css("top");
+                left = e.pageX + "px",
+                top = e.pageY + "px";
+
+        if (files.length === 1) {
+            window.open(path + files[0] + jlab.wedm.macroQueryString(macros[0]), '_blank');
+        } else {
+            var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
+
+            for (var i = 0; i < files.length; i++) {
+                $html.find("ul").append('<li class="anchor-li"><a href="' + path + files[i] + jlab.wedm.macroQueryString(macros[i]) + '" target="_blank">' + labels[i] + '</a></li>');
+            }
+
+            $(document.body).append($html);
+        }
     }
 });
 
@@ -1389,6 +1398,10 @@ $(document).mouseup(function (e)
     {
         container.remove();
     }
+});
+
+$(document).on("contextmenu", ".screen", function(e) {
+    e.preventDefault();
 });
 
 $(document).on("click", ".anchor-li", function () {
@@ -1434,7 +1447,10 @@ jlab.wedm.propogateMouseEventToStackedElements = function (e, type) {
                 $obj.mouseup();
                 break;
             case "click":
-                $obj.click();
+                $obj.trigger($.Event("click", {which: 1, pageX: e.pageX, pageY: e.pageY}));
+                break;
+            case "contextmenu":
+                $obj.trigger($.Event("contextmenu", {which: 3, pageX: e.pageX, pageY: e.pageY}));
                 break;
             default:
                 console.log("unknown event type: " + type);
@@ -1457,17 +1473,20 @@ jlab.wedm.propogateMouseEventToStackedElements = function (e, type) {
     jlab.wedm.propogatingMouseEvent = false;
 };
 
-$(document).on("click", ".MouseSensitive", function(e){
-    jlab.wedm.propogateMouseEventToStackedElements(e, "click");    
+$(document).on("click", ".MouseSensitive", function (e) {
+    jlab.wedm.propogateMouseEventToStackedElements(e, "click");
 });
 
-
-$(document).on("mousedown", ".MouseSensitive", function(e){
-    jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");    
+$(document).on("contextmenu", ".MouseSensitive", function (e) {
+    jlab.wedm.propogateMouseEventToStackedElements(e, "contextmenu");
 });
 
-$(document).on("mouseup", ".MouseSensitive", function(e){
-    jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");    
+$(document).on("mousedown", ".MouseSensitive", function (e) {
+    jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");
+});
+
+$(document).on("mouseup", ".MouseSensitive", function (e) {
+    jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");
 });
 
 $(document).on("mousedown", ".local-control.push-button", function (e) {
