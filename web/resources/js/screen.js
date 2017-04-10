@@ -422,18 +422,25 @@ jlab.wedm.MotifSliderPvWidget.prototype.handleControlUpdate = function () {
             value = this.pvNameToValueMap[pv],
             min = $obj.attr("data-scale-min"),
             max = $obj.attr("data-scale-max"),
-            range = max - min,
-            ratio = value / range,
+            range = Math.abs(max - min),
+            adjValue = Math.abs(value - min),
+            ratio = Math.abs(adjValue / range),
             horizontal = $obj.attr("data-orientation") === "horizontal",
             $track = $obj.find(".slider-track"),
             $knob = $track.find(".knob");
 
     if (horizontal) {
-        var trackWidth = $track.width();
-        $knob.css("left", ((trackWidth * ratio)) + "px");
+        var trackWidth = $track.width(),
+                offset = ((trackWidth * ratio));
+                //offset = Math.max(0, offset),
+                //offset = Math.min(range, offset);
+        $knob.css("left", offset + "px");
     } else { /*Vertical*/
-        var trackHeight = $track.height();
-        $knob.css("top", (trackHeight - (trackHeight * ratio)) + "px");
+        var trackHeight = $track.height(),
+                offset = (trackHeight - (trackHeight * ratio));
+                //offset = Math.max(0, offset),
+                //offset = Math.min(range, offset);
+        $knob.css("top", offset + "px");
     }
 };
 
