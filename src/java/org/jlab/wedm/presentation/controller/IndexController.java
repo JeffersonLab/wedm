@@ -12,7 +12,7 @@ import org.jlab.wedm.persistence.io.EDMParser;
  *
  * @author ryans
  */
-@WebServlet(name = "Index", urlPatterns = {"/index.jsp"})
+@WebServlet(name = "Index", urlPatterns = {"/index"})
 public class IndexController extends HttpServlet {
 
     /**
