@@ -2,6 +2,7 @@ var jlab = jlab || {};
 jlab.wedm = jlab.wedm || {};
 jlab.wedm.monitoredPvs = [];
 jlab.wedm.pvWidgetMap = {};
+jlab.wedm.idWidgetMap = {};
 jlab.wedm.localPvMap = {};
 jlab.wedm.localPvs = [];
 
@@ -496,10 +497,20 @@ jlab.wedm.SymbolPvWidget.prototype.constructor = jlab.wedm.PiPPvWidget;
 jlab.wedm.PiPPvWidget.prototype.handleControlUpdate = function () {
     var $obj = $("#" + this.id),
             pv = this.ctrlPvs[0],
-            value = this.pvNameToValueMap[pv];
+            value = this.pvNameToValueMap[pv],
+            $selected = $obj.find(".screen[data-index=" + value + "]");
 
     $obj.find(".screen").hide();
-    $obj.find(".screen[data-index=" + value + "]").show();
+    $selected.show();
+
+    $selected.find(".ActiveMotifSlider").each(function () {
+        var $slider = $(this),
+                pv = $slider.attr("data-pv"),
+                widget = jlab.wedm.idWidgetMap[$slider.attr("id")];
+        if (pv) {
+            widget.handleControlUpdate({pv: pv, value: widget.pvNameToValueMap[pv]});
+        }
+    });
 };
 
 jlab.wedm.ChoicePvWidget = function (id, pvSet) {
@@ -1232,6 +1243,8 @@ jlab.wedm.createWidgets = function () {
                 /*console.log("other widget");*/
                 widget = new jlab.wedm.PvWidget(id, pvSet);
             }
+
+            jlab.wedm.idWidgetMap[id] = widget;
 
             allPvs.forEach(function (pv) {
                 jlab.wedm.addPvWithWidget(pv, widget, false);

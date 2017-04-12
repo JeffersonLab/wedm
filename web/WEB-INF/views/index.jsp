@@ -76,6 +76,9 @@
                     <td><a href="screen?edl=wedm/objects/ChoiceButton.edl">Choice Button</a></td>
                 </tr>
                 <tr>
+                    <td><a href="screen?edl=wedm/objects/MotifSlider.edl">Motif Slider</a></td>
+                </tr>                 
+                <tr>
                     <td><a href="screen?edl=wedm/objects/RelatedDisplay.edl">Related Display</a></td>
                 </tr>                
             </tbody>
