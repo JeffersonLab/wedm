@@ -32,7 +32,7 @@ public class BrowseController extends HttpServlet {
 
         String dirname = request.getParameter("dir");
         boolean parentOutside = true;
-        
+
         if (dirname != null) {
             File dir = new File(dirname);
 
@@ -57,10 +57,10 @@ public class BrowseController extends HttpServlet {
                 }
             });
 
-            if(files != null) {
+            if (files != null) {
                 Arrays.sort(files);
             }
-            
+
             request.setAttribute("files", files);
             request.setAttribute("parent", parent);
             request.setAttribute("parentOutside", parentOutside);

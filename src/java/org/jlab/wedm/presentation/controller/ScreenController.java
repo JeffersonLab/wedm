@@ -22,11 +22,10 @@ import org.jlab.wedm.persistence.model.Macro;
 @WebServlet(name = "Screen", urlPatterns = {"/screen"})
 public class ScreenController extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(ScreenController.class.getName());    
-    
+    private static final Logger LOGGER = Logger.getLogger(ScreenController.class.getName());
+
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -36,29 +35,32 @@ public class ScreenController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String edlname = request.getParameter("edl");
-        
+
         List<Macro> macros = new ArrayList<>();
         Enumeration e = request.getParameterNames();
-        while(e.hasMoreElements()) {
-            String name = (String)e.nextElement();
-            if(name.startsWith("$(") && name.endsWith(")")) { // We prefix with "$(" to namespace them and avoid collision if someone was to use a macro with name "edl" and also because now it is already in the format needed for search and replace
+        while (e.hasMoreElements()) {
+            String name = (String) e.nextElement();
+            // We prefix with "$(" to namespace them and avoid collision if someone was to use 
+            // a macro with name "edl" and also because now it is already in the format 
+            // needed for search and replace
+            if (name.startsWith("$(") && name.endsWith(")")) {
                 String value = request.getParameter(name);
                 macros.add(new Macro(name, value));
             }
         }
-        
+
         ScreenService service = new ScreenService();
-        
+
         long start = System.currentTimeMillis();
         HtmlScreen screen = service.load(edlname, macros);
         long end = System.currentTimeMillis();
-        
+
         LOGGER.log(Level.FINEST, "Screen Service Load Time: (seconds) {0}", (end - start) / 1000.0);
-        
+
         request.setAttribute("screen", screen);
-        
+
         request.getRequestDispatcher("/WEB-INF/views/screen.jsp").forward(request, response);
     }
 }
