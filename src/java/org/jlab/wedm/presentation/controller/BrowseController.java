@@ -53,11 +53,7 @@ public class BrowseController extends HttpServlet {
             File[] files = dir.listFiles(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    if(f.isDirectory() || f.getName().endsWith(".edl")) {
-                        return true;
-                    }
-                    
-                    return false;
+                    return f.isDirectory() || f.getName().endsWith(".edl");
                 }
             });
 
