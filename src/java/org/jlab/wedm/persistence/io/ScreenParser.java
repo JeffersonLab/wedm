@@ -3,13 +3,18 @@ package org.jlab.wedm.persistence.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jlab.wedm.lifecycle.Configuration;
 import org.jlab.wedm.widget.ActiveDynamicSymbol;
 import org.jlab.wedm.widget.ActiveGroup;
 import org.jlab.wedm.widget.ActiveSymbol;
@@ -67,6 +72,7 @@ public class ScreenParser extends EDMParser {
         try (Scanner scanner = new Scanner(edl)) {
 
             ScreenObject last = null;
+            //Map<String, String> attributes = new HashMap<>();
             Deque<ActiveGroup> groupStack = new ArrayDeque<>();
 
             while (scanner.hasNextLine()) {
@@ -85,7 +91,38 @@ public class ScreenParser extends EDMParser {
 
                                 ScreenObject obj;
 
-                                switch (tokens[1]) {
+                                String className = Configuration.CLASS_MAP.get(tokens[1]);
+
+                                if (className == null) {
+                                    LOGGER.log(Level.WARNING, "Unknown EDM Class: {0}", tokens[1]);
+                                    obj = new ScreenObject();
+                                } else {
+                                    try {
+                                        Class<?> clazz = Class.forName(className);
+                                        Constructor<?> constructor = clazz.getConstructor();
+                                        obj = (ScreenObject) constructor.newInstance();
+                                    } catch (ClassNotFoundException e) {
+                                        LOGGER.log(Level.WARNING,
+                                                "EDM Class definition not in classpath: {0}",
+                                                className);
+                                        obj = new ScreenObject();
+                                    } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                                        LOGGER.log(Level.WARNING, "Unable to create EDM Class", e);
+                                        obj = new ScreenObject();
+                                    }
+                                }
+
+                                if (obj instanceof ActiveGroup) {
+                                    if (groupStack.isEmpty()) {
+                                        screenObjects.add(obj);
+                                    } else {
+                                        groupStack.peek().children.add(obj);
+                                    }
+                                    groupStack.push((ActiveGroup) obj);
+                                    added = true;
+                                }
+
+                                /*switch (tokens[1]) {
                                     case "activeXTextClass":
                                         //LOGGER.log(Level.FINEST, "Type: activeXTextClass");
                                         obj = new ActiveStaticText();
@@ -171,8 +208,7 @@ public class ScreenParser extends EDMParser {
                                     default:
                                         LOGGER.log(Level.FINEST, "Type: Unknown: {0}", tokens[1]);
                                         obj = new ScreenObject();
-                                }
-
+                                }*/
                                 obj.objectId = objectId++;
 
                                 if (!added) {
