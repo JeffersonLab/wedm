@@ -2,6 +2,7 @@
 <project name="wedm" default="clean-build" basedir=".">    
     <property name="project.release.version" value="1.0.0"/>
     <property name="project.release.date" value="12 Apr 2017"/>
+    <property name="project.release.production" value="true"/>
     <property environment="env"/>   
     <fail unless="env.CATALINA_HOME" message="Environment variable CATALINA_HOME must be set in order to include Tomcat libraries in classpath"/>
     <property name="src.dir" value="src/java"/>
@@ -9,6 +10,7 @@
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="dist.dir" value="dist"/>
     <property name="lib.dir" value="lib"/>
+    <property name="config.dir" value="config"/>
     <property name="tomcat.lib.dir" value="${env.CATALINA_HOME}/lib"/>
     <property name="doc.dir" value="doc"/>
     <property name="dist.dir" value="dist"/>
@@ -31,11 +33,33 @@
             <filterset>
                 <filter token="VERSION" value="${project.release.version}"/>
                 <filter token="RELEASE_DATE" value="${project.release.date}"/>
+                <filter token="PRODUCTION_RELEASE" value="${project.release.production}"/>
             </filterset>
         </copy>
+        <concat destfile="${build.dir}/web/resources/css/combined.min.css" encoding="UTF-8" outputencoding="UTF-8" fixlastline="true">
+            <fileset dir="web/resources/widgets">
+                <include name="**/*.css"/>
+            </fileset>
+        </concat>
+        <concat destfile="${build.dir}/web/resources/js/combined.min.js" encoding="UTF-8" outputencoding="UTF-8" fixlastline="true">
+            <fileset dir="web/resources/widgets">
+                <include name="**/*.js"/>
+            </fileset>
+        </concat>
+        <java jar="build-lib/yuicompressor-2.4.8.jar" fork="true">
+            <arg value="-o"/>
+            <arg value="${build.dir}/web/resources/css/combined.min.css"/>
+            <arg value="${build.dir}/web/resources/css/combined.min.css"/>
+        </java>       
+        <java jar="build-lib/yuicompressor-2.4.8.jar" fork="true">
+            <arg value="-o"/>
+            <arg value="${build.dir}/web/resources/js/combined.min.js"/>
+            <arg value="${build.dir}/web/resources/js/combined.min.js"/>
+        </java>          
         <war destfile="${dist.war}" basedir="${build.dir}/web" webxml="${build.dir}/web/WEB-INF/web.xml">
             <lib dir="${lib.dir}"/>
             <classes dir="${classes.dir}"/>
+            <classes dir="${config.dir}"/>
         </war>
     </target>
     <target name="clean">

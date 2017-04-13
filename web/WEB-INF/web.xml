@@ -9,6 +9,10 @@
         <param-value>@RELEASE_DATE@</param-value>
     </context-param>
     <context-param>
+        <param-name>productionRelease</param-name>
+        <param-value>@PRODUCTION_RELEASE@</param-value>
+    </context-param>    
+    <context-param>
         <param-name>epics2webReleaseNumber</param-name>
         <param-value>1.3.0</param-value>
     </context-param>
@@ -25,4 +29,11 @@
     <welcome-file-list>
         <welcome-file>index</welcome-file>
     </welcome-file-list>
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <trim-directive-whitespaces>true</trim-directive-whitespaces>
+        </jsp-property-group>
+    </jsp-config>
+    
 </web-app>

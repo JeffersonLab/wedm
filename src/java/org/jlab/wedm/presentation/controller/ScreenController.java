@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jlab.wedm.business.service.ScreenService;
+import org.jlab.wedm.lifecycle.Configuration;
 import org.jlab.wedm.persistence.model.HtmlScreen;
 import org.jlab.wedm.persistence.model.Macro;
 
@@ -59,6 +60,7 @@ public class ScreenController extends HttpServlet {
 
         LOGGER.log(Level.FINEST, "Screen Service Load Time: (seconds) {0}", (end - start) / 1000.0);
 
+        request.setAttribute("widgets", Configuration.WIDGET_LIST);
         request.setAttribute("screen", screen);
 
         request.getRequestDispatcher("/WEB-INF/views/screen.jsp").forward(request, response);

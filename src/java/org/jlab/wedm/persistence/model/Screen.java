@@ -1,5 +1,7 @@
 package org.jlab.wedm.persistence.model;
 
+import org.jlab.wedm.widget.ScreenProperties;
+import org.jlab.wedm.widget.ScreenObject;
 import java.awt.Point;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,7 +41,7 @@ public class Screen {
         return new HtmlScreen(canonicalPath, html, css, js, properties.title);
     }
 
-    String toHtmlBody() {
+    public String toHtmlBody() {
 
         if (properties.w <= 0) {
             properties.w = 800;
