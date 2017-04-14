@@ -3,13 +3,13 @@ package org.jlab.wedm.widget.html;
 import java.awt.Point;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.jlab.wedm.widget.ScreenObject;
+import org.jlab.wedm.widget.CoreWidget;
 
 /**
  *
  * @author ryans
  */
-public class HtmlScreenObject extends ScreenObject {
+public class HtmlScreenObject extends CoreWidget {
 
     private static final Logger LOGGER = Logger.getLogger(HtmlScreenObject.class.getName());    
     

@@ -89,7 +89,7 @@ public class EDMParser {
         return ((b * (x - min)) / max) + a;
     }
 
-    protected EDLFont parseFont(String fontStr) {
+    /*protected EDLFont parseFont(String fontStr) {
         String[] tokens = fontStr.split("-");
 
         String name = tokens[0];
@@ -99,5 +99,5 @@ public class EDMParser {
 
         return new EDLFont(name, "bold".equals(weight), "o".equals(oblique) || "i".equals(oblique),
                 size);
-    }
+    }*/
 }

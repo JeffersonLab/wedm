@@ -1,7 +1,7 @@
 package org.jlab.wedm.persistence.model;
 
 import org.jlab.wedm.widget.ScreenProperties;
-import org.jlab.wedm.widget.ScreenObject;
+import org.jlab.wedm.widget.CoreWidget;
 import java.awt.Point;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,12 +18,12 @@ public class Screen {
 
     private final String canonicalPath;
     private ScreenProperties properties;
-    public final List<ScreenObject> screenObjects;
+    public final List<WEDMWidget> screenObjects;
     public Integer embeddedIndex = null;
-    private final ColorList colorList;
+    private final ColorPalette colorList;
 
     public Screen(String canonicalPath, ScreenProperties properties,
-            List<ScreenObject> screenObjects, ColorList colorList) {
+            List<WEDMWidget> screenObjects, ColorPalette colorList) {
         this.canonicalPath = canonicalPath;
         this.properties = properties;
         this.screenObjects = screenObjects;
@@ -75,7 +75,7 @@ public class Screen {
 
         Point translation = new Point(0, 0);
 
-        for (ScreenObject obj : screenObjects) {
+        for (WEDMWidget obj : screenObjects) {
             html = html + obj.toHtml(indentPlusOne, HtmlScreen.INDENT_STEP, translation);
         }
 

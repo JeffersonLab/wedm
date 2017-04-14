@@ -7,7 +7,7 @@ import java.util.Map;
  *
  * @author ryans
  */
-public class ColorList {
+public class ColorPalette {
 
     private final Map<Integer, EDLColor> indexMap;
     private final Map<String, EDLColor> nameMap;
@@ -16,7 +16,7 @@ public class ColorList {
     private final AlarmColors alarmColors;
     private final List<EDLColorRule> ruleColors;
 
-    public ColorList(Map<Integer, EDLColor> indexMap, Map<String, EDLColor> nameMap, int rgbDepth,
+    public ColorPalette(Map<Integer, EDLColor> indexMap, Map<String, EDLColor> nameMap, int rgbDepth,
             List<EDLColorConstant> staticColors, AlarmColors alarmColors,
             List<EDLColorRule> ruleColors) {
         this.indexMap = indexMap;

@@ -3,6 +3,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import org.jlab.wedm.persistence.model.Screen;
+import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
  *
@@ -59,7 +60,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
 
         if (screen != null && !screen.screenObjects.isEmpty()) {
 
-            for (ScreenObject obj : screen.screenObjects) {
+            for (WEDMWidget obj : screen.screenObjects) {
 
                 Point childTranslation = new Point(0, 0); // We don't translate to top left like ActiveSymbol does
 

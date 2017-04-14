@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jlab.wedm.persistence.model.ColorPalette;
 
 /**
  *
@@ -20,6 +21,14 @@ public class TextScreenObject extends HtmlScreenObject {
     protected Map<String, String> threeDStyles = new HashMap<>();
     protected Map<String, String> textStyles = new HashMap<>();
 
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
+        super.parseTraits(traits, colorList);
+        value = traits.get("value");
+        
+        // TODO: count how many lines?
+    }
+    
     protected void set3DStyles() {
         String className = this.getClass().getSimpleName();
         if (!("ActiveButton".equals(className) || "ActiveMessageButton".equals(className)
@@ -42,7 +51,7 @@ public class TextScreenObject extends HtmlScreenObject {
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
-
+        
         set3DStyles();
 
         if (align != null) {

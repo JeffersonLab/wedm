@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.model.AlarmColors;
-import org.jlab.wedm.persistence.model.ColorList;
+import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLColorConstant;
 import org.jlab.wedm.persistence.model.EDLColorRule;
@@ -22,7 +22,7 @@ public class ColorListParser extends EDMParser {
 
     private static final Logger LOGGER = Logger.getLogger(ColorListParser.class.getName());
 
-    public ColorList parse(String filename) throws FileNotFoundException {
+    public ColorPalette parse(String filename) throws FileNotFoundException {
         Map<Integer, EDLColor> indexMap = new HashMap<>();
         Map<String, EDLColor> nameMap = new HashMap<>();
         AlarmColors alarmColors = new AlarmColors();
@@ -164,7 +164,7 @@ public class ColorListParser extends EDMParser {
                 }
             }
         }
-        return new ColorList(indexMap, nameMap, maxColors, staticColors, alarmColors, ruleColors);
+        return new ColorPalette(indexMap, nameMap, maxColors, staticColors, alarmColors, ruleColors);
     }
 
     private String convertEDMExpressionToJavaScript(String expr) {

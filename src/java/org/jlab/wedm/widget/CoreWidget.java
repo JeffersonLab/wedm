@@ -1,30 +1,40 @@
 package org.jlab.wedm.widget;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jlab.wedm.persistence.io.EDMParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLColorRule;
 import org.jlab.wedm.persistence.model.EDLFont;
+import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
  *
  * @author ryans
  */
-public class ScreenObject {
+public abstract class CoreWidget implements WEDMWidget {
 
+    private static final Logger LOGGER = Logger.getLogger(CoreWidget.class.getName());
+
+    public ColorPalette colorList;
+    public Map<String, String> traits;
     public int objectId;
     public int x;
     public int y;
     public int w;
     public int h;
     public int numPvs = 0;
-    public int numDsps = 0;       
+    public int numDsps = 0;
     public String[] displayFileNames = new String[64];
-    public String[] menuLabels = new String[64];   
+    public String[] menuLabels = new String[64];
     public String[] symbols = new String[64];
     public Integer precision = null;
     public Float visMin = null;
@@ -70,7 +80,57 @@ public class ScreenObject {
     public Map<String, String> attributes = new HashMap<>();
     public Map<String, String> styles = new HashMap<>();
     public List<String> classes = new ArrayList<>();
-    
+
+    protected EDLFont parseFont(String key, EDLFont defaultValue) {
+        String value = traits.get(key);
+        EDLFont f = defaultValue;
+        try {
+            String[] tokens = value.split("-");
+
+            String name = tokens[0];
+            String weight = tokens[1]; // bold
+            String oblique = tokens[2]; // italic
+            Float size = Float.parseFloat(tokens[3]);
+
+            f = new EDLFont(name, "bold".equals(weight), "o".equals(oblique) || "i".equals(oblique),
+                    size);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINEST, "Unable to parse font value: " + value, e);
+        }
+        return f;
+    }
+
+    protected EDLColor parseColor(String key, EDLColor defaultValue) {
+        String value = traits.get(key);
+        EDLColor result = defaultValue;
+
+        try {
+            if (value != null) {
+                String[] tokens = value.split("\\s+");
+                Integer index = Integer.parseInt(tokens[1]);
+                result = colorList.lookup(index);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.FINEST, "Unable to parse color value: " + value, e);
+        }
+
+        return result;
+    }
+
+    protected int parseInt(String key, int defaultValue) {
+        String value = traits.get(key);
+        int result = defaultValue;
+        try {
+            if (value != null) {
+                result = Integer.parseInt(value);
+            }
+        } catch (NumberFormatException e) {
+            LOGGER.log(Level.FINEST, "Unable to parse int: " + value, e);
+        }
+
+        return result;
+    }
+
     protected void setCommonAttributes() {
         String className = this.getClass().getSimpleName();
         classes.add(className);
@@ -144,8 +204,8 @@ public class ScreenObject {
                 if (fgColor != null && fgColor instanceof EDLColorRule) {
                     attributes.put("data-fg-color-rule", fgColor.toColorString());
                 }
-                
-                if(bgColor != null && bgColor instanceof EDLColorRule) {
+
+                if (bgColor != null && bgColor instanceof EDLColorRule) {
                     attributes.put("data-bg-color-rule", bgColor.toColorString());
                 }
             }
@@ -296,16 +356,102 @@ public class ScreenObject {
 
         return classStr;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        
+
         builder.append("ID: ");
         builder.append(objectId);
         builder.append(", FillColor: ");
         builder.append(fillColor == null ? "" : fillColor.toColorString());
-        
+
         return builder.toString();
+    }
+
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        this.traits = traits;
+        this.colorList = palette;
+
+        if (traits != null) {
+            LOGGER.log(Level.FINEST, "Parsing core traits for: {0}", this.getClass().getSimpleName());
+
+            // Dimensions
+            x = parseInt("x", 0);
+            y = parseInt("y", 0);
+            w = parseInt("w", 0);
+            h = parseInt("h", 0);
+
+            // Colors
+            bgColor = parseColor("bgColor", null);
+            fgColor = parseColor("fgColor", null);
+            lineColor = parseColor("lineColor", null);
+            fillColor = parseColor("fillColor", null);
+            onColor = parseColor("onColor", null);
+            offColor = parseColor("offColor", null);
+            indicatorColor = parseColor("indicatorColor", null);
+
+            // Fonts
+            font = parseFont("font", EDMParser.DEFAULT_FONT);
+        }
+    }
+
+    @Override
+    public void symbolColorOverride(EDLColor bgColor, EDLColor fgColor) {
+        this.fgColor = fgColor;
+        this.lineColor = fgColor;
+
+        this.bgColor = bgColor;
+        this.fillColor = bgColor;
+    }
+
+    @Override
+    public Dimension getDimension() {
+        return new Dimension(w, h);
+    }
+
+    @Override
+    public Point getOrigin() {
+        return new Point(x, y);
+    }
+
+    @Override
+    public void symbolScaleOverride(float xScale, float yScale) {
+        styles.put("transform", "scale(" + xScale + ", " + yScale + ")");
+        styles.put("transform-origin", "0 0");
+    }
+
+    @Override
+    public void performColorRuleCorrection() {
+        String name;
+
+        if (alarmPv == null) {
+            if (lineColor != null && lineColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) lineColor).getFirstColor();
+                lineColor = colorList.lookup(name);
+            }
+
+            if (fill && fillColor != null
+                    && fillColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) fillColor).getFirstColor();
+                fillColor = colorList.lookup(name);
+            }
+
+            if (fgColor != null && fgColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) fgColor).getFirstColor();
+                fgColor = colorList.lookup(name);
+            }
+
+            if (onColor != null && onColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) onColor).getFirstColor();
+                onColor = colorList.lookup(name);
+            }
+
+            if (offColor != null && offColor instanceof EDLColorRule) {
+                name = ((EDLColorRule) offColor).getFirstColor();
+                offColor = colorList.lookup(name);
+            }
+        }
     }
 }

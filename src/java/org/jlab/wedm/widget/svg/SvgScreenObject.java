@@ -1,13 +1,13 @@
 package org.jlab.wedm.widget.svg;
 
 import java.awt.Point;
-import org.jlab.wedm.widget.ScreenObject;
+import org.jlab.wedm.widget.CoreWidget;
 
 /**
  *
  * @author ryans
  */
-public abstract class SvgScreenObject extends ScreenObject {
+public abstract class SvgScreenObject extends CoreWidget {
     public static final String DASH_SPACING = "4, 4";     
     
     public String startSvg(String indent, String indentStep, Point translation) {

@@ -3,14 +3,15 @@ package org.jlab.wedm.widget;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
  *
  * @author ryans
  */
-public class ActiveGroup extends ScreenObject {
+public class ActiveGroup extends CoreWidget {
 
-    public List<ScreenObject> children = new ArrayList<>();
+    public List<WEDMWidget> children = new ArrayList<>();
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
@@ -35,7 +36,7 @@ public class ActiveGroup extends ScreenObject {
 
         if (!children.isEmpty()) {
             //html = html + indent + "<div style=\"position: relative;\">\n";
-            for (ScreenObject obj : children) {
+            for (WEDMWidget obj : children) {
                 html = html + obj.toHtml(indent + indentStep + indentStep, indentStep,
                         childTranslation);
             }

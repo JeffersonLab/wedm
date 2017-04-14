@@ -24,7 +24,7 @@ import org.jlab.wedm.widget.html.ActiveButton;
 import org.jlab.wedm.widget.html.ActiveStaticText;
 import org.jlab.wedm.widget.html.ActiveControlText;
 import org.jlab.wedm.widget.html.ActiveMotifSlider;
-import org.jlab.wedm.persistence.model.ColorList;
+import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLFont;
 import org.jlab.wedm.widget.html.HtmlScreenObject;
@@ -33,8 +33,10 @@ import org.jlab.wedm.widget.ActivePictureInPicture;
 import org.jlab.wedm.persistence.model.EDLColorRule;
 import org.jlab.wedm.widget.EmbeddedScreen;
 import org.jlab.wedm.persistence.model.Screen;
-import org.jlab.wedm.widget.ScreenObject;
+import org.jlab.wedm.persistence.model.WEDMWidget;
+import org.jlab.wedm.widget.CoreWidget;
 import org.jlab.wedm.widget.ScreenProperties;
+import org.jlab.wedm.widget.UnknownWidget;
 import org.jlab.wedm.widget.html.ActiveImage;
 import org.jlab.wedm.widget.html.ActiveMenuButton;
 import org.jlab.wedm.widget.html.ActiveMessageButton;
@@ -58,7 +60,7 @@ public class ScreenParser extends EDMParser {
 
     private static final Logger LOGGER = Logger.getLogger(ScreenParser.class.getName());
 
-    public Screen parse(String name, ColorList colorList, int recursionLevel) throws
+    public Screen parse(String name, ColorPalette colorList, int recursionLevel) throws
             FileNotFoundException, IOException {
 
         File edl = getEdlFile(name);
@@ -66,13 +68,14 @@ public class ScreenParser extends EDMParser {
         String canonicalPath = edl.getCanonicalPath();
 
         ScreenProperties properties = new ScreenProperties();
-        List<ScreenObject> screenObjects = new ArrayList<>();
+        properties.colorList = colorList;
+        List<WEDMWidget> screenObjects = new ArrayList<>();
         List<EmbeddedScreen> embeddedScreens = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(edl)) {
 
-            ScreenObject last = null;
-            //Map<String, String> attributes = new HashMap<>();
+            WEDMWidget last = null;
+            Map<String, String> traits = new HashMap<>();
             Deque<ActiveGroup> groupStack = new ArrayDeque<>();
 
             while (scanner.hasNextLine()) {
@@ -85,30 +88,33 @@ public class ScreenParser extends EDMParser {
                             case "beginScreenProperties":
                                 //LOGGER.log(Level.FINEST, "Found: beginScreenProperties");
                                 last = properties;
+                            //break; // We continue through here on purpopse...
+                            case "beginObjectProperties":
+                                traits = new HashMap<>();
                                 break;
                             case "object":
                                 //LOGGER.log(Level.FINEST, "Found: object");
 
-                                ScreenObject obj;
+                                CoreWidget obj;
 
                                 String className = Configuration.CLASS_MAP.get(tokens[1]);
 
                                 if (className == null) {
                                     LOGGER.log(Level.WARNING, "Unknown EDM Class: {0}", tokens[1]);
-                                    obj = new ScreenObject();
+                                    obj = new UnknownWidget();
                                 } else {
                                     try {
                                         Class<?> clazz = Class.forName(className);
                                         Constructor<?> constructor = clazz.getConstructor();
-                                        obj = (ScreenObject) constructor.newInstance();
+                                        obj = (CoreWidget) constructor.newInstance();
                                     } catch (ClassNotFoundException e) {
                                         LOGGER.log(Level.WARNING,
                                                 "EDM Class definition not in classpath: {0}",
                                                 className);
-                                        obj = new ScreenObject();
+                                        obj = new UnknownWidget();
                                     } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                                         LOGGER.log(Level.WARNING, "Unable to create EDM Class", e);
-                                        obj = new ScreenObject();
+                                        obj = new UnknownWidget();
                                     }
                                 }
 
@@ -207,8 +213,10 @@ public class ScreenParser extends EDMParser {
                                         break;
                                     default:
                                         LOGGER.log(Level.FINEST, "Type: Unknown: {0}", tokens[1]);
-                                        obj = new ScreenObject();
+                                        obj = new CoreWidget();
                                 }*/
+                                obj.colorList = colorList;
+
                                 obj.objectId = objectId++;
 
                                 if (!added) {
@@ -227,17 +235,21 @@ public class ScreenParser extends EDMParser {
                                 //        obj.getClass().getSimpleName());
                                 last = obj;
                                 break;
+                            case "endScreenProperties":
                             case "endObjectProperties":
                                 //LOGGER.log(Level.FINEST, "Ending Widget: {0}",
                                 //        last.getClass().getSimpleName());
+                                last.parseTraits(traits, colorList);
+                                last.performColorRuleCorrection();
                                 last = null;
+                                traits = null;
                                 break;
                             case "endGroup":
                                 last = groupStack.pop();
                                 //LOGGER.log(Level.FINEST, "Re-Handling Widget: {0}",
                                 //        last.getClass().getSimpleName());
                                 break;
-                            case "w":
+                            /*case "w":
                                 //LOGGER.log(Level.FINEST, "Found w");
                                 last.w = Integer.parseInt(tokens[1]);
                                 break;
@@ -711,7 +723,7 @@ public class ScreenParser extends EDMParser {
                                         tokens[1]));
                                 break;
                             case "title":
-                                properties.title = stripQuotes(line.substring("title".length()));
+                                traits.title = stripQuotes(line.substring("title".length()));
                                 break;
                             case "ctlFont":
                                 String fStr = stripQuotes(line.substring("ctlFont".length()));
@@ -725,7 +737,7 @@ public class ScreenParser extends EDMParser {
                                             fStr);
                                     ctlFont = EDMParser.DEFAULT_FONT;
                                 }
-                                properties.ctlFont = ctlFont;
+                                traits.ctlFont = ctlFont;
                                 break;
                             case "btnFont":
                                 String bStr = stripQuotes(line.substring("btnFont".length()));
@@ -739,32 +751,32 @@ public class ScreenParser extends EDMParser {
                                             bStr);
                                     btnFont = EDMParser.DEFAULT_FONT;
                                 }
-                                properties.btnFont = btnFont;
+                                traits.btnFont = btnFont;
                                 break;
                             case "textColor":
                                 Integer textIndex = Integer.parseInt(tokens[2]);
                                 EDLColor textColor = colorList.lookup(textIndex);
-                                properties.textColor = textColor;
+                                traits.textColor = textColor;
                                 break;
                             case "ctlFgColor1":
                                 Integer fg1Index = Integer.parseInt(tokens[2]);
                                 EDLColor fg1Color = colorList.lookup(fg1Index);
-                                properties.ctlFgColor1 = fg1Color;
+                                traits.ctlFgColor1 = fg1Color;
                                 break;
                             case "ctlFgColor2":
                                 Integer fg2Index = Integer.parseInt(tokens[2]);
                                 EDLColor fg2Color = colorList.lookup(fg2Index);
-                                properties.ctlFgColor2 = fg2Color;
+                                traits.ctlFgColor2 = fg2Color;
                                 break;
                             case "ctlBgColor1":
                                 Integer bg1Index = Integer.parseInt(tokens[2]);
                                 EDLColor bg1Color = colorList.lookup(bg1Index);
-                                properties.ctlBgColor1 = bg1Color;
+                                traits.ctlBgColor1 = bg1Color;
                                 break;
                             case "ctlBgColor2":
                                 Integer bg2Index = Integer.parseInt(tokens[2]);
                                 EDLColor bg2Color = colorList.lookup(bg2Index);
-                                properties.ctlBgColor2 = bg2Color;
+                                traits.ctlBgColor2 = bg2Color;
                                 break;
                             case "2ndBgColor":
                                 Integer back2Index = Integer.parseInt(tokens[2]);
@@ -777,7 +789,6 @@ public class ScreenParser extends EDMParser {
                             case "symbol0":
                             case "value0":
                             case "replaceSymbols":
-                            case "beginObjectProperties":
                             case "major":
                             case "minor":
                             case "release":
@@ -826,9 +837,41 @@ public class ScreenParser extends EDMParser {
                             case "inputFocusUpdates":
                             case "nullCondition":
                             case "pv":
-                                break;
+                                break;*/
                             default:
-                                LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);
+                                if (!line.isEmpty()) { // Skip blank lines
+                                    String value = "";
+
+                                    if (line.trim().startsWith("#")) {
+                                        // Ignoring comment
+                                    } else {
+                                        if (line.trim().endsWith("{")) {
+                                            String subline = scanner.nextLine();
+                                            subline = subline.trim();
+                                            String finalString = stripQuotes(subline);
+
+                                            while (true) {
+                                                subline = scanner.nextLine();
+
+                                                subline = subline.trim();
+
+                                                if ("}".equals(subline)) {
+                                                    break;
+                                                }
+                                                finalString = finalString + "\n" + stripQuotes(
+                                                        subline);
+                                            }
+
+                                            value = finalString;
+                                        } else {
+                                            value = stripQuotes(line.substring(
+                                                    tokens[0].length()));
+                                        }
+
+                                        traits.put(tokens[0], value);
+                                    }
+                                }
+                            //LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);                                //LOGGER.log(Level.FINEST, "Ignoring Line: {0}", line);
                         }
                     } catch (Exception e) {
                         LOGGER.log(Level.WARNING, "Unable to parse line '" + line + "'; file '"
@@ -836,10 +879,10 @@ public class ScreenParser extends EDMParser {
                     }
                 }
             } // end while line
-        } // end scanner try with resources
+        } // end scanner try with resources // end scanner try with resources
 
         // Make sure any color rules with no PV result in first color of rule
-        doColorCheckRecursive(colorList, screenObjects);
+        //doColorCheckRecursive(colorList, screenObjects);
 
         if (recursionLevel < 5) { // Don't recurse more than five files deep
             for (EmbeddedScreen embedded : embeddedScreens) {
@@ -901,8 +944,8 @@ public class ScreenParser extends EDMParser {
         return new Screen(canonicalPath, properties, screenObjects, colorList);
     }
 
-    private void doColorCheckRecursive(ColorList colorList, List<ScreenObject> screenObjects) {
-        for (ScreenObject obj : screenObjects) {
+    /*private void doColorCheckRecursive(ColorPalette colorList, List<WEDMWidget> screenObjects) {
+        for (WEDMWidget obj : screenObjects) {
             if (obj instanceof ActiveGroup) {
                 ActiveGroup grp = (ActiveGroup) obj;
                 doColorCheckRecursive(colorList, grp.children);
@@ -912,7 +955,7 @@ public class ScreenParser extends EDMParser {
         }
     }
 
-    private void checkForColorRuleWithNoPv(ColorList colorList, ScreenObject obj) {
+    private void checkForColorRuleWithNoPv(ColorPalette colorList, WEDMWidget obj) {
         String name;
 
         if (obj.alarmPv == null) {
@@ -942,5 +985,5 @@ public class ScreenParser extends EDMParser {
                 obj.offColor = colorList.lookup(name);
             }
         }
-    }
+    }*/
 }

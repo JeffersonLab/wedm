@@ -1,8 +1,10 @@
 package org.jlab.wedm.widget;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
  *
@@ -59,16 +61,18 @@ public class ActiveSymbol extends EmbeddedScreen {
 
         if (screen != null && !screen.screenObjects.isEmpty()) {
 
-            for (ScreenObject obj : screen.screenObjects) {
+            for (WEDMWidget obj : screen.screenObjects) {
 
-                Point childTranslation = new Point(-obj.x, -obj.y);
+                Point p = obj.getOrigin();
+                Dimension d = obj.getDimension();
+                
+                Point childTranslation = new Point(-p.x, -p.y);
 
                 if (!useOriginalSize) {
-                    float xScale = (float) w / obj.w;
-                    float yScale = (float) h / obj.h;
+                    float xScale = (float) w / d.width;
+                    float yScale = (float) h / d.height;
 
-                    obj.styles.put("transform", "scale(" + xScale + ", " + yScale + ")");
-                    obj.styles.put("transform-origin", "0 0");
+                    obj.symbolScaleOverride(xScale, yScale);
                 }
 
                 if (!useOriginalColors) {
@@ -84,17 +88,13 @@ public class ActiveSymbol extends EmbeddedScreen {
         return html;
     }
 
-    private void overrideColorsRecursive(ScreenObject obj) {
-        obj.fgColor = fgColor;
-        obj.lineColor = fgColor;
-        
-        obj.bgColor = bgColor;        
-        obj.fillColor = bgColor;
+    private void overrideColorsRecursive(WEDMWidget obj) {
+        obj.symbolColorOverride(bgColor, fgColor);
         
         if (obj instanceof ActiveGroup) {
-            List<ScreenObject> children = ((ActiveGroup) obj).children;
+            List<WEDMWidget> children = ((ActiveGroup) obj).children;
 
-            for (ScreenObject child : children) {
+            for (WEDMWidget child : children) {
                 overrideColorsRecursive(child);
             }
         }

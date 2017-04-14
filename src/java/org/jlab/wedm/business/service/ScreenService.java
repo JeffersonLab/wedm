@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.ColorListParser;
 import org.jlab.wedm.persistence.io.ScreenParser;
 import org.jlab.wedm.persistence.model.HtmlScreen;
-import org.jlab.wedm.persistence.model.ColorList;
+import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.Macro;
 import org.jlab.wedm.persistence.model.Screen;
 
@@ -21,7 +21,7 @@ public class ScreenService {
 
     private static final Logger LOGGER = Logger.getLogger(ScreenService.class.getName());
 
-    private ColorList colorList;
+    private ColorPalette colorList;
     private static final ConcurrentHashMap<String, HtmlScreen> SCREEN_CACHE
             = new ConcurrentHashMap<>();
 
