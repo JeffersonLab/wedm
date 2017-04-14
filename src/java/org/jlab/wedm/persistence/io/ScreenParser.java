@@ -22,7 +22,6 @@ import org.jlab.wedm.widget.ActivePictureInPicture;
 import org.jlab.wedm.widget.EmbeddedScreen;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
-import org.jlab.wedm.widget.CoreWidget;
 import org.jlab.wedm.widget.ScreenProperties;
 import org.jlab.wedm.widget.UnknownWidget;
 
@@ -169,14 +168,6 @@ public class ScreenParser extends EDLParser {
                                 break;
                             case "toggle": // ActiveMessageButton looks for toggle and has default of push
                                 ((ActiveMessageButton) last).push = false;
-                                break;
-                            case "pressValue":
-                                ((ActiveButton) last).pressValue = stripQuotes(line.substring(
-                                        "pressValue".length()));
-                                break;
-                            case "releaseValue":
-                                ((ActiveButton) last).releaseValue = stripQuotes(line.substring(
-                                        "releaseValue".length()));
                                 break;
                             case "3d":
                                 ((HtmlScreenObject) last).threeDimensional = true;

@@ -1,6 +1,9 @@
 package org.jlab.wedm.widget.html;
 
 import java.awt.Point;
+import java.util.Map;
+import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 
 /**
  *
@@ -18,6 +21,29 @@ public class ActiveButton extends TextScreenObject {
     public boolean swapButtons = false; /*Only RelatedDisplay and ShellCommand use this*/    
     public static final String ICON_SYMBOL = "⧉";
 
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
+        super.parseTraits(traits, colorList);
+        
+        // Strings
+        buttonLabel = traits.get("buttonLabel");
+        pressValue = traits.get("pressValue");
+        releaseValue = traits.get("releaseValue");
+        onLabel = traits.get("onLabel");
+        offLabel = traits.get("offLabel");
+        
+        // Booleans
+        icon = TraitParser.parseBoolean(traits, "icon");
+        swapButtons = TraitParser.parseBoolean(traits, "swapButtons");
+        
+        // Determine if push or toggle -> this is harder than it should be
+        if(traits.get("buttonType") != null) { // ActiveButton looks for buttonType: "push" and has default of toggle
+            push = "push".equals(traits.get("buttonType"));
+        } else if(traits.get("toggle") != null) {
+            push = false;  // ActiveMessageButton looks for toggle and has default of push
+        }
+    }
+    
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
         if (push == null) {
