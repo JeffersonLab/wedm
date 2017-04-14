@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jlab.wedm.persistence.io.EDMParser;
+import org.jlab.wedm.persistence.io.EDLParser;
 
 /**
  *
@@ -27,7 +27,7 @@ public class IndexController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setAttribute("edlRootDir", EDMParser.EDL_ROOT_DIR);
+        request.setAttribute("edlRootDir", EDLParser.EDL_ROOT_DIR);
 
         request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
     }

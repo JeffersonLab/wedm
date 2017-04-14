@@ -18,7 +18,7 @@ import org.jlab.wedm.persistence.model.EDLColorRule;
  *
  * @author ryans
  */
-public class ColorListParser extends EDMParser {
+public class ColorListParser extends EDLParser {
 
     private static final Logger LOGGER = Logger.getLogger(ColorListParser.class.getName());
 

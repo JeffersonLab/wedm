@@ -7,7 +7,7 @@ import org.jlab.wedm.persistence.model.EDLFont;
  *
  * @author ryans
  */
-public class EDMParser {
+public class EDLParser {
 
     public static final String EDL_ROOT_DIR;
     public static final String REWRITE_FROM_DIR;
@@ -47,7 +47,7 @@ public class EDMParser {
             name = name + ".edl";
         }
 
-        name = EDMParser.rewriteFileName(name);
+        name = EDLParser.rewriteFileName(name);
 
         File edl = new File(name);
 

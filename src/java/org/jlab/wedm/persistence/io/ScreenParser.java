@@ -50,7 +50,7 @@ import org.jlab.wedm.widget.svg.ActiveByte;
 import org.jlab.wedm.widget.svg.ActiveCircle;
 import org.jlab.wedm.widget.svg.ActiveRectangle;
 
-public class ScreenParser extends EDMParser {
+public class ScreenParser extends EDLParser {
 
     /**
      * We want embedded screens to NOT repeat IDs - so we share the same counter across multiple
@@ -659,7 +659,7 @@ public class ScreenParser extends EDMParser {
                                     LOGGER.log(Level.WARNING,
                                             "Unable to parse font: {0}; using default",
                                             fontStr);
-                                    font = EDMParser.DEFAULT_FONT;
+                                    font = EDLParser.DEFAULT_FONT;
                                 }
                                 last.font = font;
                                 break;
@@ -735,7 +735,7 @@ public class ScreenParser extends EDMParser {
                                     LOGGER.log(Level.WARNING,
                                             "Unable to parse font: {0}; using default",
                                             fStr);
-                                    ctlFont = EDMParser.DEFAULT_FONT;
+                                    ctlFont = EDLParser.DEFAULT_FONT;
                                 }
                                 traits.ctlFont = ctlFont;
                                 break;
@@ -749,7 +749,7 @@ public class ScreenParser extends EDMParser {
                                     LOGGER.log(Level.WARNING,
                                             "Unable to parse font: {0}; using default",
                                             bStr);
-                                    btnFont = EDMParser.DEFAULT_FONT;
+                                    btnFont = EDLParser.DEFAULT_FONT;
                                 }
                                 traits.btnFont = btnFont;
                                 break;

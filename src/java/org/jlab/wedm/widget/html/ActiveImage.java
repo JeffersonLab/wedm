@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.jlab.wedm.persistence.io.EDMParser;
+import org.jlab.wedm.persistence.io.EDLParser;
 import org.jlab.wedm.persistence.io.IOUtil;
 
 /**
@@ -24,12 +24,12 @@ public class ActiveImage extends HtmlScreenObject {
 
         // TODO: it would be faster to load pages if we allowed the browser to fetch images asyncronously
         try {
-            file = EDMParser.rewriteFileName(file);
+            file = EDLParser.rewriteFileName(file);
             
             File path = new File(file);
 
             if (!path.isAbsolute()) {
-                path = new File(EDMParser.EDL_ROOT_DIR + File.separator + file);
+                path = new File(EDLParser.EDL_ROOT_DIR + File.separator + file);
             }
 
             String type = null;

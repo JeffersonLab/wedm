@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jlab.wedm.persistence.io.EDMParser;
+import org.jlab.wedm.persistence.io.EDLParser;
 
 /**
  *
@@ -36,7 +36,7 @@ public class BrowseController extends HttpServlet {
         if (dirname != null) {
             File dir = new File(dirname);
 
-            if (!dir.getCanonicalPath().startsWith(EDMParser.EDL_ROOT_DIR)) {
+            if (!dir.getCanonicalPath().startsWith(EDLParser.EDL_ROOT_DIR)) {
                 throw new ServletException("Illegal Path");
             }
 
@@ -45,7 +45,7 @@ public class BrowseController extends HttpServlet {
             if (dir.getParentFile() != null) {
                 parent = dir.getParentFile().getAbsolutePath();
 
-                if (dir.getParentFile().getCanonicalPath().startsWith(EDMParser.EDL_ROOT_DIR)) {
+                if (dir.getParentFile().getCanonicalPath().startsWith(EDLParser.EDL_ROOT_DIR)) {
                     parentOutside = false;
                 }
             }

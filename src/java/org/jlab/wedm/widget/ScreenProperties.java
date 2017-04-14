@@ -3,7 +3,7 @@ package org.jlab.wedm.widget;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.jlab.wedm.persistence.io.EDMParser;
+import org.jlab.wedm.persistence.io.EDLParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLFont;
@@ -34,8 +34,8 @@ public class ScreenProperties extends CoreWidget {
         ctlFgColor2 = parseColor("ctlFgColor2", null);
 
         // Fonts
-        ctlFont = parseFont("ctlFont", EDMParser.DEFAULT_FONT);
-        btnFont = parseFont("btnFont", EDMParser.DEFAULT_FONT);
+        ctlFont = parseFont("ctlFont", EDLParser.DEFAULT_FONT);
+        btnFont = parseFont("btnFont", EDLParser.DEFAULT_FONT);
 
         LOGGER.log(Level.FINEST, "Parsing ScreenProperties");
 
