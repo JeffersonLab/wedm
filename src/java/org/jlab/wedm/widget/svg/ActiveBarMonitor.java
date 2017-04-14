@@ -10,8 +10,8 @@ public class ActiveBarMonitor extends ActiveRectangle {
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
-        if (horizontal == null) { // ChoiceButton has opposite default...
-            horizontal = true;
+        if (orientation == null) { // ChoiceButton has opposite default...
+            orientation = "horizontal";
         }
 
         return super.toHtml(indent, indentStep, translation);
@@ -41,7 +41,7 @@ public class ActiveBarMonitor extends ActiveRectangle {
         int vWidth = 0;
         int vHeight = 0;
 
-        if (horizontal) {
+        if ("horizontal".equals(orientation)) {
             originX = originX + w / 24;
             originY = originY + h / 6;
             width = w - (w / 12);
@@ -111,7 +111,7 @@ public class ActiveBarMonitor extends ActiveRectangle {
             svg = svg + "stroke-dasharray=\"" + DASH_SPACING + "\" ";
         }
 
-        if(!horizontal) {
+        if(!"horizontal".equals(orientation)) {
             svg = svg + "transform=\"scale(1,-1)\"";
         }
         

@@ -1,7 +1,10 @@
 package org.jlab.wedm.widget.svg;
 
 import java.awt.Point;
+import java.util.Map;
 import java.util.logging.Logger;
+import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 
 /**
  *
@@ -15,6 +18,14 @@ public class ActiveArc extends SvgScreenObject {
     public Integer totalAngle;
     public boolean pie = false;
 
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        super.parseTraits(traits, palette);
+        
+        startAngle = TraitParser.parseInt(traits, "startAngle", 0);
+        totalAngle = TraitParser.parseInt(traits, "totalAngle", 180);
+    }
+    
     @Override
     public String toSvg(String indent, String indentStep, Point translation) {
         String svg = "";

@@ -4,6 +4,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
@@ -12,12 +17,26 @@ import org.jlab.wedm.persistence.model.WEDMWidget;
  */
 public class ActiveSymbol extends EmbeddedScreen {
 
+    private static final Logger LOGGER = Logger.getLogger(ActiveSymbol.class.getName());
+
     public int numStates;
     public int[] minValues = new int[64];
     public int[] maxValues = new int[64];
     public List<String> controlPvs = new ArrayList<>();
     public boolean useOriginalSize = false;
     public boolean useOriginalColors = false;
+
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        super.parseTraits(traits, palette);
+
+        numStates = TraitParser.parseInt(traits, "numStates", 0);
+        minValues = TraitParser.parseIntArray(traits, numStates, "minValues");
+        maxValues = TraitParser.parseIntArray(traits, numStates, "maxValues");
+
+        useOriginalSize = TraitParser.parseBoolean(traits, "useOriginalSize");
+        useOriginalColors = TraitParser.parseBoolean(traits, "useOriginalColors");
+    }
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
@@ -63,23 +82,30 @@ public class ActiveSymbol extends EmbeddedScreen {
 
             for (WEDMWidget obj : screen.screenObjects) {
 
-                Point p = obj.getOrigin();
-                Dimension d = obj.getDimension();
-                
-                Point childTranslation = new Point(-p.x, -p.y);
+                if (obj instanceof ActiveGroup) {
+                    ActiveGroup grp = (ActiveGroup) obj;
 
-                if (!useOriginalSize) {
-                    float xScale = (float) w / d.width;
-                    float yScale = (float) h / d.height;
+                    Point p = grp.getOrigin();
+                    Dimension d = grp.getDimension();
 
-                    obj.symbolScaleOverride(xScale, yScale);
+                    Point childTranslation = new Point(-p.x, -p.y);
+
+                    if (!useOriginalSize) {
+                        float xScale = (float) w / d.width;
+                        float yScale = (float) h / d.height;
+
+                        grp.symbolScaleOverride(xScale, yScale);
+                    }
+
+                    if (!useOriginalColors) {
+                        overrideColorsRecursive(obj);
+                    }
+
+                    html = html + obj.toHtml(indent + indentStep, indentStep, childTranslation);
+                } else {
+                    LOGGER.log(Level.WARNING, "Symbol top level object is not an ActiveGroup: {0}",
+                            obj.getClass().getSimpleName());
                 }
-
-                if (!useOriginalColors) {
-                    overrideColorsRecursive(obj);
-                }
-
-                html = html + obj.toHtml(indent + indentStep, indentStep, childTranslation);
             }
         }
 
@@ -90,7 +116,7 @@ public class ActiveSymbol extends EmbeddedScreen {
 
     private void overrideColorsRecursive(WEDMWidget obj) {
         obj.symbolColorOverride(bgColor, fgColor);
-        
+
         if (obj instanceof ActiveGroup) {
             List<WEDMWidget> children = ((ActiveGroup) obj).children;
 
@@ -98,5 +124,5 @@ public class ActiveSymbol extends EmbeddedScreen {
                 overrideColorsRecursive(child);
             }
         }
-    }
+    }    
 }

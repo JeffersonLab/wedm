@@ -83,7 +83,7 @@ public class ActiveButton extends TextScreenObject {
             value = offLabel;
         }
 
-        align = "center";
+        fontAlign = "center";
 
         if (bgColor == null) {
             bgColor = offColor;

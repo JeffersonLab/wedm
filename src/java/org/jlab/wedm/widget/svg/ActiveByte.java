@@ -1,6 +1,9 @@
 package org.jlab.wedm.widget.svg;
 
 import java.awt.Point;
+import java.util.Map;
+import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 import static org.jlab.wedm.widget.svg.SvgScreenObject.DASH_SPACING;
 
 /**
@@ -9,15 +12,25 @@ import static org.jlab.wedm.widget.svg.SvgScreenObject.DASH_SPACING;
  */
 public class ActiveByte extends ActiveRectangle {
 
-    public int bits = 0;
-    public int shift = 0;
-    public boolean littleEndian = false;
+    public int numBits;
+    public int shift;
+    public boolean littleEndian;
+
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        super.parseTraits(traits, palette);
+
+        numBits = TraitParser.parseInt(traits, "numBits", 0);
+        shift = TraitParser.parseInt(traits, "shift", 0);
+
+        littleEndian = "little".equals(traits.get("endian"));
+    }
 
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
         attributes.put("data-shift", String.valueOf(shift));
         attributes.put("data-little-endian", String.valueOf(littleEndian));
-        
+
         return super.toHtml(indent, indentStep, translation);
     }
 
@@ -29,8 +42,8 @@ public class ActiveByte extends ActiveRectangle {
         int originX = x + translation.x;
         int originY = y + translation.y;
 
-        if (bits < 1) {
-            bits = 1;
+        if (numBits < 1) {
+            numBits = 1;
         }
 
         int bitWidth, bitHeight;
@@ -39,14 +52,14 @@ public class ActiveByte extends ActiveRectangle {
         /*If equal h & w EDM makes vertical widget*/
         if (h >= w) {
             bitWidth = w;
-            bitHeight = h / bits;
+            bitHeight = h / numBits;
         } else {
-            bitWidth = w / bits;
+            bitWidth = w / numBits;
             bitHeight = h;
             vertical = false;
         }
 
-        for (int i = 0; i < bits; i++) {
+        for (int i = 0; i < numBits; i++) {
             svg = svg + indent + "<rect class=\"bit\" x=\"" + originX + "\" y=\"" + originY
                     + "\" width=\"" + bitWidth
                     + "\" height=\"" + bitHeight + "\" ";

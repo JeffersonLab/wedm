@@ -1,5 +1,6 @@
 package org.jlab.wedm.widget;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,4 +48,17 @@ public class ActiveGroup extends CoreWidget {
 
         return html;
     }
+    
+    public Dimension getDimension() {
+        return new Dimension(w, h);
+    }
+
+    public Point getOrigin() {
+        return new Point(x, y);
+    }
+
+    public void symbolScaleOverride(float xScale, float yScale) {
+        styles.put("transform", "scale(" + xScale + ", " + yScale + ")");
+        styles.put("transform-origin", "0 0");
+    }    
 }

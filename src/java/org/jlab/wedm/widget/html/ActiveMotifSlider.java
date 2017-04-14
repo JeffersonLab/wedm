@@ -25,8 +25,8 @@ public class ActiveMotifSlider extends HtmlScreenObject {
     public String toHtml(String indent, String indentStep, Point translation) {
         String html;
 
-        if (horizontal == null) {
-            horizontal = true;
+        if (orientation == null) {
+            orientation = "horizontal";
         }
 
         if (scaleMin != null) {
@@ -70,7 +70,7 @@ public class ActiveMotifSlider extends HtmlScreenObject {
         
         final float handleSize = 15.0f;
 
-        if (horizontal) {
+        if ("horizontal".equals(orientation)) {
             float handleWidth = handleSize;
             
             handleStyles.put("width", String.valueOf(handleWidth) + "px");

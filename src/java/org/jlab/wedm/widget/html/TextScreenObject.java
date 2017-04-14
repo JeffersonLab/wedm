@@ -16,7 +16,7 @@ public class TextScreenObject extends HtmlScreenObject {
     private static final Logger LOGGER = Logger.getLogger(TextScreenObject.class.getName());
 
     public String value = null;
-    public String align;
+    public String fontAlign;
     public int numLines = 1;
     protected Map<String, String> threeDStyles = new HashMap<>();
     protected Map<String, String> textStyles = new HashMap<>();
@@ -24,7 +24,9 @@ public class TextScreenObject extends HtmlScreenObject {
     @Override
     public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
         super.parseTraits(traits, colorList);
+        
         value = traits.get("value");
+        fontAlign = traits.get("fontAlign");
         
         // TODO: count how many lines?
     }
@@ -54,8 +56,8 @@ public class TextScreenObject extends HtmlScreenObject {
         
         set3DStyles();
 
-        if (align != null) {
-            textStyles.put("text-align", align);
+        if (fontAlign != null) {
+            textStyles.put("text-align", fontAlign);
         }
 
         if (useAlarmBorder) {

@@ -1,6 +1,5 @@
 package org.jlab.wedm.widget;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +9,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.EDLParser;
+import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLColorRule;
@@ -69,99 +69,18 @@ public abstract class CoreWidget implements WEDMWidget {
     public boolean useAlarmBorder = false;
     public boolean editable = false;
     public boolean useHexPrefix = false;
-    public Boolean horizontal = null;    //ChoiceButton default = false, BarMeter default = true, MotifSlider default = true
     public EDLFont font;
     public String format;
     public String controlPv;
     public String visPv;
     public String alarmPv;
     public String indicatorPv;
+    public String orientation;
 
     public Map<String, String> attributes = new HashMap<>();
     public Map<String, String> styles = new HashMap<>();
     public List<String> classes = new ArrayList<>();
-
-    protected boolean parseBoolean(String key) {
-        boolean result = false;
-        String value = traits.get(key);
-        try {
-            if (value != null) {
-                result = true;
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.FINEST, "Unable to parse Boolean; key: " + key + "; value: " + value, e);
-        }
-
-        return result;
-    }
-
-    protected EDLFont parseFont(String key, EDLFont defaultValue) {
-        String value = traits.get(key);
-        EDLFont f = defaultValue;
-        try {
-            if (value != null) {
-                String[] tokens = value.split("-");
-
-                String name = tokens[0];
-                String weight = tokens[1]; // bold
-                String oblique = tokens[2]; // italic
-                Float size = Float.parseFloat(tokens[3]);
-
-                f = new EDLFont(name, "bold".equals(weight), "o".equals(oblique) || "i".equals(
-                        oblique),
-                        size);
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.FINEST, "Unable to parse font; key: " + key + "; value: " + value, e);
-        }
-        return f;
-    }
-
-    protected EDLColor parseColor(String key, EDLColor defaultValue) {
-        String value = traits.get(key);
-        EDLColor result = defaultValue;
-
-        try {
-            if (value != null) {
-                String[] tokens = value.split("\\s+");
-                Integer index = Integer.parseInt(tokens[1]);
-                result = colorList.lookup(index);
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.FINEST, "Unable to parse color; key: " + key + "; value: " + value, e);
-        }
-
-        return result;
-    }
-
-    public Float parseFloat(String key, Float defaultValue) {
-        String value = traits.get(key);
-        Float result = defaultValue;
-        try {
-            if (value != null) {
-                result = Float.parseFloat(value);
-            }
-        } catch (NumberFormatException e) {
-            LOGGER.log(Level.FINEST, "Unable to parse int; key: " + key + "; value: " + value, e);
-        }
-
-        return result;
-    }
-
-    public int parseInt(String key, int defaultValue) {
-        String value = traits.get(key);
-        int result = defaultValue;
-        try {
-            if (value != null) {
-                result = Integer.parseInt(value);
-            }
-        } catch (NumberFormatException e) {
-            LOGGER.log(Level.FINEST, "Unable to parse int; key: " + key + "; value: " + value, e);
-        }
-
-        return result;
-    }
-
+    
     protected void setCommonAttributes() {
         String className = this.getClass().getSimpleName();
         classes.add(className);
@@ -295,8 +214,8 @@ public abstract class CoreWidget implements WEDMWidget {
             styles.put("color", fgColor.toColorString());
         }
 
-        if (horizontal != null) {
-            attributes.put("data-orientation", horizontal ? "horizontal" : "vertical");
+        if (orientation != null) {
+            attributes.put("data-orientation", orientation);
         }
 
         if (font != null) {
@@ -404,60 +323,66 @@ public abstract class CoreWidget implements WEDMWidget {
     public void parseTraits(Map<String, String> traits, ColorPalette palette) {
         this.traits = traits;
         this.colorList = palette;
-
+        
         if (traits != null) {
             LOGGER.log(Level.FINEST, "Parsing core traits for: {0}", this.getClass().getSimpleName());
 
+            // WIDGET ID
+            objectId = TraitParser.parseInt(traits, "WEDM_WIDGET_ID", -1);
+            
             // Dimensions and Coordinates
-            x = parseInt("x", 0);
-            y = parseInt("y", 0);
-            w = parseInt("w", 0);
-            h = parseInt("h", 0);
+            x = TraitParser.parseInt(traits, "x", 0);
+            y = TraitParser.parseInt(traits, "y", 0);
+            w = TraitParser.parseInt(traits, "w", 0);
+            h = TraitParser.parseInt(traits, "h", 0);
 
             // Other ints
-            numPvs = parseInt("numPvs", 0);
-            numDsps = parseInt("numDsps", 0);
+            numPvs = TraitParser.parseInt(traits, "numPvs", 0);
+            numDsps = TraitParser.parseInt(traits, "numDsps", 0);
+            precision = TraitParser.parseInt(traits, "precision", null);
 
             // Colors
-            bgColor = parseColor("bgColor", null);
-            fgColor = parseColor("fgColor", null);
-            topShadowColor = parseColor("topShadowColor", null);
-            botShadowColor = parseColor("botShadowColor", null);
-            lineColor = parseColor("lineColor", null);
-            fillColor = parseColor("fillColor", null);
-            onColor = parseColor("onColor", null);
-            offColor = parseColor("offColor", null);
-            indicatorColor = parseColor("indicatorColor", null);
+            bgColor = TraitParser.parseColor(traits, palette, "bgColor", null);
+            fgColor = TraitParser.parseColor(traits, palette, "fgColor", null);
+            topShadowColor = TraitParser.parseColor(traits, palette, "topShadowColor", null);
+            botShadowColor = TraitParser.parseColor(traits, palette, "botShadowColor", null);
+            lineColor = TraitParser.parseColor(traits, palette, "lineColor", null);
+            fillColor = TraitParser.parseColor(traits, palette, "fillColor", null);
+            onColor = TraitParser.parseColor(traits, palette, "onColor", null);
+            offColor = TraitParser.parseColor(traits, palette, "offColor", null);
+            indicatorColor = TraitParser.parseColor(traits, palette, "indicatorColor", null);
 
             // Fonts
-            font = parseFont("font", EDLParser.DEFAULT_FONT);
+            font = TraitParser.parseFont(traits, "font", EDLParser.DEFAULT_FONT);
 
             // Boolean Flags
-            invisible = parseBoolean("invisible");
-            visInvert = parseBoolean("visInvert");
-            useDisplayBg = parseBoolean("useDisplayBg");
-            motifWidget = parseBoolean("motifWidget");
-            fill = parseBoolean("fill");
-            dash = parseBoolean("dash");
-            autoSize = parseBoolean("autoSize");
-            border = parseBoolean("border");
-            limitsFromDb = parseBoolean("limitsFromDb");
-            indicatorAlarm = parseBoolean("indicatorAlarm");
-            lineAlarm = parseBoolean("lineAlarm");
-            fillAlarm = parseBoolean("fillAlarm");
-            fgAlarm = parseBoolean("fgAlarm");
-            bgAlarm = parseBoolean("bgAlarm");
-            useAlarmBorder = parseBoolean("useAlarmBorder");
-            editable = parseBoolean("editable");
-            useHexPrefix = parseBoolean("useHexPrefix");
+            invisible = TraitParser.parseBoolean(traits, "invisible");
+            visInvert = TraitParser.parseBoolean(traits, "visInvert");
+            useDisplayBg = TraitParser.parseBoolean(traits, "useDisplayBg");
+            motifWidget = TraitParser.parseBoolean(traits, "motifWidget");
+            fill = TraitParser.parseBoolean(traits, "fill");
+            autoSize = TraitParser.parseBoolean(traits, "autoSize");
+            border = TraitParser.parseBoolean(traits, "border");
+            limitsFromDb = TraitParser.parseBoolean(traits, "limitsFromDb");
+            indicatorAlarm = TraitParser.parseBoolean(traits, "indicatorAlarm");
+            lineAlarm = TraitParser.parseBoolean(traits, "lineAlarm");
+            fillAlarm = TraitParser.parseBoolean(traits, "fillAlarm");
+            fgAlarm = TraitParser.parseBoolean(traits, "fgAlarm");
+            bgAlarm = TraitParser.parseBoolean(traits, "bgAlarm");
+            useAlarmBorder = TraitParser.parseBoolean(traits, "useAlarmBorder");
+            editable = TraitParser.parseBoolean(traits, "editable");
+            useHexPrefix = TraitParser.parseBoolean(traits, "useHexPrefix");
 
+            // Convenience booleans
+            dash = "dash".equals(traits.get("lineStyle"));
+            
             // Floats
-            visMin = parseFloat("visMin", null);
-            visMax = parseFloat("visMax", null);
-            lineWidth = parseFloat("lineWidth", null);
-            max = parseFloat("max", null);
-            min = parseFloat("min", null);
-            origin = parseFloat("origin", null);
+            visMin = TraitParser.parseFloat(traits, "visMin", null);
+            visMax = TraitParser.parseFloat(traits, "visMax", null);
+            lineWidth = TraitParser.parseFloat(traits, "lineWidth", null);
+            max = TraitParser.parseFloat(traits, "max", null);
+            min = TraitParser.parseFloat(traits, "min", null);
+            origin = TraitParser.parseFloat(traits, "origin", null);
 
             // Strings
             format = traits.get("format");
@@ -470,9 +395,7 @@ public abstract class CoreWidget implements WEDMWidget {
             }
 
             indicatorPv = traits.get("indicatorPv");
-
-            // TODO:
-            // orientation / horizontal
+            orientation = traits.get("orientation");
         }
     }
 
@@ -483,22 +406,6 @@ public abstract class CoreWidget implements WEDMWidget {
 
         this.bgColor = bgColor;
         this.fillColor = bgColor;
-    }
-
-    @Override
-    public Dimension getDimension() {
-        return new Dimension(w, h);
-    }
-
-    @Override
-    public Point getOrigin() {
-        return new Point(x, y);
-    }
-
-    @Override
-    public void symbolScaleOverride(float xScale, float yScale) {
-        styles.put("transform", "scale(" + xScale + ", " + yScale + ")");
-        styles.put("transform-origin", "0 0");
     }
 
     @Override

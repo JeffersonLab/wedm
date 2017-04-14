@@ -1,6 +1,9 @@
 package org.jlab.wedm.widget.svg;
 
 import java.awt.Point;
+import java.util.Map;
+import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 
 /**
  *
@@ -9,17 +12,42 @@ import java.awt.Point;
 public class ActiveLine extends SvgScreenObject {
 
     public int numPoints;
-    public int[] xValues;
-    public int[] yValues;
-    public boolean closePolygon = false;
-    public boolean startArrow = false;
-    public boolean endArrow = false;
+    public int[] xPoints;
+    public int[] yPoints;
+    public boolean closePolygon;
+    public boolean startArrow;
+    public boolean endArrow;
 
+
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        super.parseTraits(traits, palette);
+        
+        numPoints = TraitParser.parseInt(traits, "numPoints", 0);
+        
+        xPoints = TraitParser.parseIntArray(traits, numPoints, "xPoints");
+        yPoints = TraitParser.parseIntArray(traits, numPoints, "yPoints");
+        
+        closePolygon = TraitParser.parseBoolean(traits, "closePolygon");
+        
+        String arrows = traits.get("arrows");
+        
+        if("both".equals(arrows)) {
+            startArrow = true;
+            endArrow = true;           
+        } else if("from".equals(arrows)) {
+            startArrow = true;
+        } else if("to".equals(arrows)) {
+            endArrow = true;
+        }
+
+    }
+    
     @Override
     public String toSvg(String indent, String indentStep, Point translation) {
         String svg = "";
 
-        if (xValues != null && yValues != null && xValues.length == yValues.length && xValues.length
+        if (xPoints != null && yPoints != null && xPoints.length == yPoints.length && xPoints.length
                 > 1) {
 
             transformToOrigin(translation);
@@ -50,10 +78,10 @@ public class ActiveLine extends SvgScreenObject {
                 svg = svg + "stroke-dasharray=\"" + DASH_SPACING + "\" ";
             }
 
-            svg = svg + "d=\"M" + xValues[0] + " " + yValues[0] + " ";
+            svg = svg + "d=\"M" + xPoints[0] + " " + yPoints[0] + " ";
 
-            for (int i = 1; i < xValues.length; i++) {
-                svg = svg + "L" + xValues[i] + " " + yValues[i] + " ";
+            for (int i = 1; i < xPoints.length; i++) {
+                svg = svg + "L" + xPoints[i] + " " + yPoints[i] + " ";
             }
 
             if (closePolygon) {
@@ -75,18 +103,18 @@ public class ActiveLine extends SvgScreenObject {
                 float height = 20 + scaleFactor;
                 float width = 20 + scaleFactor;
 
-                float xPos = xValues[0];
-                float yPos = yValues[0] - (height / 2);
+                float xPos = xPoints[0];
+                float yPos = yPoints[0] - (height / 2);
 
                 xPos = xPos - 15;
 
-                int dx = xValues[0] - xValues[1];
-                int dy = yValues[0] - yValues[1];
+                int dx = xPoints[0] - xPoints[1];
+                int dy = yPoints[0] - yPoints[1];
                 double rotate = 0;
                 double theta = Math.atan2(dy, dx);
                 rotate = theta * 180 / Math.PI;
-                int rotateX = xValues[0];
-                int rotateY = yValues[0];
+                int rotateX = xPoints[0];
+                int rotateY = yPoints[0];
                 svg = svg + indent + "<use xlink:href=\"#arrow-head\" x=\"" + xPos + "\" y=\""
                         + yPos + "\" height=\"" + height + "\" width=\"" + width
                         + "\" transform=\"rotate(" + rotate + " " + rotateX + " " + rotateY
@@ -103,18 +131,18 @@ public class ActiveLine extends SvgScreenObject {
                 float height = 20 + scaleFactor;
                 float width = 20 + scaleFactor;
 
-                float xPos = xValues[xValues.length - 1];
-                float yPos = yValues[yValues.length - 1] - (height / 2);
+                float xPos = xPoints[xPoints.length - 1];
+                float yPos = yPoints[yPoints.length - 1] - (height / 2);
 
                 xPos = xPos - 15;
 
-                int dx = xValues[xValues.length - 1] - xValues[xValues.length - 2];
-                int dy = yValues[yValues.length - 1] - yValues[yValues.length - 2];
+                int dx = xPoints[xPoints.length - 1] - xPoints[xPoints.length - 2];
+                int dy = yPoints[yPoints.length - 1] - yPoints[yPoints.length - 2];
                 double rotate = 0;
                 double theta = Math.atan2(dy, dx);
                 rotate = theta * 180 / Math.PI;
-                int rotateX = xValues[xValues.length - 1];
-                int rotateY = yValues[yValues.length - 1];
+                int rotateX = xPoints[xPoints.length - 1];
+                int rotateY = yPoints[yPoints.length - 1];
 
                 svg = svg + indent + "<use xlink:href=\"#arrow-head\" x=\"" + xPos + "\" y=\""
                         + yPos + "\" height=\"" + height + "\" width=\"" + width
@@ -128,9 +156,9 @@ public class ActiveLine extends SvgScreenObject {
     }
 
     private void transformToOrigin(Point translation) {
-        for (int i = 0; i < xValues.length; i++) {
-            xValues[i] = xValues[i] + translation.x;
-            yValues[i] = yValues[i] + translation.y;
+        for (int i = 0; i < xPoints.length; i++) {
+            xPoints[i] = xPoints[i] + translation.x;
+            yPoints[i] = yPoints[i] + translation.y;
         }
     }
 }

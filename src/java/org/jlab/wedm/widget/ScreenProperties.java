@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.EDLParser;
+import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.EDLFont;
@@ -26,21 +27,21 @@ public class ScreenProperties extends CoreWidget {
     public String title;
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
-        super.parseTraits(traits, colorList);
-
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        super.parseTraits(traits, palette);
+        
         // Colors
-        ctlFgColor1 = parseColor("ctlFgColor1", null);
-        ctlFgColor2 = parseColor("ctlFgColor2", null);
-
+        textColor = TraitParser.parseColor(traits, palette, "textColor", null);
+        ctlFgColor1 = TraitParser.parseColor(traits, palette, "ctlFgColor1", null);
+        ctlFgColor2 = TraitParser.parseColor(traits, palette, "ctlFgColor2", null);
+        ctlBgColor1 = TraitParser.parseColor(traits, palette, "ctlBgColor1", null);
+        ctlBgColor2 = TraitParser.parseColor(traits, palette, "ctlBgColor2", null);
+        
         // Fonts
-        ctlFont = parseFont("ctlFont", EDLParser.DEFAULT_FONT);
-        btnFont = parseFont("btnFont", EDLParser.DEFAULT_FONT);
-
-        LOGGER.log(Level.FINEST, "Parsing ScreenProperties");
-
-        for (String key : traits.keySet()) {
-            LOGGER.log(Level.FINEST, "Trait: {0}={1}", new Object[]{key, traits.get(key)});
-        }
+        ctlFont = TraitParser.parseFont(traits, "ctlFont", EDLParser.DEFAULT_FONT);
+        btnFont = TraitParser.parseFont(traits, "btnFont", EDLParser.DEFAULT_FONT);
+        
+        // Strings
+        title = traits.get("title");
     }
 }
