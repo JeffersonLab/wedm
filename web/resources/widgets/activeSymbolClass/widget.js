@@ -33,3 +33,11 @@ jlab.wedm.SymbolPvObserver.prototype.handleControlUpdate = function (update) {
     $obj.find(".ActiveGroup").hide();
     $obj.find(".ActiveGroup:nth-child(" + state + ")").show();
 };
+
+
+jlab.wedm.initSymbol = function () {
+    $(".ActiveSymbol .ActiveGroup:nth-child(1)").show();
+};
+
+jlab.wedm.initFuncs = jlab.wedm.initFuncs || [];
+jlab.wedm.initFuncs.push(jlab.wedm.initSymbol);

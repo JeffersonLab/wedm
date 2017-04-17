@@ -668,20 +668,6 @@ jlab.wedm.initWebsocket = function () {
     };
 };
 
-jlab.wedm.initEmbedded = function () {
-    /*Only vertically center screens shorter than their parent*/
-    $(".ActivePictureInPicture.pip-center .screen").each(function () {
-        var $screen = $(this),
-                $container = $screen.closest(".ActivePictureInPicture");
-        if ($screen.outerHeight(true) < $container.height()) {
-            $screen.addClass("vertical-center");
-        }
-    });
-
-    /*Initially just how first screen in the stack*/
-    $(".ActivePictureInPicture .screen:not(:first-child)").hide();
-};
-
 jlab.wedm.initLocalPVs = function () {
 
     /*It seems button PV widgets must have enum PV with first item being selected index and second item is Pressed label and third item is Released label*/
@@ -836,36 +822,13 @@ $(document).on("mouseup", ".MouseSensitive", function (e) {
     jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");
 });
 
-$(document).on("mousedown", ".local-control.push-button", function (e) {
-    jlab.wedm.doButtonDown($(this));
-});
-
-$(document).on("mouseup mouseout", ".local-control.push-button", function (e) {
-    if ($(this).hasClass("button-down")) {
-        jlab.wedm.doButtonUp($(this));
-    }
-});
-
-$(document).on("click", ".local-control.toggle-button", function (e) {
-    var $obj = $(this);
-
-    if ($obj.hasClass("toggle-button-off")) {
-        $obj.removeClass("toggle-button-off");
-        $obj.addClass("toggle-button-on");
-        jlab.wedm.doButtonDown($obj);
-    } else if ($obj.hasClass("toggle-button-on")) {
-        $obj.removeClass("toggle-button-on");
-        $obj.addClass("toggle-button-off");
-        jlab.wedm.doButtonUp($obj);
-    }
-});
-
 $(function () {
-    $(".ActiveSymbol .ActiveGroup:nth-child(1)").show();
+    jlab.wedm.initFuncs = jlab.wedm.initFuncs || [];
+    for(var i = 0; i < jlab.wedm.initFuncs.length; i++) {
+        jlab.wedm.initFuncs[i]();
+    }
 
     jlab.wedm.resizeText();
-
-    jlab.wedm.initEmbedded();
 
     jlab.wedm.createWidgets();
 

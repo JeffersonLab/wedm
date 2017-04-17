@@ -102,10 +102,6 @@ svg.ScreenObject {
     height: 0;
     padding-bottom: 100%;
 }
-.vertical-center {
-    top: 50%;
-    transform: translateY(-50%);
-}
 .knob {
     position: absolute;
 }

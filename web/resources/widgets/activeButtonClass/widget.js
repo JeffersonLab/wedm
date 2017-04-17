@@ -40,3 +40,27 @@ jlab.wedm.ButtonPvObserver.prototype.handleControlUpdate = function (update) {
         }
     }
 };
+
+$(document).on("mousedown", ".local-control.push-button", function () {
+    jlab.wedm.doButtonDown($(this));
+});
+
+$(document).on("mouseup mouseout", ".local-control.push-button", function () {
+    if ($(this).hasClass("button-down")) {
+        jlab.wedm.doButtonUp($(this));
+    }
+});
+
+$(document).on("click", ".local-control.toggle-button", function () {
+    var $obj = $(this);
+
+    if ($obj.hasClass("toggle-button-off")) {
+        $obj.removeClass("toggle-button-off");
+        $obj.addClass("toggle-button-on");
+        jlab.wedm.doButtonDown($obj);
+    } else if ($obj.hasClass("toggle-button-on")) {
+        $obj.removeClass("toggle-button-on");
+        $obj.addClass("toggle-button-off");
+        jlab.wedm.doButtonUp($obj);
+    }
+});

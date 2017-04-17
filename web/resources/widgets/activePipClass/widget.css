@@ -8,4 +8,7 @@
 .ActivePictureInPicture.pip-center .screen {
     margin: 0 auto;
 }
-
+.ActivePictureInPicture .vertical-center {
+    top: 50%;
+    transform: translateY(-50%);
+}

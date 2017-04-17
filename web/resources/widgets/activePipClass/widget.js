@@ -27,3 +27,20 @@ jlab.wedm.PiPPvObserver.prototype.handleControlUpdate = function (update) {
         }
     });
 };
+
+jlab.wedm.initPip = function () {
+    /*Only vertically center screens shorter than their parent*/
+    $(".ActivePictureInPicture.pip-center .screen").each(function () {
+        var $screen = $(this),
+                $container = $screen.closest(".ActivePictureInPicture");
+        if ($screen.outerHeight(true) < $container.height()) {
+            $screen.addClass("vertical-center");
+        }
+    });
+
+    /*Initially just how first screen in the stack*/
+    $(".ActivePictureInPicture .screen:not(:first-child)").hide();
+};
+
+jlab.wedm.initFuncs = jlab.wedm.initFuncs || [];
+jlab.wedm.initFuncs.push(jlab.wedm.initPip);
