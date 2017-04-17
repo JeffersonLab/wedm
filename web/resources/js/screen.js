@@ -19,57 +19,43 @@ if (!String.prototype.endsWith) {
     };
 }
 
-jlab.wedm.PvWidget = function (id, pvSet) {
+jlab.wedm.PvObserver = function (id, pvSet) {
     this.id = id;
-    this.ctrlPvExpr = pvSet.ctrlPvExpr;
-    this.visPvExpr = pvSet.visPvExpr;
-    this.alarmPvExpr = pvSet.alarmPvExpr;
-    this.indicatorPvExpr = pvSet.indicatorPvExpr;
-    this.ctrlPvs = pvSet.ctrlPvs;
-    this.visPvs = pvSet.visPvs;
-    this.alarmPvs = pvSet.alarmPvs;
-    this.colorPvs = pvSet.colorPvs;
-    this.indicatorPvs = pvSet.indicatorPvs;
-    this.limitPvs = pvSet.limitPvs;
+    this.pvSet = pvSet;
     this.pvNameToValueMap = {};
     this.enumValuesArray = [];
 
-    jlab.wedm.PvWidget.prototype.handleUpdate = function (update) {
+    jlab.wedm.PvObserver.prototype.handleUpdate = function (update) {
         this.pvNameToValueMap[update.pv] = update.value;
 
-        if (this.visPvs.indexOf(update.pv) > -1) {
-            /*console.log('updating visibility');*/
-            this.handleVisibilityUpdate.call(this);
+        if (this.pvSet.visPvs.indexOf(update.pv) > -1) {
+            this.handleVisibilityUpdate.call(this, update);
         }
 
-        if (this.ctrlPvs.indexOf(update.pv) > -1) {
-            /*console.log('updating control');*/
-            this.handleControlUpdate.call(this);
+        if (this.pvSet.ctrlPvs.indexOf(update.pv) > -1) {
+            this.handleControlUpdate.call(this, update);
         }
 
-        if (this.alarmPvs.indexOf(update.pv) > -1) {
-            /*console.log('updating alarm');*/
+        if (this.pvSet.alarmPvs.indexOf(update.pv) > -1) {
             this.handleAlarmUpdate.call(this, update);
         }
 
-        if (this.colorPvs.indexOf(update.pv) > -1) {
+        if (this.pvSet.colorPvs.indexOf(update.pv) > -1) {
             this.handleColorUpdate.call(this, update);
         }
 
-        if (this.indicatorPvs.indexOf(update.pv) > -1) {
-            /*console.log('updating indicator');*/
-            this.handleIndicatorUpdate.call(this);
+        if (this.pvSet.indicatorPvs.indexOf(update.pv) > -1) {
+            this.handleIndicatorUpdate.call(this, update);
         }
 
-        if (this.limitPvs.indexOf(update.pv) > -1) {
-            /*console.log('updating limit');*/
+        if (this.pvSet.limitPvs.indexOf(update.pv) > -1) {
             this.handleLimitUpdate.call(this, update);
         }
 
         /*console.log('Update: ' + pv + ': ' + value);*/
     };
 
-    jlab.wedm.PvWidget.prototype.handleInfo = function (info) {
+    jlab.wedm.PvObserver.prototype.handleInfo = function (info) {
         /*console.log('Datatype: ' + info.datatype + ": " + info.count);*/
 
         var $obj = $("#" + this.id);
@@ -82,31 +68,31 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         }
     };
 
-    jlab.wedm.PvWidget.prototype.handleControlUpdate = function () {
+    jlab.wedm.PvObserver.prototype.handleControlUpdate = function () {
         console.log('control update called - this should be overridden; id: ' + this.id);
     };
 
-    jlab.wedm.PvWidget.prototype.handleAlarmUpdate = function () {
+    jlab.wedm.PvObserver.prototype.handleAlarmUpdate = function () {
         console.log('alarm update called - this should be overridden; id: ' + this.id);
     };
 
-    jlab.wedm.PvWidget.prototype.handleColorUpdate = function () {
+    jlab.wedm.PvObserver.prototype.handleColorUpdate = function () {
         console.log('color update called - this should be overridden; id: ' + this.id);
     };
 
-    jlab.wedm.PvWidget.prototype.handleIndicatorUpdate = function () {
+    jlab.wedm.PvObserver.prototype.handleIndicatorUpdate = function () {
         console.log('indicator update called - this should be overridden; id: ' + this.id);
     };
 
-    jlab.wedm.PvWidget.prototype.handleVisibilityUpdate = function () {
-        var pv = this.visPvs[0];
-        var value = this.pvNameToValueMap[pv];
+    jlab.wedm.PvObserver.prototype.handleVisibilityUpdate = function (update) {
+        var pv = update.pv;
+        var value = update.value;
         var $obj = $("#" + this.id);
 
-        if (jlab.wedm.isCalcExpr(this.visPvExpr)) {
+        if (jlab.wedm.isCalcExpr(this.pvSet.visPvExpr)) {
             var pvs = [];
-            for (var i = 0; i < this.visPvs.length; i++) {
-                var name = this.visPvs[i],
+            for (var i = 0; i < this.pvSet.visPvs.length; i++) {
+                var name = this.pvSet.visPvs[i],
                         val = this.pvNameToValueMap[name];
 
                 if (typeof val === 'undefined') {
@@ -116,7 +102,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
                 pvs.push(val);
             }
 
-            value = jlab.wedm.evalCalcExpr(this.visPvExpr, pvs);
+            value = jlab.wedm.evalCalcExpr(this.pvSet.visPvExpr, pvs);
         }
 
         /*From a visibility perspective true = 1 and false = 0*/
@@ -159,7 +145,7 @@ jlab.wedm.PvWidget = function (id, pvSet) {
         }
     };
 
-    jlab.wedm.PvWidget.prototype.handleLimitUpdate = function (update) {
+    jlab.wedm.PvObserver.prototype.handleLimitUpdate = function (update) {
         /*console.log('limit update ' + update.pv + ": " + update.value);*/
 
         var $obj = $("#" + this.id);
@@ -189,14 +175,14 @@ jlab.wedm.PvWidget = function (id, pvSet) {
     };
 };
 
-jlab.wedm.StaticTextPvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
+jlab.wedm.StaticTextPvObserver = function (id, pvSet) {
+    jlab.wedm.PvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.StaticTextPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.StaticTextPvWidget.prototype.constructor = jlab.wedm.StaticTextPvWidget;
+jlab.wedm.StaticTextPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
+jlab.wedm.StaticTextPvObserver.prototype.constructor = jlab.wedm.StaticTextPvObserver;
 
-jlab.wedm.StaticTextPvWidget.prototype.handleInfo = function (info) {
+jlab.wedm.StaticTextPvObserver.prototype.handleInfo = function (info) {
 
     var $obj = $("#" + this.id);
 
@@ -208,7 +194,7 @@ jlab.wedm.StaticTextPvWidget.prototype.handleInfo = function (info) {
     }
 };
 
-jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
+jlab.wedm.StaticTextPvObserver.prototype.handleAlarmUpdate = function (update) {
     var $obj = $("#" + this.id),
             sevr = update.value,
             fgAlarm = $obj.attr("data-fg-alarm") === "true",
@@ -270,7 +256,7 @@ jlab.wedm.StaticTextPvWidget.prototype.handleAlarmUpdate = function (update) {
     }
 };
 
-jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
+jlab.wedm.StaticTextPvObserver.prototype.handleColorUpdate = function (update) {
     var $obj = $("#" + this.id),
             color,
             fgRuleIndex = $obj.attr("data-fg-color-rule"),
@@ -292,23 +278,23 @@ jlab.wedm.StaticTextPvWidget.prototype.handleColorUpdate = function (update) {
     }
 };
 
-jlab.wedm.ControlTextPvWidget = function (id, pvSet) {
-    jlab.wedm.StaticTextPvWidget.call(this, id, pvSet);
+jlab.wedm.ControlTextPvObserver = function (id, pvSet) {
+    jlab.wedm.StaticTextPvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.ControlTextPvWidget.prototype = Object.create(jlab.wedm.StaticTextPvWidget.prototype);
-jlab.wedm.ControlTextPvWidget.prototype.constructor = jlab.wedm.ControlTextPvWidget;
+jlab.wedm.ControlTextPvObserver.prototype = Object.create(jlab.wedm.StaticTextPvObserver.prototype);
+jlab.wedm.ControlTextPvObserver.prototype.constructor = jlab.wedm.ControlTextPvObserver;
 
-jlab.wedm.ControlTextPvWidget.prototype.handleInfo = function (info) {
-    jlab.wedm.StaticTextPvWidget.prototype.handleInfo.call(this, info);
+jlab.wedm.ControlTextPvObserver.prototype.handleInfo = function (info) {
+    jlab.wedm.StaticTextPvObserver.prototype.handleInfo.call(this, info);
 
     this.enumValuesArray = info['enum-labels'] || [];
 };
 
-jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
+jlab.wedm.ControlTextPvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id),
-            pv = this.ctrlPvs[0],
-            value = this.pvNameToValueMap[pv],
+            pv = update.pv,
+            value = update.value,
             enumVal = this.enumValuesArray[value],
             format = $obj.attr("data-format"),
             precision = $obj.attr("data-precision"),
@@ -318,10 +304,10 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
     if (typeof enumVal !== 'undefined') {
         value = enumVal;
     } else { /*Not an enum*/
-        if (jlab.wedm.isCalcExpr(this.ctrlPvExpr)) {
+        if (jlab.wedm.isCalcExpr(this.pvSet.ctrlPvExpr)) {
             var pvs = [];
-            for (var i = 0; i < this.ctrlPvs.length; i++) {
-                var name = this.ctrlPvs[i],
+            for (var i = 0; i < this.pvSet.ctrlPvs.length; i++) {
+                var name = this.pvSet.ctrlPvs[i],
                         val;
 
                 val = this.pvNameToValueMap[name];
@@ -333,7 +319,7 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
                 pvs.push(val);
             }
 
-            value = jlab.wedm.evalCalcExpr(this.ctrlPvExpr, pvs);
+            value = jlab.wedm.evalCalcExpr(this.pvSet.ctrlPvExpr, pvs);
         }
 
         if ("hex" === format) {
@@ -350,11 +336,11 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
 
                 $obj.attr("data-precision", precision);
 
-                if ($obj.attr("data-db-limits") !== "true" && this.ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(this.ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
+                if ($obj.attr("data-db-limits") !== "true" && this.pvSet.ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(this.pvSet.ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
                     $obj.attr("data-db-limits", "true");
                     var basename = jlab.wedm.basename(pv),
                             precPv = basename + ".PREC";
-                    this.limitPvs.push(precPv);
+                    this.pvSet.limitPvs.push(precPv);
                     jlab.wedm.addPvWithWidget(precPv, this, true);
                 }
             }
@@ -370,28 +356,27 @@ jlab.wedm.ControlTextPvWidget.prototype.handleControlUpdate = function () {
     $("#" + this.id + " .screen-text").text(value);
 };
 
-jlab.wedm.MenuButtonPvWidget = function (id, pvSet) {
-    jlab.wedm.ControlTextPvWidget.call(this, id, pvSet);
+jlab.wedm.MenuButtonPvObserver = function (id, pvSet) {
+    jlab.wedm.ControlTextPvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.MenuButtonPvWidget.prototype = Object.create(jlab.wedm.ControlTextPvWidget.prototype);
-jlab.wedm.MenuButtonPvWidget.prototype.constructor = jlab.wedm.MenuButtonPvWidget;
+jlab.wedm.MenuButtonPvObserver.prototype = Object.create(jlab.wedm.ControlTextPvObserver.prototype);
+jlab.wedm.MenuButtonPvObserver.prototype.constructor = jlab.wedm.MenuButtonPvObserver;
 
-jlab.wedm.MenuButtonPvWidget.prototype.handleIndicatorUpdate = function () {
+jlab.wedm.MenuButtonPvObserver.prototype.handleIndicatorUpdate = function () {
 
 };
 
-jlab.wedm.ButtonPvWidget = function (id, pvSet) {
-    jlab.wedm.StaticTextPvWidget.call(this, id, pvSet);
+jlab.wedm.ButtonPvObserver = function (id, pvSet) {
+    jlab.wedm.StaticTextPvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.ButtonPvWidget.prototype = Object.create(jlab.wedm.StaticTextPvWidget.prototype);
-jlab.wedm.ButtonPvWidget.prototype.constructor = jlab.wedm.ButtonPvWidget;
+jlab.wedm.ButtonPvObserver.prototype = Object.create(jlab.wedm.StaticTextPvObserver.prototype);
+jlab.wedm.ButtonPvObserver.prototype.constructor = jlab.wedm.ButtonPvObserver;
 
-jlab.wedm.ButtonPvWidget.prototype.handleControlUpdate = function () {
+jlab.wedm.ButtonPvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id),
-            pv = this.ctrlPvs[0],
-            value = this.pvNameToValueMap[pv],
+            value = update.value,
             pressValue = $obj.attr("data-press-value"),
             releaseValue = $obj.attr("data-release-value");
 
@@ -418,17 +403,16 @@ jlab.wedm.ButtonPvWidget.prototype.handleControlUpdate = function () {
     }
 };
 
-jlab.wedm.MotifSliderPvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
+jlab.wedm.MotifSliderPvObserver = function (id, pvSet) {
+    jlab.wedm.PvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.MotifSliderPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.MotifSliderPvWidget.prototype.constructor = jlab.wedm.MotifSliderPvWidget;
+jlab.wedm.MotifSliderPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
+jlab.wedm.MotifSliderPvObserver.prototype.constructor = jlab.wedm.MotifSliderPvObserver;
 
-jlab.wedm.MotifSliderPvWidget.prototype.handleControlUpdate = function () {
+jlab.wedm.MotifSliderPvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id),
-            pv = this.ctrlPvs[0],
-            value = this.pvNameToValueMap[pv],
+            value = update.value,
             min = $obj.attr("data-min"),
             max = $obj.attr("data-max"),
             range = Math.abs(max - min),
@@ -455,17 +439,16 @@ jlab.wedm.MotifSliderPvWidget.prototype.handleControlUpdate = function () {
     }
 };
 
-jlab.wedm.SymbolPvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
+jlab.wedm.SymbolPvObserver = function (id, pvSet) {
+    jlab.wedm.PvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.SymbolPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.SymbolPvWidget.prototype.constructor = jlab.wedm.SymbolPvWidget;
+jlab.wedm.SymbolPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
+jlab.wedm.SymbolPvObserver.prototype.constructor = jlab.wedm.SymbolPvObserver;
 
-jlab.wedm.SymbolPvWidget.prototype.handleControlUpdate = function () {
+jlab.wedm.SymbolPvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id),
-            pv = this.ctrlPvs[0],
-            value = this.pvNameToValueMap[pv],
+            value = update.value,
             minVals = $obj.attr("data-min-values").split(" "),
             maxVals = $obj.attr("data-max-values").split(" "),
             state = 0;
@@ -487,17 +470,16 @@ jlab.wedm.SymbolPvWidget.prototype.handleControlUpdate = function () {
     $obj.find(".ActiveGroup:nth-child(" + state + ")").show();
 };
 
-jlab.wedm.PiPPvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
+jlab.wedm.PiPPvObserver = function (id, pvSet) {
+    jlab.wedm.PvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.PiPPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.SymbolPvWidget.prototype.constructor = jlab.wedm.PiPPvWidget;
+jlab.wedm.PiPPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
+jlab.wedm.SymbolPvObserver.prototype.constructor = jlab.wedm.PiPPvObserver;
 
-jlab.wedm.PiPPvWidget.prototype.handleControlUpdate = function () {
+jlab.wedm.PiPPvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id),
-            pv = this.ctrlPvs[0],
-            value = this.pvNameToValueMap[pv],
+            value = update.value,
             $selected = $obj.find(".screen[data-index=" + value + "]");
 
     $obj.find(".screen").hide();
@@ -513,19 +495,18 @@ jlab.wedm.PiPPvWidget.prototype.handleControlUpdate = function () {
     });
 };
 
-jlab.wedm.ChoicePvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
+jlab.wedm.ChoicePvObserver = function (id, pvSet) {
+    jlab.wedm.PvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.ChoicePvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.ChoicePvWidget.prototype.constructor = jlab.wedm.ChoicePvWidget;
+jlab.wedm.ChoicePvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
+jlab.wedm.ChoicePvObserver.prototype.constructor = jlab.wedm.ChoicePvObserver;
 
-jlab.wedm.ChoicePvWidget.prototype.handleControlUpdate = function () {
+jlab.wedm.ChoicePvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id);
 
-    var pv = this.ctrlPvs[0];
-    var value = this.pvNameToValueMap[pv];
-    var enumVal = this.enumValuesArray[value];
+    var value = update.value,
+            enumVal = this.enumValuesArray[value];
 
     //$(".ActiveChoiceButton[data-pv='" + this.pv + "']").text(value);
     $obj.find(".ScreenObject").each(function () {
@@ -543,7 +524,7 @@ jlab.wedm.ChoicePvWidget.prototype.handleControlUpdate = function () {
     });
 };
 
-jlab.wedm.ChoicePvWidget.prototype.handleInfo = function (info) {
+jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
     /*console.log('Datatype: ' + info.datatype + ": " + info.count + ": " + info['enum-labels']);*/
 
     var $obj = $("#" + this.id);
@@ -582,14 +563,14 @@ jlab.wedm.ChoicePvWidget.prototype.handleInfo = function (info) {
     }
 };
 
-jlab.wedm.BytePvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
+jlab.wedm.BytePvObserver = function (id, pvSet) {
+    jlab.wedm.PvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.BytePvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.BytePvWidget.prototype.constructor = jlab.wedm.BytePvWidget;
+jlab.wedm.BytePvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
+jlab.wedm.BytePvObserver.prototype.constructor = jlab.wedm.BytePvObserver;
 
-jlab.wedm.BytePvWidget.prototype.handleInfo = function (info) {
+jlab.wedm.BytePvObserver.prototype.handleInfo = function (info) {
     /*console.log('Datatype: ' + info.datatype + ": " + info.count);*/
 
     var $obj = $("#" + this.id);
@@ -602,11 +583,10 @@ jlab.wedm.BytePvWidget.prototype.handleInfo = function (info) {
     }
 };
 
-jlab.wedm.BytePvWidget.prototype.handleControlUpdate = function () {
+jlab.wedm.BytePvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id);
 
-    var pv = this.ctrlPvs[0],
-            value = this.pvNameToValueMap[pv],
+    var value = update.value,
             onColor = $obj.attr("data-on-color"),
             offColor = $obj.attr("data-off-color"),
             shift = $obj.attr("data-shift"),
@@ -643,16 +623,15 @@ jlab.wedm.BytePvWidget.prototype.handleControlUpdate = function () {
     });
 };
 
-jlab.wedm.BarMeterPvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
+jlab.wedm.BarMeterPvObserver = function (id, pvSet) {
+    jlab.wedm.PvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.BarMeterPvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.BarMeterPvWidget.prototype.constructor = jlab.wedm.BarMeterPvWidget;
+jlab.wedm.BarMeterPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
+jlab.wedm.BarMeterPvObserver.prototype.constructor = jlab.wedm.BarMeterPvObserver;
 
-jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
-    var pv = this.indicatorPvs[0],
-            value = this.pvNameToValueMap[pv],
+jlab.wedm.BarMeterPvObserver.prototype.handleIndicatorUpdate = function (update) {
+    var value = update.value,
             $obj = $("#" + this.id),
             horizontal = $obj.attr("data-orientation") === "horizontal",
             $holder = $obj.find(".bar-holder"),
@@ -718,7 +697,7 @@ jlab.wedm.BarMeterPvWidget.prototype.handleIndicatorUpdate = function () {
     }
 };
 
-jlab.wedm.BarMeterPvWidget.prototype.handleAlarmUpdate = function (update) {
+jlab.wedm.BarMeterPvObserver.prototype.handleAlarmUpdate = function (update) {
     var $obj = $("#" + this.id),
             sevr = update.value,
             $bar = $obj.find(".bar"),
@@ -756,16 +735,16 @@ jlab.wedm.BarMeterPvWidget.prototype.handleAlarmUpdate = function (update) {
     }
 };
 
-jlab.wedm.ShapePvWidget = function (id, pvSet) {
-    jlab.wedm.PvWidget.call(this, id, pvSet);
+jlab.wedm.ShapePvObserver = function (id, pvSet) {
+    jlab.wedm.PvObserver.call(this, id, pvSet);
 };
 
-jlab.wedm.ShapePvWidget.prototype = Object.create(jlab.wedm.PvWidget.prototype);
-jlab.wedm.ShapePvWidget.prototype.constructor = jlab.wedm.ShapePvWidget;
+jlab.wedm.ShapePvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
+jlab.wedm.ShapePvObserver.prototype.constructor = jlab.wedm.ShapePvObserver;
 
-jlab.wedm.ShapePvWidget.prototype.handleInfo = function (info) {
+jlab.wedm.ShapePvObserver.prototype.handleInfo = function (info) {
 
-    jlab.wedm.PvWidget.prototype.handleInfo.call(this, info);
+    jlab.wedm.PvObserver.prototype.handleInfo.call(this, info);
 
     var $obj = $("#" + this.id),
             $shape = $obj.find("rect, ellipse, path");
@@ -777,7 +756,7 @@ jlab.wedm.ShapePvWidget.prototype.handleInfo = function (info) {
     }
 };
 
-jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function (update) {
+jlab.wedm.ShapePvObserver.prototype.handleAlarmUpdate = function (update) {
     var $obj = $("#" + this.id),
             sevr = update.value,
             $shape = $obj.find("rect, ellipse, path"),
@@ -827,7 +806,7 @@ jlab.wedm.ShapePvWidget.prototype.handleAlarmUpdate = function (update) {
     }
 };
 
-jlab.wedm.ShapePvWidget.prototype.handleColorUpdate = function (update) {
+jlab.wedm.ShapePvObserver.prototype.handleColorUpdate = function (update) {
     var $obj = $("#" + this.id),
             $shape = $obj.find("rect, ellipse, path"),
             color,
@@ -1212,36 +1191,36 @@ jlab.wedm.createWidgets = function () {
             /*console.log($obj[0].className);*/
             if ($obj.hasClass("ActiveControlText") ||
                     $obj.hasClass("ActiveUpdateText")) {
-                widget = new jlab.wedm.ControlTextPvWidget(id, pvSet);
+                widget = new jlab.wedm.ControlTextPvObserver(id, pvSet);
             } else if ($obj.hasClass("ActiveSymbol")) {
-                widget = new jlab.wedm.SymbolPvWidget(id, pvSet);
+                widget = new jlab.wedm.SymbolPvObserver(id, pvSet);
             } else if ($obj.hasClass("ActivePictureInPicture")) {
-                widget = new jlab.wedm.PiPPvWidget(id, pvSet);
+                widget = new jlab.wedm.PiPPvObserver(id, pvSet);
             } else if ($obj.hasClass("ActiveMotifSlider")) {
-                widget = new jlab.wedm.MotifSliderPvWidget(id, pvSet);
+                widget = new jlab.wedm.MotifSliderPvObserver(id, pvSet);
             } else if ($obj.hasClass("ActiveButton") ||
                     $obj.hasClass("ActiveMessageButton")) {
-                widget = new jlab.wedm.ButtonPvWidget(id, pvSet);
+                widget = new jlab.wedm.ButtonPvObserver(id, pvSet);
             } else if ($obj.hasClass("ActiveMenuButton")) {
-                widget = new jlab.wedm.MenuButtonPvWidget(id, pvSet);
+                widget = new jlab.wedm.MenuButtonPvObserver(id, pvSet);
             } else if ($obj.hasClass("ActiveChoiceButton")) {
-                widget = new jlab.wedm.ChoicePvWidget(id, pvSet);
+                widget = new jlab.wedm.ChoicePvObserver(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveByte") > -1) { /*SVG class handling is different*/
-                widget = new jlab.wedm.BytePvWidget(id, pvSet);
+                widget = new jlab.wedm.BytePvObserver(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveBarMonitor") > -1) {
-                widget = new jlab.wedm.BarMeterPvWidget(id, pvSet);
+                widget = new jlab.wedm.BarMeterPvObserver(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveRectangle") > -1 ||
                     $obj.attr("class").indexOf("ActiveCircle") > -1 ||
                     $obj.attr("class").indexOf("ActiveLine") > -1 ||
                     $obj.attr("class").indexOf("ActiveArc") > -1) {
-                widget = new jlab.wedm.ShapePvWidget(id, pvSet);
+                widget = new jlab.wedm.ShapePvObserver(id, pvSet);
             } else if ($obj.attr("class").indexOf("ActiveStaticText") > -1 ||
                     $obj.attr("class").indexOf("ActiveRegExText") > -1) {
 
-                widget = new jlab.wedm.StaticTextPvWidget(id, pvSet);
+                widget = new jlab.wedm.StaticTextPvObserver(id, pvSet);
             } else {
                 /*console.log("other widget");*/
-                widget = new jlab.wedm.PvWidget(id, pvSet);
+                widget = new jlab.wedm.PvObserver(id, pvSet);
             }
 
             jlab.wedm.idWidgetMap[id] = widget;
