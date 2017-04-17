@@ -1,6 +1,7 @@
 package org.jlab.wedm.widget.html;
 
 import java.awt.Point;
+import org.jlab.wedm.persistence.io.TraitParser;
 
 /**
  *
@@ -18,13 +19,13 @@ public class RelatedDisplay extends ActiveButton {
         String files = "";
         String labels = "";
         
-        if (numDsps > 0 && numDsps <= 64) {
+        if (numDsps > 0 && numDsps <= TraitParser.MAX_ARRAY_SIZE) {
             for (int i = 0; i < displayFileName.length; i++) {
                 if (displayFileName[i] != null) {
                     //files = files + " " + displayFileNames[i];
                     attributes.put("data-linked-file-" + i, displayFileName[i]);
 
-                    if (menuLabel[i] != null) {
+                    if (menuLabel != null && menuLabel[i] != null) {
                         //labels = labels + " " + menuLabels[i];
                         attributes.put("data-linked-label-" + i, menuLabel[i]);
                     } else {
@@ -33,7 +34,7 @@ public class RelatedDisplay extends ActiveButton {
                     }
                     
                     
-                    if(symbols[i] != null) {
+                    if(symbols != null && symbols[i] != null) {
                         attributes.put("data-symbols-" + i, symbols[i]);
                     }
                 }
