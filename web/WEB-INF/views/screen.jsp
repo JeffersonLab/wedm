@@ -1,5 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="wedm" uri="http://jlab.org/wedm/functions"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,7 +15,7 @@
             <c:otherwise>
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
                 <c:forEach items="${widgets}" var="name">
-                    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/widgets/${name}/widget.css?v=${initParam.releaseNumber}"/>
+                    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/widgets/${fn:escapeXml(wedm:escapeFileName(name))}/widget.css?v=${initParam.releaseNumber}"/>
                 </c:forEach>
             </c:otherwise>
         </c:choose>
@@ -44,7 +46,7 @@ ${screen.getHtml()}
             <c:otherwise>
                 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
                 <c:forEach items="${widgets}" var="name">
-                    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/widgets/${name}/widget.js?v=${initParam.releaseNumber}"></script>
+                    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/widgets/${fn:escapeXml(wedm:escapeFileName(name))}/widget.js?v=${initParam.releaseNumber}"></script>
                 </c:forEach>
             </c:otherwise>
         </c:choose>    
