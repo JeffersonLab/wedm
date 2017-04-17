@@ -13,7 +13,7 @@ public class EmbeddedScreen extends ScreenProperties {
     public Screen screen;    
     public String file;
     public String displaySource;
-
+    
     @Override
     public void parseTraits(Map<String, String> traits, ColorPalette palette) {
         super.parseTraits(traits, palette);

@@ -33,9 +33,9 @@ public abstract class CoreWidget implements WEDMWidget {
     public int h;
     public int numPvs = 0;
     public int numDsps = 0;
-    public String[] displayFileNames = new String[64];
-    public String[] menuLabels = new String[64];
-    public String[] symbols = new String[64];
+    public String[] displayFileName;
+    public String[] menuLabel;
+    public String[] symbols;
     public Integer precision = null;
     public Float visMin = null;
     public Float visMax = null;
@@ -396,6 +396,11 @@ public abstract class CoreWidget implements WEDMWidget {
 
             indicatorPv = traits.get("indicatorPv");
             orientation = traits.get("orientation");
+            
+            // String arrays
+            displayFileName = TraitParser.parseStringArray(traits, numDsps, "displayFileName");
+            menuLabel = TraitParser.parseStringArray(traits, numDsps, "menuLabel");
+            symbols = TraitParser.parseStringArray(traits, numDsps, "symbols");
         }
     }
 

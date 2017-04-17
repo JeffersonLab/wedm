@@ -362,9 +362,9 @@ public class ScreenParser extends EDLParser {
                             s.setScreenProperties(embedded);
                             embedded.screen = s;
                         } else if ("menu".equals(embedded.displaySource)) { // Use filePv to determine which menu item to use
-                            if (embedded.numDsps > 0 && embedded.numDsps <= 64) {
+                            if (embedded.numDsps > 0 && embedded.numDsps <= TraitParser.MAX_ARRAY_SIZE) {
                                 for (int i = 0; i < embedded.numDsps; i++) {
-                                    String f = embedded.displayFileNames[i];
+                                    String f = embedded.displayFileName[i];
 
                                     //LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
                                     if (f != null) {

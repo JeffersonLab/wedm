@@ -19,14 +19,14 @@ public class RelatedDisplay extends ActiveButton {
         String labels = "";
         
         if (numDsps > 0 && numDsps <= 64) {
-            for (int i = 0; i < displayFileNames.length; i++) {
-                if (displayFileNames[i] != null) {
+            for (int i = 0; i < displayFileName.length; i++) {
+                if (displayFileName[i] != null) {
                     //files = files + " " + displayFileNames[i];
-                    attributes.put("data-linked-file-" + i, displayFileNames[i]);
+                    attributes.put("data-linked-file-" + i, displayFileName[i]);
 
-                    if (menuLabels[i] != null) {
+                    if (menuLabel[i] != null) {
                         //labels = labels + " " + menuLabels[i];
-                        attributes.put("data-linked-label-" + i, menuLabels[i]);
+                        attributes.put("data-linked-label-" + i, menuLabel[i]);
                     } else {
                         //labels = labels + " ~~NONE~~";
                         attributes.put("data-linked-label-" + i, "");

@@ -2,6 +2,9 @@ package org.jlab.wedm.widget;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 
@@ -16,6 +19,18 @@ public class ActivePictureInPicture extends EmbeddedScreen {
     public boolean noscroll = false;
     public boolean center = false;
 
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        super.parseTraits(traits, palette);
+        
+        // Strings
+        filePv = traits.get("filePv");
+        
+        // Booleans
+        noscroll = TraitParser.parseBoolean(traits, "noscroll");
+        center = TraitParser.parseBoolean(traits, "center");
+    }
+    
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
 
