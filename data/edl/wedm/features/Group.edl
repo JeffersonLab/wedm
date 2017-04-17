@@ -1,0 +1,71 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 971
+y 371
+w 500
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 53
+y 57
+w 138
+h 113
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 94
+y 88
+w 97
+h 82
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 53
+y 57
+w 92
+h 69
+lineColor index 14
+fillColor index 51
+endObjectProperties
+
+endGroup
+
+visPv "LOC\\\\TEST=e:0,OFF,ON"
+visMin "0"
+visMax "1"
+endObjectProperties
+

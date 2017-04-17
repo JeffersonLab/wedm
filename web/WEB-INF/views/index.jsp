@@ -87,6 +87,12 @@
         <table>
             <tbody>
                 <tr>
+                    <td><a href="screen?edl=wedm/features/Group.edl">Group</a></td>
+                </tr>                
+                <tr>
+                    <td><a href="screen?edl=wedm/features/Stack.edl">Stack</a></td>
+                </tr>                     
+                <tr>
                     <td><a href="screen?edl=wedm/features/LocalVariable.edl">Local Variables</a></td>
                 </tr>
                 <tr>
@@ -94,10 +100,7 @@
                 </tr>
                 <tr>
                     <td><a href="screen?edl=wedm/features/TextResize.edl">Text Resize</a></td>
-                </tr>    
-                <tr>
-                    <td><a href="screen?edl=wedm/features/Stack.edl">Stack</a></td>
-                </tr>                
+                </tr>               
             </tbody>
         </table>
         <div id="version">Version: ${initParam.releaseNumber} (${initParam.releaseDate})</div>        

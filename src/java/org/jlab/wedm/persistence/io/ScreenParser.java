@@ -50,9 +50,9 @@ public class ScreenParser extends EDLParser {
         try (Scanner scanner = new Scanner(edl)) {
 
             WEDMWidget last = null;
-            int lastId = objectId;
             Map<String, String> traits = new HashMap<>();
             Deque<ActiveGroup> groupStack = new ArrayDeque<>();
+            Deque<Map<String, String>> groupTraitStack = new ArrayDeque();
 
             while (scanner.hasNextLine()) {
                 boolean added = false;
@@ -92,6 +92,8 @@ public class ScreenParser extends EDLParser {
                                     }
                                 }
                                 
+                                traits = new HashMap<>();                              
+                                
                                 if (obj instanceof ActiveGroup) {
                                     if (groupStack.isEmpty()) {
                                         screenObjects.add(obj);
@@ -99,6 +101,7 @@ public class ScreenParser extends EDLParser {
                                         groupStack.peek().children.add(obj);
                                     }
                                     groupStack.push((ActiveGroup) obj);
+                                    groupTraitStack.push(traits);
                                     added = true;
                                 }
 
@@ -117,12 +120,10 @@ public class ScreenParser extends EDLParser {
                                 //LOGGER.log(Level.FINEST, "Handling Widget: {0}",
                                 //        obj.getClass().getSimpleName());
                                 last = obj;
-                                lastId = objectId++;
+                                traits.put("WEDM_WIDGET_ID", String.valueOf(objectId++));                                  
                                 break;
-                            case "beginObjectProperties":
-                                traits = new HashMap<>();
-                                traits.put("WEDM_WIDGET_ID", String.valueOf(lastId));
-                                break;                                         
+                            //case "beginObjectProperties":
+                            //    break;                                         
                             case "endScreenProperties":
                             case "endObjectProperties":
                                 //LOGGER.log(Level.FINEST, "Ending Widget: {0}",
@@ -134,6 +135,7 @@ public class ScreenParser extends EDLParser {
                                 break;
                             case "endGroup":
                                 last = groupStack.pop();
+                                traits = groupTraitStack.pop();
                                 //LOGGER.log(Level.FINEST, "Re-Handling Widget: {0}",
                                 //        last.getClass().getSimpleName());
                                 break;
