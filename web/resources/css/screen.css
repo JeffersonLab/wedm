@@ -102,16 +102,6 @@ svg.ScreenObject {
     height: 0;
     padding-bottom: 100%;
 }
-.ActivePictureInPicture {
-    overflow: auto;
-}
-.ActivePictureInPicture.noscroll {
-    overflow: hidden;
-    border-width: 0 !important;
-}
-.ActivePictureInPicture.pip-center .screen {
-    margin: 0 auto;
-}
 .vertical-center {
     top: 50%;
     transform: translateY(-50%);

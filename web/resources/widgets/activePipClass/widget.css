@@ -1,2 +1,11 @@
-
+.ActivePictureInPicture {
+    overflow: auto;
+}
+.ActivePictureInPicture.noscroll {
+    overflow: hidden;
+    border-width: 0 !important;
+}
+.ActivePictureInPicture.pip-center .screen {
+    margin: 0 auto;
+}
 

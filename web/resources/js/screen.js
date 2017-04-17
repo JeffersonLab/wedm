@@ -19,6 +19,21 @@ if (!String.prototype.endsWith) {
     };
 }
 
+jlab.wedm.stringToFunction = function (str) {
+    var arr = str.split(".");
+
+    var fn = (window || this);
+    for (var i = 0, len = arr.length; i < len; i++) {
+        fn = fn[arr[i]];
+    }
+
+    if (typeof fn !== "function") {
+        throw new Error("function not found");
+    }
+
+    return  fn;
+};
+
 jlab.wedm.PvObserver = function (id, pvSet) {
     this.id = id;
     this.pvSet = pvSet;
@@ -175,234 +190,6 @@ jlab.wedm.PvObserver = function (id, pvSet) {
     };
 };
 
-jlab.wedm.StaticTextPvObserver = function (id, pvSet) {
-    jlab.wedm.PvObserver.call(this, id, pvSet);
-};
-
-jlab.wedm.StaticTextPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
-jlab.wedm.StaticTextPvObserver.prototype.constructor = jlab.wedm.StaticTextPvObserver;
-
-jlab.wedm.StaticTextPvObserver.prototype.handleInfo = function (info) {
-
-    var $obj = $("#" + this.id);
-
-    if (!info.connected) {
-        $obj.css("color", jlab.wedm.disconnectedAlarmColor);
-        $obj.attr("background-color", "transparent");
-        $obj[0].classList.add("disconnected-pv");
-        $obj[0].classList.remove("waiting-for-state");
-    }
-};
-
-jlab.wedm.StaticTextPvObserver.prototype.handleAlarmUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            sevr = update.value,
-            fgAlarm = $obj.attr("data-fg-alarm") === "true",
-            bgAlarm = $obj.attr("data-bg-alarm") === "true",
-            borderAlarm = $obj.attr("data-border-alarm") === "true",
-            invalid = false;
-
-    $obj.attr("data-sevr", sevr);
-    $obj[0].classList.remove("waiting-for-state");
-
-    if (typeof sevr !== 'undefined') {
-        if (sevr === 0) { // NO_ALARM
-            if (fgAlarm) {
-                $obj.css("color", jlab.wedm.noAlarmColor);
-            }
-            if (bgAlarm) {
-                $obj.css("background-color", jlab.wedm.noAlarmColor);
-            }
-            if (borderAlarm) { /*EDM hides border if no alarm*/
-                $obj.css("border", "2px solid transparent");
-            }
-        } else if (sevr === 1) { // MINOR
-            if (fgAlarm) {
-                $obj.css("color", jlab.wedm.minorAlarmColor);
-            }
-            if (bgAlarm) {
-                $obj.css("background-color", jlab.wedm.minorAlarmColor);
-            }
-            if (borderAlarm) {
-                $obj.css("border", "2px solid " + jlab.wedm.minorAlarmColor);
-            }
-        } else if (sevr === 2) { // MAJOR
-            if (fgAlarm) {
-                $obj.css("color", jlab.wedm.majorAlarmColor);
-            }
-            if (bgAlarm) {
-                $obj.css("background-color", jlab.wedm.majorAlarmColor);
-            }
-            if (borderAlarm) {
-                $obj.css("border", "2px solid " + jlab.wedm.majorAlarmColor);
-            }
-        } else if (sevr === 3) { // INVALID
-            invalid = true;
-        }
-    } else {
-        invalid = true;
-    }
-
-    if (invalid) {
-        if (fgAlarm) {
-            $obj.css("color", jlab.wedm.invalidAlarmColor);
-        }
-        if (bgAlarm) {
-            $obj.css("background-color", jlab.wedm.invalidAlarmColor);
-        }
-        if (borderAlarm) {
-            $obj.css("border", "2px solid " + jlab.wedm.invalidAlarmColor);
-        }
-    }
-};
-
-jlab.wedm.StaticTextPvObserver.prototype.handleColorUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            color,
-            fgRuleIndex = $obj.attr("data-fg-color-rule"),
-            bgRuleIndex = $obj.attr("data-bg-color-rule"),
-            stmt;
-
-    $obj[0].classList.remove("waiting-for-state");
-
-    if (typeof fgRuleIndex !== 'undefined') {
-        stmt = jlab.wedm.colorRules[fgRuleIndex];
-        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
-        $obj.css("color", color);
-    }
-
-    if (typeof bgRuleIndex !== 'undefined') {
-        stmt = jlab.wedm.colorRules[bgRuleIndex];
-        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
-        $obj.css("background-color", color);
-    }
-};
-
-jlab.wedm.ControlTextPvObserver = function (id, pvSet) {
-    jlab.wedm.StaticTextPvObserver.call(this, id, pvSet);
-};
-
-jlab.wedm.ControlTextPvObserver.prototype = Object.create(jlab.wedm.StaticTextPvObserver.prototype);
-jlab.wedm.ControlTextPvObserver.prototype.constructor = jlab.wedm.ControlTextPvObserver;
-
-jlab.wedm.ControlTextPvObserver.prototype.handleInfo = function (info) {
-    jlab.wedm.StaticTextPvObserver.prototype.handleInfo.call(this, info);
-
-    this.enumValuesArray = info['enum-labels'] || [];
-};
-
-jlab.wedm.ControlTextPvObserver.prototype.handleControlUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            pv = update.pv,
-            value = update.value,
-            enumVal = this.enumValuesArray[value],
-            format = $obj.attr("data-format"),
-            precision = $obj.attr("data-precision"),
-            hexPrefix = $obj.attr("data-hex-prefix") === "true",
-            units = $obj.attr("data-units");
-
-    if (typeof enumVal !== 'undefined') {
-        value = enumVal;
-    } else { /*Not an enum*/
-        if (jlab.wedm.isCalcExpr(this.pvSet.ctrlPvExpr)) {
-            var pvs = [];
-            for (var i = 0; i < this.pvSet.ctrlPvs.length; i++) {
-                var name = this.pvSet.ctrlPvs[i],
-                        val;
-
-                val = this.pvNameToValueMap[name];
-
-                if (typeof val === 'undefined') {
-                    /*Still more PVs we need values from*/
-                    return;
-                }
-                pvs.push(val);
-            }
-
-            value = jlab.wedm.evalCalcExpr(this.pvSet.ctrlPvExpr, pvs);
-        }
-
-        if ("hex" === format) {
-            value = (value >>> 0).toString(16).toUpperCase();
-
-            if (hexPrefix) {
-                value = "0x" + value;
-            }
-        } else if ($.isNumeric(value)) { /*Could still be a string at this point*/
-            value = value * 1; // could use parseFloat too; just need to ensure is numeric
-
-            if (typeof precision === 'undefined') {
-                precision = 2;
-
-                $obj.attr("data-precision", precision);
-
-                if ($obj.attr("data-db-limits") !== "true" && this.pvSet.ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(this.pvSet.ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
-                    $obj.attr("data-db-limits", "true");
-                    var basename = jlab.wedm.basename(pv),
-                            precPv = basename + ".PREC";
-                    this.pvSet.limitPvs.push(precPv);
-                    jlab.wedm.addPvWithWidget(precPv, this, true);
-                }
-            }
-
-            value = value.toFixed(precision);
-        }
-    }
-
-    if (typeof units !== 'undefined') {
-        value = value + " " + units;
-    }
-
-    $("#" + this.id + " .screen-text").text(value);
-};
-
-jlab.wedm.MenuButtonPvObserver = function (id, pvSet) {
-    jlab.wedm.ControlTextPvObserver.call(this, id, pvSet);
-};
-
-jlab.wedm.MenuButtonPvObserver.prototype = Object.create(jlab.wedm.ControlTextPvObserver.prototype);
-jlab.wedm.MenuButtonPvObserver.prototype.constructor = jlab.wedm.MenuButtonPvObserver;
-
-jlab.wedm.MenuButtonPvObserver.prototype.handleIndicatorUpdate = function () {
-
-};
-
-jlab.wedm.ButtonPvObserver = function (id, pvSet) {
-    jlab.wedm.StaticTextPvObserver.call(this, id, pvSet);
-};
-
-jlab.wedm.ButtonPvObserver.prototype = Object.create(jlab.wedm.StaticTextPvObserver.prototype);
-jlab.wedm.ButtonPvObserver.prototype.constructor = jlab.wedm.ButtonPvObserver;
-
-jlab.wedm.ButtonPvObserver.prototype.handleControlUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            value = update.value,
-            pressValue = $obj.attr("data-press-value"),
-            releaseValue = $obj.attr("data-release-value");
-
-    /*Only ActiveButton.toggle-buttons actually have visible state to update*/
-    if ($obj.hasClass("ActiveButton") && $obj.hasClass("toggle-button")) {
-
-        /*if press and release have same value we only do press*/
-        if (typeof pressValue !== undefined && pressValue === value) {
-            /*console.log("press state");*/
-
-            $obj.removeClass("toggle-button-off");
-            $obj.addClass("toggle-button-on");
-
-
-            jlab.wedm.doButtonDown($obj);
-        } else if (typeof releaseValue !== undefined && releaseValue === value) {
-            /*console.log("release state");*/
-
-            $obj.removeClass("toggle-button-on");
-            $obj.addClass("toggle-button-off");
-
-            jlab.wedm.doButtonUp($obj);
-        }
-    }
-};
-
 jlab.wedm.MotifSliderPvObserver = function (id, pvSet) {
     jlab.wedm.PvObserver.call(this, id, pvSet);
 };
@@ -470,31 +257,6 @@ jlab.wedm.SymbolPvObserver.prototype.handleControlUpdate = function (update) {
     $obj.find(".ActiveGroup:nth-child(" + state + ")").show();
 };
 
-jlab.wedm.PiPPvObserver = function (id, pvSet) {
-    jlab.wedm.PvObserver.call(this, id, pvSet);
-};
-
-jlab.wedm.PiPPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
-jlab.wedm.SymbolPvObserver.prototype.constructor = jlab.wedm.PiPPvObserver;
-
-jlab.wedm.PiPPvObserver.prototype.handleControlUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            value = update.value,
-            $selected = $obj.find(".screen[data-index=" + value + "]");
-
-    $obj.find(".screen").hide();
-    $selected.show();
-
-    $selected.find(".ActiveMotifSlider").each(function () {
-        var $slider = $(this),
-                pv = $slider.attr("data-pv"),
-                widget = jlab.wedm.idWidgetMap[$slider.attr("id")];
-        if (pv) {
-            widget.handleControlUpdate({pv: pv, value: widget.pvNameToValueMap[pv]});
-        }
-    });
-};
-
 jlab.wedm.ChoicePvObserver = function (id, pvSet) {
     jlab.wedm.PvObserver.call(this, id, pvSet);
 };
@@ -560,276 +322,6 @@ jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
         $obj.html(html);
     } else {
         console.log(this.id + " does not have enum labels");
-    }
-};
-
-jlab.wedm.BytePvObserver = function (id, pvSet) {
-    jlab.wedm.PvObserver.call(this, id, pvSet);
-};
-
-jlab.wedm.BytePvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
-jlab.wedm.BytePvObserver.prototype.constructor = jlab.wedm.BytePvObserver;
-
-jlab.wedm.BytePvObserver.prototype.handleInfo = function (info) {
-    /*console.log('Datatype: ' + info.datatype + ": " + info.count);*/
-
-    var $obj = $("#" + this.id);
-
-    if (!info.connected && $obj.length > 0) {
-        /*Can't use $obj.addClass on SVG with jquery 2*/
-        $obj[0].classList.add("disconnected-pv");
-        $obj[0].classList.remove("waiting-for-state");
-        $obj.find(".bit").css("fill", "black");
-    }
-};
-
-jlab.wedm.BytePvObserver.prototype.handleControlUpdate = function (update) {
-    var $obj = $("#" + this.id);
-
-    var value = update.value,
-            onColor = $obj.attr("data-on-color"),
-            offColor = $obj.attr("data-off-color"),
-            shift = $obj.attr("data-shift"),
-            littleEndian = $obj.attr("data-little-endian") === "true",
-            $bits = $obj.find(".bit"),
-            index;
-
-    /*console.log("value: " + value);*/
-
-    //$(".ActiveByte[data-pv='" + this.pv + "']").text(value);
-
-    if (littleEndian) {
-        index = 0;
-    } else {
-        index = $bits.length - 1;
-    }
-
-    $bits.each(function () {
-        var mask = 1 << shift << index,
-                bit = mask & value;
-        /*console.log('mask: ' + mask);
-         console.log('bit: ' + bit);*/
-        if (bit > 0) {
-            $(this).css("fill", onColor);
-        } else {
-            $(this).css("fill", offColor);
-        }
-
-        if (littleEndian) {
-            index = index + 1;
-        } else {
-            index = index - 1;
-        }
-    });
-};
-
-jlab.wedm.BarMeterPvObserver = function (id, pvSet) {
-    jlab.wedm.PvObserver.call(this, id, pvSet);
-};
-
-jlab.wedm.BarMeterPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
-jlab.wedm.BarMeterPvObserver.prototype.constructor = jlab.wedm.BarMeterPvObserver;
-
-jlab.wedm.BarMeterPvObserver.prototype.handleIndicatorUpdate = function (update) {
-    var value = update.value,
-            $obj = $("#" + this.id),
-            horizontal = $obj.attr("data-orientation") === "horizontal",
-            $holder = $obj.find(".bar-holder"),
-            $bar = $obj.find(".bar"),
-            $baseline = $obj.find(".base-line"),
-            max = $obj.attr("data-max"),
-            min = $obj.attr("data-min"),
-            origin = parseFloat($obj.attr("data-origin") || "0.0"),
-            magnitude = Math.abs(max - origin) + Math.abs(min - origin);
-
-    if ($.isNumeric(max) && $.isNumeric(min)) {
-        var height = $bar.attr("height"),
-                width = $bar.attr("width"),
-                $barHolder = $obj.find(".bar-holder"),
-                holderHeight = $barHolder.attr("height") * 1,
-                verticalPadding = $barHolder.attr("data-vertical-padding") * 1; // constant padding offset
-
-
-        if (horizontal) {
-            /*$.attr will force lowercase, not camel case so we use native JavaScript*/
-            $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
-
-            $bar.attr("width", value);
-
-        } else { /*Vertical*/
-
-            var maxMag = Math.abs(max - origin),
-                    proportion = maxMag / magnitude,
-                    baselineOffset = verticalPadding + (holderHeight * proportion),
-                    upBarHolderOffset = verticalPadding - (holderHeight * (1 - proportion)),
-                    downBarHolderOffset = verticalPadding + (holderHeight * proportion);
-
-            var y1 = baselineOffset;
-            var y2 = y1;
-
-            $baseline.attr("y1", y1);
-            $baseline.attr("y2", y2);
-
-            if (value > origin) {
-                /*$.attr will force lowercase, not camel case so we use native JavaScript*/
-                /*Use -magnitude for x since we are using scale(1,-1) to flip coordintes and have x values go up instead of down*/
-                $holder[0].setAttribute("viewBox", "0 " + (-magnitude) + " " + width + " " + magnitude);
-
-                $barHolder.attr("y", upBarHolderOffset);
-
-                $bar.attr("transform", "scale(1,-1)");
-
-                $bar.attr("height", Math.min(value, max));
-            } else { /*Bar grows downward since less than origin*/
-
-                /*$.attr will force lowercase, not camel case so we use native JavaScript*/
-                $holder[0].setAttribute("viewBox", "0 " + (0) + " " + width + " " + magnitude);
-
-                $barHolder.attr("y", downBarHolderOffset);
-
-                $bar.removeAttr("transform");
-
-                var height = Math.max(value, min);
-
-                $bar.attr("height", Math.abs(height));
-            }
-        }
-    }
-};
-
-jlab.wedm.BarMeterPvObserver.prototype.handleAlarmUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            sevr = update.value,
-            $bar = $obj.find(".bar"),
-            $box = $obj.find("> rect"),
-            $baseline = $obj.find(".base-line"),
-            invalid = false;
-
-    $obj.attr("data-sevr", sevr);
-    $obj[0].classList.remove("waiting-for-state");
-
-    if (typeof sevr !== 'undefined') {
-        if (sevr === 0) { // NO_ALARM
-            $bar.attr("fill", jlab.wedm.noAlarmColor);
-            $box.attr("stroke", jlab.wedm.noAlarmColor);
-            $baseline.attr("stroke", jlab.wedm.noAlarmColor);
-        } else if (sevr === 1) { // MINOR
-            $bar.attr("fill", jlab.wedm.minorAlarmColor);
-            $box.attr("stroke", jlab.wedm.minorAlarmColor);
-            $baseline.attr("stroke", jlab.wedm.minorAlarmColor);
-        } else if (sevr === 2) { // MAJOR
-            $bar.attr("fill", jlab.wedm.majorAlarmColor);
-            $box.attr("stroke", jlab.wedm.majorAlarmColor);
-            $baseline.attr("stroke", jlab.wedm.majorAlarmColor);
-        } else if (sevr === 3) { // INVALID
-            invalid = true;
-        }
-    } else {
-        invalid = true;
-    }
-
-    if (invalid) {
-        $bar.attr("fill", jlab.wedm.invalidAlarmColor);
-        $box.attr("stroke", jlab.wedm.invalidAlarmColor);
-        $baseline.attr("stroke", jlab.wedm.invalidAlarmColor);
-    }
-};
-
-jlab.wedm.ShapePvObserver = function (id, pvSet) {
-    jlab.wedm.PvObserver.call(this, id, pvSet);
-};
-
-jlab.wedm.ShapePvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
-jlab.wedm.ShapePvObserver.prototype.constructor = jlab.wedm.ShapePvObserver;
-
-jlab.wedm.ShapePvObserver.prototype.handleInfo = function (info) {
-
-    jlab.wedm.PvObserver.prototype.handleInfo.call(this, info);
-
-    var $obj = $("#" + this.id),
-            $shape = $obj.find("rect, ellipse, path");
-
-    /*Disconnected Shape always has disconnectedAlarmColor border and transparent fill regardless of fillAlarm or lineAlarm*/
-    if (!info.connected) {
-        $shape.attr("fill", "transparent");
-        $shape.attr("stroke", "transparent");
-    }
-};
-
-jlab.wedm.ShapePvObserver.prototype.handleAlarmUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            sevr = update.value,
-            $shape = $obj.find("rect, ellipse, path"),
-            fillAlarm = $obj.attr("data-fill-alarm") === "true",
-            lineAlarm = $obj.attr("data-line-alarm") === "true",
-            invalid = false;
-
-    $obj.attr("data-sevr", sevr);
-    $obj[0].classList.remove("waiting-for-state");
-
-    if (typeof sevr !== 'undefined') {
-        if (sevr === 0) { // NO_ALARM
-            if (fillAlarm) {
-                $shape.attr("fill", jlab.wedm.noAlarmColor);
-            }
-            if (lineAlarm) {
-                $shape.attr("stroke", jlab.wedm.noAlarmColor);
-            }
-        } else if (sevr === 1) { // MINOR
-            if (fillAlarm) {
-                $shape.attr("fill", jlab.wedm.minorAlarmColor);
-            }
-            if (lineAlarm) {
-                $shape.attr("stroke", jlab.wedm.minorAlarmColor);
-            }
-        } else if (sevr === 2) { // MAJOR
-            if (fillAlarm) {
-                $shape.attr("fill", jlab.wedm.majorAlarmColor);
-            }
-            if (lineAlarm) {
-                $shape.attr("stroke", jlab.wedm.majorAlarmColor);
-            }
-        } else if (sevr === 3) { // INVALID
-            invalid = true;
-        }
-    } else {
-        invalid = true;
-    }
-
-    if (invalid) {
-        if (fillAlarm) {
-            $shape.attr("fill", jlab.wedm.invalidAlarmColor);
-        }
-        if (lineAlarm) {
-            $shape.attr("stroke", jlab.wedm.invalidAlarmColor);
-        }
-    }
-};
-
-jlab.wedm.ShapePvObserver.prototype.handleColorUpdate = function (update) {
-    var $obj = $("#" + this.id),
-            $shape = $obj.find("rect, ellipse, path"),
-            color,
-            stmt,
-            lineRuleIndex = $obj.attr("data-line-color-rule"),
-            fillRuleIndex = $obj.attr("data-fill-color-rule");
-
-    $obj[0].classList.remove("waiting-for-state");
-
-    if (lineRuleIndex !== undefined) {
-        stmt = jlab.wedm.colorRules[lineRuleIndex];
-
-        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
-
-        $shape.attr("stroke", color);
-    }
-
-    if (fillRuleIndex !== undefined) {
-        stmt = jlab.wedm.colorRules[fillRuleIndex];
-
-        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
-
-        $shape.attr("fill", color);
     }
 };
 
@@ -1189,39 +681,57 @@ jlab.wedm.createWidgets = function () {
 
         if (ctrlPvExpr !== undefined || visPvExpr !== undefined || alarmPvExpr !== undefined || colorPvExpr !== undefined || indicatorPvExpr !== undefined) {
             /*console.log($obj[0].className);*/
-            if ($obj.hasClass("ActiveControlText") ||
-                    $obj.hasClass("ActiveUpdateText")) {
-                widget = new jlab.wedm.ControlTextPvObserver(id, pvSet);
-            } else if ($obj.hasClass("ActiveSymbol")) {
-                widget = new jlab.wedm.SymbolPvObserver(id, pvSet);
-            } else if ($obj.hasClass("ActivePictureInPicture")) {
-                widget = new jlab.wedm.PiPPvObserver(id, pvSet);
-            } else if ($obj.hasClass("ActiveMotifSlider")) {
-                widget = new jlab.wedm.MotifSliderPvObserver(id, pvSet);
-            } else if ($obj.hasClass("ActiveButton") ||
-                    $obj.hasClass("ActiveMessageButton")) {
-                widget = new jlab.wedm.ButtonPvObserver(id, pvSet);
-            } else if ($obj.hasClass("ActiveMenuButton")) {
-                widget = new jlab.wedm.MenuButtonPvObserver(id, pvSet);
-            } else if ($obj.hasClass("ActiveChoiceButton")) {
-                widget = new jlab.wedm.ChoicePvObserver(id, pvSet);
-            } else if ($obj.attr("class").indexOf("ActiveByte") > -1) { /*SVG class handling is different*/
-                widget = new jlab.wedm.BytePvObserver(id, pvSet);
-            } else if ($obj.attr("class").indexOf("ActiveBarMonitor") > -1) {
-                widget = new jlab.wedm.BarMeterPvObserver(id, pvSet);
-            } else if ($obj.attr("class").indexOf("ActiveRectangle") > -1 ||
-                    $obj.attr("class").indexOf("ActiveCircle") > -1 ||
-                    $obj.attr("class").indexOf("ActiveLine") > -1 ||
-                    $obj.attr("class").indexOf("ActiveArc") > -1) {
-                widget = new jlab.wedm.ShapePvObserver(id, pvSet);
-            } else if ($obj.attr("class").indexOf("ActiveStaticText") > -1 ||
-                    $obj.attr("class").indexOf("ActiveRegExText") > -1) {
 
-                widget = new jlab.wedm.StaticTextPvObserver(id, pvSet);
-            } else {
-                /*console.log("other widget");*/
+
+            var classes = $obj.attr("class").split(" "),
+                    found = false;
+            for (var i = 0; i < classes.length; i++) {
+                var s = jlab.wedm.classToObserverMap[classes[i]];
+
+                if (typeof s !== 'undefined') {
+                    var f = jlab.wedm.stringToFunction(s);
+                    widget = new f(id, pvSet);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
                 widget = new jlab.wedm.PvObserver(id, pvSet);
             }
+
+            /*if ($obj.hasClass("ActiveControlText") ||
+             $obj.hasClass("ActiveUpdateText")) {
+             widget = new jlab.wedm.ControlTextPvObserver(id, pvSet);
+             } else if ($obj.hasClass("ActiveSymbol")) {
+             widget = new jlab.wedm.SymbolPvObserver(id, pvSet);
+             } else if ($obj.hasClass("ActivePictureInPicture")) {
+             widget = new jlab.wedm.PiPPvObserver(id, pvSet);
+             } else if ($obj.hasClass("ActiveMotifSlider")) {
+             widget = new jlab.wedm.MotifSliderPvObserver(id, pvSet);
+             } else if ($obj.hasClass("ActiveButton") ||
+             $obj.hasClass("ActiveMessageButton")) {
+             widget = new jlab.wedm.ButtonPvObserver(id, pvSet);
+             } else if ($obj.hasClass("ActiveMenuButton")) {
+             widget = new jlab.wedm.MenuButtonPvObserver(id, pvSet);
+             } else if ($obj.hasClass("ActiveChoiceButton")) {
+             widget = new jlab.wedm.ChoicePvObserver(id, pvSet);
+             } else if ($obj.attr("class").indexOf("ActiveByte") > -1) {
+             widget = new jlab.wedm.BytePvObserver(id, pvSet);
+             } else if ($obj.attr("class").indexOf("ActiveBarMonitor") > -1) {
+             widget = new jlab.wedm.BarMeterPvObserver(id, pvSet);
+             } else if ($obj.attr("class").indexOf("ActiveRectangle") > -1 ||
+             $obj.attr("class").indexOf("ActiveCircle") > -1 ||
+             $obj.attr("class").indexOf("ActiveLine") > -1 ||
+             $obj.attr("class").indexOf("ActiveArc") > -1) {
+             widget = new jlab.wedm.ShapePvObserver(id, pvSet);
+             } else if ($obj.attr("class").indexOf("ActiveStaticText") > -1 ||
+             $obj.attr("class").indexOf("ActiveRegExText") > -1) {
+             
+             widget = new jlab.wedm.StaticTextPvObserver(id, pvSet);
+             } else {
+             widget = new jlab.wedm.PvObserver(id, pvSet);
+             }*/
 
             jlab.wedm.idWidgetMap[id] = widget;
 
@@ -1379,84 +889,8 @@ jlab.wedm.macroQueryString = function (macros) {
     return url;
 };
 
-$(document).on("click contextmenu", ".RelatedDisplay", function (e) {
-
-    var expected = 1;
-
-    if ($(this).hasClass("swapped-buttons")) {
-        expected = 3;
-    }
-
-    if (e.which === expected) {
-        var files = [],
-                labels = [],
-                macros = [],
-                $obj = $(this);
-
-        for (var i = 0; i < 64; i++) {
-            var file = $obj.attr("data-linked-file-" + i),
-                    label = $obj.attr("data-linked-label-" + i),
-                    macro = $obj.attr("data-symbols-" + i);
-
-            if (file === undefined) {
-                break;
-            } else {
-                files.push(file);
-
-                if (label === undefined || label === '') {
-                    labels.push("");
-                } else {
-                    labels.push(label);
-                }
-
-                if (macro === undefined || macro === '') {
-                    macros.push("");
-                } else {
-                    macros.push(macro);
-                }
-            }
-        }
-
-        var path = '/wedm/screen?edl=',
-                //left = $obj.css("left"),
-                //right = $obj.css("top");
-                left = e.pageX + "px",
-                top = e.pageY + "px";
-
-        if (files.length === 1) {
-            window.open(path + files[0] + jlab.wedm.macroQueryString(macros[0]), '_blank');
-        } else {
-            var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');
-
-            for (var i = 0; i < files.length; i++) {
-                $html.find("ul").append('<li class="anchor-li"><a href="' + path + files[i] + jlab.wedm.macroQueryString(macros[i]) + '" target="_blank">' + labels[i] + '</a></li>');
-            }
-
-            $(document.body).append($html);
-        }
-    }
-});
-
-$(document).mouseup(function (e)
-{
-    var container = $(".related-display-menu");
-
-    if (!container.is(e.target) // if the target of the click isn't the container...
-            && container.has(e.target).length === 0) // ... nor a descendant of the container
-    {
-        container.remove();
-    }
-});
-
 $(document).on("contextmenu", ".screen", function (e) {
     e.preventDefault();
-});
-
-$(document).on("click", ".anchor-li", function () {
-    var href = $(this).find("a").attr("href");
-    window.open(href, '_blank');
-    $(this).closest(".related-display-menu").remove();
-    return false; // Don't let anchor open another
 });
 
 jlab.wedm.propogatingMouseEvent = false;
