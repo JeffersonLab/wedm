@@ -20,9 +20,9 @@ public class ActiveSymbol extends EmbeddedScreen {
     private static final Logger LOGGER = Logger.getLogger(ActiveSymbol.class.getName());
 
     public int numStates;
-    public int[] minValues = new int[64];
-    public int[] maxValues = new int[64];
-    public List<String> controlPvs = new ArrayList<>();
+    public int[] minValues;
+    public int[] maxValues;
+    public String[] controlPvs;
     public boolean useOriginalSize = false;
     public boolean useOriginalColors = false;
 
@@ -34,6 +34,8 @@ public class ActiveSymbol extends EmbeddedScreen {
         minValues = TraitParser.parseIntArray(traits, numStates, "minValues");
         maxValues = TraitParser.parseIntArray(traits, numStates, "maxValues");
 
+        controlPvs = TraitParser.parseStringArray(traits, 1, "controlPvs");
+        
         useOriginalSize = TraitParser.parseBoolean(traits, "useOriginalSize");
         useOriginalColors = TraitParser.parseBoolean(traits, "useOriginalColors");
     }
@@ -49,8 +51,8 @@ public class ActiveSymbol extends EmbeddedScreen {
         classes.add("ActiveSymbol");
         classes.add("ScreenObject");
 
-        if (numPvs == 1 && controlPvs.size() == 1) {
-            attributes.put("data-pv", controlPvs.get(0));
+        if (numPvs == 1 && controlPvs != null && controlPvs.length == 1) {
+            attributes.put("data-pv", controlPvs[0]);
 
             if (numStates > 0 && numStates <= 64) {
                 String minStr = String.valueOf(minValues[0]);
