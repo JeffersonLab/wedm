@@ -57,9 +57,6 @@
 .screen {
     overflow: hidden;
 }
-.ActiveChoiceButton .ScreenObject span {
-    white-space: nowrap;
-}
 .screen-text {
     white-space: pre;
     display: table-cell;
@@ -80,32 +77,4 @@ svg.ScreenObject {
 }
 .connection-state-panel {
     float: right;
-}
-.menu-button-container {
-    display: table;
-    width: 100%;
-}
-.menu-button-container > div {
-    display: table-cell;
-}
-.menu-button-container > .screen-text {
-    width: 85%;
-}
-.menu-button-box {
-    text-align: center;
-    vertical-align: middle;
-}
-.menu-button-box > div {
-    width: 50%;
-}
-.menu-button-box > div > div {
-    height: 0;
-    padding-bottom: 100%;
-}
-.knob {
-    position: absolute;
-}
-.knob-handle {
-    box-sizing: border-box;
-    position: absolute;
 }

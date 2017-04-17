@@ -1,2 +1,4 @@
-
+.ActiveChoiceButton .ScreenObject span {
+    white-space: nowrap;
+}
 

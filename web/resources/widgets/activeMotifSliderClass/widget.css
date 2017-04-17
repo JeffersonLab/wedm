@@ -1,2 +1,8 @@
-
+.ActiveMotifSlider .knob {
+    position: absolute;
+}
+.ActiveMotifSlider .knob-handle {
+    box-sizing: border-box;
+    position: absolute;
+}
 
