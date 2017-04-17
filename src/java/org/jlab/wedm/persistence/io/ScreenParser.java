@@ -39,7 +39,7 @@ public class ScreenParser extends EDLParser {
             FileNotFoundException, IOException {
 
         File edl = getEdlFile(name);
-
+        
         String canonicalPath = edl.getCanonicalPath();
 
         ScreenProperties properties = new ScreenProperties();

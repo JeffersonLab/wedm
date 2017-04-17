@@ -58,7 +58,7 @@ public class EDLParser {
         return edl;
     }
 
-    protected String stripQuotes(String value) {
+    public static String stripQuotes(String value) {
 
         value = value.trim();
 

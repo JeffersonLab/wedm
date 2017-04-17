@@ -16,7 +16,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
 
     public String filePv = null;
     public List<Screen> screenList = new ArrayList<>();
-    public boolean noscroll = false;
+    public boolean noScroll = false;
     public boolean center = false;
 
     @Override
@@ -27,7 +27,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         filePv = traits.get("filePv");
         
         // Booleans
-        noscroll = TraitParser.parseBoolean(traits, "noscroll");
+        noScroll = TraitParser.parseBoolean(traits, "noScroll");
         center = TraitParser.parseBoolean(traits, "center");
     }
     
@@ -43,7 +43,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
             attributes.put("data-pv", filePv);
         }
 
-        if (noscroll) {
+        if (noScroll) {
             classes.add("noscroll");
         }
         

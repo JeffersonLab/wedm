@@ -16,7 +16,7 @@ public class TraitParser {
     private static final Logger LOGGER = Logger.getLogger(TraitParser.class.getName());
 
     public static final int MAX_ARRAY_SIZE = 64;
-    
+
     public static EDLFont parseFont(Map<String, String> traits, String key, EDLFont defaultValue) {
         String value = traits.get(key);
         EDLFont f = defaultValue;
@@ -110,7 +110,6 @@ public class TraitParser {
                     throw new IllegalArgumentException("Number of points does not match: "
                             + elementCount + " vs " + lines.length);
                 }*/
-                
                 // Initialized to all zeros, which is actually important and leveraged
                 result = new int[elementCount];
 
@@ -158,7 +157,14 @@ public class TraitParser {
                     int index = Integer.parseInt(tks[0]);
 
                     if (index >= 0 && index <= MAX_ARRAY_SIZE) {
-                        result[index] = tks[1];
+                        // value is stripQuotes by parser, but double quotes in middle still there
+                        String val = tks[1].trim();
+
+                        if (val.startsWith("\"")) {
+                            val = val.substring(1);
+                        }
+
+                        result[index] = val;
                     } else {
                         throw new IllegalArgumentException(
                                 "index number out of range: " + index);
