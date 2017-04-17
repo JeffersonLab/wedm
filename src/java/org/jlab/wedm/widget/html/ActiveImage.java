@@ -2,10 +2,12 @@ package org.jlab.wedm.widget.html;
 
 import java.awt.Point;
 import java.io.File;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.EDLParser;
 import org.jlab.wedm.persistence.io.IOUtil;
+import org.jlab.wedm.persistence.model.ColorPalette;
 
 /**
  *
@@ -17,6 +19,13 @@ public class ActiveImage extends HtmlScreenObject {
 
     public String file;
 
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        super.parseTraits(traits, palette);
+        
+        file = traits.get("file");
+    }
+    
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
 

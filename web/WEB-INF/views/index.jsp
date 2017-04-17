@@ -42,6 +42,9 @@
                     <td><a href="screen?edl=wedm/objects/Text.edl">Text</a></td>
                 </tr>
                 <tr>
+                    <td><a href="screen?edl=wedm/objects/Image.edl">Image</a></td>
+                </tr>
+                <tr>
                     <td><a href="screen?edl=wedm/objects/Embedded.edl">Embedded</a></td>
                 </tr>                
             </tbody>
