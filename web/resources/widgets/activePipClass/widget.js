@@ -8,7 +8,7 @@ jlab.wedm.PiPPvObserver = function (id, pvSet) {
 };
 
 jlab.wedm.PiPPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
-jlab.wedm.SymbolPvObserver.prototype.constructor = jlab.wedm.PiPPvObserver;
+jlab.wedm.PiPPvObserver.prototype.constructor = jlab.wedm.PiPPvObserver;
 
 jlab.wedm.PiPPvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id),

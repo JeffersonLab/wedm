@@ -8,12 +8,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WEDM - ${screen.title ne null ? screen.title : param.edl}</title>
         <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/epics2web.css?v=${initParam.epics2webReleaseNumber}"/>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
         <c:choose>
             <c:when test="${initParam.productionRelease eq 'true'}">
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/combined.min.css?v=${initParam.releaseNumber}"/>
             </c:when>
             <c:otherwise>
-                <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
                 <c:forEach items="${widgets}" var="name">
                     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/widgets/${fn:escapeXml(wedm:escapeFileName(name))}/widget.css?v=${initParam.releaseNumber}"/>
                 </c:forEach>
@@ -38,13 +38,13 @@ ${screen.getCss()}
     </div>        
 ${screen.getHtml()}
     <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="/epics2web/resources/js/epics2web.js?v=${initParam.epics2webReleaseNumber}"></script>    
+    <script type="text/javascript" src="/epics2web/resources/js/epics2web.js?v=${initParam.epics2webReleaseNumber}"></script> 
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
         <c:choose>
             <c:when test="${initParam.productionRelease eq 'true'}">
                 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/combined.min.js?v=${initParam.releaseNumber}"></script>
             </c:when>
             <c:otherwise>
-                <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
                 <c:forEach items="${widgets}" var="name">
                     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/widgets/${fn:escapeXml(wedm:escapeFileName(name))}/widget.js?v=${initParam.releaseNumber}"></script>
                 </c:forEach>

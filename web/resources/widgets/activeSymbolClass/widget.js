@@ -26,7 +26,7 @@ jlab.wedm.SymbolPvObserver.prototype.handleControlUpdate = function (update) {
         }
     }
 
-    state = state + 1; // nth-child starts at 1, not zero
+    state = state + 1; /* nth-child starts at 1, not zero */
 
     /*console.log('state: ' + state);*/
 
