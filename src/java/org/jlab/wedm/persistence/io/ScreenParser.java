@@ -39,7 +39,7 @@ public class ScreenParser extends EDLParser {
             FileNotFoundException, IOException {
 
         File edl = getEdlFile(name);
-        
+
         String canonicalPath = edl.getCanonicalPath();
 
         ScreenProperties properties = new ScreenProperties();
@@ -65,7 +65,7 @@ public class ScreenParser extends EDLParser {
                                 //LOGGER.log(Level.FINEST, "Found: beginScreenProperties");
                                 last = properties;
                                 traits = new HashMap<>();
-                            break;                       
+                                break;
                             case "object":
                                 //LOGGER.log(Level.FINEST, "Found: object");
 
@@ -91,9 +91,9 @@ public class ScreenParser extends EDLParser {
                                         obj = new UnknownWidget();
                                     }
                                 }
-                                
-                                traits = new HashMap<>();                              
-                                
+
+                                traits = new HashMap<>();
+
                                 if (obj instanceof ActiveGroup) {
                                     if (groupStack.isEmpty()) {
                                         screenObjects.add(obj);
@@ -120,7 +120,7 @@ public class ScreenParser extends EDLParser {
                                 //LOGGER.log(Level.FINEST, "Handling Widget: {0}",
                                 //        obj.getClass().getSimpleName());
                                 last = obj;
-                                traits.put("WEDM_WIDGET_ID", String.valueOf(objectId++));                                  
+                                traits.put("WEDM_WIDGET_ID", String.valueOf(objectId++));
                                 break;
                             //case "beginObjectProperties":
                             //    break;                                         
@@ -139,10 +139,8 @@ public class ScreenParser extends EDLParser {
                                 //LOGGER.log(Level.FINEST, "Re-Handling Widget: {0}",
                                 //        last.getClass().getSimpleName());
                                 break;
-                            
-                                
-                                
-                                /*
+
+                            /*
 
                                 
                                 
@@ -308,23 +306,34 @@ public class ScreenParser extends EDLParser {
                                         // Ignoring comment
                                     } else {
                                         if (line.trim().endsWith("{")) {
-                                            String subline = scanner.nextLine();
-                                            subline = subline.trim();
-                                            String finalString = stripQuotes(subline);
-
-                                            while (true) {
-                                                subline = scanner.nextLine();
-
+                                            // Special case: version 4.0.0 of ActiveLine sometimes 
+                                            // has { after numPoints.  It also sometimes ends the
+                                            // bracket on the line after yPoints and sometimes not. 
+                                            // If so we end up with a harmless trait named } with no
+                                            // value.
+                                            // FYI - version 4.0.1 of ActiveLine doesn't have this
+                                            // problem
+                                            if (line.startsWith("numPoints")) {  
+                                                value = line.split(" ")[1];
+                                            } else { // "Normal" bracket behavior (non-nested)
+                                                String subline = scanner.nextLine();
                                                 subline = subline.trim();
+                                                String finalString = stripQuotes(subline);
 
-                                                if ("}".equals(subline)) {
-                                                    break;
+                                                while (true) {
+                                                    subline = scanner.nextLine();
+
+                                                    subline = subline.trim();
+
+                                                    if ("}".equals(subline)) {
+                                                        break;
+                                                    }
+                                                    finalString = finalString + "\n" + stripQuotes(
+                                                            subline);
                                                 }
-                                                finalString = finalString + "\n" + stripQuotes(
-                                                        subline);
-                                            }
 
-                                            value = finalString;
+                                                value = finalString;
+                                            }
                                         } else {
                                             value = stripQuotes(line.substring(
                                                     tokens[0].length()));
@@ -362,7 +371,8 @@ public class ScreenParser extends EDLParser {
                             s.setScreenProperties(embedded);
                             embedded.screen = s;
                         } else if ("menu".equals(embedded.displaySource)) { // Use filePv to determine which menu item to use
-                            if (embedded.numDsps > 0 && embedded.numDsps <= TraitParser.MAX_ARRAY_SIZE) {
+                            if (embedded.numDsps > 0 && embedded.numDsps
+                                    <= TraitParser.MAX_ARRAY_SIZE) {
                                 for (int i = 0; i < embedded.numDsps; i++) {
                                     String f = embedded.displayFileName[i];
 

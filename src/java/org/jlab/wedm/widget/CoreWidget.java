@@ -325,7 +325,7 @@ public abstract class CoreWidget implements WEDMWidget {
         this.colorList = palette;
         
         if (traits != null) {
-            LOGGER.log(Level.FINEST, "Parsing core traits for: {0}", this.getClass().getSimpleName());
+            //LOGGER.log(Level.FINEST, "Parsing core traits for: {0}", this.getClass().getSimpleName());
 
             // WIDGET ID
             objectId = TraitParser.parseInt(traits, "WEDM_WIDGET_ID", -1);
