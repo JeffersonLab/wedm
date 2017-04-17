@@ -1,6 +1,9 @@
 package org.jlab.wedm.widget.html;
 
 import java.awt.Point;
+import java.util.Map;
+import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 
 /**
  * CONTROL TEXT
@@ -10,6 +13,13 @@ import java.awt.Point;
 public class ActiveControlText extends ActiveStaticText {
 
     public boolean showUnits = false;    
+    
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
+        super.parseTraits(traits, colorList);
+        
+        showUnits = TraitParser.parseBoolean(traits, "showUnits");
+    }
     
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {

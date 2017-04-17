@@ -3,6 +3,8 @@ package org.jlab.wedm.widget.html;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
+import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
 
 /**
@@ -12,8 +14,8 @@ import org.jlab.wedm.persistence.model.EDLColor;
 public class ActiveMotifSlider extends HtmlScreenObject {
 
     public EDLColor secondBgColor;
-    public Float scaleMin = null;
-    public Float scaleMax = null;
+    public Float scaleMin;
+    public Float scaleMax;
     public String controlLabel = null;
     public boolean showLimits = false;
     public boolean showLabel = false;
@@ -21,6 +23,16 @@ public class ActiveMotifSlider extends HtmlScreenObject {
     protected Map<String, String> trackStyles = new HashMap<>();
     protected Map<String, String> handleStyles = new HashMap<>();
 
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+        super.parseTraits(traits, palette);
+        
+        scaleMin = TraitParser.parseFloat(traits, "scaleMin", null);
+        scaleMax = TraitParser.parseFloat(traits, "scaleMax", null);
+        
+        secondBgColor = TraitParser.parseColor(traits, palette, "2ndBgColor", null);
+    }
+    
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
         String html;
