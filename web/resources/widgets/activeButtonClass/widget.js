@@ -41,17 +41,17 @@ jlab.wedm.ButtonPvObserver.prototype.handleControlUpdate = function (update) {
     }
 };
 
-$(document).on("mousedown", ".local-control.push-button", function () {
+$(document).on("mousedown", ".interactable.push-button", function () {
     jlab.wedm.doButtonDown($(this));
 });
 
-$(document).on("mouseup mouseout", ".local-control.push-button", function () {
+$(document).on("mouseup mouseout", ".interactable.push-button", function () {
     if ($(this).hasClass("button-down")) {
         jlab.wedm.doButtonUp($(this));
     }
 });
 
-$(document).on("click", ".local-control.toggle-button", function () {
+$(document).on("click", ".interactable.toggle-button", function () {
     var $obj = $(this);
 
     if ($obj.hasClass("toggle-button-off")) {

@@ -80,6 +80,7 @@ jlab.wedm.PvObserver = function (id, pvSet) {
             $obj[0].classList.add("disconnected-pv");
             $obj[0].classList.remove("waiting-for-state");
             $obj.css("border", "1px solid " + jlab.wedm.disconnectedAlarmColor);
+            $obj[0].classList.remove("interactable")
         }
     };
 
@@ -547,7 +548,6 @@ jlab.wedm.createWidgets = function () {
         if (ctrlPvExpr !== undefined || visPvExpr !== undefined || alarmPvExpr !== undefined || colorPvExpr !== undefined || indicatorPvExpr !== undefined) {
             /*console.log($obj[0].className);*/
 
-
             var classes = $obj.attr("class").split(" "),
                     found = false;
             for (var i = 0; i < classes.length; i++) {
@@ -564,39 +564,6 @@ jlab.wedm.createWidgets = function () {
             if (!found) {
                 widget = new jlab.wedm.PvObserver(id, pvSet);
             }
-
-            /*if ($obj.hasClass("ActiveControlText") ||
-             $obj.hasClass("ActiveUpdateText")) {
-             widget = new jlab.wedm.ControlTextPvObserver(id, pvSet);
-             } else if ($obj.hasClass("ActiveSymbol")) {
-             widget = new jlab.wedm.SymbolPvObserver(id, pvSet);
-             } else if ($obj.hasClass("ActivePictureInPicture")) {
-             widget = new jlab.wedm.PiPPvObserver(id, pvSet);
-             } else if ($obj.hasClass("ActiveMotifSlider")) {
-             widget = new jlab.wedm.MotifSliderPvObserver(id, pvSet);
-             } else if ($obj.hasClass("ActiveButton") ||
-             $obj.hasClass("ActiveMessageButton")) {
-             widget = new jlab.wedm.ButtonPvObserver(id, pvSet);
-             } else if ($obj.hasClass("ActiveMenuButton")) {
-             widget = new jlab.wedm.MenuButtonPvObserver(id, pvSet);
-             } else if ($obj.hasClass("ActiveChoiceButton")) {
-             widget = new jlab.wedm.ChoicePvObserver(id, pvSet);
-             } else if ($obj.attr("class").indexOf("ActiveByte") > -1) {
-             widget = new jlab.wedm.BytePvObserver(id, pvSet);
-             } else if ($obj.attr("class").indexOf("ActiveBarMonitor") > -1) {
-             widget = new jlab.wedm.BarMeterPvObserver(id, pvSet);
-             } else if ($obj.attr("class").indexOf("ActiveRectangle") > -1 ||
-             $obj.attr("class").indexOf("ActiveCircle") > -1 ||
-             $obj.attr("class").indexOf("ActiveLine") > -1 ||
-             $obj.attr("class").indexOf("ActiveArc") > -1) {
-             widget = new jlab.wedm.ShapePvObserver(id, pvSet);
-             } else if ($obj.attr("class").indexOf("ActiveStaticText") > -1 ||
-             $obj.attr("class").indexOf("ActiveRegExText") > -1) {
-             
-             widget = new jlab.wedm.StaticTextPvObserver(id, pvSet);
-             } else {
-             widget = new jlab.wedm.PvObserver(id, pvSet);
-             }*/
 
             jlab.wedm.idWidgetMap[id] = widget;
 
@@ -678,6 +645,8 @@ jlab.wedm.initLocalPVs = function () {
         if (typeof local.enumLabels !== 'undefined' && local.enumLabels.length > 0) {
             var info = {pv: local.name, connected: true, datatype: 'DBR_ENUM', 'enum-labels': local.enumLabels};
             jlab.wedm.infoPv(info);
+        } else if(local.type === 'unresolved') {
+            jlab.wedm.infoPv({pv: local.name, connected: false});
         }
 
         /*console.log("settting local pv initial value: " + local.name + " = " + local.value);*/
@@ -824,7 +793,7 @@ $(document).on("mouseup", ".MouseSensitive", function (e) {
 
 $(function () {
     jlab.wedm.initFuncs = jlab.wedm.initFuncs || [];
-    for(var i = 0; i < jlab.wedm.initFuncs.length; i++) {
+    for (var i = 0; i < jlab.wedm.initFuncs.length; i++) {
         jlab.wedm.initFuncs[i]();
     }
 

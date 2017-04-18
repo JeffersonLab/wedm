@@ -37,9 +37,15 @@ jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
 
     jlab.wedm.PvObserver.prototype.handleInfo.call(this, info);
 
-    if (info.connected) {
-        var $obj = $("#" + this.id);
+    var $obj = $("#" + this.id);
 
+    /*In addition to standard disconnected stuff in super object we do more: */
+    if(!info.connected) {
+        $obj.css("background-color", "transparent");
+    }
+
+    /*Only get enum labels from control PV, ignore color PV for example*/
+    if (info.connected && this.pvSet.ctrlPvs.indexOf(info.pv) > -1) {
         this.enumValuesArray = info['enum-labels'];
 
         if (typeof this.enumValuesArray !== 'undefined') {

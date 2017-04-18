@@ -16,10 +16,9 @@
 .ActiveSymbol .ActiveGroup {
     display: none;
 }
-.ActiveButton,
+.non-iteractable,
 .ActiveMessageButton,
 .ActiveMenuButton,
-.ActiveChoiceButton,
 .ShellCommand,
 .ActiveControlText.editable,
 .ActiveMotifSlider .slider-track {
@@ -37,17 +36,15 @@
     z-index: 2;
 }
 .RelatedDisplay,
-.local-control.ActiveButton,
-.local-control.ActiveMessageButton,
+.ScreenObject.interactable,
 .anchor-li,
 .anchor-li a {
     cursor: default;
 }
-.ActiveButton:hover,
+.interactable:hover,
 .ShellCommand:hover,
 .ActiveMessageButton:hover,
 .ActiveMenuButton:hover,
-.ActiveChoiceButton:hover,
 .RelatedDisplay:hover,
 .ActiveControlText.editable:not(.motif):hover,
 .ActiveMotifSlider .slider-track:hover {

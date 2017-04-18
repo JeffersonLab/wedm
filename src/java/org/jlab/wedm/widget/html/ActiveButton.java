@@ -92,7 +92,9 @@ public class ActiveButton extends TextScreenObject {
         }
 
         if (controlPv != null && controlPv.startsWith("LOC\\")) {
-            classes.add("local-control");
+            classes.add("interactable");
+        } else {
+            classes.add("non-interactable");
         }
 
         if (icon) {
