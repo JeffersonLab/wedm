@@ -35,38 +35,42 @@ jlab.wedm.ChoicePvObserver.prototype.handleControlUpdate = function (update) {
 jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
     /*console.log('Datatype: ' + info.datatype + ": " + info.count + ": " + info['enum-labels']);*/
 
-    var $obj = $("#" + this.id);
+    jlab.wedm.PvObserver.prototype.handleInfo.call(this, info);
 
-    this.enumValuesArray = info['enum-labels'];
+    if (info.connected) {
+        var $obj = $("#" + this.id);
 
-    if (typeof this.enumValuesArray !== 'undefined') {
-        var states = this.enumValuesArray.length;
+        this.enumValuesArray = info['enum-labels'];
 
-        var horizontal = $obj.attr("data-orientation") === 'horizontal',
-                width = $obj.width(),
-                height = $obj.height(),
-                btnWidth = (width / states) - ((states - 1) * 2),
-                btnHeight = height,
-                html = "",
-                left = 0,
-                top = 0;
+        if (typeof this.enumValuesArray !== 'undefined') {
+            var states = this.enumValuesArray.length;
 
-        if (!horizontal) { // vertical
-            btnWidth = width;
-            btnHeight = (height / states) - ((states - 1) * 2);
-        }
+            var horizontal = $obj.attr("data-orientation") === 'horizontal',
+                    width = $obj.width(),
+                    height = $obj.height(),
+                    btnWidth = (width / states) - ((states - 1) * 2),
+                    btnHeight = height,
+                    html = "",
+                    left = 0,
+                    top = 0;
 
-        for (var i = 0; i < this.enumValuesArray.length; i++) {
-            html = html + '<div class="ScreenObject" style="display: table; overflow: hidden; top: ' + top + 'px; left: ' + left + 'px; width: ' + btnWidth + 'px; height: ' + btnHeight + 'px; text-align: center; border-top: 1px solid rgb(255, 255, 255); border-left: 1px solid rgb(255, 255, 255); border-bottom: 1px solid rgb(0, 0, 0); border-right: 1px solid rgb(0, 0, 0);"><span style="display: table-cell; vertical-align: middle; width: ' + btnWidth + 'px; max-width: ' + btnWidth + 'px;">' + this.enumValuesArray[i] + '</span></div>';
-            if (horizontal) {
-                left = left + btnWidth + 2;
-            } else {
-                top = top + btnHeight + 2;
+            if (!horizontal) { // vertical
+                btnWidth = width;
+                btnHeight = (height / states) - ((states - 1) * 2);
             }
-        }
 
-        $obj.html(html);
-    } else {
-        console.log(this.id + " does not have enum labels");
+            for (var i = 0; i < this.enumValuesArray.length; i++) {
+                html = html + '<div class="ScreenObject" style="display: table; overflow: hidden; top: ' + top + 'px; left: ' + left + 'px; width: ' + btnWidth + 'px; height: ' + btnHeight + 'px; text-align: center; border-top: 1px solid rgb(255, 255, 255); border-left: 1px solid rgb(255, 255, 255); border-bottom: 1px solid rgb(0, 0, 0); border-right: 1px solid rgb(0, 0, 0);"><span style="display: table-cell; vertical-align: middle; width: ' + btnWidth + 'px; max-width: ' + btnWidth + 'px;">' + this.enumValuesArray[i] + '</span></div>';
+                if (horizontal) {
+                    left = left + btnWidth + 2;
+                } else {
+                    top = top + btnHeight + 2;
+                }
+            }
+
+            $obj.html(html);
+        } else {
+            console.log(this.id + " does not have enum labels");
+        }
     }
 };
