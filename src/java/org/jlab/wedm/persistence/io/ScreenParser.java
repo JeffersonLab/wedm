@@ -52,7 +52,7 @@ public class ScreenParser extends EDLParser {
             WEDMWidget last = null;
             Map<String, String> traits = new HashMap<>();
             Deque<ActiveGroup> groupStack = new ArrayDeque<>();
-            Deque<Map<String, String>> groupTraitStack = new ArrayDeque();
+            Deque<Map<String, String>> groupTraitStack = new ArrayDeque<>();
 
             while (scanner.hasNextLine()) {
                 boolean added = false;
