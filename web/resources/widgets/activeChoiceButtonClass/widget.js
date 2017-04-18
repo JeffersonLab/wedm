@@ -74,3 +74,25 @@ jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
         }
     }
 };
+
+jlab.wedm.ChoicePvObserver.prototype.handleColorUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            color,
+            fgRuleIndex = $obj.attr("data-fg-color-rule"),
+            bgRuleIndex = $obj.attr("data-bg-color-rule"),
+            stmt;
+
+    $obj[0].classList.remove("waiting-for-state");
+
+    if (typeof fgRuleIndex !== 'undefined') {
+        stmt = jlab.wedm.colorRules[fgRuleIndex];
+        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
+        $obj.css("color", color);
+    }
+
+    if (typeof bgRuleIndex !== 'undefined') {
+        stmt = jlab.wedm.colorRules[bgRuleIndex];
+        color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
+        $obj.css("background-color", color);
+    }
+};
