@@ -1,4 +1,8 @@
-.ActiveChoiceButton .ScreenObject span {
+.ActiveChoiceButton .choice {
+    position: absolute;
+    box-sizing: border-box;
+}
+.ActiveChoiceButton .choice span {
     white-space: nowrap;
 }
 

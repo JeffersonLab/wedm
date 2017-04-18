@@ -11,23 +11,33 @@ jlab.wedm.ChoicePvObserver.prototype = Object.create(jlab.wedm.PvObserver.protot
 jlab.wedm.ChoicePvObserver.prototype.constructor = jlab.wedm.ChoicePvObserver;
 
 jlab.wedm.ChoicePvObserver.prototype.handleControlUpdate = function (update) {
-    var $obj = $("#" + this.id);
+    var $obj = $("#" + this.id),
+            topShadColor = $obj.attr("data-top-shad-color"),
+            botShadColor = $obj.attr("data-bot-shad-color"),
+            selectColor = $obj.attr("data-select-color");
 
     var value = update.value,
             enumVal = this.enumValuesArray[value];
 
     //$(".ActiveChoiceButton[data-pv='" + this.pv + "']").text(value);
-    $obj.find(".ScreenObject").each(function () {
-        if ($(this).text() === enumVal) {
-            $(this).css("border-top", "1px solid rgb(0, 0, 0)");
-            $(this).css("border-left", "1px solid rgb(0, 0, 0)");
-            $(this).css("border-right", "1px solid rgb(255, 255, 255)");
-            $(this).css("border-bottom", "1px solid rgb(255, 255, 255)");
+    $obj.find(".choice").each(function () {
+        var $btn = $(this);
+
+        if ($btn.text() === enumVal) {
+            $btn.css("border-top", "1px solid " + botShadColor);
+            $btn.css("border-left", "1px solid " + botShadColor);
+            $btn.css("border-right", "1px solid " + topShadColor);
+            $btn.css("border-bottom", "1px solid " + topShadColor);
+
+            $btn.find("span").css("background-color", selectColor);
+
         } else {
-            $(this).css("border-top", "1px solid rgb(255, 255, 255)");
-            $(this).css("border-left", "1px solid rgb(255, 255, 255)");
-            $(this).css("border-right", "1px solid rgb(0, 0, 0)");
-            $(this).css("border-bottom", "1px solid rgb(0, 0, 0)");
+            $btn.css("border-top", "2px solid " + topShadColor);
+            $btn.css("border-left", "2px solid " + topShadColor);
+            $btn.css("border-right", "1px solid " + botShadColor);
+            $btn.css("border-bottom", "1px solid " + botShadColor);
+
+            $btn.find("span").css("background-color", "transparent");
         }
     });
 };
@@ -40,7 +50,7 @@ jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
     var $obj = $("#" + this.id);
 
     /*In addition to standard disconnected stuff in super object we do more: */
-    if(!info.connected) {
+    if (!info.connected) {
         $obj.css("background-color", "transparent");
     }
 
@@ -54,7 +64,7 @@ jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
             var horizontal = $obj.attr("data-orientation") === 'horizontal',
                     width = $obj.width(),
                     height = $obj.height(),
-                    btnWidth = (width / states) - ((states - 1) * 2),
+                    btnWidth = (width / states) - (states - 2),
                     btnHeight = height,
                     html = "",
                     left = 0,
@@ -62,11 +72,11 @@ jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
 
             if (!horizontal) { // vertical
                 btnWidth = width;
-                btnHeight = (height / states) - ((states - 1) * 2);
+                btnHeight = (height / states) - (states - 2);
             }
 
             for (var i = 0; i < this.enumValuesArray.length; i++) {
-                html = html + '<div class="ScreenObject" style="display: table; overflow: hidden; top: ' + top + 'px; left: ' + left + 'px; width: ' + btnWidth + 'px; height: ' + btnHeight + 'px; text-align: center; border-top: 1px solid rgb(255, 255, 255); border-left: 1px solid rgb(255, 255, 255); border-bottom: 1px solid rgb(0, 0, 0); border-right: 1px solid rgb(0, 0, 0);"><span style="display: table-cell; vertical-align: middle; width: ' + btnWidth + 'px; max-width: ' + btnWidth + 'px;">' + this.enumValuesArray[i] + '</span></div>';
+                html = html + '<div class="choice" style="display: table; overflow: hidden; top: ' + top + 'px; left: ' + left + 'px; width: ' + btnWidth + 'px; height: ' + btnHeight + 'px; text-align: center; border-top: 1px solid rgb(255, 255, 255); border-left: 1px solid rgb(255, 255, 255); border-bottom: 1px solid rgb(0, 0, 0); border-right: 1px solid rgb(0, 0, 0);"><span style="display: table-cell; vertical-align: middle; width: ' + (btnWidth - 3) + 'px; max-width: ' + (btnWidth - 3) + 'px;">' + this.enumValuesArray[i] + '</span></div>';
                 if (horizontal) {
                     left = left + btnWidth + 2;
                 } else {
@@ -102,3 +112,13 @@ jlab.wedm.ChoicePvObserver.prototype.handleColorUpdate = function (update) {
         $obj.css("background-color", color);
     }
 };
+
+$(document).on("click", ".ActiveChoiceButton.interactable .choice", function () {
+    var $choice = $(this),
+            $parent = $choice.closest(".ActiveChoiceButton"),
+            index = $choice.index(),
+            widget = jlab.wedm.idWidgetMap[$parent.attr("id")],
+            pv = widget.pvSet.ctrlPvs[0];
+
+    jlab.wedm.updatePv({pv: pv, value: index});
+});

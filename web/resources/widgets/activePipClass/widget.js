@@ -18,6 +18,7 @@ jlab.wedm.PiPPvObserver.prototype.handleControlUpdate = function (update) {
     $obj.find(".screen").hide();
     $selected.show();
 
+    /*TODO: should be a generic "refresh" callback to all widgets on re-display*/
     $selected.find(".ActiveMotifSlider").each(function () {
         var $slider = $(this),
                 pv = $slider.attr("data-pv"),
