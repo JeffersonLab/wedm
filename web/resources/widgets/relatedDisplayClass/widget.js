@@ -1,6 +1,6 @@
 jlab = jlab || {};
 
-/*We just leverage the base object PvObserver to handle visibility for us*/
+/*No PvObserver used at this time*/
 
 $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
 
