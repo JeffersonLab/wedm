@@ -41,6 +41,10 @@ public class ActiveChoiceButton extends HtmlScreenObject {
             attributes.put("data-select-color", selectColor.toColorString());
         }
 
+        if(fgColor != null) {
+            attributes.put("data-fg-color", fgColor.toColorString());
+        }
+        
         return super.toHtml(indent, indentStep, translation);
     }
 }

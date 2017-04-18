@@ -14,7 +14,8 @@ jlab.wedm.ChoicePvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id),
             topShadColor = $obj.attr("data-top-shad-color"),
             botShadColor = $obj.attr("data-bot-shad-color"),
-            selectColor = $obj.attr("data-select-color");
+            selectColor = $obj.attr("data-select-color"),
+            fgColor = $obj.attr("data-fg-color");
 
     var value = update.value,
             enumVal = this.enumValuesArray[value];
@@ -30,6 +31,7 @@ jlab.wedm.ChoicePvObserver.prototype.handleControlUpdate = function (update) {
             $btn.css("border-bottom", "1px solid " + topShadColor);
 
             $btn.find("span").css("background-color", selectColor);
+            $btn.find("span").css("color", fgColor);
 
         } else {
             $btn.css("border-top", "2px solid " + topShadColor);
@@ -38,6 +40,7 @@ jlab.wedm.ChoicePvObserver.prototype.handleControlUpdate = function (update) {
             $btn.css("border-bottom", "1px solid " + botShadColor);
 
             $btn.find("span").css("background-color", "transparent");
+            $btn.find("span").css("color", "inherit");
         }
     });
 };
@@ -91,6 +94,51 @@ jlab.wedm.ChoicePvObserver.prototype.handleInfo = function (info) {
     }
 };
 
+jlab.wedm.ChoicePvObserver.prototype.handleAlarmUpdate = function (update) {
+    var $obj = $("#" + this.id),
+            sevr = update.value * 1,
+            fgAlarm = $obj.attr("data-fg-alarm") === "true",
+            invalid = false;
+
+    $obj.attr("data-sevr", sevr);
+    $obj[0].classList.remove("waiting-for-state");
+
+    if (fgAlarm) {
+        $obj.find(".choice").css("color", "inherit");
+    }
+
+    if (typeof sevr !== 'undefined') {
+        if (sevr === 0) { // NO_ALARM
+            if (fgAlarm) {
+                $obj.attr("data-fg-color", jlab.wedm.noAlarmColor);
+            }
+        } else if (sevr === 1) { // MINOR
+            if (fgAlarm) {
+                $obj.attr("data-fg-color", jlab.wedm.minorAlarmColor);
+            }
+        } else if (sevr === 2) { // MAJOR
+            if (fgAlarm) {
+                $obj.attr("data-fg-color", jlab.wedm.majorAlarmColor);
+            }
+        } else if (sevr === 3) { // INVALID
+            invalid = true;
+        }
+    } else {
+        invalid = true;
+    }
+
+    if (invalid) {
+        if (fgAlarm) {
+            $obj.attr("data-fg-color", jlab.wedm.invalidAlarmColor);
+        }
+    }
+
+    var pv = this.pvSet.ctrlPvs[0],
+            value = this.pvNameToValueMap[pv];
+
+    this.handleControlUpdate({pv: pv, value: value})
+};
+
 jlab.wedm.ChoicePvObserver.prototype.handleColorUpdate = function (update) {
     var $obj = $("#" + this.id),
             color,
@@ -119,6 +167,9 @@ $(document).on("click", ".ActiveChoiceButton.interactable .choice", function () 
             index = $choice.index(),
             widget = jlab.wedm.idWidgetMap[$parent.attr("id")],
             pv = widget.pvSet.ctrlPvs[0];
+
+    $parent.find(".choice").removeClass("selected-choice");
+    $choice.addClass("selected-choice");
 
     jlab.wedm.updatePv({pv: pv, value: index});
 });
