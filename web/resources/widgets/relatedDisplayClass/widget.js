@@ -19,7 +19,8 @@ $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
         for (var i = 0; i < 64; i++) {
             var file = $obj.attr("data-linked-file-" + i),
                     label = $obj.attr("data-linked-label-" + i),
-                    macro = $obj.attr("data-symbols-" + i);
+                    macro = $obj.attr("data-symbols-" + i),
+                    doNotPropagate = $obj.attr("data-propagate-" + i) === "false";
 
             if (file === undefined) {
                 break;
@@ -36,6 +37,14 @@ $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
                     macros.push("");
                 } else {
                     macros.push(macro);
+                }
+                
+                if(!doNotPropagate) {
+                    if(macros[i].length > 0) {
+                        macros[i] = macros[i] + "," + jlab.wedm.macroString;
+                    } else{
+                        macros[i] = jlab.wedm.macroString;
+                    }
                 }
             }
         }

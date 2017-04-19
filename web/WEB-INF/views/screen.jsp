@@ -52,6 +52,7 @@ ${screen.getHtml()}
         </c:choose>    
     <script type="text/javascript">
 ${screen.getJs()}
+jlab.wedm.macroString = '${fn:escapeXml(macroString)}';
     </script>       
 </body>
 </html>

@@ -1,7 +1,9 @@
 package org.jlab.wedm.widget.html;
 
 import java.awt.Point;
+import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
+import org.jlab.wedm.persistence.model.ColorPalette;
 
 /**
  *
@@ -9,6 +11,15 @@ import org.jlab.wedm.persistence.io.TraitParser;
  */
 public class RelatedDisplay extends ActiveButton {
 
+    String[] propagateMacros;
+    
+    @Override
+    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
+        super.parseTraits(traits, colorList);
+        
+        propagateMacros = TraitParser.parseStringArray(traits, numDsps, "propagateMacros");
+    }
+    
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
 
@@ -36,6 +47,10 @@ public class RelatedDisplay extends ActiveButton {
                     
                     if(symbols != null && symbols[i] != null) {
                         attributes.put("data-symbols-" + i, symbols[i]);
+                    }
+                    
+                    if(propagateMacros != null && "0".equals(propagateMacros[i])) {
+                        attributes.put("data-propagate-" + i, "false");
                     }
                 }
             }
