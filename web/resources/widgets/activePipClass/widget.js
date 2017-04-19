@@ -15,18 +15,20 @@ jlab.wedm.PiPPvObserver.prototype.handleControlUpdate = function (update) {
             value = update.value,
             $selected = $obj.find(".screen[data-index=" + value + "]");
 
-    $obj.find(".screen").hide();
-    $selected.show();
+    if ($selected.length) {
+        $obj.find(".screen").hide();
+        $selected.show();
 
-    /*TODO: should be a generic "refresh" callback to all widgets on re-display*/
-    $selected.find(".ActiveMotifSlider").each(function () {
-        var $slider = $(this),
-                pv = $slider.attr("data-pv"),
-                widget = jlab.wedm.idWidgetMap[$slider.attr("id")];
-        if (pv) {
-            widget.handleControlUpdate({pv: pv, value: widget.pvNameToValueMap[pv]});
-        }
-    });
+        /*TODO: should be a generic "refresh" callback to all widgets on re-display*/
+        $selected.find(".ActiveMotifSlider").each(function () {
+            var $slider = $(this),
+                    pv = $slider.attr("data-pv"),
+                    widget = jlab.wedm.idWidgetMap[$slider.attr("id")];
+            if (pv) {
+                widget.handleControlUpdate({pv: pv, value: widget.pvNameToValueMap[pv]});
+            }
+        });
+    }
 };
 
 jlab.wedm.initPip = function () {
