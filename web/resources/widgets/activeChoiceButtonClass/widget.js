@@ -31,6 +31,7 @@ jlab.wedm.ChoicePvObserver.prototype.handleControlUpdate = function (update) {
             $btn.css("border-bottom", "1px solid " + topShadColor);
 
             $btn.find("span").css("background-color", selectColor);
+            //$btn.find("span").css("opacity", "0.75");
             $btn.find("span").css("color", fgColor);
 
         } else {
@@ -40,6 +41,7 @@ jlab.wedm.ChoicePvObserver.prototype.handleControlUpdate = function (update) {
             $btn.css("border-bottom", "1px solid " + botShadColor);
 
             $btn.find("span").css("background-color", "transparent");
+            //$btn.find("span").css("opacity", "1.0");
             $btn.find("span").css("color", "inherit");
         }
     });
@@ -136,7 +138,7 @@ jlab.wedm.ChoicePvObserver.prototype.handleAlarmUpdate = function (update) {
     var pv = this.pvSet.ctrlPvs[0],
             value = this.pvNameToValueMap[pv];
 
-    this.handleControlUpdate({pv: pv, value: value})
+    this.handleControlUpdate({pv: pv, value: value});
 };
 
 jlab.wedm.ChoicePvObserver.prototype.handleColorUpdate = function (update) {
@@ -152,12 +154,16 @@ jlab.wedm.ChoicePvObserver.prototype.handleColorUpdate = function (update) {
         stmt = jlab.wedm.colorRules[fgRuleIndex];
         color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
         $obj.css("color", color);
+        $obj.attr("data-fg-color", color);
+        $obj.find(".choice span").css("color", color);
     }
 
     if (typeof bgRuleIndex !== 'undefined') {
         stmt = jlab.wedm.colorRules[bgRuleIndex];
         color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
         $obj.css("background-color", color);
+        $obj.attr("data-bg-color", color);
+        $obj.find(".choice span").css("background-color", color);
     }
 };
 
