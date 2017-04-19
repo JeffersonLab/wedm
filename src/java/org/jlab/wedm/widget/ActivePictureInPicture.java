@@ -1,10 +1,12 @@
 package org.jlab.wedm.widget;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.persistence.model.Macro;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 
@@ -14,23 +16,24 @@ import org.jlab.wedm.persistence.model.WEDMWidget;
  */
 public class ActivePictureInPicture extends EmbeddedScreen {
 
-    public String filePv = null;
+    protected String filePv = null;
     public List<Screen> screenList = new ArrayList<>();
-    public boolean noScroll = false;
-    public boolean center = false;
+    protected boolean noScroll = false;
+    protected boolean center = false;
+    protected String[] propagateMacros; // We currently always propagate no matter what...
 
     @Override
     public void parseTraits(Map<String, String> traits, ColorPalette palette) {
         super.parseTraits(traits, palette);
-        
+
         // Strings
         filePv = traits.get("filePv");
-        
+
         // Booleans
         noScroll = TraitParser.parseBoolean(traits, "noScroll");
         center = TraitParser.parseBoolean(traits, "center");
     }
-    
+
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
 
@@ -46,8 +49,8 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         if (noScroll) {
             classes.add("noscroll");
         }
-        
-        if(center) {
+
+        if (center) {
             classes.add("pip-center");
         }
 
@@ -79,16 +82,41 @@ public class ActivePictureInPicture extends EmbeddedScreen {
 
                 Point childTranslation = new Point(0, 0); // We don't translate to top left like ActiveSymbol does
 
-                html = html + obj.toHtml(indent + indentStep, indentStep, childTranslation);
+                String screenHtml = obj.toHtml(indent + indentStep, indentStep, childTranslation);
+
+                if (symbols != null && symbols[0] != null) {
+                    screenHtml = applyMacros(screenHtml, symbols[0]);
+                }
+
+                html = html + screenHtml;
             }
         } else if (!screenList.isEmpty()) {
-            for (Screen s : screenList) {
+            for (int i = 0; i < screenList.size(); i++) {
+                Screen s = screenList.get(i);
                 s.indent = indent + indentStep;
-                html = html + s.toHtmlBody();
+                String screenHtml = s.toHtmlBody();
+
+                if (symbols != null && symbols[i] != null) {
+                    screenHtml = applyMacros(screenHtml, symbols[i]);
+                }
+
+                html = html + screenHtml;
             }
         }
 
         html = html + indent + "</div>\n";
+
+        return html;
+    }
+
+    private String applyMacros(String html, String macroString) {
+        String[] macros = macroString.split(",");
+        for (String m : macros) {
+            String[] kv = m.split("=");
+            String key = "$(" + kv[0] + ")";
+            String value = kv[1];
+            html = html.replace(key, value);
+        }
 
         return html;
     }
