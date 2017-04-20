@@ -70,6 +70,10 @@ jlab.wedm.PvObserver = function (id, pvSet) {
         /*console.log('Update: ' + pv + ': ' + value);*/
     };
 
+    jlab.wedm.PvObserver.prototype.refresh = function() {
+        /*Do nothing by default*/
+    };
+
     jlab.wedm.PvObserver.prototype.handleInfo = function (info) {
         /*console.log('Datatype: ' + info.datatype + ": " + info.count);*/
 
@@ -426,10 +430,15 @@ jlab.wedm.resizeText = function () {
                 wrapWidth = 0,
                 waitingForState = ($parent.attr("class").indexOf("waiting-for-state") > -1);
 
+
+        /* If EDM object is hidden due to an ancestor hidden Group then resize 
+         * won't work.  Therefore it is imperitive that display: none isn't set
+         * on anything initially and only hide starting in the init methods.  An
+         * exception is made for "waiting-for-state" objects and we work around 
+         * them */
+
         /*We temporarily remove waiting-for-state class so we can resize (can't resize invisible items)*/
         $parent[0].classList.remove("waiting-for-state");
-
-        /*TODO: if EDM object is hidden due to an ancestor hidden Group then we need to unhide temporarily?*/
 
         /*$parent[0].classList.contains() has limited support*/
         if (($parent.attr("class").indexOf("invisible") > -1)) {
@@ -792,12 +801,14 @@ $(document).on("mouseup", ".MouseSensitive", function (e) {
 });
 
 $(function () {
+    /*By convention nothing should be display: none initially, otherwise resize text won't work*/
+    jlab.wedm.resizeText();
+     
+     /*Now we call init callback for widgets*/
     jlab.wedm.initFuncs = jlab.wedm.initFuncs || [];
     for (var i = 0; i < jlab.wedm.initFuncs.length; i++) {
         jlab.wedm.initFuncs[i]();
     }
-
-    jlab.wedm.resizeText();
 
     jlab.wedm.createWidgets();
 

@@ -10,6 +10,15 @@ jlab.wedm.MotifSliderPvObserver = function (id, pvSet) {
 jlab.wedm.MotifSliderPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
 jlab.wedm.MotifSliderPvObserver.prototype.constructor = jlab.wedm.MotifSliderPvObserver;
 
+jlab.wedm.MotifSliderPvObserver.prototype.refresh = function () {
+    var $obj = $("#" + this.id),
+            pv = $obj.attr("data-pv");
+
+    if (pv) {
+        this.handleControlUpdate({pv: pv, value: this.pvNameToValueMap[pv]});
+    }
+};
+
 jlab.wedm.MotifSliderPvObserver.prototype.handleControlUpdate = function (update) {
     var $obj = $("#" + this.id),
             value = update.value,

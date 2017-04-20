@@ -19,13 +19,12 @@ jlab.wedm.PiPPvObserver.prototype.handleControlUpdate = function (update) {
         $obj.find(".screen").hide();
         $selected.show();
 
-        /*TODO: should be a generic "refresh" callback to all widgets on re-display*/
-        $selected.find(".ActiveMotifSlider").each(function () {
-            var $slider = $(this),
-                    pv = $slider.attr("data-pv"),
-                    widget = jlab.wedm.idWidgetMap[$slider.attr("id")];
-            if (pv) {
-                widget.handleControlUpdate({pv: pv, value: widget.pvNameToValueMap[pv]});
+        /* "refresh" callback to all widgets on re-display*/
+        $selected.find(".ScreenObject").each(function () {
+            var $o = $(this),
+                    widget = jlab.wedm.idWidgetMap[$o.attr("id")];
+            if (widget) { /*Not all objects have PvObserver widget*/
+                widget.refresh();
             }
         });
     }
