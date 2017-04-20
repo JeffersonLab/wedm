@@ -73,7 +73,11 @@ jlab.wedm.ControlTextPvObserver.prototype.handleControlUpdate = function (update
                 }
             }
 
-            value = value.toFixed(precision);
+            if ("exponential" === format) {
+                value = value.toExponential(precision);
+            } else {
+                value = value.toFixed(precision);
+            }
         }
     }
 
