@@ -122,7 +122,8 @@ public class Screen {
         String css = "";
 
         if (properties.fgColor != null && properties.fgColor instanceof EDLColorConstant) {
-            css = css + ".ScreenObject:hover {\noutline-color: "
+            // Someday we may want to add: ,\nbody .ScreenObject .hoverable-part:hover:before
+            css = css + "body .ScreenObject:hover,\nbody .ScreenObject:hover:before {\noutline-color: "
                     + ((EDLColorConstant) properties.fgColor).toRgbString() + " !important;\n}\n";
         }
 

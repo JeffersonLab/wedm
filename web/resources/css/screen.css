@@ -2,6 +2,7 @@
 .waiting-for-state *,
 .invisible,
 .invisible * {
+    /*Only way to override inline-styles is with !important*/
     border-color: transparent !important;
     background-color: transparent !important;
     color: transparent !important;
@@ -34,12 +35,20 @@
 .anchor-li a {
     cursor: default;
 }
-.ScreenObject.interactable:hover,
-.ScreenObject.disabled-interactable:hover,
-.ActiveControlText.editable:not(.motif):hover,
-.ActiveMotifSlider .slider-track:hover {
-    z-index: 2;
-    outline: 2px solid black;
+/*On hover insert a new transparent psudo-div that streches over entire widget and then push it to top of stacking order and draw outline*/
+.ScreenObject.interactable:hover:before,
+.ScreenObject.disabled-interactable:hover:before,
+.ActiveControlText.editable:not(.motif):hover:before,
+.ActiveMotifSlider .slider-track:hover:before {
+    content: ' ';
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    left: -2px;
+    right: -2px;
+    z-index: 1;
+    outline-width: 2px;
+    outline-style: solid;
 }
 .ActiveControlText,
 .screen {
