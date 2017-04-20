@@ -28,14 +28,14 @@
 .ScreenObject.disabled-interactable,
 .ActiveControlText.editable,
 .ActiveMotifSlider .slider-track {
-    cursor: not-allowed;
+    cursor: url(../img/not-allowed.png) 18 18, not-allowed;
 }
 .ScreenObject.interactable,
 .anchor-li,
 .anchor-li a {
     cursor: default;
 }
-/*On hover insert a new transparent psudo-div that streches over entire widget and then push it to top of stacking order and draw outline*/
+/*On hover insert a new transparent psudo-div that streches over entire widget and then push it to top of stacking order and draw outline, also ensure mouse events pass through*/
 .ScreenObject.interactable:hover:before,
 .ScreenObject.disabled-interactable:hover:before,
 .ActiveControlText.editable:not(.motif):hover:before,
@@ -49,6 +49,7 @@
     z-index: 1;
     outline-width: 2px;
     outline-style: solid;
+    pointer-events: none;
 }
 .ActiveControlText,
 .screen {
