@@ -16,14 +16,6 @@
 .ActiveSymbol .ActiveGroup {
     display: none;
 }
-.non-iteractable,
-.ActiveMessageButton,
-.ActiveMenuButton,
-.ShellCommand,
-.ActiveControlText.editable,
-.ActiveMotifSlider .slider-track {
-    cursor: not-allowed;
-}
 /*By default mouse events propogate through ScreenObjects as if they didn't exist*/
 .ScreenObject {
     pointer-events: none;
@@ -32,22 +24,21 @@
 .ScreenObject.MouseSensitive {
     pointer-events: auto;
 }
-.RelatedDisplay.invisible {
-    z-index: 2;
+.ScreenObject.disabled-interactable,
+.ActiveControlText.editable,
+.ActiveMotifSlider .slider-track {
+    cursor: not-allowed;
 }
-.RelatedDisplay,
 .ScreenObject.interactable,
 .anchor-li,
 .anchor-li a {
     cursor: default;
 }
-.interactable:hover,
-.ShellCommand:hover,
-.ActiveMessageButton:hover,
-.ActiveMenuButton:hover,
-.RelatedDisplay:hover,
+.ScreenObject.interactable:hover,
+.ScreenObject.disabled-interactable:hover,
 .ActiveControlText.editable:not(.motif):hover,
 .ActiveMotifSlider .slider-track:hover {
+    z-index: 2;
     outline: 2px solid black;
 }
 .ActiveControlText,

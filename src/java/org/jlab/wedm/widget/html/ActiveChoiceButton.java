@@ -29,7 +29,7 @@ public class ActiveChoiceButton extends HtmlScreenObject {
         if (controlPv != null && controlPv.startsWith("LOC\\")) {
             classes.add("interactable");
         } else {
-            classes.add("non-interactable");
+            classes.add("disabled-interactable");
         }
 
         if (topShadowColor != null && botShadowColor != null) {

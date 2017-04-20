@@ -34,7 +34,8 @@ public class TraitParser {
                         size);
             }
         } catch (Exception e) {
-            LOGGER.log(Level.FINEST, "Unable to parse font; key: " + key + "; value: " + value, e);
+            LOGGER.log(Level.FINEST, "Unable to parse font; key: {0}; value: {1}", new Object[]{key,
+                value});
         }
         return f;
     }
@@ -47,7 +48,8 @@ public class TraitParser {
                 result = true;
             }
         } catch (Exception e) {
-            LOGGER.log(Level.FINEST, "Unable to parse Boolean; key: " + key + "; value: " + value, e);
+            LOGGER.log(Level.FINEST, "Unable to parse Boolean; key: {0}; value: {1}", new Object[]{key,
+                value});
         }
 
         return result;
@@ -65,7 +67,8 @@ public class TraitParser {
                 result = palette.lookup(index);
             }
         } catch (Exception e) {
-            LOGGER.log(Level.FINEST, "Unable to parse color; key: " + key + "; value: " + value, e);
+            LOGGER.log(Level.FINEST, "Unable to parse color; key: {0}; value: {1}", new Object[]{key,
+                value});
         }
 
         return result;
@@ -79,7 +82,8 @@ public class TraitParser {
                 result = Float.parseFloat(value);
             }
         } catch (NumberFormatException e) {
-            LOGGER.log(Level.FINEST, "Unable to parse int; key: " + key + "; value: " + value, e);
+            LOGGER.log(Level.FINEST, "Unable to parse int; key: {0}; value: {1}", new Object[]{key,
+                value});
         }
 
         return result;
@@ -93,7 +97,8 @@ public class TraitParser {
                 result = Integer.parseInt(value);
             }
         } catch (NumberFormatException e) {
-            LOGGER.log(Level.FINEST, "Unable to parse int; key: " + key + "; value: " + value, e);
+            LOGGER.log(Level.FINEST, "Unable to parse int; key: {0}; value: {1}", new Object[]{key,
+                value});
         }
 
         return result;
@@ -132,7 +137,8 @@ public class TraitParser {
                 }*/
             }
         } catch (Exception e) {
-            LOGGER.log(Level.FINEST, "Unable to parse int; key: " + key + "; value: " + value, e);
+            LOGGER.log(Level.FINEST, "Unable to parse int; key: {0}; value: {1}", new Object[]{key,
+                value});
         }
 
         return result;
@@ -159,7 +165,7 @@ public class TraitParser {
                     if (index >= 0 && index <= MAX_ARRAY_SIZE) {
                         // value is stripQuotes by parser, but double quotes in middle still there
                         String val;
-                        if (tks.length > 1) { 
+                        if (tks.length > 1) {
                             val = tks[1].trim();
                         } else { // value is missing (line with integer only)
                             val = "";
@@ -183,7 +189,9 @@ public class TraitParser {
                 }*/
             }
         } catch (Exception e) {
-            LOGGER.log(Level.FINEST, "Unable to parse String; key: " + key + "; value: " + value, e);
+            LOGGER.log(Level.FINEST, "Unable to parse String; key: {0}; value: {1}", new Object[]{
+                key,
+                value});
         }
 
         return result;

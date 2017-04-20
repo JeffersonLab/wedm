@@ -12,24 +12,39 @@ import org.jlab.wedm.persistence.model.ColorPalette;
 public class RelatedDisplay extends ActiveButton {
 
     String[] propagateMacros;
-    
+
     @Override
     public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
         super.parseTraits(traits, colorList);
-        
+
         propagateMacros = TraitParser.parseStringArray(traits, numDsps, "propagateMacros");
     }
-    
+
+    @Override
+    protected void setActionValues() {
+        // We want to override and set none
+    }
+
+    @Override
+    protected void setButtonType() {
+        // We want to override and set none
+    }
+
+    @Override
+    protected void setInteractable() {
+        classes.add("interactable");
+    }
+
     @Override
     public String toHtml(String indent, String indentStep, Point translation) {
 
-        if(swapButtons) {
+        if (swapButtons) {
             classes.add("swapped-buttons");
         }
-        
+
         String files = "";
         String labels = "";
-        
+
         if (numDsps > 0 && numDsps <= TraitParser.MAX_ARRAY_SIZE) {
             for (int i = 0; i < displayFileName.length; i++) {
                 if (displayFileName[i] != null) {
@@ -43,13 +58,12 @@ public class RelatedDisplay extends ActiveButton {
                         //labels = labels + " ~~NONE~~";
                         attributes.put("data-linked-label-" + i, "");
                     }
-                    
-                    
-                    if(symbols != null && symbols[i] != null) {
+
+                    if (symbols != null && symbols[i] != null) {
                         attributes.put("data-symbols-" + i, symbols[i]);
                     }
-                    
-                    if(propagateMacros != null && "0".equals(propagateMacros[i])) {
+
+                    if (propagateMacros != null && "0".equals(propagateMacros[i])) {
                         attributes.put("data-propagate-" + i, "false");
                     }
                 }

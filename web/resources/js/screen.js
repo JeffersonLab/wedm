@@ -80,7 +80,7 @@ jlab.wedm.PvObserver = function (id, pvSet) {
             $obj[0].classList.add("disconnected-pv");
             $obj[0].classList.remove("waiting-for-state");
             $obj.css("border", "1px solid " + jlab.wedm.disconnectedAlarmColor);
-            $obj[0].classList.remove("interactable")
+            $obj[0].classList.remove("interactable");
         }
     };
 

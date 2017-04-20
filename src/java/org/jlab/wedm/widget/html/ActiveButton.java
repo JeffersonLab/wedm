@@ -44,14 +44,7 @@ public class ActiveButton extends TextScreenObject {
         }
     }
     
-    @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
-        if (push == null) {
-            push = false;
-        }
-
-        classes.add("MouseSensitive");
-        
+    protected void setActionValues() {
         if (!(this instanceof ActiveMessageButton) && !(this instanceof RelatedDisplay)) {
             if (pressValue == null) {
                 pressValue = "1";
@@ -60,14 +53,39 @@ public class ActiveButton extends TextScreenObject {
             if (releaseValue == null) {
                 releaseValue = "0";
             }
-        }
-
+        }        
+    }
+    
+    protected void setButtonType() {
         if (!push) { // if toggle
             classes.add("toggle-button toggle-button-off");
         } else { // push button
             classes.add("push-button");
+        }        
+    }
+    
+    protected void setInteractable() {
+        if (controlPv != null && controlPv.startsWith("LOC\\")) {
+            classes.add("interactable");
+        } else {
+            classes.add("disabled-interactable");
+        }        
+    }
+    
+    @Override
+    public String toHtml(String indent, String indentStep, Point translation) {
+        if (push == null) {
+            push = false;
         }
 
+        classes.add("MouseSensitive");
+        
+        setActionValues();
+
+        setButtonType();
+
+        setInteractable();
+        
         if (pressValue != null) {
             attributes.put("data-press-value", pressValue);
         }
@@ -89,12 +107,6 @@ public class ActiveButton extends TextScreenObject {
         }
         if (offColor != null) {
             attributes.put("data-off-color", offColor.toColorString());
-        }
-
-        if (controlPv != null && controlPv.startsWith("LOC\\")) {
-            classes.add("interactable");
-        } else {
-            classes.add("non-interactable");
         }
 
         if (icon) {
