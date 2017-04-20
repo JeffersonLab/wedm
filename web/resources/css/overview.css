@@ -1,5 +1,5 @@
 #version {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    float: right;
+    margin-top: 2em;
+    font-size: 0.75em;
 }
