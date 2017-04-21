@@ -19,7 +19,7 @@ if (!String.prototype.endsWith) {
     };
 }
 
-jlab.wedm.stringToFunction = function (str) {
+jlab.wedm.stringToFunction = function (str, errorCheck) {
     var arr = str.split(".");
 
     var fn = (window || this);
@@ -27,7 +27,7 @@ jlab.wedm.stringToFunction = function (str) {
         fn = fn[arr[i]];
     }
 
-    if (typeof fn !== "function") {
+    if (errorCheck && typeof fn !== "function") {
         throw new Error("function not found");
     }
 
@@ -70,7 +70,7 @@ jlab.wedm.PvObserver = function (id, pvSet) {
         /*console.log('Update: ' + pv + ': ' + value);*/
     };
 
-    jlab.wedm.PvObserver.prototype.refresh = function() {
+    jlab.wedm.PvObserver.prototype.refresh = function () {
         /*Do nothing by default*/
     };
 
@@ -654,7 +654,7 @@ jlab.wedm.initLocalPVs = function () {
         if (typeof local.enumLabels !== 'undefined' && local.enumLabels.length > 0) {
             var info = {pv: local.name, connected: true, datatype: 'DBR_ENUM', 'enum-labels': local.enumLabels};
             jlab.wedm.infoPv(info);
-        } else if(local.type === 'unresolved') {
+        } else if (local.type === 'unresolved') {
             jlab.wedm.infoPv({pv: local.name, connected: false});
         }
 
@@ -716,6 +716,26 @@ jlab.wedm.macroQueryString = function (macros) {
     }
 
     return url;
+};
+
+/*Due to observer prototype inheritance declaration order of functions matters so we provide a mechanism to ensure a dependent functions exists before init*/
+jlab.wedm.observerDependencies = [];
+jlab.wedm.initPvObserver = function(observer, dependency) {
+    console.log('init: ' + observer);
+    if(typeof dependency === 'undefined' || jlab.wedm.stringToFunction(dependency)) { /*No dependency or dependency already defined*/
+        var f = jlab.wedm.stringToFunction(observer + 'Init');
+        f();
+        jlab.wedm.observerDependencies[observer] = jlab.wedm.observerDependencies[observer] || []; /*Invoke dependents*/
+        for(var i = 0; i < jlab.wedm.observerDependencies[observer].length; i++) {
+            console.log('init dep: ' + jlab.wedm.observerDependencies[observer][i]);
+            f = jlab.wedm.stringToFunction(jlab.wedm.observerDependencies[observer][i] + 'Init');
+            f();
+        }        
+    } else { /*Queue init function to be called after dependency initialized*/
+        console.log('Queuing: ' + observer);
+        jlab.wedm.observerDependencies[dependency] = jlab.wedm.observerDependencies[dependency] || [];
+        jlab.wedm.observerDependencies[dependency].push(observer);
+    }
 };
 
 $(document).on("contextmenu", ".screen", function (e) {
@@ -803,8 +823,8 @@ $(document).on("mouseup", ".MouseSensitive", function (e) {
 $(function () {
     /*By convention nothing should be display: none initially, otherwise resize text won't work*/
     jlab.wedm.resizeText();
-     
-     /*Now we call init callback for widgets*/
+
+    /*Now we call init callback for widgets*/
     jlab.wedm.initFuncs = jlab.wedm.initFuncs || [];
     for (var i = 0; i < jlab.wedm.initFuncs.length; i++) {
         jlab.wedm.initFuncs[i]();

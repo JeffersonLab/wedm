@@ -3,6 +3,7 @@ jlab.wedm = jlab.wedm || {};
 jlab.wedm.classToObserverMap = jlab.wedm.classToObserverMap || {};
 jlab.wedm.classToObserverMap['ActiveMotifSlider'] = 'jlab.wedm.MotifSliderPvObserver';
 
+jlab.wedm.MotifSliderPvObserverInit = function() {
 jlab.wedm.MotifSliderPvObserver = function (id, pvSet) {
     jlab.wedm.PvObserver.call(this, id, pvSet);
 };
@@ -47,3 +48,6 @@ jlab.wedm.MotifSliderPvObserver.prototype.handleControlUpdate = function (update
         }
     }
 };
+};
+
+jlab.wedm.initPvObserver('jlab.wedm.MotifSliderPvObserver', 'jlab.wedm.PvObserver');
