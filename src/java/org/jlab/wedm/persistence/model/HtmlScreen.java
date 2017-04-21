@@ -1,6 +1,10 @@
 package org.jlab.wedm.persistence.model;
 
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 /**
  *
@@ -8,8 +12,31 @@ import java.util.Objects;
  */
 public class HtmlScreen {
     
-    public static final String INDENT_STEP = "    ";  
-    public static final String INITIAL_INDENT = "        ";
+    private static final Logger LOGGER = Logger.getLogger(HtmlScreen.class.getName());    
+    
+    public static final String DEFAULT_INDENT_STEP = "    ";  
+    public static final String DEFAULT_INITIAL_INDENT = "        ";
+    public static final String INDENT_STEP;  
+    public static final String INITIAL_INDENT;    
+    
+    static {
+        String productionRelease = null;
+        
+        try {
+        Context env = (Context) new InitialContext().lookup("java:comp/env");
+        productionRelease = (String) env.lookup("productionRelease");
+        } catch(Exception e) {
+            LOGGER.log(Level.WARNING, "Unable to read web.xml env: ", e);
+        }
+        
+        if("true".equals(productionRelease)) {
+            INDENT_STEP = "";
+            INITIAL_INDENT = "";
+        } else {
+            INDENT_STEP = DEFAULT_INDENT_STEP;
+            INITIAL_INDENT = DEFAULT_INITIAL_INDENT;
+        }
+    }
     
     private final String canonicalPath;
     private final String html;

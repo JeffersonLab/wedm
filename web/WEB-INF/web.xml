@@ -16,6 +16,11 @@
         <param-name>epics2webReleaseNumber</param-name>
         <param-value>1.3.0</param-value>
     </context-param>
+    <env-entry>
+        <env-entry-name>productionRelease</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>@PRODUCTION_RELEASE@</env-entry-value>
+    </env-entry>    
     <session-config>
         <session-timeout>
             30
