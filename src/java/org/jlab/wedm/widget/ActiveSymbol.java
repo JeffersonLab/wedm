@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
@@ -41,7 +42,7 @@ public class ActiveSymbol extends EmbeddedScreen {
     }
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
 
         int originX = x + translation.x;
         int originY = y + translation.y;
@@ -103,7 +104,7 @@ public class ActiveSymbol extends EmbeddedScreen {
                         overrideColorsRecursive(obj);
                     }
 
-                    html = html + obj.toHtml(indent + indentStep, indentStep, childTranslation);
+                    html = html + obj.toHtml(indent + HtmlScreen.INDENT_STEP, childTranslation);
                 } else {
                     LOGGER.log(Level.WARNING, "Symbol top level object is not an ActiveGroup: {0}",
                             obj.getClass().getSimpleName());

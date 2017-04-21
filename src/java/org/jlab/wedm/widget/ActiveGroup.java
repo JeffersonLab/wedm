@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
@@ -15,7 +16,7 @@ public class ActiveGroup extends CoreWidget {
     public List<WEDMWidget> children = new ArrayList<>();
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         this.setCommonAttributes(); // Visibility, ID, and classes       
 
         int originX = x + translation.x;
@@ -38,7 +39,7 @@ public class ActiveGroup extends CoreWidget {
         if (!children.isEmpty()) {
             //html = html + indent + "<div style=\"position: relative;\">\n";
             for (WEDMWidget obj : children) {
-                html = html + obj.toHtml(indent + indentStep + indentStep, indentStep,
+                html = html + obj.toHtml(indent + HtmlScreen.INDENT_STEP + HtmlScreen.INDENT_STEP,
                         childTranslation);
             }
             //html = html + indent + "</div>\n";

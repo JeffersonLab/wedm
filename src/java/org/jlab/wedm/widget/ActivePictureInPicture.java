@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 import org.jlab.wedm.persistence.model.Macro;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
@@ -35,7 +36,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
     }
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
 
         int originX = x + translation.x;
         int originY = y + translation.y;
@@ -82,7 +83,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
 
                 Point childTranslation = new Point(0, 0); // We don't translate to top left like ActiveSymbol does
 
-                String screenHtml = obj.toHtml(indent + indentStep, indentStep, childTranslation);
+                String screenHtml = obj.toHtml(indent + HtmlScreen.INDENT_STEP, childTranslation);
 
                 if (symbols != null && symbols[0] != null) {
                     screenHtml = applyMacros(screenHtml, symbols[0]);
@@ -93,8 +94,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         } else if (!screenList.isEmpty()) {
             for (int i = 0; i < screenList.size(); i++) {
                 Screen s = screenList.get(i);
-                s.indent = indent + indentStep;
-                String screenHtml = s.toHtmlBody();
+                String screenHtml = s.toHtmlBody(indent + HtmlScreen.INDENT_STEP);
 
                 if (symbols != null && symbols[i] != null) {
                     screenHtml = applyMacros(screenHtml, symbols[i]);

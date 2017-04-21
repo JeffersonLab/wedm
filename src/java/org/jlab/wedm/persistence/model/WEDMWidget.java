@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public interface WEDMWidget {
     public void parseTraits(Map<String, String> traits, ColorPalette palette);    
-    public String toHtml(String indent, String indentStep, Point translation);
+    public String toHtml(String indent, Point translation);
     public void symbolColorOverride(EDLColor bgColor, EDLColor fgColor);
     public void performColorRuleCorrection();
 }

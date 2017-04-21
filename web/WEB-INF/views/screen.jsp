@@ -31,28 +31,28 @@ ${screen.getCss()}
                 </symbol>
             </defs>
         </svg>
-    <div class="connection-state-panel">
-        <img class="ws-disconnected" title="Socket Disconnected" width="24px" height="24px" style="vertical-align: middle;" src="/epics2web/resources/img/disconnected.svg?v=${initParam.epics2webReleaseNumber}"/>
-        <img class="ws-connecting connecting-spinner" title="Socket Connecting" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connecting.svg?v=${initParam.epics2webReleaseNumber}"/>                
-        <img class="ws-connected" title="Socket Connected" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connected.svg?v=${initParam.epics2webReleaseNumber}"/>
-    </div>        
+        <div class="connection-state-panel">
+            <img class="ws-disconnected" title="Socket Disconnected" width="24px" height="24px" style="vertical-align: middle;" src="/epics2web/resources/img/disconnected.svg?v=${initParam.epics2webReleaseNumber}"/>
+            <img class="ws-connecting connecting-spinner" title="Socket Connecting" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connecting.svg?v=${initParam.epics2webReleaseNumber}"/>                
+            <img class="ws-connected" title="Socket Connected" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connected.svg?v=${initParam.epics2webReleaseNumber}"/>
+        </div>        
 ${screen.getHtml()}
-    <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="/epics2web/resources/js/epics2web.js?v=${initParam.epics2webReleaseNumber}"></script> 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
+        <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="/epics2web/resources/js/epics2web.js?v=${initParam.epics2webReleaseNumber}"></script> 
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
         <c:choose>
             <c:when test="${initParam.productionRelease eq 'true'}">
-                <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/combined.min.js?v=${initParam.releaseNumber}"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/combined.min.js?v=${initParam.releaseNumber}"></script>
             </c:when>
             <c:otherwise>
                 <c:forEach items="${widgets}" var="name">
-                    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/widgets/${fn:escapeXml(wedm:escapeFileName(name))}/widget.js?v=${initParam.releaseNumber}"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/widgets/${fn:escapeXml(wedm:escapeFileName(name))}/widget.js?v=${initParam.releaseNumber}"></script>
                 </c:forEach>
             </c:otherwise>
-        </c:choose>    
-    <script type="text/javascript">
+        </c:choose>
+        <script type="text/javascript">
 ${screen.getJs()}
 jlab.wedm.macroString = '${fn:escapeXml(macroString)}';
-    </script>       
-</body>
+        </script>       
+    </body>
 </html>

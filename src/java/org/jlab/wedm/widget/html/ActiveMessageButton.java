@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ActiveMessageButton extends ActiveButton {
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         if (push == null) {
             push = true;
         }
@@ -51,6 +51,6 @@ public class ActiveMessageButton extends ActiveButton {
             }
         }
         
-        return super.toHtml(indent, indentStep, translation);
+        return super.toHtml(indent, translation);
     }
 }

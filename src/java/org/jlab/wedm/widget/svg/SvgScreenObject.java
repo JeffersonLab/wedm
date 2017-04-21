@@ -1,6 +1,7 @@
 package org.jlab.wedm.widget.svg;
 
 import java.awt.Point;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 import org.jlab.wedm.widget.CoreWidget;
 
 /**
@@ -10,7 +11,7 @@ import org.jlab.wedm.widget.CoreWidget;
 public abstract class SvgScreenObject extends CoreWidget {
     public static final String DASH_SPACING = "4, 4";     
     
-    public String startSvg(String indent, String indentStep, Point translation) {
+    public String startSvg(String indent, Point translation) {
         
         // EDM Oddity
         if (lineWidth != null) {
@@ -37,23 +38,23 @@ public abstract class SvgScreenObject extends CoreWidget {
         return html;
     }
 
-    public String endSvg(String indent, String indentStep) {
+    public String endSvg(String indent) {
         return indent + "</svg>\n";
     }    
     
-    public String toSvg(String indent, String indentStep, Point translation) {
+    public String toSvg(String indent, Point translation) {
         return "";
     }
     
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         String html;
         
         Point childTranslation = new Point(-x, -y);
         
-        html = startSvg(indent, indentStep, translation);
-        html = html + toSvg(indent + indentStep, indentStep, childTranslation);
-        html = html + endSvg(indent, indentStep);
+        html = startSvg(indent, translation);
+        html = html + toSvg(indent + HtmlScreen.INDENT_STEP, childTranslation);
+        html = html + endSvg(indent);
 
         return html;
     } 

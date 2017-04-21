@@ -6,6 +6,7 @@ import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
  *
@@ -34,7 +35,7 @@ public class ActiveMotifSlider extends HtmlScreenObject {
     }
     
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         String html;
 
         if (orientation == null) {
@@ -118,16 +119,16 @@ public class ActiveMotifSlider extends HtmlScreenObject {
 
         String trackStyleStr = getStyleString(trackStyles);
 
-        html = startHtml(indent, indentStep, translation);
+        html = startHtml(indent, translation);
         html = html + indent + "<div class=\"slider-track\" " + trackStyleStr + ">";
-        html = html + indent + indentStep + "<div class=\"knob\">\n";
-        html = html + indent + indentStep + indentStep + "<div class=\"knob-handle\" "
+        html = html + indent + HtmlScreen.INDENT_STEP + "<div class=\"knob\">\n";
+        html = html + indent + HtmlScreen.INDENT_STEP + HtmlScreen.INDENT_STEP + "<div class=\"knob-handle\" "
                 + leftHandleStyleStr + "></div>";
-        html = html + indent + indentStep + indentStep + "<div class=\"knob-handle\" "
+        html = html + indent + HtmlScreen.INDENT_STEP + HtmlScreen.INDENT_STEP + "<div class=\"knob-handle\" "
                 + rightHandleStyleStr + "></div>";
-        html = html + indent + indentStep + "</div>\n";
+        html = html + indent + HtmlScreen.INDENT_STEP + "</div>\n";
         html = html + indent + "</div>\n";
-        html = html + endHtml(indent, indentStep);
+        html = html + endHtml(indent);
 
         return html;
     }

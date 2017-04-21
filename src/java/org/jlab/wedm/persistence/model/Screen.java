@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class Screen {
 
     private static final Logger LOGGER = Logger.getLogger(Screen.class.getName());
-    public String indent = "        ";
 
     private final String canonicalPath;
     private ScreenProperties properties;
@@ -35,13 +34,13 @@ public class Screen {
     }
 
     public HtmlScreen toHtmlScreen() {
-        String html = toHtmlBody();
+        String html = toHtmlBody(HtmlScreen.INITIAL_INDENT);
         String css = toCssHead();
         String js = this.getColorStyleVariables(); // TODO: this is wasteful to redo every time
         return new HtmlScreen(canonicalPath, html, css, js, properties.title);
     }
 
-    public String toHtmlBody() {
+    public String toHtmlBody(String indent) {
 
         if (properties.w <= 0) {
             properties.w = 800;
@@ -76,10 +75,10 @@ public class Screen {
         Point translation = new Point(0, 0);
 
         for (WEDMWidget obj : screenObjects) {
-            html = html + obj.toHtml(indentPlusOne, HtmlScreen.INDENT_STEP, translation);
+            html = html + obj.toHtml(indentPlusOne, translation);
         }
 
-        html = html + indent + "</div>\n";
+        html = html + HtmlScreen.INITIAL_INDENT + "</div>\n";
 
         return html;
     }

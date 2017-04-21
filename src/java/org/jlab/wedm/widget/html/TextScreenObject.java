@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
  *
@@ -52,7 +53,7 @@ public class TextScreenObject extends HtmlScreenObject {
     }
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         
         set3DStyles();
 
@@ -85,16 +86,16 @@ public class TextScreenObject extends HtmlScreenObject {
             textStyles.put("border", px + "px " + style + " " + colorStr);
         }
 
-        String html = startHtml(indent, indentStep, translation);
+        String html = startHtml(indent, translation);
 
         String threeDStyleStr = getStyleString(threeDStyles);
-        String indentPlusOne = indent + indentStep;
-        String indentPlusTwo = indentPlusOne + indentStep;
+        String indentPlusOne = indent + HtmlScreen.INDENT_STEP;
+        String indentPlusTwo = indentPlusOne + HtmlScreen.INDENT_STEP;
 
         html = html + indentPlusOne + "<div class=\"text-wrap\" " + threeDStyleStr + ">\n";
         html = getButtonFaceHtml(html, indentPlusTwo);
         html = html + indentPlusOne + "</div>\n";
-        html = html + endHtml(indent, indentStep);
+        html = html + endHtml(indent);
 
         return html;
     }

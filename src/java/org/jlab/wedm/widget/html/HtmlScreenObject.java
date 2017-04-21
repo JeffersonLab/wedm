@@ -25,7 +25,7 @@ public class HtmlScreenObject extends CoreWidget {
         threeDimensional = TraitParser.parseBoolean(traits, "3d");
     }
     
-    public String startHtml(String indent, String indentStep, Point translation) {
+    public String startHtml(String indent, Point translation) {
         this.setCommonAttributes();
 
         if (bgColor != null && !useDisplayBg) {
@@ -69,16 +69,16 @@ public class HtmlScreenObject extends CoreWidget {
         return html;
     }
 
-    public String endHtml(String indent, String indentStep) {
+    public String endHtml(String indent) {
         return indent + "</div>\n";
     }
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         String html;
 
-        html = startHtml(indent, indentStep, translation);
-        html = html + endHtml(indent, indentStep);
+        html = startHtml(indent, translation);
+        html = html + endHtml(indent);
 
         return html;
     }

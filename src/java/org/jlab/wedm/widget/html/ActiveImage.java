@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.EDLParser;
 import org.jlab.wedm.persistence.io.IOUtil;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
  *
@@ -27,7 +28,7 @@ public class ActiveImage extends HtmlScreenObject {
     }
     
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
 
         String imgHtml;
 
@@ -62,9 +63,9 @@ public class ActiveImage extends HtmlScreenObject {
             imgHtml = "";
         }
 
-        String html = startHtml(indent, indentStep, translation);
-        html = html + indent + indentStep + imgHtml;
-        html = html + endHtml(indent, indentStep);
+        String html = startHtml(indent, translation);
+        html = html + indent + HtmlScreen.INDENT_STEP + imgHtml;
+        html = html + endHtml(indent);
 
         return html;
     }

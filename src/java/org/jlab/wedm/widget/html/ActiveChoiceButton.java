@@ -23,7 +23,7 @@ public class ActiveChoiceButton extends HtmlScreenObject {
     }
     
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         classes.add("MouseSensitive");
 
         if (controlPv != null && controlPv.startsWith("LOC\\")) {
@@ -45,6 +45,6 @@ public class ActiveChoiceButton extends HtmlScreenObject {
             attributes.put("data-fg-color", fgColor.toColorString());
         }
         
-        return super.toHtml(indent, indentStep, translation);
+        return super.toHtml(indent, translation);
     }
 }

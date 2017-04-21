@@ -27,15 +27,15 @@ public class ActiveByte extends ActiveRectangle {
     }
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         attributes.put("data-shift", String.valueOf(shift));
         attributes.put("data-little-endian", String.valueOf(littleEndian));
 
-        return super.toHtml(indent, indentStep, translation);
+        return super.toHtml(indent, translation);
     }
 
     @Override
-    public String toSvg(String indent, String indentStep, Point translation) {
+    public String toSvg(String indent, Point translation) {
         String svg = "";
 
         //svg = super.toSvg(indent, indentStep, translation);

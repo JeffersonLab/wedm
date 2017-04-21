@@ -243,7 +243,8 @@ public abstract class CoreWidget implements WEDMWidget {
         styles.put("height", height);
     }
 
-    public String toHtml(String indent, String indentStep, Point translation) {
+    @Override
+    public String toHtml(String indent, Point translation) {
         String html = "";
 
         return html;

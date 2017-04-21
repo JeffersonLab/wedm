@@ -44,7 +44,7 @@ public class ActiveLine extends SvgScreenObject {
     }
     
     @Override
-    public String toSvg(String indent, String indentStep, Point translation) {
+    public String toSvg(String indent, Point translation) {
         String svg = "";
 
         if (xPoints != null && yPoints != null && xPoints.length == yPoints.length && xPoints.length

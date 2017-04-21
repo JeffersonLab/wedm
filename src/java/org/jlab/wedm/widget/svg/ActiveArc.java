@@ -27,7 +27,7 @@ public class ActiveArc extends SvgScreenObject {
     }
     
     @Override
-    public String toSvg(String indent, String indentStep, Point translation) {
+    public String toSvg(String indent, Point translation) {
         String svg = "";
 
         int originX = x + translation.x;

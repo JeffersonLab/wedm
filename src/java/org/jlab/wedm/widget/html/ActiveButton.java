@@ -73,7 +73,7 @@ public class ActiveButton extends TextScreenObject {
     }
     
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         if (push == null) {
             push = false;
         }
@@ -129,6 +129,6 @@ public class ActiveButton extends TextScreenObject {
             bgColor = offColor;
         }
 
-        return super.toHtml(indent, indentStep, translation);
+        return super.toHtml(indent, translation);
     }
 }

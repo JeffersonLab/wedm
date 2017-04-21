@@ -9,6 +9,7 @@ import java.util.Objects;
 public class HtmlScreen {
     
     public static final String INDENT_STEP = "    ";  
+    public static final String INITIAL_INDENT = "        ";
     
     private final String canonicalPath;
     private final String html;

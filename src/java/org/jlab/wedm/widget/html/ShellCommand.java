@@ -9,7 +9,7 @@ import java.awt.Point;
 public class ShellCommand extends ActiveButton {
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
-        return super.toHtml(indent, indentStep, translation);
+    public String toHtml(String indent, Point translation) {
+        return super.toHtml(indent, translation);
     }
 }

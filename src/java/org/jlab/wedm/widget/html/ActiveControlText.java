@@ -22,7 +22,7 @@ public class ActiveControlText extends ActiveStaticText {
     }
     
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         if(showUnits) {
             attributes.put("data-show-units", "true");
         }
@@ -31,7 +31,7 @@ public class ActiveControlText extends ActiveStaticText {
             alarmPv = controlPv;
         }
 
-        return super.toHtml(indent, indentStep, translation);
+        return super.toHtml(indent, translation);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class RelatedDisplay extends ActiveButton {
     }
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
 
         if (swapButtons) {
             classes.add("swapped-buttons");
@@ -73,6 +73,6 @@ public class RelatedDisplay extends ActiveButton {
             //attributes.put("data-linked-labels", labels);
         }
 
-        return super.toHtml(indent, indentStep, translation);
+        return super.toHtml(indent, translation);
     }
 }

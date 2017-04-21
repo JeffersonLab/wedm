@@ -1,6 +1,7 @@
 package org.jlab.wedm.widget.svg;
 
 import java.awt.Point;
+import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
  *
@@ -9,16 +10,16 @@ import java.awt.Point;
 public class ActiveBarMonitor extends ActiveRectangle {
 
     @Override
-    public String toHtml(String indent, String indentStep, Point translation) {
+    public String toHtml(String indent, Point translation) {
         if (orientation == null) { // ChoiceButton has opposite default...
             orientation = "horizontal";
         }
 
-        return super.toHtml(indent, indentStep, translation);
+        return super.toHtml(indent, translation);
     }
 
     @Override
-    public String toSvg(String indent, String indentStep, Point translation) {
+    public String toSvg(String indent, Point translation) {
         String svg;
 
         if (bgColor != null) {
@@ -26,7 +27,7 @@ public class ActiveBarMonitor extends ActiveRectangle {
             fillColor = bgColor;
         }
 
-        svg = super.toSvg(indent, indentStep, translation);
+        svg = super.toSvg(indent, translation);
 
         int originX = x + translation.x;
         int originY = y + translation.y;
@@ -87,7 +88,7 @@ public class ActiveBarMonitor extends ActiveRectangle {
                 + "\" width=\"" + width
                 + "\" height=\"" + height + "\" viewBox=\"" + vX + " " + vY + " " + vWidth + " " + vHeight + "\" "
                 + "data-vertical-padding=\"" + verticalPadding + "\" preserveAspectRatio=\"none\">\n";
-        svg = svg + indent + indentStep + "<rect class=\"bar\" x=\"" + 0 + "\" y=\"" + 0
+        svg = svg + indent + HtmlScreen.INDENT_STEP + "<rect class=\"bar\" x=\"" + 0 + "\" y=\"" + 0
                 + "\" width=\"" + width
                 + "\" height=\"" + height + "\" ";
 
