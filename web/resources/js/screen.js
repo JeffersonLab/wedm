@@ -721,18 +721,18 @@ jlab.wedm.macroQueryString = function (macros) {
 /*Due to observer prototype inheritance declaration order of functions matters so we provide a mechanism to ensure a dependent functions exists before init*/
 jlab.wedm.observerDependencies = [];
 jlab.wedm.initPvObserver = function(observer, dependency) {
-    console.log('init: ' + observer);
+    /*console.log('init: ' + observer);*/
     if(typeof dependency === 'undefined' || jlab.wedm.stringToFunction(dependency)) { /*No dependency or dependency already defined*/
         var f = jlab.wedm.stringToFunction(observer + 'Init');
         f();
         jlab.wedm.observerDependencies[observer] = jlab.wedm.observerDependencies[observer] || []; /*Invoke dependents*/
         for(var i = 0; i < jlab.wedm.observerDependencies[observer].length; i++) {
-            console.log('init dep: ' + jlab.wedm.observerDependencies[observer][i]);
+            /*console.log('init dep: ' + jlab.wedm.observerDependencies[observer][i]);*/
             f = jlab.wedm.stringToFunction(jlab.wedm.observerDependencies[observer][i] + 'Init');
             f();
         }        
     } else { /*Queue init function to be called after dependency initialized*/
-        console.log('Queuing: ' + observer);
+        /*console.log('Queuing: ' + observer);*/
         jlab.wedm.observerDependencies[dependency] = jlab.wedm.observerDependencies[dependency] || [];
         jlab.wedm.observerDependencies[dependency].push(observer);
     }
