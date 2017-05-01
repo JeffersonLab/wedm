@@ -1,8 +1,8 @@
 package org.jlab.wedm.persistence.model;
 
 import org.jlab.wedm.widget.ScreenProperties;
-import org.jlab.wedm.widget.CoreWidget;
 import java.awt.Point;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,14 +16,16 @@ public class Screen {
     private static final Logger LOGGER = Logger.getLogger(Screen.class.getName());
 
     private final String canonicalPath;
+    private final long modifiedDate;
     private ScreenProperties properties;
     public final List<WEDMWidget> screenObjects;
     public Integer embeddedIndex = null;
     private final ColorPalette colorList;
 
-    public Screen(String canonicalPath, ScreenProperties properties,
+    public Screen(String canonicalPath, long modifiedDate, ScreenProperties properties,
             List<WEDMWidget> screenObjects, ColorPalette colorList) {
         this.canonicalPath = canonicalPath;
+        this.modifiedDate = modifiedDate;
         this.properties = properties;
         this.screenObjects = screenObjects;
         this.colorList = colorList;
@@ -37,7 +39,7 @@ public class Screen {
         String html = toHtmlBody(HtmlScreen.INITIAL_INDENT);
         String css = toCssHead();
         String js = this.getColorStyleVariables(); // TODO: this is wasteful to redo every time
-        return new HtmlScreen(canonicalPath, html, css, js, properties.title);
+        return new HtmlScreen(canonicalPath, modifiedDate, html, css, js, properties.title);
     }
 
     public String toHtmlBody(String indent) {

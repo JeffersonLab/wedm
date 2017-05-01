@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ public class ScreenParser extends EDLParser {
         File edl = getEdlFile(name);
 
         String canonicalPath = edl.getCanonicalPath();
+        long modifiedDate = edl.lastModified();
 
         ScreenProperties properties = new ScreenProperties();
         properties.colorList = colorList;
@@ -245,6 +247,6 @@ public class ScreenParser extends EDLParser {
             }
         }
 
-        return new Screen(canonicalPath, properties, screenObjects, colorList);
+        return new Screen(canonicalPath, modifiedDate, properties, screenObjects, colorList);
     }
 }

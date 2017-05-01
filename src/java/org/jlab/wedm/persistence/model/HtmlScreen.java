@@ -1,6 +1,7 @@
 package org.jlab.wedm.persistence.model;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -38,18 +39,29 @@ public class HtmlScreen {
         }
     }
     
+    private final AtomicInteger usageCounter = new AtomicInteger();
+    private final long characterCount;
+    private float generateSeconds;
+    private final long modifiedDate;
     private final String canonicalPath;
     private final String html;
     private final String css;
     private final String title;
     private final String js;
     
-    public HtmlScreen(String canonicalPath, String html, String css, String js, String title) {
+    public HtmlScreen(String canonicalPath, long modifiedDate, String html, String css, String js, String title) {
         this.canonicalPath = canonicalPath;
+        this.modifiedDate = modifiedDate;
         this.html = html;
         this.css = css;
         this.js = js;
         this.title = title;
+        
+        characterCount = html.length() + css.length() + js.length() + canonicalPath.length();
+    }
+    
+    public long getModifiedDate() {
+        return modifiedDate;
     }
     
     public String getCanonicalPath() {
@@ -91,4 +103,24 @@ public class HtmlScreen {
     public int hashCode() {
         return canonicalPath.hashCode();
     }        
+
+    public void incrementUsageCount() {
+        usageCounter.incrementAndGet();
+    }
+    
+    public int getUsageCount() {
+        return usageCounter.get();
+    }
+    
+    public long getCharacterCount() {
+        return characterCount;
+    }
+    
+    public void setGenerateSeconds(float generateSeconds) {
+        this.generateSeconds = generateSeconds;
+    }
+    
+    public float getGenerateSeconds() {
+        return generateSeconds;
+    }
 }

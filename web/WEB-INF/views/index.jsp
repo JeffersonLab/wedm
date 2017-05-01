@@ -19,6 +19,9 @@
                         </c:url>
                         <a href="${url}">Browse for EDL files</a>    
                     </td>
+                    <td>
+                        <a href="cache">View Screen Cache</a>    
+                    </td>
                 </tr>
             </tbody>
         </table>

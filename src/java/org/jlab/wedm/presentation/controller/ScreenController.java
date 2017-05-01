@@ -52,14 +52,14 @@ public class ScreenController extends HttpServlet {
             }
         }
 
-                StringBuilder builder = new StringBuilder();
-        if(!macros.isEmpty()) {
+        StringBuilder builder = new StringBuilder();
+        if (!macros.isEmpty()) {
             Macro m = macros.get(0);
             builder.append(m.key.substring(2, m.key.length() - 1));
             builder.append("=");
             builder.append(m.value);
-            
-            for(int i = 1; i < macros.size(); i++) {
+
+            for (int i = 1; i < macros.size(); i++) {
                 m = macros.get(i);
                 builder.append(",");
                 builder.append(m.key.substring(2, m.key.length() - 1));
@@ -67,9 +67,9 @@ public class ScreenController extends HttpServlet {
                 builder.append(m.value);
             }
         }
-        
+
         String macroString = builder.toString();
-        
+
         ScreenService service = new ScreenService();
 
         long start = System.currentTimeMillis();

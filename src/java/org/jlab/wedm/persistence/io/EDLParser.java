@@ -38,7 +38,7 @@ public class EDLParser {
         return name;
     }
 
-    public File getEdlFile(String name) {
+    public static File getEdlFile(String name) {
         if (name == null) {
             throw new RuntimeException("An EDL file is required");
         }
