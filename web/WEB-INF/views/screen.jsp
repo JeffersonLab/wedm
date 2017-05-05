@@ -7,7 +7,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WEDM - ${screen.title ne null ? screen.title : param.edl}</title>
-        <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/epics2web.css?v=${initParam.epics2webReleaseNumber}"/>
+        <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/epics2web.min.css?v=${initParam.epics2webReleaseNumber}"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
         <c:choose>
             <c:when test="${initParam.productionRelease eq 'true'}">
@@ -38,7 +38,7 @@ ${screen.getCss()}
         </div>        
 ${screen.getHtml()}
         <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
-        <script type="text/javascript" src="/epics2web/resources/js/epics2web.js?v=${initParam.epics2webReleaseNumber}"></script> 
+        <script type="text/javascript" src="/epics2web/resources/js/epics2web.min.js?v=${initParam.epics2webReleaseNumber}"></script> 
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
         <c:choose>
             <c:when test="${initParam.productionRelease eq 'true'}">
