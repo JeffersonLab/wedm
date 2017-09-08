@@ -14,6 +14,12 @@ public class EDLParser {
     public static final String REWRITE_TO_DIR;
     public static final EDLFont DEFAULT_FONT = new EDLFont("helvetica", false, false, 12);
 
+    /**
+     * On Windows you could set EDL_DIR to a remote ExpanDrive mount say 
+     * E:\cs\opshome\edm then set REWRITE_FROM_DIR to / 
+     * and REWRITE_TO_DIR to E:\.
+     **/
+    
     static {
         final String defaultRoot = "C:\\EDL";
         String root = System.getenv("EDL_DIR");
