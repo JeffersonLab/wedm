@@ -16,7 +16,7 @@ Browse
 
 ## Installation
    1. Install [epics2web](https://github.com/JeffersonLab/epics2web)
-   1. Download wedm.war and drop it into the Tomcat webapps directory
+   1. Download [wedm.war](https://github.com/JeffersonLab/wedm/releases) and drop it into the Tomcat webapps directory
    1. Start Tomcat and navigate your web browser to localhost:8080/wedm
    
 ## Configuration
