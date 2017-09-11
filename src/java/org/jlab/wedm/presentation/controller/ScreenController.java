@@ -1,5 +1,6 @@
 package org.jlab.wedm.presentation.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -72,16 +73,23 @@ public class ScreenController extends HttpServlet {
 
         ScreenService service = new ScreenService();
 
-        long start = System.currentTimeMillis();
-        HtmlScreen screen = service.load(edlname, macros);
-        long end = System.currentTimeMillis();
+        try {
+            long start = System.currentTimeMillis();
+            HtmlScreen screen = service.load(edlname, macros);
+            long end = System.currentTimeMillis();
 
-        LOGGER.log(Level.FINEST, "Screen Service Load Time: (seconds) {0}", (end - start) / 1000.0);
+            LOGGER.log(Level.FINEST, "Screen Service Load Time: (seconds) {0}", (end - start) / 1000.0);
 
-        request.setAttribute("widgets", Configuration.WIDGET_LIST);
-        request.setAttribute("screen", screen);
-        request.setAttribute("macroString", macroString);
+            request.setAttribute("widgets", Configuration.WIDGET_LIST);
+            request.setAttribute("screen", screen);
+            request.setAttribute("macroString", macroString);
 
-        request.getRequestDispatcher("/WEB-INF/views/screen.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/screen.jsp").forward(request, response);
+        } catch (FileNotFoundException ex) {
+
+            request.setAttribute("edlname", edlname);
+
+            request.getRequestDispatcher("/WEB-INF/views/file-not-found.jsp").forward(request, response);
+        }
     }
 }
