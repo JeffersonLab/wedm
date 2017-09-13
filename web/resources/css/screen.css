@@ -35,6 +35,10 @@
 .anchor-li a {
     cursor: default;
 }
+/*On iOS div click events don't propagate unless cursor is a pointer' */
+.MouseSensitive.iosClickable {
+    cursor: pointer;
+}
 /*On hover insert a new transparent psudo-div that streches over entire widget and then push it to top of stacking order and draw outline, also ensure mouse events pass through*/
 .ScreenObject.interactable:hover:before,
 .ScreenObject.disabled-interactable:hover:before,

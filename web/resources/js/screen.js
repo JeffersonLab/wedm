@@ -34,6 +34,15 @@ jlab.wedm.stringToFunction = function (str, errorCheck) {
     return  fn;
 };
 
+jlab.wedm.hasTouch = function () {
+    try {
+        document.createEvent("TouchEvent");
+        return true;
+    } catch (e) {
+        return false;
+    }
+};
+
 jlab.wedm.PvObserver = function (id, pvSet) {
     this.id = id;
     this.pvSet = pvSet;
@@ -720,17 +729,17 @@ jlab.wedm.macroQueryString = function (macros) {
 
 /*Due to observer prototype inheritance declaration order of functions matters so we provide a mechanism to ensure a dependent functions exists before init*/
 jlab.wedm.observerDependencies = [];
-jlab.wedm.initPvObserver = function(observer, dependency) {
+jlab.wedm.initPvObserver = function (observer, dependency) {
     /*console.log('init: ' + observer);*/
-    if(typeof dependency === 'undefined' || jlab.wedm.stringToFunction(dependency)) { /*No dependency or dependency already defined*/
+    if (typeof dependency === 'undefined' || jlab.wedm.stringToFunction(dependency)) { /*No dependency or dependency already defined*/
         var f = jlab.wedm.stringToFunction(observer + 'Init');
         f();
         jlab.wedm.observerDependencies[observer] = jlab.wedm.observerDependencies[observer] || []; /*Invoke dependents*/
-        for(var i = 0; i < jlab.wedm.observerDependencies[observer].length; i++) {
+        for (var i = 0; i < jlab.wedm.observerDependencies[observer].length; i++) {
             /*console.log('init dep: ' + jlab.wedm.observerDependencies[observer][i]);*/
             f = jlab.wedm.stringToFunction(jlab.wedm.observerDependencies[observer][i] + 'Init');
             f();
-        }        
+        }
     } else { /*Queue init function to be called after dependency initialized*/
         /*console.log('Queuing: ' + observer);*/
         jlab.wedm.observerDependencies[dependency] = jlab.wedm.observerDependencies[dependency] || [];
@@ -835,4 +844,9 @@ $(function () {
     jlab.wedm.initWebsocket();
 
     jlab.wedm.initLocalPVs();
+
+    /*If a touch screen device assume no mouse and assume iOS which must have cusor: pointer css rule on clickable stuff or events won't propagate*/
+    if (jlab.wedm.hasTouch()) {
+        $(".MouseSensitive").addClass("iosClickable");
+    }
 });
