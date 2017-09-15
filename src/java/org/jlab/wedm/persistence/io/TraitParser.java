@@ -159,14 +159,15 @@ public class TraitParser {
                 result = new String[elementCount];
 
                 for (int i = 0; i < lines.length; i++) {
-                    String[] tks = lines[i].split("\\s+");
+                    String line = lines[i];
+                    String[] tks = line.split("\\s+");
                     int index = Integer.parseInt(tks[0]);
 
                     if (index >= 0 && index <= MAX_ARRAY_SIZE) {
                         // value is stripQuotes by parser, but double quotes in middle still there
                         String val;
                         if (tks.length > 1) {
-                            val = tks[1].trim();
+                            val = line.substring(line.indexOf(tks[0]) + 1).trim();
                         } else { // value is missing (line with integer only)
                             val = "";
                         }
