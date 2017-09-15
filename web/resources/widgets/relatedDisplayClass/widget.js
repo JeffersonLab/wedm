@@ -38,11 +38,11 @@ $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
                 } else {
                     macros.push(macro);
                 }
-                
-                if(!doNotPropagate) {
-                    if(macros[i].length > 0) {
+
+                if (!doNotPropagate) {
+                    if (macros[i].length > 0) {
                         macros[i] = macros[i] + "," + jlab.wedm.macroString;
-                    } else{
+                    } else {
                         macros[i] = jlab.wedm.macroString;
                     }
                 }
@@ -55,7 +55,9 @@ $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
                 left = e.pageX + "px",
                 top = e.pageY + "px";
 
-        if (files.length === 1) {
+        if (files.length === 0) {
+            /*Do nothing*/
+        } else if (files.length === 1) {
             window.open(path + files[0] + jlab.wedm.macroQueryString(macros[0]), '_blank');
         } else {
             var $html = $('<div class="related-display-menu" style="left: ' + left + '; top: ' + top + ';" ><ul></ul></div>');

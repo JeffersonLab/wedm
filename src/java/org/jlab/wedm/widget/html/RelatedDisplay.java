@@ -32,7 +32,9 @@ public class RelatedDisplay extends ActiveButton {
 
     @Override
     protected void setInteractable() {
-        classes.add("interactable");
+        if (numDsps > 0) {
+            classes.add("interactable");
+        }
     }
 
     @Override
