@@ -167,7 +167,7 @@ public class TraitParser {
                         // value is stripQuotes by parser, but double quotes in middle still there
                         String val;
                         if (tks.length > 1) {
-                            val = line.substring(line.indexOf(tks[0]) + 1).trim();
+                            val = line.substring(line.indexOf(tks[0]) + tks[0].length()).trim();
                         } else { // value is missing (line with integer only)
                             val = "";
                         }
