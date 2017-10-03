@@ -29,20 +29,47 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                     width = $bar.attr("width"),
                     $barHolder = $obj.find(".bar-holder"),
                     holderHeight = $barHolder.attr("height") * 1,
-                    verticalPadding = $barHolder.attr("data-vertical-padding") * 1; // constant padding offset
+                    holderWidth = $barHolder.attr("width") * 1,
+                    verticalPadding = $barHolder.attr("data-vertical-padding") * 1, // constant padding offset
+                    maxMag = Math.abs(max - origin),
+                    proportion = maxMag / magnitude;
 
 
             if (horizontal) {
                 /*$.attr will force lowercase, not camel case so we use native JavaScript*/
                 $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
 
-                $bar.attr("width", value);
+                var rightBarHolderOffset = (holderWidth * (proportion)),
+                        leftBarHolderOffset = (holderWidth * (1 - proportion));
+
+                if (value > origin) { // Bar grows right
+                    /*$.attr will force lowercase, not camel case so we use native JavaScript*/
+                    $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
+
+                    $bar.removeAttr("transform");
+
+                    $barHolder.attr("x", rightBarHolderOffset);
+
+                    var width = Math.min(value, max);
+
+                    $bar.attr("width", Math.abs(width));
+                } else { /*Bar grows left since less than origin*/
+
+                    /*$.attr will force lowercase, not camel case so we use native JavaScript*/
+                    /*Use -magnitude for x since we are using scale(1,-1) to flip coordintes and have x values go left instead of right*/
+                    $holder[0].setAttribute("viewBox", (-magnitude) + " 0 " + magnitude + " " + height);
+
+                    $bar.attr("transform", "scale(1,-1)");
+
+                    $barHolder.attr("x", leftBarHolderOffset);
+
+                    var width = Math.max(value, min);
+
+                    $bar.attr("width", Math.abs(width));
+                }
 
             } else { /*Vertical*/
-
-                var maxMag = Math.abs(max - origin),
-                        proportion = maxMag / magnitude,
-                        baselineOffset = verticalPadding + (holderHeight * proportion),
+                var baselineOffset = verticalPadding + (holderHeight * proportion),
                         upBarHolderOffset = verticalPadding - (holderHeight * (1 - proportion)),
                         downBarHolderOffset = verticalPadding + (holderHeight * proportion);
 
