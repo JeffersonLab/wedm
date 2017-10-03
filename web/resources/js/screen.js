@@ -633,7 +633,7 @@ jlab.wedm.infoPv = function (detail) {
 };
 
 jlab.wedm.initWebsocket = function () {
-    var options = {};
+    var options = {reconnectWaitMillis: 1000};
 
     jlab.wedm.con = new jlab.epics2web.ClientConnection(options);
 
