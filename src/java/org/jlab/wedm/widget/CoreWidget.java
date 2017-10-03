@@ -69,6 +69,7 @@ public abstract class CoreWidget implements WEDMWidget {
     public boolean useAlarmBorder = false;
     public boolean editable = false;
     public boolean useHexPrefix = false;
+    public boolean showScale = false;
     public EDLFont font;
     public String format;
     public String controlPv;
@@ -175,6 +176,10 @@ public abstract class CoreWidget implements WEDMWidget {
 
         if (limitsFromDb) {
             attributes.put("data-db-limits", "true");
+        }
+        
+        if(showScale) {
+            attributes.put("data-show-scale", "true");
         }
 
         if (indicatorAlarm) {
@@ -373,6 +378,7 @@ public abstract class CoreWidget implements WEDMWidget {
             useAlarmBorder = TraitParser.parseBoolean(traits, "useAlarmBorder");
             editable = TraitParser.parseBoolean(traits, "editable");
             useHexPrefix = TraitParser.parseBoolean(traits, "useHexPrefix");
+            showScale = TraitParser.parseBoolean(traits, "showScale");
 
             // Convenience booleans
             dash = "dash".equals(traits.get("lineStyle"));

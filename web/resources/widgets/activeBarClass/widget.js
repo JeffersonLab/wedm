@@ -21,6 +21,8 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                 $baseline = $obj.find(".base-line"),
                 max = $obj.attr("data-max"),
                 min = $obj.attr("data-min"),
+                showScale = $obj.attr("data-show-scale") === "true",
+                scaleHeight = 30, /*Scale height is fixed and doesn't... scale */
                 origin = parseFloat($obj.attr("data-origin") || "0.0"),
                 magnitude = Math.abs(max - origin) + Math.abs(min - origin);
 
@@ -39,10 +41,10 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                 /*$.attr will force lowercase, not camel case so we use native JavaScript*/
                 $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
 
-                var rightBarHolderOffset = (holderWidth * (proportion)),
-                        leftBarHolderOffset = (holderWidth * (1 - proportion));
+                var rightBarHolderOffset = (holderWidth * (1 - proportion)),
+                        leftBarHolderOffset = (holderWidth * (proportion));
 
-                if (value > origin) { // Bar grows right
+                if (value > origin) { // Bar grows right    
                     /*$.attr will force lowercase, not camel case so we use native JavaScript*/
                     $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
 
