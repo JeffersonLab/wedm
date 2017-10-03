@@ -32,7 +32,7 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                     $barHolder = $obj.find(".bar-holder"),
                     holderHeight = $barHolder.attr("height") * 1,
                     holderWidth = $barHolder.attr("width") * 1,
-                    verticalPadding = $barHolder.attr("data-vertical-padding") * 1, // constant padding offset
+                    verticalPadding = $barHolder.attr("data-vertical-padding") * 1, // constant padding offset (not always vertical?)
                     maxMag = Math.abs(max - origin),
                     proportion = maxMag / magnitude;
 
@@ -41,8 +41,8 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                 /*$.attr will force lowercase, not camel case so we use native JavaScript*/
                 $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
 
-                var rightBarHolderOffset = (holderWidth * (1 - proportion)),
-                        leftBarHolderOffset = (holderWidth * (proportion));
+                var rightBarHolderOffset = verticalPadding + (holderWidth * (1 - proportion)),
+                        leftBarHolderOffset = verticalPadding - (holderWidth * (proportion));
 
                 if (value > origin) { // Bar grows right    
                     /*$.attr will force lowercase, not camel case so we use native JavaScript*/

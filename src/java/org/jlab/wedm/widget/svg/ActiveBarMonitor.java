@@ -47,6 +47,9 @@ public class ActiveBarMonitor extends ActiveRectangle {
             originY = originY + h / 6;
             width = w - (w / 12);
             height = h - (h / 3);
+            
+            verticalPadding = originY;            
+            
             vX = 0;
             vY = 0;
             vWidth = 0; // Unknown until max/min known = abs(max - origin) + abs(min - origin)
