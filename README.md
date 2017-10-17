@@ -24,3 +24,4 @@ The environment variable **EDL_DIR** must be set to the canonical path to the di
 
 ## See Also
 [WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes) 
+[This work was presented at ICALEPCS 2017](http://icalepcs2017.org/)
