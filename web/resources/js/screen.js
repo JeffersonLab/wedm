@@ -881,6 +881,7 @@ $(document).on("mousedown", ".MouseSensitive", function (e) {
         }
         if(msg) {
             $("#tooltip").text(msg);
+            $(this).parent().prepend($("#tooltip")); /*We move tooltip to be under same parent element to ensure offsets are relative to same parent*/
             $("#tooltip").css("top", $(this).css("top"));
             $("#tooltip").css("left", $(this).css("left"));
             $("#tooltip").show();
