@@ -61,6 +61,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         styles.put("height", h + "px");
         styles.put("left", originX + "px");
         styles.put("top", originY + "px");
+        styles.put("pointer-events", "auto"); /*Without this scroll bars don't work*/
 
         if (topShadowColor != null && botShadowColor != null) {
             styles.put("border-top", "2px solid " + botShadowColor.toColorString());
