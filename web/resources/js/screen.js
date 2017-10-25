@@ -21,48 +21,48 @@ if (!String.prototype.endsWith) {
 
 /*https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript*/
 function copyTextToClipboard(text) {
-  var textArea = document.createElement("textarea");
+    var textArea = document.createElement("textarea");
 
-  // Place in top-left corner of screen regardless of scroll position.
-  textArea.style.position = 'fixed';
-  textArea.style.top = 0;
-  textArea.style.left = 0;
+    // Place in top-left corner of screen regardless of scroll position.
+    textArea.style.position = 'fixed';
+    textArea.style.top = 0;
+    textArea.style.left = 0;
 
-  // Ensure it has a small width and height. Setting to 1px / 1em
-  // doesn't work as this gives a negative w/h on some browsers.
-  textArea.style.width = '2em';
-  textArea.style.height = '2em';
+    // Ensure it has a small width and height. Setting to 1px / 1em
+    // doesn't work as this gives a negative w/h on some browsers.
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
 
-  // We don't need padding, reducing the size if it does flash render.
-  textArea.style.padding = 0;
+    // We don't need padding, reducing the size if it does flash render.
+    textArea.style.padding = 0;
 
-  // Clean up any borders.
-  textArea.style.border = 'none';
-  textArea.style.outline = 'none';
-  textArea.style.boxShadow = 'none';
+    // Clean up any borders.
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
 
-  // Avoid flash of white box if rendered for any reason.
-  textArea.style.background = 'transparent';
+    // Avoid flash of white box if rendered for any reason.
+    textArea.style.background = 'transparent';
 
 
-  textArea.value = text;
+    textArea.value = text;
 
-  document.body.appendChild(textArea);
+    document.body.appendChild(textArea);
 
-  textArea.select();
+    textArea.select();
 
-  try {
-    var successful = document.execCommand('copy');
-    if(!successful) {
-        console.log('unable to copy');
+    try {
+        var successful = document.execCommand('copy');
+        if (!successful) {
+            console.log('unable to copy');
+        }
+        /*var msg = successful ? 'successful' : 'unsuccessful';*/
+        /*console.log('Copying text command was ' + msg);*/
+    } catch (err) {
+        console.log('Oops, unable to copy');
     }
-    /*var msg = successful ? 'successful' : 'unsuccessful';*/
-    /*console.log('Copying text command was ' + msg);*/
-  } catch (err) {
-    console.log('Oops, unable to copy');
-  }
 
-  document.body.removeChild(textArea);
+    document.body.removeChild(textArea);
 }
 
 jlab.wedm.stringToFunction = function (str, errorCheck) {
@@ -867,19 +867,25 @@ $(document).on("contextmenu", ".MouseSensitive", function (e) {
     jlab.wedm.propogateMouseEventToStackedElements(e, "contextmenu");
 });
 
-$(document).on("mousedown", ".MouseSensitive", function (e) {    
-    if(e.which === 2) {        
+$(document).on("mousedown", ".MouseSensitive", function (e) {
+    if (e.which === 2) {
         /*console.log('middle mousedown');
-        console.log($(this));*/
-        
+         console.log($(this));*/
+
         var msg = $(this).attr("data-pv");
-        if(!msg) {
+        if (!msg) {
             msg = $(this).attr("data-alarm-pv");
         }
-        if(!msg) {
+        if (!msg) {
             msg = $(this).attr("data-indicator-pv");
         }
-        if(msg) {
+        if (!msg) {
+            msg = $(this).attr("data-color-pv");
+        }
+        if(!msg) {
+            msg = $(this).attr("data-vis-pv");
+        }
+        if (msg) {
             $("#tooltip").text(msg);
             $(this).parent().prepend($("#tooltip")); /*We move tooltip to be under same parent element to ensure offsets are relative to same parent*/
             $("#tooltip").css("top", $(this).css("top"));
@@ -892,11 +898,11 @@ $(document).on("mousedown", ".MouseSensitive", function (e) {
     }
 });
 
-$(document).on("mouseout", ".MouseSensitive", function(e){
-        $("#tooltip").hide();    
+$(document).on("mouseout", ".MouseSensitive", function (e) {
+    $("#tooltip").hide();
 });
 
-$(document).on("mouseup", ".MouseSensitive", function (e) {  
+$(document).on("mouseup", ".MouseSensitive", function (e) {
     jlab.wedm.propogateMouseEventToStackedElements(e, "mouseup");
 });
 
