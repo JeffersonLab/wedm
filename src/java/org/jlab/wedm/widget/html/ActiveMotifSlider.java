@@ -50,8 +50,6 @@ public class ActiveMotifSlider extends HtmlScreenObject {
             attributes.put("data-max", String.valueOf(scaleMax));
         }
 
-        classes.add("MouseSensitive");
-
         if (secondBgColor != null) {
             trackStyles.put("background-color", secondBgColor.toColorString());
         }

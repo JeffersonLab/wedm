@@ -77,8 +77,6 @@ public class ActiveButton extends TextScreenObject {
         if (push == null) {
             push = false;
         }
-
-        classes.add("MouseSensitive");
         
         setActionValues();
 

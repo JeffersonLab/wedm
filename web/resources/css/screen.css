@@ -80,3 +80,17 @@ svg.ScreenObject {
 .connection-state-panel {
     float: right;
 }
+#tooltip {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid white;
+    z-index: 9;
+    border-radius: 8px;
+    padding: 4px;
+    color: white;
+    background-color: gray;
+    opacity: 0.9;
+    pointer-events: none; /*Don't trigger mouseout of parent'*/
+}

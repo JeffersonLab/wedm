@@ -7,7 +7,6 @@ import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.HtmlScreen;
-import org.jlab.wedm.persistence.model.Macro;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 

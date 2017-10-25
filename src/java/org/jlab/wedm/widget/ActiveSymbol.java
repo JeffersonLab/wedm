@@ -3,6 +3,7 @@ package org.jlab.wedm.widget;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -36,7 +37,7 @@ public class ActiveSymbol extends EmbeddedScreen {
         maxValues = TraitParser.parseIntArray(traits, numStates, "maxValues");
 
         controlPvs = TraitParser.parseStringArray(traits, 1, "controlPvs");
-        
+
         useOriginalSize = TraitParser.parseBoolean(traits, "useOriginalSize");
         useOriginalColors = TraitParser.parseBoolean(traits, "useOriginalColors");
     }
@@ -75,6 +76,16 @@ public class ActiveSymbol extends EmbeddedScreen {
         styles.put("left", originX + "px");
         styles.put("top", originY + "px");
 
+        Map<String, String> glasspaneStyles = new HashMap<>();
+        glasspaneStyles.put("width", w + "px");
+        glasspaneStyles.put("height", h + "px");
+        glasspaneStyles.put("left", "0");
+        glasspaneStyles.put("top", "0");
+        glasspaneStyles.put("position", "absolute");
+        glasspaneStyles.put("z-index", "9999");
+        glasspaneStyles.put("pointer-events", "auto");
+        String glasspaneStyleStr = getStyleString(glasspaneStyles);
+
         String attrStr = getAttributesString(attributes);
         String classStr = getClassString(classes);
         String styleStr = getStyleString(styles);
@@ -112,6 +123,8 @@ public class ActiveSymbol extends EmbeddedScreen {
             }
         }
 
+        html = html + indent + HtmlScreen.INDENT_STEP + "<div data-pv=\"" + attributes.get("data-pv") + "\" class=\"GlassPane MouseSensitive\" " + glasspaneStyleStr + "></div>\n";
+
         html = html + indent + "</div>\n";
 
         return html;
@@ -127,5 +140,5 @@ public class ActiveSymbol extends EmbeddedScreen {
                 overrideColorsRecursive(child);
             }
         }
-    }    
+    }
 }

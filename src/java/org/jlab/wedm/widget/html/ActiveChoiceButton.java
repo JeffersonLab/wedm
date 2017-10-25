@@ -24,8 +24,6 @@ public class ActiveChoiceButton extends HtmlScreenObject {
     
     @Override
     public String toHtml(String indent, Point translation) {
-        classes.add("MouseSensitive");
-
         if (controlPv != null && controlPv.startsWith("LOC\\")) {
             classes.add("interactable");
         } else {

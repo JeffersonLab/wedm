@@ -86,6 +86,8 @@ public abstract class CoreWidget implements WEDMWidget {
         String className = this.getClass().getSimpleName();
         classes.add(className);
         classes.add("ScreenObject");
+        
+        classes.add("MouseSensitive"); // Everything is MouseSensitive now that we must show tooltips on middle mouse click
 
         if (invisible) {
             classes.add("invisible");

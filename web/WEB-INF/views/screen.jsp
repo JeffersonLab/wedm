@@ -37,6 +37,7 @@ ${screen.getCss()}
             <img class="ws-connected" title="Socket Connected" width="24px" height="24px" style="vertical-align: middle; display: none;" src="/epics2web/resources/img/connected.svg?v=${initParam.epics2webReleaseNumber}"/>
         </div>        
 ${screen.getHtml()}
+        <div id="tooltip"/>
         <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="/epics2web/resources/js/epics2web.min.js?v=${initParam.epics2webReleaseNumber}"></script> 
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>

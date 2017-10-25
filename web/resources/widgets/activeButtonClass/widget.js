@@ -43,26 +43,32 @@ jlab.wedm.ButtonPvObserverInit = function () {
 
 jlab.wedm.initPvObserver('jlab.wedm.ButtonPvObserver', 'jlab.wedm.StaticTextPvObserver');
 
-$(document).on("mousedown", ".interactable.push-button", function () {
-    jlab.wedm.doButtonDown($(this));
-});
-
-$(document).on("mouseup mouseout", ".interactable.push-button", function () {
-    if ($(this).hasClass("button-down")) {
-        jlab.wedm.doButtonUp($(this));
+$(document).on("mousedown", ".interactable.push-button", function (e) {
+    if (e.which !== 2) { /*Ignore middle mouse clicks*/
+        jlab.wedm.doButtonDown($(this));
     }
 });
 
-$(document).on("click", ".interactable.toggle-button", function () {
-    var $obj = $(this);
+$(document).on("mouseup mouseout", ".interactable.push-button", function (e) {
+    if (e.which !== 2) { /*Ignore middle mouse clicks*/
+        if ($(this).hasClass("button-down")) {
+            jlab.wedm.doButtonUp($(this));
+        }
+    }
+});
 
-    if ($obj.hasClass("toggle-button-off")) {
-        $obj.removeClass("toggle-button-off");
-        $obj.addClass("toggle-button-on");
-        jlab.wedm.doButtonDown($obj);
-    } else if ($obj.hasClass("toggle-button-on")) {
-        $obj.removeClass("toggle-button-on");
-        $obj.addClass("toggle-button-off");
-        jlab.wedm.doButtonUp($obj);
+$(document).on("click", ".interactable.toggle-button", function (e) {
+    if (e.which !== 2) { /*Ignore middle mouse clicks*/
+        var $obj = $(this);
+
+        if ($obj.hasClass("toggle-button-off")) {
+            $obj.removeClass("toggle-button-off");
+            $obj.addClass("toggle-button-on");
+            jlab.wedm.doButtonDown($obj);
+        } else if ($obj.hasClass("toggle-button-on")) {
+            $obj.removeClass("toggle-button-on");
+            $obj.addClass("toggle-button-off");
+            jlab.wedm.doButtonUp($obj);
+        }
     }
 });
