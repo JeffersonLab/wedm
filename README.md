@@ -23,4 +23,5 @@ Browse
 The environment variable **EDL_DIR** must be set to the canonical path to the directory containing your EDL files.  If you want the demo EDL files on the overview page to work you need to download ![the demo files](/data/edl/wedm) and place them inside your *EDL_DIR* directory at the subdirectory *wedm*.  Demo files which require an EPICS monitor will need those PVs to exist (LOC PVs are used as much as possible to limit this).
 
 ## See Also
-[WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes) 
+[WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes)      
+[This work was presented at ICALEPCS 2017](http://icalepcs2017.org/)     
