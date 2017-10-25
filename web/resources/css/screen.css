@@ -90,6 +90,9 @@ svg.ScreenObject {
     border-radius: 8px;
     padding: 4px;
     color: white;
+    font-size: 10px;
+    font-weight: normal;
+    font-style: normal;
     background-color: gray;
     opacity: 0.9;
     pointer-events: none; /*Don't trigger mouseout of parent'*/
