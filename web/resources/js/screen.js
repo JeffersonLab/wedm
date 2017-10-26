@@ -827,7 +827,7 @@ jlab.wedm.propogateMouseEventToStackedElements = function (e, type) {
         depth++;
         switch (type) {
             case "mousedown":
-                $obj.mousedown();
+                $obj.trigger($.Event("mousedown", {which: e.which, pageX: e.pageX, pageY: e.pageY}));
                 break;
             case "mouseup":
                 $obj.mouseup();
@@ -870,7 +870,7 @@ $(document).on("contextmenu", ".MouseSensitive", function (e) {
 $(document).on("mousedown", ".MouseSensitive", function (e) {
     if (e.which === 2) {
         /*console.log('middle mousedown');
-         console.log($(this));*/
+        console.log($(this));*/
 
         var msg = $(this).attr("data-pv");
         if (!msg) {
@@ -889,13 +889,17 @@ $(document).on("mousedown", ".MouseSensitive", function (e) {
             $("#tooltip").text(msg);
             $(this).parent().prepend($("#tooltip")); /*We move tooltip to be under same parent element to ensure offsets are relative to same parent*/
             $("#tooltip").css("top", $(this).css("top"));
-            $("#tooltip").css("left", $(this).css("left"));
+            $("#tooltip").css("left", parseInt($(this).css("left")) + parseInt($(this).css("width")) + "px");
             $("#tooltip").show();
             copyTextToClipboard(msg);
+        } else {
+            jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");            
         }
     } else {
         jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");
     }
+    
+    return false; /*don't use standard event propogation - we're doing our own*/
 });
 
 $(document).on("mouseout", ".MouseSensitive", function (e) {
