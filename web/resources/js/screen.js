@@ -65,6 +65,15 @@ function copyTextToClipboard(text) {
     document.body.removeChild(textArea);
 }
 
+jlab.wedm.getDocumentCoords = function(elem) {
+  let box = elem.getBoundingClientRect();
+
+  return {
+    y: box.top + pageYOffset,
+    x: box.left + pageXOffset
+  };
+};
+
 jlab.wedm.stringToFunction = function (str, errorCheck) {
     var arr = str.split(".");
 
@@ -887,9 +896,12 @@ $(document).on("mousedown", ".MouseSensitive", function (e) {
         }
         if (msg) {
             $("#tooltip").text(msg);
-            $(this).parent().prepend($("#tooltip")); /*We move tooltip to be under same parent element to ensure offsets are relative to same parent*/
-            $("#tooltip").css("top", $(this).css("top"));
-            $("#tooltip").css("left", parseInt($(this).css("left")) + parseInt($(this).css("width")) + "px");
+            
+            /*Keep tooltip as direct child of body so that tooltips can overflow .screen divs - must find document x,y*/
+            var pos = jlab.wedm.getDocumentCoords($(this)[0]);
+            $("#tooltip").css("top", pos.y);
+            $("#tooltip").css("left", pos.x + parseInt($(this).css("width")) + "px");    
+            
             $("#tooltip").show();
             copyTextToClipboard(msg);
         } else {
