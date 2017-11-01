@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.ColorListParser;
+import static org.jlab.wedm.persistence.io.ColorListParser.COLOR_FILE_PATH;
 import org.jlab.wedm.persistence.io.EDLParser;
 import org.jlab.wedm.persistence.io.ScreenParser;
 import org.jlab.wedm.persistence.model.HtmlScreen;
@@ -39,9 +40,8 @@ public class ScreenService {
     }*/
     
     public ScreenService() throws FileNotFoundException {
-        String colorfile = "colors.list";
         long start = System.currentTimeMillis();
-        loadColorFile(colorfile);
+        loadColorFile();
         long end = System.currentTimeMillis();
         
         LOGGER.log(Level.FINEST, "Color List Load time: (seconds) {0}", (end - start) / 1000.0);
@@ -94,10 +94,12 @@ public class ScreenService {
         return screen;
     }
     
-    private void loadColorFile(String colorfile) throws FileNotFoundException {
+    private void loadColorFile() throws FileNotFoundException {        
         ColorListParser parser = new ColorListParser();
         
-        colorList = parser.parse(colorfile);
+        File file = new File(COLOR_FILE_PATH);        
+        
+        colorList = parser.parse(file);
     }
     
     private HtmlScreen applyMacros(HtmlScreen screen, List<Macro> macros) {

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.model.AlarmColors;
 import org.jlab.wedm.persistence.model.ColorPalette;
@@ -22,7 +23,30 @@ public class ColorListParser extends EDLParser {
 
     private static final Logger LOGGER = Logger.getLogger(ColorListParser.class.getName());
 
-    public ColorPalette parse(String filename) throws FileNotFoundException {
+    public static final String COLOR_FILE_PATH; 
+    
+    static {
+        final String defaultPath = "/etc/edm/colors.list";
+        String path = System.getenv("EDMCOLORFILE");
+        
+        if(path == null) {
+            path = System.getenv("EDMFILES");
+            
+            if(path != null) {
+                path = path + File.separator + "colors.list";
+            }
+        }
+        
+        if (path == null) {
+            path = defaultPath;
+        }
+
+        COLOR_FILE_PATH = path;
+        
+        LOGGER.log(Level.INFO, "Setting Color File Path to: {0}", COLOR_FILE_PATH);
+    }    
+    
+    public ColorPalette parse(File file) throws FileNotFoundException {
         Map<Integer, EDLColor> indexMap = new HashMap<>();
         Map<String, EDLColor> nameMap = new HashMap<>();
         AlarmColors alarmColors = new AlarmColors();
@@ -30,9 +54,7 @@ public class ColorListParser extends EDLParser {
         List<EDLColorRule> ruleColors = new ArrayList<>();
         int maxColors = 256;
 
-        File clist = new File(EDL_ROOT_DIR + File.separator + filename);
-
-        try (Scanner scanner = new Scanner(clist)) {
+        try (Scanner scanner = new Scanner(file)) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
