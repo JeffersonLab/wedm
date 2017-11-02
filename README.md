@@ -23,7 +23,7 @@ Browse
 ### Screen Files Path
 The environment variable **EDL_DIR** must be set to the canonical path to the directory containing your EDL files.  If you want the demo EDL files on the overview page to work you need to download ![the demo files](/data/edl/wedm) and place them inside your *EDL_DIR* directory at the subdirectory *wedm*.  Demo files which require an EPICS monitor will need those PVs to exist (LOC PVs are used as much as possible to limit this).
 ### Colors File Path
-The colors file is located by searching the following locations in order:
+The color palette file is located by searching the following locations in order:
 1. **EDMCOLORFILE** environment variable with an absolute path to a file
 2. **EDMFILES** environment variable with an absolute path to a directory containing the file "colors.list"
 3. Finally the default location of /etc/edm/colors.list
