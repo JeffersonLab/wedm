@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="wedm" default="clean-build" basedir=".">    
-    <property name="project.release.version" value="0.21.0"/>
-    <property name="project.release.date" value="01 Nov 2017"/>
+    <property name="project.release.version" value="0.22.0"/>
+    <property name="project.release.date" value="06 Nov 2017"/>
     <property name="project.release.production" value="true"/>
     <property environment="env"/>   
     <fail unless="env.CATALINA_HOME" message="Environment variable CATALINA_HOME must be set in order to include Tomcat libraries in classpath"/>
