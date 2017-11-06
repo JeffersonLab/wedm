@@ -106,7 +106,11 @@ public class ScreenService {
         String html = screen.getHtml();
         
         for (Macro m : macros) {
-            html = html.replace(m.key, m.value);
+            
+            /*Avoid cross-site scripting and malformed HTML by escaping, but sacrifice ability to use XML reserved characters in Macros ("'&<>)*/
+            String v = org.apache.taglibs.standard.functions.Functions.escapeXml(m.value);
+            
+            html = html.replace(m.key, v);
         }
         
         return new HtmlScreen(screen.getCanonicalPath(), screen.getModifiedDate(), html, screen.getCss(), screen.getJs(),
