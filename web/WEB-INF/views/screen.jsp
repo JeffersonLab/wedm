@@ -54,9 +54,7 @@ ${screen.getHtml()}
         <script type="text/javascript">
 ${screen.getJs()}
 jlab.wedm.macroString = '${fn:escapeXml(macroString)}';
-var jlab = jlab || {};
-jlab.epics2web = jlab.epics2web || {};
-jlab.epics2web.contextPrefix = '${wedm:contextPrefix()}';
+jlab.wedm.contextPrefix = '${wedm:contextPrefix()}';
         </script>       
     </body>
 </html>

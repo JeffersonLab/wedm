@@ -49,7 +49,7 @@ $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
             }
         }
 
-        var path = '/wedm/screen?edl=',
+        var path = jlab.wedm.contextPrefix + '/wedm/screen?edl=',
                 //left = $obj.css("left"),
                 //right = $obj.css("top");
                 left = e.pageX + "px",
