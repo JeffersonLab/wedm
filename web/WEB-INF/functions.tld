@@ -14,4 +14,10 @@
         <function-class>org.jlab.wedm.persistence.io.Functions</function-class>
         <function-signature>java.lang.String escapeFileName(java.lang.String)</function-signature>
     </function>      
+    
+    <function>
+        <name>contextPrefix</name>
+        <function-class>org.jlab.wedm.persistence.io.Functions</function-class>
+        <function-signature>java.lang.String contextPrefix()</function-signature>
+    </function>     
 </taglib>

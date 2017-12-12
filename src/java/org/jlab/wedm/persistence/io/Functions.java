@@ -30,4 +30,14 @@ public class Functions {
         
         return name;
     }
+    
+    public static String contextPrefix() {
+        String contextPrefix = System.getenv("CONTEXT_PREFIX");
+        
+        if(contextPrefix == null) {
+            contextPrefix = "";
+        }
+        
+        return contextPrefix;
+    }    
 }

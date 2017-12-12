@@ -1,11 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="wedm" uri="http://jlab.org/wedm/functions"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WEDM - Browse for EDL Files</title>
-        <link rel="stylesheet" type="text/css" href="/epics2web/resources/css/site.css?v=${initParam.epics2webReleaseNumber}"/> 
+        <link rel="stylesheet" type="text/css" href="${wedm:contextPrefix()}/epics2web/resources/css/site.css?v=${initParam.epics2webReleaseNumber}"/> 
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/browse.css?v=${initParam.releaseNumber}"/>
     </head>
     <body>
@@ -50,7 +51,7 @@
                 </c:forEach>                    
             </tbody>
         </table>
-        <script type="text/javascript" src="/epics2web/resources/js/jquery-1.10.2.min.js"></script>        
+        <script type="text/javascript" src="${wedm:contextPrefix()}/epics2web/resources/js/jquery-1.10.2.min.js"></script>        
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/browse.js?v=${initParam.releaseNumber}"></script>        
     </body>
 </html>
