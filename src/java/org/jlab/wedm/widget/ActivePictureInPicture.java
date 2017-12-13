@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.HtmlScreen;
@@ -15,6 +17,8 @@ import org.jlab.wedm.persistence.model.WEDMWidget;
  * @author ryans
  */
 public class ActivePictureInPicture extends EmbeddedScreen {
+
+    private static final Logger LOGGER = Logger.getLogger(ActivePictureInPicture.class.getName());
 
     protected String filePv = null;
     public List<Screen> screenList = new ArrayList<>();
@@ -61,7 +65,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         styles.put("height", h + "px");
         styles.put("left", originX + "px");
         styles.put("top", originY + "px");
-        styles.put("pointer-events", "auto"); /*Without this scroll bars don't work*/
+        styles.put("pointer-events", "auto"); // Without this scroll bars don't work
 
         if (topShadowColor != null && botShadowColor != null) {
             styles.put("border-top", "2px solid " + botShadowColor.toColorString());
@@ -113,9 +117,16 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         String[] macros = macroString.split(",");
         for (String m : macros) {
             String[] kv = m.split("=");
-            String key = "$(" + kv[0] + ")";
-            String value = kv[1];
-            html = html.replace(key, value);
+            if (kv.length == 2) {
+                String key = "$(" + kv[0].trim() + ")";
+                String value = kv[1].trim();
+
+                //System.out.println("key: '" + key + "'");
+                //System.out.println("value: '" + value + "'");
+                html = html.replace(key, value);
+            } else {
+                LOGGER.log(Level.INFO, "Skipping malformed macro: {0}", m);
+            }
         }
 
         return html;
