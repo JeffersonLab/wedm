@@ -130,4 +130,9 @@ public class Screen {
 
         return css;
     }
+    
+    @Override
+    public String toString(){
+        return canonicalPath;
+    }
 }
