@@ -1,0 +1,623 @@
+4 0 0
+
+blinkms=750
+max=0x10000
+columns=5
+
+alias trace0 red-2
+alias trace1 blue-2
+alias trace2 cyan-3
+alias trace3 yellow-3
+alias trace4 orange-1
+alias trace5 purple-4
+alias trace6 green-3
+alias trace7 grey-11
+alias trace8 black
+alias trace9 white
+
+static 0 "white"      { 65535 65535 65535 } # white
+static 1 "gray-1"     { 60180 60180 60180 } # 
+static 2 "gray-2"     { 55808 55808 55808 } #
+static 3 "gray-3"     { 51200 51200 51200 }
+static 4 "gray-4"     { 47872 47872 47872 }
+static 5 "gray-5"     { 44544 44544 44544 }
+static 6 "gray-6"     { 40448 40448 40448 }
+static 7 "gray-7"     { 37120 37120 37120 }
+static 8 "gray-8"     { 34048 34048 34048 }
+static 9 "gray-9"     { 30720 30720 30720 }
+static 10 "gray-10"   { 26880 26880 26880 }
+static 11 "gray-11"   { 23040 23040 23040 }
+static 12 "gray-12"   { 17920 17920 17920 }
+static 13 "gray-13"   { 11520 11520 11520 }
+static 14 "black"     { 0 0 0 }
+static 15 "green-1"   { 0 55296 0 }
+static 16 "green-2"   { 7680 47872 0 } 
+static 17 "green-3"   { 13056 39168 0 }
+static 18 "green-4"   { 11520 364256 0 } 
+static 19 "green-5"   { 8448 27648 0 }
+static 20 "red-1"     { 64768 0 0 }
+static 21 "red-2"     { 56832  4864  2304 }
+static 22 "red-3"     { 48640  6400 2816 }
+static 23 "red-4"     { 40960  4608  1792 }
+static 24 "red-5"     { 33280   1024  0 }
+static 25 "blue-1"    { 22528 37632 65535 }
+static 26 "blue-2"    { 22784 32256 57600 }
+static 27 "blue-3"    { 19200 28160 50944 }
+static 28 "blue-4"    { 14848  24064 43776 }
+static 29 "blue-5"    { 9984  21504 36096 }
+static 30 "yellow-1"  { 64256 62208  18944 }
+static 31 "yellow-2"  { 63744 51200  15360 }
+static 32 "yellow-3"  { 60928 46592  11008 }
+static 33 "orange-1"  { 57600 36864  5376 }
+static 34 "orange-2"  { 52480  24832   0 }
+static 35 "pink"      { 65535 45056 65535 }
+static 36 "purple-1"  { 54784 32512 57856 }
+static 37 "purple-2"  { 44544  19968 48128 }
+static 38 "purple-3"  { 35584  6656 38400 }
+static 39 "purple-4"  { 24832  2560 29952 }
+static 40 "lilac-1"   { 41984 43520 65535 }
+static 41 "lilac-2"   { 34560 37632 57856 }
+static 42 "lilac-3"   { 27136 29440 49408 }
+static 43 "lilac-4"   { 19712  20992 41984 }
+static 44 "lilac-5"   { 13312  13056 34304 }
+static 45 "brown-1"   { 50944 47872 27904 }
+static 46 "brown-2"   { 46848 40192  23552 }
+static 47 "brown-3"   { 41984 32256  15360 }
+static 48 "brown-4"   { 32000  22016  9984 }
+static 49 "brown-5"   { 22528  13312  3840 }
+static 50 "cyan-1"    { 39168 65535 65535 }
+static 51 "cyan-2"    { 29440 57088 65535 }
+static 52 "cyan-3"    { 19968 42240 63744 }
+static 53 "cyan-4"    { 10752  25344 58368 }
+static 54 "cyan-5"    { 2560   0 47104 }
+static 55 "tan-1"     { 60160 61696 46336 }
+static 56 "tan-2"     { 54272 56064 40192 }
+static 57 "tan-3"     { 47872 49408 34560 }
+static 58 "tan-4"     { 42496 41984 25088 }
+static 59 "tan-5"     { 35584 33280 14592 }
+static 60 "lami"      { 29440 65535 27392 }
+static 61 "atlantis"  { 20992 55808 15104 }
+static 62 "forest"    { 15360 46080 8192  }
+static 63 "apple"     { 10240 37632 5376  }
+static 64 "laural"    { 6656 29440 2304   }
+static 65 "cyan-6"    { 0 65535 65535 }
+static 66 "cyan-7"    { 0 57568 57568 }
+static 67 "cyan-8"    { 0 49344 49344 }
+static 68 "cyan-9"    { 0 41120 41120 }
+static 69 "cyan-10"   { 0 32896 32896 }
+static 70 "purple-5"  { 65535 0 65535 }
+static 71 "magenta"   { 49344 0 49344 }
+static 72 "gainsboro" { 52736 56320 52480 }
+static 73 "seagreen-1"  { 47360 50688 47104 }
+static 74 "seagreen-2"  { 42496 45568 42240 }
+static 75 "chiffon"   { 57600 63488 45312 }
+static 76 "goldenrod" { 51712 57088 40704 }
+static 77 "navahowhite"    { 62708 56026 43176 }
+static 78 "earth"     { 47031 42148 32382 }
+static 79 "mud"       { 31354 28013 21588 }
+static 80 "aquamarine" { 46336 63744 55040 }
+static 81 "seafoam"   { 41472 57344 49408 }
+static 82 "azure-1"   { 49664 55808 55552 }
+static 83 "azure-2"   { 44544 50176 49920 }
+static 84 "silver"    { 39936 45056 44800 }
+static 85 "turquoise" { 45056 55808 63744 }
+static 86 "steelblue" { 40448 50176 57344 }
+static 87 "linen"     { 52480 51712 56576 }
+static 88 "ivory"     { 47104 46336 50688 }
+static 89 "seashell"  { 42240 41472 45568 }
+static 90 "plum"      { 56832 50176 64256 }
+static 91 "orchid"    { 50944 45045 57600 }
+static 92 "invisible" { 0 0 0 }
+static 93 "bisque"    { 50688 46336 50688 }
+static 94 "peachpuff" { 45568 41472 45568 }
+static 95 "eggshell"  { 64256 60176 60416 }
+static 96 "pastel"    { 57600 45056 54272 }
+static 97 "terracotta" { 65535 38550 43176 }
+static 98 "clay"      { 49344 29041 32382 }
+static 99 "brick"     { 47185 11796 0 }
+
+# Blue to Yellow Gradient
+static 125 "by-grad-1"     {  2560     0 47104 }
+static 126 "by-grad-2"     {     0 25000 47104 }
+static 127 "by-grad-3"     {     0 35300 32384 }
+static 128 "by-grad-4"     {     0 49152 32384 }
+static 129 "by-grad-5"     {     0 49152     0 }
+static 130 "by-grad-6"     { 28384 49152     0 }
+static 131 "by-grad-7"     { 40152 49152     0 }
+static 132 "by-grad-8"     { 52200 62208  9500 }
+static 133 "by-grad-9"     { 64256 62208 18944 }
+
+alarm {
+  disconnected : "white"
+  invalid      : "gray-5"
+  minor        : "yellow-1"
+  major        : "red-1"
+  noalarm      : "green-1"
+ }
+
+##################################################################
+#Color Rules
+##################################################################
+
+# Red Off
+rule 100 "Red Off" {
+ =0 : "red-1"
+ >=1 : "green-1"
+ default : "green-1"
+}
+ 
+# Green Off
+rule 101 "Green Off" {
+ =0 : "green-1"
+ >=1 : "red-1"
+ default : "red-1"
+} 
+
+# RF Main
+rule 102 "RF Main" {
+ >=0 && <1 : "white"
+ >=1 && <1.1 : "red-1"
+ >=1.1 && <1.2 : "pink"
+ >=1.2 && <1.3 : "cyan-3"
+ >=2 && <4 : "gray-8"
+ >=4 && <6 : "black"
+ >=6 && <60 : "cyan-5"
+}
+# RF On
+rule 103 "RF On" {
+ >=0 && <2 : "red-1"
+ >=2 && <3 : "cyan-5"
+ >=3 && <5 : "red-1"
+ >=5 && <6 : "gray-8"
+ >=6 && <60 : "cyan-5"
+ }
+# RF Tuner
+rule 104 "RF Tuner" {
+ >=0 && <2 : "red-1"
+ >=2 && <4 : "gray-8"
+ >=4 && <6 : "black"
+ >=6 && <15 : "cyan-5"
+ >=15 && <24 : "yellow-1"
+ >=24 && <33 : "gray-8"
+ >=33 && <42 : "cyan-5"
+ >=42 && <51 : "yellow-1"
+ >=51 && <60 : "gray-8"
+}
+# RF SOS
+rule 105 "RF SOS" {
+ >=0 && <1 : "white"
+ >=1 && <1.1 : "red-1"
+ >=1.1 && <1.2 : "pink"
+ >=1.2 && <1.3 : "cyan-3"
+ >=2 && <4 : "gray-8"
+ >=4 && <6 : "black"
+ >=6 && <33 : "cyan-5"
+ >=33 && <60 : "white" 
+}
+
+# RF GLDER
+rule 106 "RF GLDER" {
+ >=0 && <2 : "red-1"
+ >=2 && <4 : "gray-8"
+ >=4 && <6 : "black"
+ >=6 && <7 : "cyan-5"
+ >=7 && <8 : "red-1"
+ >=8 && <9 : "yellow-1"
+ >=9 && <10 : "red-1"
+ >=10 && <12 : "cyan-5"
+ >=12 && <13 : "yellow-1"
+ >=13 && <14 : "red-1"
+ >=14 && <15 : "yellow-1"
+ >=15 && <16 : "red-1"  
+}
+
+# RF PLDER
+rule 107 "RF PLDER" {
+ >=0 && <2 : "red-1"
+ >=2 && <4 : "gray-8"
+ >=4 && <6 : "black"
+ >=6 && <10 : "cyan-5"
+ >=10 && <11 : "yellow-1"
+ >=11 && <12 : "red-1"
+ >=12 && <13 : "yellow-1"
+ >=13 && <15 : "red-1"
+ >=15 && <16 : "yellow-1" 
+}
+
+# Viewer
+rule 108 "Viewer" {
+ >=0 && <1 : "gray-8"
+ >=1 && <2 : "green-1"
+ >=2 && <3 : "yellow-1"
+ >=3 && <4 : "red-1"
+}
+ 
+# Loop
+rule 109 "Loop" {
+ >=0 && <1 : "green-1"
+ >=1 && <2 : "gray-8"
+}
+
+# Energy_Lock
+rule 110 "Energy_Lock" {
+ >=0 && <8 : "green-1"
+ >=8 && <9 : "yellow-1"
+ >=9 && <10 : "red-1"
+}
+
+# RF State
+rule 111 "RF_State" {
+ >=0 && <2 : "terracotta"
+ >=2 && <4 : "gray-9"
+ >=4 && <6 : "gray-12"
+ >=6 && <33 : "gray-3"
+ >=33 && <60 : "red-5"
+}
+
+# Ramp
+rule 112 "Ramp" {
+ =0 : "yellow-1"
+ >=1 : "green-1"
+}
+
+# Alh
+rule 113 "Alh" {
+ <0 : "gray-9"
+ =0 : "green-1"
+ >=1 && <2 : "yellow-1"
+ >=2 && <3 : "red-1"
+ >=4 : "white"
+}
+
+# LockOrbit
+rule 114 "LockOrbit" {
+ >=0 && <1 : "gray-4"
+ >=1 && <2 : "yellow-3"
+}
+
+# LockEnergy
+rule 115 "LockEnergy" {
+ >=0 && <1 : "gray-4"
+ >=1 && <2 : "blue-1"
+}
+
+# Bpm On
+rule 116 "Bpm On" {
+ >=0 && <1 : "red-1"
+ >=1 && <2 : "gray-8"
+}
+
+# Bpm Off
+rule 117 "Bpm Off" {
+ >=0 && <1 : "gray-8"
+ >=1 && <2 : "red-1"
+}
+
+# RF Gradient
+rule 118 "Gradient" {
+ >=0 && <2 : "black"
+ >=2 && <3 : "lilac-5"
+ >=3 && <4 : "lilac-3"
+ >=4 && <5 : "lilac-1"
+ >=5 && <6 : "cyan-5"
+ >=6 && <7 : "cyan-4"
+ >=7 && <8 : "cyan-3"
+ >=8 && <9 : "cyan-1"
+ >=9 && <10 : "laural"
+ >=10 && <11 : "forest"
+ >=11 && <12 : "atlantis"
+ >=12 && <13 : "orange-2"
+ >=13 && <14 : "yellow-3"
+ >=14 && <15 : "yellow-1"
+ 
+}
+
+# BOOM
+rule 119 "BOOM" {
+ >=0 && <1 : "tan-1"
+ >=1 && <2 : "red-2"
+ >=2 && <3 : "yellow-1"
+ >=3 && <4 : "yellow-3"
+ >=4 && <5 : "green-1"
+}
+
+# PSS
+rule 120 "PSS" {
+ >=0 && <1 : "white"
+ >=1 && <2 : "green-3"
+ >=2 && <3 : "yellow-1"
+ >=3 && <4 : "yellow-1"
+ >=4 && <5 : "yellow-3"
+ >=5 && <6 : "red-1"
+ >=6 && <7 : "purple-4"
+ >=7 && <8 : "purple-4"
+}
+
+# BLM_lights
+rule 121 "BLM_light"{
+ >=0 && <15 : "black"
+ >=15 && <26 : "green-5"
+ >=26 && <37 : "green-4"
+ >=37 && <48 : "green-3"
+ >=48 && <59 : "green-2"
+ >=59 && <70 : "green-1"
+ >=70 && <79 : "yellow-1"
+ >=79 && <88 : "yellow-2"
+ >=88 && <97 : "yellow-3"
+ >=97 && <106 : "orange-1"
+ >=106 && <115 : "orange-2"
+ >=115 && <120 :"red-3"
+ >=120 : "red-1"
+ }
+
+# mA_1
+rule 122 "mA_1" {
+ >=0 && <13 : "cyan-2"
+ >=13 && <1000000 : "pink"
+}
+
+# mA_2
+rule 123 "mA_2" {
+ >=0 && <13 : "cyan-4"
+ >=13 && <1000000 : "purple-2"
+} 
+
+#BPM_Loss
+rule 124 "BPM_Loss" {
+ >=0 && < .1 : "gray-12"
+ >=.1 && <  .5 : "yellow-2"
+ >=.5 && < 1.0 : "yellow-3"
+ >=1.00 && < 2.0 : "orange-1"
+ >=2.0 && < 5.0 : "orange-2"
+ > 5.0 : "red-1"
+ default : "gray-12"
+}
+
+# Blue Off
+rule 134 "Blue Off" {
+ =0 : "cyan-3"
+ >=1 : "green-1"
+ default : "cyan-3"
+}
+
+# Blue On
+rule 135 "Blue On" {
+ =0 : "green-1"
+ >=1 : "cyan-3"
+ default : "cyan-3"
+ }
+
+# Gray Off
+rule 136 "Gray Off" {
+ =0 : "gray-8"
+ >=1 : "green-1"
+ default : "white"
+}
+
+# Gray On
+rule 137 "Gray On" {
+ =0 : "green-1"
+ >=1 : "gray-8"
+ default : "white"
+}
+ 
+#Invisible Red
+rule 138 "Invisible Red" {
+ =0 : "invisible"
+ >=1 : "red-1"
+ default : "white"
+}
+
+#Invisible ReverseRed
+rule 139 "Invisible ReverseRed" {
+ =0 : "red-1"
+ >=1 : "invisible"
+ default : "white"
+}
+
+#Invisible Green
+rule 140 "Invisible Green" {
+ =0 : "invisible"
+ >=1 : "green-1"
+ default : "white"
+ }
+
+#Invisible ReverseGreen
+rule 141 "Invisible ReverseGreen" {
+ =0 : "green-1"
+ >=1 : "invisible"
+ default : "white"
+}
+
+#Invisible Yellow
+rule 142 "Invisible Yellow" {
+ =0 : "invisible"
+ >=1 : "yellow-1"
+ default : "white"
+}
+
+#Invisible ReverseYellow
+rule 143 "Invisible ReverseYellow" {
+ =0 : "yellow-1"
+ >=1 : "invisible"
+ default : "white"
+}
+
+#Invisible Black
+rule 144 "Invisible Black" {
+ =0 : "invisible"
+ >=1 : "black"
+ default : "white"
+}
+
+#Invisible Reverseblack
+rule 145 "Invisible Reverseblack" {
+ =0 : "black"
+ >=1 : "invisible"
+ default : "white"
+}
+
+#Warning
+rule 146 "Warning" {
+  =0 : "black"
+  >=1 : "yellow-1"
+ default : "white"
+}
+
+#TagLoop
+rule 147 "TagLoop" {
+ >=0 && <1 : "gray-8"
+ >=1 && <3 : "yellow-1"
+ >=3 && <4 : "green-1"
+}
+
+######################################################################
+menumap {
+ "white"
+ "gray-1"
+ "gray-2"
+ "gray-3"
+ "gray-4"
+ "gray-5"
+ "gray-6"
+ "gray-7"
+ "gray-8"
+ "gray-9"
+ "gray-10"
+ "gray-11"
+ "gray-12"
+ "gray-13"
+ "black"
+ "green-1"
+ "green-2"
+ "green-3"
+ "green-4"
+ "green-5"
+ "red-1"
+ "red-2"
+ "red-3"
+ "red-4"
+ "red-5"
+ "blue-1"
+ "blue-2"
+ "blue-3"
+ "blue-4"
+ "blue-5"
+ "yellow-1"
+ "yellow-2"
+ "yellow-3"
+ "orange-1"
+ "orange-2"
+ "pink"
+ "purple-1"
+ "purple-2"
+ "purple-3"
+ "purple-4"
+ "lilac-1"
+ "lilac-2"
+ "lilac-3"
+ "lilac-4"
+ "lilac-5"
+ "brown-1"
+ "brown-2"
+ "brown-3"
+ "brown-4"
+ "brown-5"
+ "cyan-1"
+ "cyan-2"
+ "cyan-3"
+ "cyan-4"
+ "cyan-5"
+ "tan-1"
+ "tan-2"
+ "tan-3"
+ "tan-4"
+ "tan-5"
+ "lami"     
+ "atlantis" 
+ "forest"   
+ "apple"    
+ "laural"   
+ "cyan-6"   
+ "cyan-7"   
+ "cyan-8"   
+ "cyan-9"   
+ "cyan-10"  
+ "purple-5" 
+ "magenta"  
+ "gainsboro" 
+ "seagreen-1" 
+ "seagreen-2" 
+ "chiffon" 
+ "goldenrod" 
+ "navahowhite" 
+ "earth" 
+ "mud" 
+ "aquamarine"
+ "seafoam"
+ "azure-1"
+ "azure-2"
+ "silver"
+ "turquoise"
+ "steelblue"
+ "linen"
+ "ivory"
+ "seashell"
+ "plum"
+ "orchid"
+ "invisible"
+ "bisque"
+ "peachpuff"
+ "eggshell"
+ "pastel"
+ "terracotta"
+ "clay"
+ "brick"
+ "Red Off"
+ "Green Off"
+ "RF Main"
+ "RF On"
+ "RF Tuner"
+ "RF SOS"
+ "RF GLDER"
+ "RF PLDER"
+ "Viewer"
+ "Loop"
+ "Energy_Lock"
+ "RF_State"
+ "Ramp"
+ "Alh"
+ "LockOrbit"
+ "LockEnergy"
+ "Bpm On"
+ "Bpm Off"
+ "Gradient"
+ "BOOM"
+ "PSS"
+ "BLM_light"
+ "mA_1"
+ "mA_2"
+ "BPM_Loss"
+ "by-grad-1"
+ "by-grad-2"
+ "by-grad-3"
+ "by-grad-4"
+ "by-grad-5"
+ "by-grad-6"
+ "by-grad-7"
+ "by-grad-8"
+ "by-grad-9"
+ "Blue Off"
+ "Blue On"
+ "Gray Off"
+ "Gray On"
+ "Invisible Red"
+ "Invisible ReverseRed"
+ "Invisible Green"
+ "Invisible ReverseGreen"
+ "Invisible Yellow"
+ "Invisible ReverseYellow"
+ "Invisible Black"
+ "Invisible Reverseblack"
+ "Warning"
+ }
