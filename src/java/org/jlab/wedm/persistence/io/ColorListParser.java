@@ -83,19 +83,16 @@ public class ColorListParser extends EDLParser {
                                     //System.out.println(line.substring(firstQuote + 1).indexOf("\""));
                                     //System.out.println("firstQuote: " + firstQuote);
                                     //System.out.println("secondQuote: " + secondQuote);
-
                                     colorname = line.substring(firstQuote + 1, secondQuote);
 
                                     String splicedLine = line.substring(0, firstQuote) + "colorname" + line.substring(secondQuote + 1);
 
                                     //System.out.println("Spliced line: " + splicedLine);
-
                                     tokens = splicedLine.split("\\s+");
 
                                     /*for (String t : tokens) {
                                         System.out.println("token: " + t);
                                     }*/
-
                                 } else { // no quotes
                                     colorname = tokens[2];
                                 }
@@ -108,7 +105,6 @@ public class ColorListParser extends EDLParser {
                                 System.out.println("R: " + r);
                                 System.out.println("G: " + g);
                                 System.out.println("B: " + b);*/
-
                                 if (maxColors != 256) {
                                     r = downsampleRgb65kTo256(r);
                                     g = downsampleRgb65kTo256(g);
@@ -121,29 +117,37 @@ public class ColorListParser extends EDLParser {
                                 staticColors.add((EDLColorConstant) color);
                                 break;
                             case "alarm":
+                                int firstColon;
+                                String val;
+
                                 line = scanner.nextLine();
-                                String[] pieces = line.split(":");
-                                String disconnected = stripQuotes(pieces[1]);
+                                firstColon = line.indexOf(":");
+                                val = line.substring(firstColon + 1);
+                                String disconnected = stripQuotes(val);
                                 EDLColor c = nameMap.get(disconnected);
                                 alarmColors.disconnectedAlarm = (EDLColorConstant) c;
                                 line = scanner.nextLine();
-                                pieces = line.split(":");
-                                String invalid = stripQuotes(pieces[1]);
+                                firstColon = line.indexOf(":");
+                                val = line.substring(firstColon + 1);
+                                String invalid = stripQuotes(val);
                                 c = nameMap.get(invalid);
                                 alarmColors.invalidAlarm = (EDLColorConstant) c;
                                 line = scanner.nextLine();
-                                pieces = line.split(":");
-                                String minor = stripQuotes(pieces[1]);
+                                firstColon = line.indexOf(":");
+                                val = line.substring(firstColon + 1);
+                                String minor = stripQuotes(val);
                                 c = nameMap.get(minor);
                                 alarmColors.minorAlarm = (EDLColorConstant) c;
                                 line = scanner.nextLine();
-                                pieces = line.split(":");
-                                String major = stripQuotes(pieces[1]);
+                                firstColon = line.indexOf(":");
+                                val = line.substring(firstColon + 1);
+                                String major = stripQuotes(val);
                                 c = nameMap.get(major);
                                 alarmColors.majorAlarm = (EDLColorConstant) c;
                                 line = scanner.nextLine();
-                                pieces = line.split(":");
-                                String noalarm = stripQuotes(pieces[1]);
+                                firstColon = line.indexOf(":");
+                                val = line.substring(firstColon + 1);
+                                String noalarm = stripQuotes(val);
                                 c = nameMap.get(noalarm);
                                 alarmColors.noAlarm = (EDLColorConstant) c;
                                 break;
