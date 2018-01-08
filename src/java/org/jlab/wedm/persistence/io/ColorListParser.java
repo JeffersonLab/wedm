@@ -153,7 +153,16 @@ public class ColorListParser extends EDLParser {
                                 break;
                             case "rule":
                                 index = Integer.parseInt(tokens[1]);
-                                colorname = stripQuotes(tokens[2]);
+
+                                firstQuote = line.indexOf("\"");
+                                if (firstQuote != -1) {
+                                    int secondQuote = firstQuote + line.substring(firstQuote + 1).indexOf("\"") + 1;
+
+                                    colorname = line.substring(firstQuote + 1, secondQuote);
+                                } else {
+                                    colorname = tokens[2].trim();
+                                }
+
                                 String firstColor;
 
                                 // We convert EDL Color rules into JavaScript case statements with A = input and B = output
@@ -161,8 +170,21 @@ public class ColorListParser extends EDLParser {
 
                                 String value = scanner.nextLine();
                                 value = value.trim();
-                                String[] parts = value.split(":");
-                                String condition = stripQuotes(parts[0]);
+                                firstColon = value.indexOf(":");
+                                String firstval = value.substring(0, firstColon);
+                                String secondval = value.substring(firstColon + 1);
+
+                                firstQuote = secondval.indexOf("\"");
+                                if (firstQuote != -1) {
+                                    int secondQuote = firstQuote + secondval.substring(firstQuote + 1).indexOf("\"") + 1;
+
+                                    secondval = secondval.substring(firstQuote + 1, secondQuote);
+                                }
+
+                                String condition = stripQuotes(firstval);
+
+                                //System.out.println("firstval: " + firstval);
+                                //System.out.println("secondval: " + secondval);
                                 if ("default".equals(condition)) {
                                     condition = condition + ": ";
                                 } else {
@@ -172,7 +194,7 @@ public class ColorListParser extends EDLParser {
                                     // Must wait until we have varibles in place to do following as "=" replace must be preceded by something
                                     condition = convertEDMExpressionToJavaScript(condition);
                                 }
-                                String colorValue = stripQuotes(parts[1]);
+                                String colorValue = stripQuotes(secondval);
                                 expression = expression + condition + "B = '" + colorValue
                                         + "'; break;";
 
@@ -192,8 +214,20 @@ public class ColorListParser extends EDLParser {
                                     }
 
                                     //System.out.println("line: " + value);
-                                    parts = value.split(":");
-                                    condition = stripQuotes(parts[0]);
+                                    firstColon = value.indexOf(":");
+                                    firstval = value.substring(0, firstColon);
+                                    secondval = value.substring(firstColon + 1);
+
+                                    firstQuote = secondval.indexOf("\"");
+                                    if (firstQuote != -1) {
+                                        int secondQuote = firstQuote + secondval.substring(firstQuote + 1).indexOf("\"") + 1;
+
+                                        secondval = secondval.substring(firstQuote + 1, secondQuote);
+                                    }
+
+                                    //System.out.println("firstval2: " + firstval);
+                                    //System.out.println("secondval2: " + secondval);
+                                    condition = stripQuotes(firstval);
                                     if ("default".equals(condition)) {
                                         condition = condition + ": ";
                                     } else {
@@ -202,7 +236,7 @@ public class ColorListParser extends EDLParser {
                                         condition = condition.replace("||", "|| A");
                                         condition = convertEDMExpressionToJavaScript(condition);
                                     }
-                                    colorValue = stripQuotes(parts[1]);
+                                    colorValue = stripQuotes(secondval);
                                     expression = expression + condition + "B = '" + colorValue
                                             + "'; break;";
                                 }
