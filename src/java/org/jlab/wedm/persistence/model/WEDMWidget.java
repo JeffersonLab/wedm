@@ -12,4 +12,5 @@ public interface WEDMWidget {
     public String toHtml(String indent, Point translation);
     public void symbolColorOverride(EDLColor bgColor, EDLColor fgColor);
     public void performColorRuleCorrection();
+    public Map<String, String> getTraits();
 }

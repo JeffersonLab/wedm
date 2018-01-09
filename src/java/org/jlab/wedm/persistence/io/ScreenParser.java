@@ -29,8 +29,8 @@ import org.jlab.wedm.widget.UnknownWidget;
 public class ScreenParser extends EDLParser {
 
     /**
-     * We want embedded screens to NOT repeat IDs - so we share the same counter across multiple
-     * parse method calls.
+     * We want embedded screens to NOT repeat IDs - so we share the same counter
+     * across multiple parse method calls.
      */
     private int objectId = 0;
 
@@ -124,16 +124,19 @@ public class ScreenParser extends EDLParser {
                                 last = obj;
                                 traits.put("WEDM_WIDGET_ID", String.valueOf(objectId++));
                                 break;
-                            //case "beginObjectProperties":
-                            //    break;                                         
+                            case "beginObjectProperties":
+                                if (traits == null) { // additional properties! (RegTextupdateClass for example)
+                                    traits = last.getTraits(); // Hack, alternatively we could create new and update parseTraits to be addTraits?
+                                }
+                                break;
                             case "endScreenProperties":
                             case "endObjectProperties":
                                 //LOGGER.log(Level.FINEST, "Ending Widget: {0}",
                                 //        last.getClass().getSimpleName());
                                 last.parseTraits(traits, colorList);
                                 last.performColorRuleCorrection();
-                                last = null;
-                                traits = null;                              
+                                traits = null;
+                                //last = null; // We can no longer clear last obj since widgets like RegTextupdateClass have multiple sets of properties
                                 break;
                             case "endGroup":
                                 last = groupStack.pop();
@@ -156,7 +159,7 @@ public class ScreenParser extends EDLParser {
                                             // value.
                                             // FYI - version 4.0.1 of ActiveLine doesn't have this
                                             // problem
-                                            if (line.startsWith("numPoints")) {  
+                                            if (line.startsWith("numPoints")) {
                                                 value = line.split(" ")[1];
                                             } else { // "Normal" bracket behavior (non-nested)
                                                 String subline = scanner.nextLine();
@@ -180,6 +183,7 @@ public class ScreenParser extends EDLParser {
                                         } else {
                                             value = stripQuotes(line.substring(
                                                     tokens[0].length()));
+                                            //System.out.println("trait: " + tokens[0] + "; value: " + value);
                                         }
 
                                         traits.put(tokens[0], value);

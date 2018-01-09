@@ -454,4 +454,9 @@ public abstract class CoreWidget implements WEDMWidget {
             }
         }
     }
+
+    @Override
+    public Map<String, String> getTraits() {
+        return traits;
+    }
 }
