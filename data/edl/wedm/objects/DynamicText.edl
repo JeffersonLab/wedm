@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 985
-y 421
+x 921
+y 152
 w 500
 h 600
 font "helvetica-medium-r-18.0"
@@ -21,28 +21,6 @@ topShadowColor index 50
 botShadowColor index 10
 endScreenProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 34
-y 42
-w 239
-h 19
-controlPv "LOC\\\\TEST=s:Hello World"
-format "string"
-font "helvetica-medium-r-18.0"
-fgColor index 14
-bgColor index 51
-topShadowColor index 50
-botShadowColor index 10
-nullColor index 14
-newPos
-objType "monitors"
-endObjectProperties
-
 # (Textupdate)
 object TextupdateClass
 beginObjectProperties
@@ -53,10 +31,10 @@ x 33
 y 82
 w 242
 h 24
-controlPv "R1XXPSET"
+controlPv "LOC\\\\TEST1=d:123.456"
 displayMode "exp"
+precision 2
 fgColor index 14
-fgAlarm
 bgColor index 51
 fill
 font "helvetica-medium-r-18.0"
@@ -92,11 +70,9 @@ x 32
 y 131
 w 244
 h 25
-controlPv "R1XXPSET"
+controlPv "LOC\\\\TEST2=d:5.6789"
 fgColor index 14
-fgAlarm
 bgColor index 51
-fill
 font "helvetica-medium-r-18.0"
 endObjectProperties
 
@@ -112,14 +88,14 @@ minor 1
 release 1
 x 304
 y 137
-w 141
+w 185
 h 17
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
 useDisplayBg
 value {
-  "< Regular Expression"
+  "< Regular Expression, no bg"
 }
 autoSize
 endObjectProperties
@@ -140,6 +116,85 @@ bgColor index 51
 useDisplayBg
 value {
   "< String"
+}
+autoSize
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 32
+y 33
+w 244
+h 26
+controlPv "LOC\\\\TEST0=s:Hello World"
+fgColor index 14
+bgColor index 51
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# (RegTextupdate)
+object RegTextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 32
+y 176
+w 244
+h 25
+controlPv "LOC\\\\TEST3=d:9876.5432"
+fgColor index 14
+fgAlarm
+bgColor index 51
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# Additional properties
+beginObjectProperties
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 301
+y 182
+w 112
+h 17
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Alarm sensitive"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 76
+y 4
+w 363
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "TextupdateClass and RegTextupdateClass"
 }
 autoSize
 endObjectProperties
