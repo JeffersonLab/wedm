@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 886
-y 237
+x 379
+y 148
 w 500
 h 600
 font "helvetica-medium-r-18.0"
@@ -139,8 +139,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 17
-y 254
+x 11
+y 231
 w 159
 h 20
 controlPv "R1XXPSET"
@@ -165,8 +165,8 @@ minor 1
 release 1
 x 96
 y 13
-w 166
-h 15
+w 198
+h 17
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
@@ -185,8 +185,8 @@ minor 1
 release 1
 x 185
 y 199
-w 113
-h 15
+w 134
+h 17
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
@@ -205,8 +205,8 @@ minor 1
 release 1
 x 104
 y 45
-w 141
-h 15
+w 169
+h 17
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
@@ -225,8 +225,8 @@ minor 1
 release 1
 x 133
 y 98
-w 207
-h 15
+w 246
+h 17
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
@@ -243,10 +243,10 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 211
-y 258
-w 141
-h 15
+x 188
+y 232
+w 173
+h 17
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
@@ -289,8 +289,8 @@ minor 1
 release 1
 x 132
 y 152
-w 109
-h 15
+w 131
+h 17
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
@@ -307,8 +307,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 21
-y 304
+x 17
+y 264
 w 124
 h 20
 controlPv "IBC0R08CRCUR1"
@@ -332,16 +332,106 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 170
-y 307
-w 66
-h 15
+x 178
+y 263
+w 80
+h 17
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
 useDisplayBg
 value {
   "< With Units"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 13
+y 294
+w 146
+h 17
+controlPv "ILI2L_PHASEerror"
+format "exponential"
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 1
+fgAlarm
+bgColor index 54
+topShadowColor index 0
+botShadowColor index 0
+editable
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 178
+y 292
+w 129
+h 17
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Scientific Notation"
+}
+autoSize
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 21
+y 432
+w 321
+h 114
+controlPv "R1XXPSET"
+displayMode "exp"
+fgColor index 14
+fgAlarm
+bgColor index 51
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 24
+y 394
+w 324
+h 22
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "Multiline Text Input (Text Entry Widget)"
 }
 autoSize
 endObjectProperties

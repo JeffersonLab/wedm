@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 449
-y 320
+x 985
+y 421
 w 500
 h 600
 font "helvetica-medium-r-18.0"
@@ -27,23 +27,39 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 44
-y 38
-w 305
+x 34
+y 42
+w 239
 h 19
-controlPv "comm9"
+controlPv "LOC\\\\TEST=s:Hello World"
 format "string"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 51
 topShadowColor index 50
 botShadowColor index 10
-autoHeight
-limitsFromDb
 nullColor index 14
-useHexPrefix
 newPos
 objType "monitors"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 33
+y 82
+w 242
+h 24
+controlPv "R1XXPSET"
+displayMode "exp"
+fgColor index 14
+fgAlarm
+bgColor index 51
+fill
+font "helvetica-medium-r-18.0"
 endObjectProperties
 
 # (Static Text)
@@ -52,16 +68,78 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 43
-y 10
-w 85
-h 19
-font "helvetica-medium-r-18.0"
+x 306
+y 84
+w 129
+h 17
+font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 51
 useDisplayBg
 value {
-  "PV comm9:"
+  "< Scientific Notation"
+}
+autoSize
+endObjectProperties
+
+# (RegTextupdate)
+object RegTextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 32
+y 131
+w 244
+h 25
+controlPv "R1XXPSET"
+fgColor index 14
+fgAlarm
+bgColor index 51
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# Additional properties
+beginObjectProperties
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 304
+y 137
+w 141
+h 17
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Regular Expression"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 304
+y 37
+w 51
+h 17
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< String"
 }
 autoSize
 endObjectProperties
