@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ColorPalette {
 

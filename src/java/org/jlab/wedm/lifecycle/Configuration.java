@@ -14,7 +14,7 @@ import javax.servlet.annotation.WebListener;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 @WebListener
 public class Configuration implements ServletContextListener {

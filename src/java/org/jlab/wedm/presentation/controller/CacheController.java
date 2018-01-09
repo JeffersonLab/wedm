@@ -12,7 +12,7 @@ import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 @WebServlet(name = "Cache", urlPatterns = {"/cache"})
 public class CacheController extends HttpServlet {

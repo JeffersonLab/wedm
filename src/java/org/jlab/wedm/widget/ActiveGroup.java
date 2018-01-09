@@ -9,7 +9,7 @@ import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveGroup extends CoreWidget {
 

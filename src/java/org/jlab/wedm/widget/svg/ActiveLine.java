@@ -4,10 +4,11 @@ import java.awt.Point;
 import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveLine extends SvgScreenObject {
 
@@ -20,8 +21,8 @@ public class ActiveLine extends SvgScreenObject {
 
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
         
         numPoints = TraitParser.parseInt(traits, "numPoints", 0);
         

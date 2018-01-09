@@ -12,7 +12,7 @@ import javax.xml.bind.DatatypeConverter;
 /**
  * IO Utilities.
  *
- * @author ryans
+ * @author slominskir
  */
 public final class IOUtil {
 

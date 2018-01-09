@@ -6,7 +6,7 @@ import org.jlab.wedm.persistence.model.Screen;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class EmbeddedScreen extends ScreenProperties {
 
@@ -15,8 +15,8 @@ public class EmbeddedScreen extends ScreenProperties {
     public String displaySource;
     
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
         
         file = traits.get("file");
         displaySource = traits.get("displaySource");

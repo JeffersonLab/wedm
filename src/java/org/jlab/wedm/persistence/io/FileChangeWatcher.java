@@ -15,7 +15,7 @@ import org.jlab.wedm.business.service.ScreenService;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class FileChangeWatcher implements Runnable {
 

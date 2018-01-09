@@ -4,7 +4,7 @@ import java.awt.Point;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ShellCommand extends ActiveButton {
 

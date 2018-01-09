@@ -6,7 +6,7 @@ import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveMenuButton extends ActiveButton {
 

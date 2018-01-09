@@ -5,7 +5,7 @@ import org.jlab.wedm.persistence.model.EDLFont;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class EDLParser {
 

@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveMessageButton extends ActiveButton {
 

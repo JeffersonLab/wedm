@@ -4,19 +4,20 @@ import java.awt.Point;
 import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  * CONTROL TEXT
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveControlText extends ActiveStaticText {
 
     public boolean showUnits = false;    
     
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
-        super.parseTraits(traits, colorList);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
         
         showUnits = TraitParser.parseBoolean(traits, "showUnits");
     }

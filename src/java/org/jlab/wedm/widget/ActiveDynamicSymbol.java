@@ -2,7 +2,7 @@ package org.jlab.wedm.widget;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveDynamicSymbol extends ActiveSymbol {
     

@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class Screen {
 

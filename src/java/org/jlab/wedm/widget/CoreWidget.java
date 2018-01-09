@@ -18,7 +18,7 @@ import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public abstract class CoreWidget implements WEDMWidget {
 
@@ -328,7 +328,10 @@ public abstract class CoreWidget implements WEDMWidget {
     }
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        
+        ColorPalette palette = properties.colorList;
+        
         this.traits = traits;
         this.colorList = palette;
         

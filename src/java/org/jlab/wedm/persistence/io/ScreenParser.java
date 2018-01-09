@@ -133,7 +133,7 @@ public class ScreenParser extends EDLParser {
                             case "endObjectProperties":
                                 //LOGGER.log(Level.FINEST, "Ending Widget: {0}",
                                 //        last.getClass().getSimpleName());
-                                last.parseTraits(traits, colorList);
+                                last.parseTraits(traits, properties);
                                 last.performColorRuleCorrection();
                                 traits = null;
                                 //last = null; // We can no longer clear last obj since widgets like RegTextupdateClass have multiple sets of properties

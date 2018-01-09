@@ -9,7 +9,7 @@ import javax.naming.InitialContext;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class HtmlScreen {
     

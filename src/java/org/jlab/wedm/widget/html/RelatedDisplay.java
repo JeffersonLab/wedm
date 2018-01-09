@@ -4,18 +4,19 @@ import java.awt.Point;
 import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class RelatedDisplay extends ActiveButton {
 
     String[] propagateMacros;
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
-        super.parseTraits(traits, colorList);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
 
         propagateMacros = TraitParser.parseStringArray(traits, numDsps, "propagateMacros");
     }

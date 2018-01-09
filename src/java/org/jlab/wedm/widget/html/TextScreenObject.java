@@ -7,10 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.HtmlScreen;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class TextScreenObject extends HtmlScreenObject {
 
@@ -23,8 +24,8 @@ public class TextScreenObject extends HtmlScreenObject {
     protected Map<String, String> textStyles = new HashMap<>();
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
-        super.parseTraits(traits, colorList);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
         
         value = traits.get("value");
         fontAlign = traits.get("fontAlign");

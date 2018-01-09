@@ -17,7 +17,7 @@ import org.jlab.wedm.persistence.model.EDLColorRule;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ColorListParser extends EDLParser {
 

@@ -11,7 +11,7 @@ import org.jlab.wedm.persistence.model.EDLFont;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ScreenProperties extends CoreWidget {
 
@@ -22,13 +22,17 @@ public class ScreenProperties extends CoreWidget {
     public EDLColor ctlFgColor2;
     public EDLColor ctlBgColor1;
     public EDLColor ctlBgColor2;
+    public EDLColor topShadowColor;
+    public EDLColor botShadowColor;
     public EDLFont ctlFont;
     public EDLFont btnFont;
     public String title;
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
+        
+        ColorPalette palette = properties.colorList;
         
         // Colors
         textColor = TraitParser.parseColor(traits, palette, "textColor", null);
@@ -36,6 +40,8 @@ public class ScreenProperties extends CoreWidget {
         ctlFgColor2 = TraitParser.parseColor(traits, palette, "ctlFgColor2", null);
         ctlBgColor1 = TraitParser.parseColor(traits, palette, "ctlBgColor1", null);
         ctlBgColor2 = TraitParser.parseColor(traits, palette, "ctlBgColor2", null);
+        topShadowColor = TraitParser.parseColor(traits, palette, "topShadowColor", null);
+        botShadowColor = TraitParser.parseColor(traits, palette, "botShadowColor", null);
         
         // Fonts
         ctlFont = TraitParser.parseFont(traits, "ctlFont", EDLParser.DEFAULT_FONT);

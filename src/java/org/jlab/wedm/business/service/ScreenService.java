@@ -18,7 +18,7 @@ import org.jlab.wedm.persistence.model.Screen;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ScreenService {
     

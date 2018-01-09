@@ -19,7 +19,7 @@ import org.jlab.wedm.persistence.model.Macro;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 @WebServlet(name = "Screen", urlPatterns = {"/screen"})
 public class ScreenController extends HttpServlet {

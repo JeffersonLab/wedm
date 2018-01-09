@@ -7,10 +7,11 @@ import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.widget.CoreWidget;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class HtmlScreenObject extends CoreWidget {
 
@@ -19,8 +20,8 @@ public class HtmlScreenObject extends CoreWidget {
     public boolean threeDimensional = false; // might only apply to ActiveButton?
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
         
         threeDimensional = TraitParser.parseBoolean(traits, "3d");
     }

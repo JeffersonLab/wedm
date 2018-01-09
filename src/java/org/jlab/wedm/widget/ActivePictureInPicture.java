@@ -14,7 +14,7 @@ import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActivePictureInPicture extends EmbeddedScreen {
 
@@ -27,8 +27,8 @@ public class ActivePictureInPicture extends EmbeddedScreen {
     protected String[] propagateMacros; // We currently always propagate no matter what...
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
 
         // Strings
         filePv = traits.get("filePv");

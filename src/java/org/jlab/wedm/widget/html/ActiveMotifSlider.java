@@ -7,10 +7,11 @@ import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.EDLColor;
 import org.jlab.wedm.persistence.model.HtmlScreen;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveMotifSlider extends HtmlScreenObject {
 
@@ -25,8 +26,10 @@ public class ActiveMotifSlider extends HtmlScreenObject {
     protected Map<String, String> handleStyles = new HashMap<>();
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
+        
+        ColorPalette palette = properties.colorList;
         
         scaleMin = TraitParser.parseFloat(traits, "scaleMin", null);
         scaleMax = TraitParser.parseFloat(traits, "scaleMax", null);

@@ -15,7 +15,7 @@ import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveSymbol extends EmbeddedScreen {
 
@@ -29,8 +29,8 @@ public class ActiveSymbol extends EmbeddedScreen {
     public boolean useOriginalColors = false;
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
 
         numStates = TraitParser.parseInt(traits, "numStates", 0);
         minValues = TraitParser.parseIntArray(traits, numStates, "minValues");

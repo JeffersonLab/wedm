@@ -2,18 +2,19 @@ package org.jlab.wedm.widget.html;
 
 import java.util.Map;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveUpdateText extends ActiveControlText {
 
     public String displayMode = "default";
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette colorList) {
-        super.parseTraits(traits, colorList);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
 
         displayMode = traits.get("displayMode");
 

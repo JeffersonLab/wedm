@@ -9,10 +9,11 @@ import org.jlab.wedm.persistence.io.EDLParser;
 import org.jlab.wedm.persistence.io.IOUtil;
 import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.HtmlScreen;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveImage extends HtmlScreenObject {
 
@@ -21,8 +22,8 @@ public class ActiveImage extends HtmlScreenObject {
     public String file;
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
         
         file = traits.get("file");
     }

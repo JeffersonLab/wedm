@@ -3,12 +3,12 @@ package org.jlab.wedm.widget.svg;
 import java.awt.Point;
 import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
-import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.widget.ScreenProperties;
 import static org.jlab.wedm.widget.svg.SvgScreenObject.DASH_SPACING;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveByte extends ActiveRectangle {
 
@@ -17,8 +17,8 @@ public class ActiveByte extends ActiveRectangle {
     public boolean littleEndian;
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
 
         numBits = TraitParser.parseInt(traits, "numBits", 0);
         shift = TraitParser.parseInt(traits, "shift", 0);

@@ -2,7 +2,7 @@ package org.jlab.wedm.persistence.io;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class Functions {
     public static String escapeFileName(String name) {

@@ -4,11 +4,11 @@ import java.awt.Point;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.TraitParser;
-import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveArc extends SvgScreenObject {
 
@@ -19,8 +19,8 @@ public class ActiveArc extends SvgScreenObject {
     public boolean pie = false;
 
     @Override
-    public void parseTraits(Map<String, String> traits, ColorPalette palette) {
-        super.parseTraits(traits, palette);
+    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+        super.parseTraits(traits, properties);
         
         startAngle = TraitParser.parseInt(traits, "startAngle", 0);
         totalAngle = TraitParser.parseInt(traits, "totalAngle", 180);

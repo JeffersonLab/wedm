@@ -13,7 +13,7 @@ import org.jlab.wedm.persistence.io.EDLParser;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 @WebServlet(name = "Browse", urlPatterns = {"/browse"})
 public class BrowseController extends HttpServlet {

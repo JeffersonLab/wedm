@@ -6,7 +6,7 @@ import org.jlab.wedm.widget.CoreWidget;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public abstract class SvgScreenObject extends CoreWidget {
     public static final String DASH_SPACING = "4, 4";     

@@ -2,7 +2,7 @@ package org.jlab.wedm.widget.html;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class ActiveRegExUpdateText extends ActiveUpdateText {
     

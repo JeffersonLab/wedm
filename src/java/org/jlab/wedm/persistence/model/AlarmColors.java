@@ -2,7 +2,7 @@ package org.jlab.wedm.persistence.model;
 
 /**
  *
- * @author ryans
+ * @author slominskir
  */
 public class AlarmColors {
     public EDLColorConstant disconnectedAlarm;
