@@ -25,5 +25,9 @@ public class ActiveUpdateText extends ActiveControlText {
                 precision = 0;
             }
         }
+        
+        if(!fill) {
+            bgColor = null;
+        }
     }
 }
