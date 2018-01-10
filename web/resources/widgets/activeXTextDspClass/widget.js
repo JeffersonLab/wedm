@@ -14,7 +14,14 @@ jlab.wedm.ControlTextPvObserverInit = function () {
     jlab.wedm.ControlTextPvObserver.prototype.handleInfo = function (info) {
         jlab.wedm.StaticTextPvObserver.prototype.handleInfo.call(this, info);
 
-        this.enumValuesArray = info['enum-labels'] || [];
+        /* Ignore enum labels from .SEVR, .PREC, etc. */
+        if (!info.pv.endsWith('.SEVR') &&
+                !info.pv.endsWith('.PREC') &&
+                !info.pv.endsWith('.EGU') &&
+                !info.pv.endsWith('.HOPR') && 
+                !info.pv.endsWith('.LOPR')) {
+            this.enumValuesArray = info['enum-labels'] || [];
+        }
     };
 
     jlab.wedm.ControlTextPvObserver.prototype.handleControlUpdate = function (update) {
