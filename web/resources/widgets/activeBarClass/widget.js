@@ -26,6 +26,24 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                 origin = parseFloat($obj.attr("data-origin") || "0.0"),
                 magnitude = Math.abs(max - origin) + Math.abs(min - origin);
 
+        if (jlab.wedm.isCalcExpr(this.pvSet.indicatorPvExpr)) {
+            var pvs = [];
+            for (var i = 0; i < this.pvSet.indicatorPvs.length; i++) {
+                var name = this.pvSet.indicatorPvs[i],
+                        val;
+
+                val = this.pvNameToValueMap[name];
+
+                if (typeof val === 'undefined') {
+                    /*Still more PVs we need values from*/
+                    return;
+                }
+                pvs.push(val);
+            }
+
+            value = jlab.wedm.evalCalcExpr(this.pvSet.indicatorPvExpr, pvs);
+        }
+
         if ($.isNumeric(max) && $.isNumeric(min)) {
             var height = $bar.attr("height"),
                     width = $bar.attr("width"),
