@@ -7,6 +7,9 @@ jlab.wedm.StaticTextPvObserverInit = function () {
 
     jlab.wedm.StaticTextPvObserver = function (id, pvSet) {
         jlab.wedm.PvObserver.call(this, id, pvSet);
+
+        /*We set noalarm color here because subclasses (TextupdateClass, RegTextupdateClass, TextentryClass) might want to change it*/
+        this.noAlarmColor = jlab.wedm.noAlarmColor;
     };
 
     jlab.wedm.StaticTextPvObserver.prototype = Object.create(jlab.wedm.PvObserver.prototype);
@@ -38,10 +41,10 @@ jlab.wedm.StaticTextPvObserverInit = function () {
         if (typeof sevr !== 'undefined') {
             if (sevr === 0) { // NO_ALARM
                 if (fgAlarm) {
-                    $obj.css("color", jlab.wedm.noAlarmColor);
+                    $obj.css("color", this.noAlarmColor);
                 }
                 if (bgAlarm) {
-                    $obj.css("background-color", jlab.wedm.noAlarmColor);
+                    $obj.css("background-color", this.noAlarmColor);
                 }
                 if (borderAlarm) { /*EDM hides border if no alarm*/
                     $obj.css("border", "2px solid transparent");

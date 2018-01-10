@@ -1,7 +1,6 @@
 package org.jlab.wedm.widget.html;
 
 import java.util.Map;
-import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.widget.ScreenProperties;
 
 /**
@@ -30,5 +29,8 @@ public class ActiveUpdateText extends ActiveControlText {
         if(!fill) {
             bgColor = null;
         }
+        
+        // When alarm sensitive and no alarm, use regular foreground color
+        attributes.put("data-no-alarm-color", fgColor.toColorString());
     }
 }
