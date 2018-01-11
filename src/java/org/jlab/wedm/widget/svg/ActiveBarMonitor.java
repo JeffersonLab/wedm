@@ -1,6 +1,9 @@
 package org.jlab.wedm.widget.svg;
 
 import java.awt.Point;
+import org.jlab.wedm.persistence.model.EDLAlphaColorConstant;
+import org.jlab.wedm.persistence.model.EDLColor;
+import org.jlab.wedm.persistence.model.EDLColorConstant;
 import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
@@ -15,6 +18,10 @@ public class ActiveBarMonitor extends ActiveRectangle {
             orientation = "horizontal";
         }
 
+        if (border) {
+            attributes.put("data-border", "true");
+        }
+
         return super.toHtml(indent, translation);
     }
 
@@ -27,6 +34,10 @@ public class ActiveBarMonitor extends ActiveRectangle {
             fillColor = bgColor;
         }
 
+        if(!border) {
+            lineColor = new EDLAlphaColorConstant(0, "transparent", 0, 0, 0, 0);
+        }
+        
         svg = super.toSvg(indent, translation);
 
         int originX = x + translation.x;
@@ -34,40 +45,38 @@ public class ActiveBarMonitor extends ActiveRectangle {
 
         int width;
         int height;
-        
-        int verticalPadding = 0;
-        
+
+        int borderPadding = 5;
+
         int vX = 0;
         int vY = 0;
         int vWidth = 0;
         int vHeight = 0;
 
+        if (border) {
+            originX = originX + borderPadding;
+            originY = originY + borderPadding;
+            width = w - (borderPadding * 2);
+            height = h - (borderPadding * 2);
+        } else {
+            width = w;
+            height = h;
+        }
+
         if ("horizontal".equals(orientation)) {
-            originX = originX + w / 24;
-            originY = originY + h / 6;
-            width = w - (w / 12);
-            height = h - (h / 3);
-            
-            verticalPadding = originY;            
-            
+
             vX = 0;
             vY = 0;
             vWidth = 0; // Unknown until max/min known = abs(max - origin) + abs(min - origin)
-            vHeight = height;          
-            
+            vHeight = height;
+
         } else { // Vertical
-            originX = originX + w / 6;
-            originY = originY + h / 24;
-            width = w - (w / 3);
-            height = h - (h / 12);
-        
-            verticalPadding = originY;
-            
+
             int x1 = 0;
             int y1 = height + originY;
             int x2 = w;
             int y2 = height + originY;
-            
+
             vX = 0;
             vY = height;
             vWidth = width;
@@ -83,14 +92,14 @@ public class ActiveBarMonitor extends ActiveRectangle {
                 strokeColorStr = indicatorColor.toColorString();
             }
 
-            svg = svg + "stroke=\"" + strokeColorStr + "\" ";
+            svg = svg + "stroke=\"" + strokeColorStr + "\" style=\"shape-rendering: crispEdges;\"";
             svg = svg + "/>\n";
         }
 
         svg = svg + indent + "<svg class=\"bar-holder\" x=\"" + originX + "\" y=\"" + originY
                 + "\" width=\"" + width
                 + "\" height=\"" + height + "\" viewBox=\"" + vX + " " + vY + " " + vWidth + " " + vHeight + "\" "
-                + "data-vertical-padding=\"" + verticalPadding + "\" preserveAspectRatio=\"none\">\n";
+                + "data-border-padding=\"" + borderPadding + "\" preserveAspectRatio=\"none\">\n";
         svg = svg + indent + HtmlScreen.INDENT_STEP + "<rect class=\"bar\" x=\"" + 0 + "\" y=\"" + 0
                 + "\" width=\"" + width
                 + "\" height=\"" + height + "\" ";
@@ -115,10 +124,10 @@ public class ActiveBarMonitor extends ActiveRectangle {
             svg = svg + "stroke-dasharray=\"" + DASH_SPACING + "\" ";
         }
 
-        if(!"horizontal".equals(orientation)) {
+        if (!"horizontal".equals(orientation)) {
             svg = svg + "transform=\"scale(1,-1)\"";
         }
-        
+
         svg = svg + "/>\n";
         svg = svg + indent + "</svg>\n";
 

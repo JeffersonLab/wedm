@@ -8,7 +8,7 @@ public class EDLColorConstant extends EDLColor {
     public int r;
     public int g;
     public int b;
-
+    
     public EDLColorConstant(int index, String name, int r, int g, int b) {
         super(index, name);
         

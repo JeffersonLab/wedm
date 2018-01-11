@@ -21,6 +21,7 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                 $baseline = $obj.find(".base-line"),
                 max = $obj.attr("data-max"),
                 min = $obj.attr("data-min"),
+                border = $obj.attr("data-border") === "true",
                 showScale = $obj.attr("data-show-scale") === "true",
                 scaleHeight = 30, /*Scale height is fixed and doesn't... scale */
                 origin = parseFloat($obj.attr("data-origin") || "0.0"),
@@ -50,17 +51,21 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                     $barHolder = $obj.find(".bar-holder"),
                     holderHeight = $barHolder.attr("height") * 1,
                     holderWidth = $barHolder.attr("width") * 1,
-                    verticalPadding = $barHolder.attr("data-vertical-padding") * 1, // constant padding offset (not always vertical?)
+                    borderPadding = $barHolder.attr("data-border-padding") * 1, // constant padding offset
                     maxMag = Math.abs(max - origin),
                     proportion = maxMag / magnitude;
+
+            if (!border) {
+                borderPadding = 0;
+            }
 
 
             if (horizontal) {
                 /*$.attr will force lowercase, not camel case so we use native JavaScript*/
                 $holder[0].setAttribute("viewBox", "0 0 " + magnitude + " " + height);
 
-                var rightBarHolderOffset = verticalPadding + (holderWidth * (1 - proportion)),
-                        leftBarHolderOffset = verticalPadding - (holderWidth * (proportion));
+                var rightBarHolderOffset = borderPadding + (holderWidth * (1 - proportion)),
+                        leftBarHolderOffset = borderPadding - (holderWidth * (proportion));
 
                 if (value > origin) { // Bar grows right    
                     /*$.attr will force lowercase, not camel case so we use native JavaScript*/
@@ -89,9 +94,9 @@ jlab.wedm.BarMeterPvObserverInit = function () {
                 }
 
             } else { /*Vertical*/
-                var baselineOffset = verticalPadding + (holderHeight * proportion),
-                        upBarHolderOffset = verticalPadding - (holderHeight * (1 - proportion)),
-                        downBarHolderOffset = verticalPadding + (holderHeight * proportion);
+                var baselineOffset = borderPadding + (holderHeight * proportion),
+                        upBarHolderOffset = borderPadding - (holderHeight * (1 - proportion)),
+                        downBarHolderOffset = borderPadding + (holderHeight * proportion);
 
                 var y1 = baselineOffset;
                 var y2 = y1;
