@@ -75,20 +75,20 @@ jlab.wedm.BarMeterPvObserverInit = function () {
 
                     $barHolder.attr("x", rightBarHolderOffset);
 
-                    var width = Math.min(value, max);
+                    var width = Math.min(value, max - origin);
 
                     $bar.attr("width", Math.abs(width));
                 } else { /*Bar grows left since less than origin*/
 
                     /*$.attr will force lowercase, not camel case so we use native JavaScript*/
-                    /*Use -magnitude for x since we are using scale(1,-1) to flip coordintes and have x values go left instead of right*/
+                    /*Use -magnitude for x since we are using scale(-1,1) to flip coordintes and have x values go left instead of right*/
                     $holder[0].setAttribute("viewBox", (-magnitude) + " 0 " + magnitude + " " + height);
 
-                    $bar.attr("transform", "scale(1,-1)");
+                    $bar.attr("transform", "scale(-1,1)");
 
                     $barHolder.attr("x", leftBarHolderOffset);
 
-                    var width = Math.max(value, min);
+                    var width = Math.max(value, min - origin);
 
                     $bar.attr("width", Math.abs(width));
                 }
@@ -106,14 +106,14 @@ jlab.wedm.BarMeterPvObserverInit = function () {
 
                 if (value > origin) {
                     /*$.attr will force lowercase, not camel case so we use native JavaScript*/
-                    /*Use -magnitude for x since we are using scale(1,-1) to flip coordintes and have x values go up instead of down*/
+                    /*Use -magnitude for y since we are using scale(1,-1) to flip coordintes and have y values go up instead of down*/
                     $holder[0].setAttribute("viewBox", "0 " + (-magnitude) + " " + width + " " + magnitude);
 
                     $barHolder.attr("y", upBarHolderOffset);
 
                     $bar.attr("transform", "scale(1,-1)");
 
-                    $bar.attr("height", Math.min(value, max));
+                    $bar.attr("height", Math.min(value, max - origin));
                 } else { /*Bar grows downward since less than origin*/
 
                     /*$.attr will force lowercase, not camel case so we use native JavaScript*/
@@ -123,7 +123,7 @@ jlab.wedm.BarMeterPvObserverInit = function () {
 
                     $bar.removeAttr("transform");
 
-                    var height = Math.max(value, min);
+                    var height = Math.max(value, min - origin);
 
                     $bar.attr("height", Math.abs(height));
                 }
