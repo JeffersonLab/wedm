@@ -33,4 +33,4 @@ The color palette file is located by searching the following locations in order:
 
 ## See Also
 [WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes)      
-[This work was presented at ICALEPCS 2017](http://icalepcs2017.org/)     
+[This work was presented at ICALEPCS 2017](http://icalepcs2017.org/) and the [2017 EPICS workshop](https://indico.esss.lu.se/event/889/session/1/contribution/0)  
