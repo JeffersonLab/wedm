@@ -2,7 +2,7 @@
 Web Extensible Display Manager
 
 ## Introduction
-Leverages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://ics-web.sns.ornl.gov/edm/eum.html) screens on the web.
+Leverages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
 
 ![Example](/doc/img/PhoneExample.png?raw=true "Example")
 
