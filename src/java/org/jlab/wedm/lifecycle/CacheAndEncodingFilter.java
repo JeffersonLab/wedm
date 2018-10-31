@@ -2,6 +2,7 @@ package org.jlab.wedm.lifecycle;
 
 import java.io.IOException;
 import java.util.Arrays;
+
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -76,7 +77,7 @@ public class CacheAndEncodingFilter implements Filter {
                 //System.out.println("cacheable: " + type);
                 // We don't use Cache-Control max-age as it is just HTTP/1.1 replacement of HTTP/1.0 Expires, but Expires still works fine.
                 super.setHeader("Cache-Control", null); // Remove header sometimes automatically added by SSL/TLS container module
-                super.setHeader("Pragma", null); // Remove header sometimes automatically added by SSL/TLS container module              
+                super.setHeader("Pragma", null); // Remove header sometimes automatically added by SSL/TLS container module
                 super.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_MILLIS);
             } else {
 

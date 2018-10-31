@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -24,7 +25,7 @@ public final class IOUtil {
     }
 
     /**
-     * Closes a Closeable without generating any checked Exceptions. 
+     * Closes a Closeable without generating any checked Exceptions.
      * If an IOException does occur while closing it is logged as a WARNING.
      *
      * @param c The Closeable
@@ -66,7 +67,7 @@ public final class IOUtil {
 
         return bytes;
     }
-    
+
     /**
      * Encodes an array of bytes to base64.
      *
@@ -75,5 +76,5 @@ public final class IOUtil {
      */
     public static String encodeBase64(byte[] data) {
         return DatatypeConverter.printBase64Binary(data);
-    }    
+    }
 }
