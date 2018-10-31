@@ -7,13 +7,11 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.jlab.wedm.business.service.ScreenService;
 import org.jlab.wedm.lifecycle.Configuration;
 import org.jlab.wedm.persistence.model.HtmlScreen;
@@ -46,8 +44,8 @@ public class ScreenController extends HttpServlet {
         Enumeration e = request.getParameterNames();
         while (e.hasMoreElements()) {
             String name = (String) e.nextElement();
-            // We prefix with "$(" to namespace them and avoid collision if someone was to use
-            // a macro with name "edl" and also because now it is already in the format
+            // We prefix with "$(" to namespace them and avoid collision if someone was to use 
+            // a macro with name "edl" and also because now it is already in the format 
             // needed for search and replace
             if (name.startsWith("$(") && name.endsWith(")")) {
                 String value = request.getParameter(name);
@@ -92,8 +90,6 @@ public class ScreenController extends HttpServlet {
             request.setAttribute("edlname", edlname);
 
             request.getRequestDispatcher("/WEB-INF/views/file-not-found.jsp").forward(request, response);
-        } catch(Exception ex) {
-            LOGGER.log(Level.SEVERE, "URL ERROR", ex);
         }
     }
 }

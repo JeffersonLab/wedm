@@ -1,7 +1,6 @@
 package org.jlab.wedm.persistence.io;
 
-import java.net.URL;
-
+import java.io.File;
 import org.jlab.wedm.persistence.model.EDLFont;
 
 /**
@@ -16,11 +15,11 @@ public class EDLParser {
     public static final EDLFont DEFAULT_FONT = new EDLFont("helvetica", false, false, 12);
 
     /**
-     * On Windows you could set EDL_DIR to a remote ExpanDrive mount say
-     * E:\cs\opshome\edm then set REWRITE_FROM_DIR to /
+     * On Windows you could set EDL_DIR to a remote ExpanDrive mount say 
+     * E:\cs\opshome\edm then set REWRITE_FROM_DIR to / 
      * and REWRITE_TO_DIR to E:\.
      **/
-
+    
     static {
         final String defaultRoot = "C:\\EDL";
         String root = System.getenv("EDL_DIR");
@@ -41,11 +40,11 @@ public class EDLParser {
                 name = REWRITE_TO_DIR + name;
             }
         }
-
+        
         return name;
     }
 
-    public static URL getEdlResource(String name) throws Exception {
+    public static File getEdlFile(String name) {
         if (name == null) {
             throw new RuntimeException("An EDL file is required");
         }
@@ -54,21 +53,15 @@ public class EDLParser {
             name = name + ".edl";
         }
 
-        if (!name.startsWith("http"))
-        {
-            if (name.startsWith("file:"))
-                name = name.substring(5);
+        name = EDLParser.rewriteFileName(name);
 
-            name = EDLParser.rewriteFileName(name);
+        File edl = new File(name);
 
-            if (!name.startsWith(EDL_ROOT_DIR))
-                    name = EDL_ROOT_DIR + "/" + name;
+        if (!edl.isAbsolute()) {
+            edl = new File(EDL_ROOT_DIR + File.separator + name);
         }
 
-        if (!name.startsWith("http"))
-            name = "file:" + name;
-
-        return new URL(name);
+        return edl;
     }
 
     public static String stripQuotes(String value) {

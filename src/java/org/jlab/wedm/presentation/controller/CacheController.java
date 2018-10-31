@@ -2,14 +2,12 @@ package org.jlab.wedm.presentation.controller;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.jlab.wedm.business.service.ScreenService;
 import org.jlab.wedm.persistence.model.HtmlScreen;
 
 /**
@@ -31,8 +29,8 @@ public class CacheController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Collection<HtmlScreen> screens = Collections.emptyList();
-
+        Collection<HtmlScreen> screens = ScreenService.SCREEN_CACHE.values();
+        
         request.setAttribute("screens", screens);
 
         request.getRequestDispatcher("/WEB-INF/views/cache.jsp").forward(request, response);
