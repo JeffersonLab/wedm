@@ -93,18 +93,29 @@ public class EDLParser {
 
         if (edl_file.exists())
         {
-            LOGGER.log(Level.INFO, "File exists: " + edl_file.getAbsolutePath());
             return edl_file.toURI().toURL();
         }
 
         URL edl = null;
+
+        /* Check that resource is defined as an EDL file. */
+        if (!name.contains(".edl"))
+        {
+            /* The file extension should precede any macro following the resource name. */
+            int idx = name.indexOf("&");
+
+            /* If there is no macro, stick it on the end and hope for the best. */
+            if (-1 != idx)
+                name = name.substring(0, idx) + ".edl" + name.substring(idx);
+            else
+                name += ".edl";
+        }
 
         if (null != SEARCH_PATH)
         {
             for (String path : SEARCH_PATH)
             {
                 edl = new URL(HTTP_DOC_ROOT + path + File.separator + name);
-                LOGGER.log(Level.INFO, "Looking at: " + path);
 
                 try
                 {
@@ -115,14 +126,12 @@ public class EDLParser {
                 }
                 catch(Exception ex)
                 {
-                    // TODO Quiet this eventually...
-                    LOGGER.log(Level.INFO, "File not found at " + path, ex);
+                    LOGGER.log(Level.FINE, "File not found at " + path);
                 }
-
             }
         }
 
-        LOGGER.log(Level.INFO, "File not found locally or at any specified remote locations.");
+        LOGGER.log(Level.INFO, "File (" + name + ") not found locally or at any specified remote locations.");
 
         return new URL("");
     }
