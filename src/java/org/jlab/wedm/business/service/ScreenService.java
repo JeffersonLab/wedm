@@ -58,6 +58,9 @@ public class ScreenService {
 
         HtmlScreen screen = SCREEN_CACHE.get(url);
 
+        if (url.isEmpty())
+            return null;
+
         if(screen != null) {
             if(edl.openConnection().getLastModified() > screen.getModifiedDate()) {
                 LOGGER.log(Level.WARNING, "File changed so flushing cache: {0}", url);
