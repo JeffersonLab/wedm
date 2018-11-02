@@ -86,6 +86,9 @@ public class EDLParser {
             throw new RuntimeException("An EDL resource is required");
         }
 
+        if (name.startsWith("http:"))
+            return new URL(name);
+
         if (name.startsWith("file:"))
             name = name.substring(5);
 
@@ -104,7 +107,6 @@ public class EDLParser {
             /* The file extension should precede any macro following the resource name. */
             int idx = name.indexOf("&");
 
-            /* If there is no macro, stick it on the end and hope for the best. */
             if (-1 != idx)
                 name = name.substring(0, idx) + ".edl" + name.substring(idx);
             else
