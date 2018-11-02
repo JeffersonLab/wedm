@@ -31,7 +31,7 @@ public class ScreenService {
     public static final ConcurrentHashMap<String, HtmlScreen> SCREEN_CACHE
             = new ConcurrentHashMap<>();
 
-    private static final boolean CACHE_SCREENS_ENABLED = false;
+    private static final boolean CACHE_SCREENS_ENABLED = true;
 
     /*static {
         if (CACHE_SCREENS_ENABLED) {
