@@ -41,11 +41,19 @@ public class ScreenParser extends EDLParser {
     public Screen parse(String name, ColorPalette colorList, int recursionLevel) throws
             FileNotFoundException, IOException {
 
+        int max_recurse = 5;
+
         URL edl = getEdlURL(name);
-        LOGGER.log(Level.INFO, "URL : " + edl.toString());
+
         URLConnection edl_conn = edl.openConnection();
         edl_conn.connect();
         String url = edl.toString();
+
+        /* Limit the number of embedded files to 1 file deep if the resource is remote. */
+        if (url.startsWith("file:"))
+            max_recurse = 5;
+        else
+            max_recurse = 1;
 
         long modifiedDate = edl_conn.getLastModified();
 
@@ -205,7 +213,7 @@ public class ScreenParser extends EDLParser {
             } // end while line
         } // end scanner try with resources // end scanner try with resources
 
-        if (recursionLevel < 2) { // Don't recurse more than five files deep
+        if (recursionLevel < max_recurse) { // Don't recurse more than five files deep
             for (EmbeddedScreen embedded : embeddedScreens) {
 
                 //LOGGER.log(Level.FINEST, "Embedded file: {0}", embedded.file);
