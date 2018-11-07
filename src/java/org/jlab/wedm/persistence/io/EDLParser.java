@@ -1,6 +1,12 @@
 package org.jlab.wedm.persistence.io;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.jlab.wedm.persistence.model.EDLFont;
 
 /**
@@ -9,17 +15,21 @@ import org.jlab.wedm.persistence.model.EDLFont;
  */
 public class EDLParser {
 
+    private static final Logger LOGGER = Logger.getLogger(EDLParser.class.getName());
+
+    public static final EDLFont DEFAULT_FONT = new EDLFont("helvetica", false, false, 12);
     public static final String EDL_ROOT_DIR;
+    public static final String HTTP_DOC_ROOT;
     public static final String REWRITE_FROM_DIR;
     public static final String REWRITE_TO_DIR;
-    public static final EDLFont DEFAULT_FONT = new EDLFont("helvetica", false, false, 12);
+    public static final String[] SEARCH_PATH;
 
     /**
-     * On Windows you could set EDL_DIR to a remote ExpanDrive mount say 
-     * E:\cs\opshome\edm then set REWRITE_FROM_DIR to / 
+     * On Windows you could set EDL_DIR to a remote ExpanDrive mount say
+     * E:\cs\opshome\edm then set REWRITE_FROM_DIR to /
      * and REWRITE_TO_DIR to E:\.
      **/
-    
+
     static {
         final String defaultRoot = "C:\\EDL";
         String root = System.getenv("EDL_DIR");
@@ -31,20 +41,27 @@ public class EDLParser {
 
         REWRITE_FROM_DIR = System.getenv("REWRITE_FROM_DIR");
         REWRITE_TO_DIR = System.getenv("REWRITE_TO_DIR");
+
+        HTTP_DOC_ROOT = System.getenv("EDMHTTPDOCROOT");
+        String search_path = System.getenv("EDMDATAFILES");
+        if (null != search_path)
+            SEARCH_PATH = search_path.split(":");
+        else
+            SEARCH_PATH = null;
     }
 
     public static String rewriteFileName(String name) {
         if (REWRITE_FROM_DIR != null && REWRITE_TO_DIR != null) {
-            if (name.startsWith(REWRITE_FROM_DIR)) {
-                name = name.substring(REWRITE_FROM_DIR.length());
-                name = REWRITE_TO_DIR + name;
+            if (name.contains(REWRITE_FROM_DIR)) {
+                name = name.replaceFirst(REWRITE_FROM_DIR, REWRITE_TO_DIR);
             }
         }
-        
+
         return name;
     }
 
-    public static File getEdlFile(String name) {
+    public static File getEdlFile(String name)
+    {
         if (name == null) {
             throw new RuntimeException("An EDL file is required");
         }
@@ -62,6 +79,63 @@ public class EDLParser {
         }
 
         return edl;
+    }
+
+    public static URL getEdlURL(String name) throws MalformedURLException {
+        if (name == null) {
+            throw new RuntimeException("An EDL resource is required");
+        }
+
+        if (name.startsWith("http:"))
+            return new URL(name);
+
+        if (name.startsWith("file:"))
+            name = name.substring(5);
+
+        File edl_file = getEdlFile(name);
+
+        if (edl_file.exists())
+        {
+            return edl_file.toURI().toURL();
+        }
+
+        URL edl = null;
+
+        /* Check that resource is defined as an EDL file. */
+        if (!name.contains(".edl"))
+        {
+            /* The file extension should precede any macro following the resource name. */
+            int idx = name.indexOf("&");
+
+            if (-1 != idx)
+                name = name.substring(0, idx) + ".edl" + name.substring(idx);
+            else
+                name += ".edl";
+        }
+
+        if (null != SEARCH_PATH)
+        {
+            for (String path : SEARCH_PATH)
+            {
+                edl = new URL(HTTP_DOC_ROOT + path + File.separator + name);
+
+                try
+                {
+                    URLConnection edl_conn = edl.openConnection();
+                    edl_conn.connect();
+                    edl_conn.getInputStream();
+                    return edl;
+                }
+                catch(Exception ex)
+                {
+                    LOGGER.log(Level.FINE, "File not found at " + path);
+                }
+            }
+        }
+
+        LOGGER.log(Level.INFO, "File (" + name + ") not found locally or at any specified remote locations.");
+
+        return new URL("");
     }
 
     public static String stripQuotes(String value) {
