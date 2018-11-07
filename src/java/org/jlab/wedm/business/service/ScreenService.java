@@ -63,7 +63,7 @@ public class ScreenService {
 
         if(screen != null) {
             if(edl.openConnection().getLastModified() > screen.getModifiedDate()) {
-                LOGGER.log(Level.WARNING, "File changed so flushing cache: {0}", url);
+                LOGGER.log(Level.WARNING, "Resource changed so flushing cache: {0}", url);
                 SCREEN_CACHE.remove(url);
                 screen = null;
             }
