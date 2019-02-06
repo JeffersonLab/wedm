@@ -1,6 +1,7 @@
 package org.jlab.wedm.persistence.io;
 
 import java.io.File;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -118,13 +119,17 @@ public class EDLParser {
             for (String path : SEARCH_PATH)
             {
                 edl = new URL(HTTP_DOC_ROOT + path + File.separator + name);
-
+                LOGGER.log(Level.FINE, "Checking " + edl);
                 try
                 {
-                    URLConnection edl_conn = edl.openConnection();
-                    edl_conn.connect();
-                    edl_conn.getInputStream();
-                    return edl;
+                    final HttpURLConnection edl_conn = (HttpURLConnection) edl.openConnection();
+                    edl_conn.setRequestMethod("HEAD");
+                    final int code = edl_conn.getResponseCode();
+                    if (code == 200)
+                    {
+                        LOGGER.log(Level.FINE, "File found at " + edl);
+                        return edl;
+                    }
                 }
                 catch(Exception ex)
                 {
