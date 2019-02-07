@@ -4,9 +4,16 @@ import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.jlab.wedm.persistence.model.EDLFont;
 
@@ -31,12 +38,11 @@ public class EDLParser {
      * and REWRITE_TO_DIR to E:\.
      **/
 
-    static {
-        final String defaultRoot = "C:\\EDL";
+    static
+    {
         String root = System.getenv("EDL_DIR");
-        if (root == null) {
-            root = defaultRoot;
-        }
+        if (root == null)
+            root = "C:\\EDL";
 
         EDL_ROOT_DIR = root;
 
@@ -44,11 +50,59 @@ public class EDLParser {
         REWRITE_TO_DIR = System.getenv("REWRITE_TO_DIR");
 
         HTTP_DOC_ROOT = System.getenv("EDMHTTPDOCROOT");
+        if (HTTP_DOC_ROOT != null)
+            LOGGER.log(Level.INFO, "HTTP_DOC_ROOT: " + HTTP_DOC_ROOT);
         String search_path = System.getenv("EDMDATAFILES");
         if (null != search_path)
+        {
             SEARCH_PATH = search_path.split(":");
+            LOGGER.log(Level.INFO, "EDMDATAFILES search path:\n" + Arrays.toString(SEARCH_PATH));
+        }
         else
             SEARCH_PATH = null;
+
+        try
+        {
+            trustAnybody();
+        }
+        catch (Exception ex)
+        {
+            LOGGER.log(Level.WARNING, "Cannot disable certificate checks", ex);
+        }
+    }
+
+    /** Allow https:// access to self-signed certificates
+     *  @throws Exception on error
+     */
+    private static synchronized void trustAnybody() throws Exception
+    {
+        // Create a trust manager that does not validate certificate chains.
+        final TrustManager[] trustAllCerts = new TrustManager[]
+        {
+            new X509TrustManager()
+            {
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers()
+                {
+                    return null;
+                }
+                @Override
+                public void checkClientTrusted(X509Certificate[] certs, String authType)
+                { /* NOP */ }
+                @Override
+                public void checkServerTrusted(X509Certificate[] certs, String authType)
+                { /* NOP */ }
+            }
+        };
+        final SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+        // All-trusting host name verifier
+        final HostnameVerifier allHostsValid = (hostname, session) -> true;
+        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+
+        LOGGER.log(Level.INFO, "Disable https certificate checks");
     }
 
     public static String rewriteFileName(String name) {
@@ -87,7 +141,7 @@ public class EDLParser {
             throw new RuntimeException("An EDL resource is required");
         }
 
-        if (name.startsWith("http:"))
+        if (name.startsWith("http:")  ||  name.startsWith("https:"))
             return new URL(name);
 
         if (name.startsWith("file:"))
@@ -118,8 +172,11 @@ public class EDLParser {
         {
             for (String path : SEARCH_PATH)
             {
-                edl = new URL(HTTP_DOC_ROOT + path + File.separator + name);
-                LOGGER.log(Level.FINE, "Checking " + edl);
+                if (path.startsWith("/"))
+                    edl = new URL(HTTP_DOC_ROOT + path.substring(1) + "/" + name);
+                else
+                    edl = new URL(HTTP_DOC_ROOT + path + "/" + name);
+                LOGGER.log(Level.FINER, "Checking " + edl);
                 try
                 {
                     final HttpURLConnection edl_conn = (HttpURLConnection) edl.openConnection();
@@ -131,9 +188,9 @@ public class EDLParser {
                         return edl;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    LOGGER.log(Level.FINE, "File not found at " + path);
+                    LOGGER.log(Level.FINER, "File not found at " + path, ex);
                 }
             }
         }
