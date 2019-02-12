@@ -3,18 +3,18 @@ package org.jlab.wedm.persistence.io;
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import org.jlab.wedm.persistence.model.EDLFont;
 
 /**
@@ -25,35 +25,34 @@ public class EDLParser {
 
     private static final Logger LOGGER = Logger.getLogger(EDLParser.class.getName());
 
-    public static final EDLFont DEFAULT_FONT = new EDLFont("helvetica", false, false, 12);
     public static final String EDL_ROOT_DIR;
-    public static final String HTTP_DOC_ROOT;
     public static final String REWRITE_FROM_DIR;
     public static final String REWRITE_TO_DIR;
+    public static final EDLFont DEFAULT_FONT = new EDLFont("helvetica", false, false, 12);
     public static final String[] SEARCH_PATH;
+    public static final String HTTP_DOC_ROOT;
 
     /**
-     * On Windows you could set EDL_DIR to a remote ExpanDrive mount say
-     * E:\cs\opshome\edm then set REWRITE_FROM_DIR to /
+     * On Windows you could set EDL_DIR to a remote ExpanDrive mount say 
+     * E:\cs\opshome\edm then set REWRITE_FROM_DIR to / 
      * and REWRITE_TO_DIR to E:\.
      **/
-
-    static
-    {
+    
+    static {
+        final String defaultRoot = "C:\\EDL";
         String root = System.getenv("EDL_DIR");
-        if (root == null)
-            root = "C:\\EDL";
+        if (root == null) {
+            root = defaultRoot;
+        }
 
         EDL_ROOT_DIR = root;
 
         REWRITE_FROM_DIR = System.getenv("REWRITE_FROM_DIR");
         REWRITE_TO_DIR = System.getenv("REWRITE_TO_DIR");
-
-        HTTP_DOC_ROOT = System.getenv("EDMHTTPDOCROOT");
-        if (HTTP_DOC_ROOT != null)
-            LOGGER.log(Level.INFO, "HTTP_DOC_ROOT: " + HTTP_DOC_ROOT);
+        
+        // Use search path?
         String search_path = System.getenv("EDMDATAFILES");
-        if (null != search_path)
+        if (search_path != null)
         {
             SEARCH_PATH = search_path.split(":");
             LOGGER.log(Level.INFO, "EDMDATAFILES search path:\n" + Arrays.toString(SEARCH_PATH));
@@ -61,13 +60,25 @@ public class EDLParser {
         else
             SEARCH_PATH = null;
 
-        try
+        // .. search path with http/https as starting point?
+        HTTP_DOC_ROOT = System.getenv("EDMHTTPDOCROOT");
+        if (HTTP_DOC_ROOT != null)
         {
-            trustAnybody();
-        }
-        catch (Exception ex)
-        {
-            LOGGER.log(Level.WARNING, "Cannot disable certificate checks", ex);
+            LOGGER.log(Level.INFO, "EDMHTTPDOCROOT: " + HTTP_DOC_ROOT);
+            if (SEARCH_PATH == null)
+                LOGGER.log(Level.WARNING, "EDMHTTPDOCROOT must be used with EDMDATAFILES");
+
+            // If http:.. access is configured,
+            // local files are often served with self-signed cert,
+            // so disable validation
+            try
+            {
+                trustAnybody();
+            }
+            catch (Exception ex)
+            {
+                LOGGER.log(Level.WARNING, "Cannot disable certificate checks", ex);
+            }
         }
     }
 
@@ -102,21 +113,21 @@ public class EDLParser {
         final HostnameVerifier allHostsValid = (hostname, session) -> true;
         HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 
-        LOGGER.log(Level.INFO, "Disable https certificate checks");
+        LOGGER.log(Level.INFO, "Disabled https certificate checks");
     }
 
     public static String rewriteFileName(String name) {
         if (REWRITE_FROM_DIR != null && REWRITE_TO_DIR != null) {
-            if (name.contains(REWRITE_FROM_DIR)) {
-                name = name.replaceFirst(REWRITE_FROM_DIR, REWRITE_TO_DIR);
+            if (name.startsWith(REWRITE_FROM_DIR)) {
+                name = name.substring(REWRITE_FROM_DIR.length());
+                name = REWRITE_TO_DIR + name;
             }
         }
-
+        
         return name;
     }
 
-    public static File getEdlFile(String name)
-    {
+    public static File getEdlFile(String name) {
         if (name == null) {
             throw new RuntimeException("An EDL file is required");
         }
@@ -136,39 +147,54 @@ public class EDLParser {
         return edl;
     }
 
+    /** Resolve name to URL
+     * 
+     *  @param name Name may be a http:, https:, file: URL,
+     *              but also just a name that refers to a local file,
+     *              or that is found on the EDMDATAFILES search path.
+     *  @return Resolved URL for the name
+     *  @throws MalformedURLException
+     */
     public static URL getEdlURL(String name) throws MalformedURLException {
-        if (name == null) {
-            throw new RuntimeException("An EDL resource is required");
+        Objects.requireNonNull(name, "An EDL resource is required");
+
+        // Use complete http.. URL as is
+        if (name.startsWith("http:")  ||  name.startsWith("https:"))
+        {
+            LOGGER.log(Level.FINE, "Using " + name + " as provided");
+            return new URL(name);
         }
 
-        if (name.startsWith("http:")  ||  name.startsWith("https:"))
-            return new URL(name);
-
+        final File edl_file;
+        // For file URL, get the file.
+        // Otherwise turn name into absolute filename within EDL_ROOT_DIR
         if (name.startsWith("file:"))
-            name = name.substring(5);
+            edl_file = new File(URI.create(name));
+        else
+            edl_file = getEdlFile(name);
 
-        File edl_file = getEdlFile(name);
-
+        // Done?
         if (edl_file.exists())
         {
+            LOGGER.log(Level.FINE, "Found local file " + edl_file);
             return edl_file.toURI().toURL();
         }
 
+        // Try search path
         URL edl = null;
 
-        /* Check that resource is defined as an EDL file. */
+        // Assert that name has *.edl ending
         if (!name.contains(".edl"))
         {
-            /* The file extension should precede any macro following the resource name. */
-            int idx = name.indexOf("&");
-
-            if (-1 != idx)
+            // The file extension should precede any macro following the resource name
+            final int idx = name.indexOf("&");
+            if (idx != -1)
                 name = name.substring(0, idx) + ".edl" + name.substring(idx);
             else
                 name += ".edl";
         }
 
-        if (null != SEARCH_PATH)
+        if (SEARCH_PATH != null)
         {
             for (String path : SEARCH_PATH)
             {
@@ -179,6 +205,7 @@ public class EDLParser {
                 LOGGER.log(Level.FINER, "Checking " + edl);
                 try
                 {
+                    // Perform HEAD request to check for presence
                     final HttpURLConnection edl_conn = (HttpURLConnection) edl.openConnection();
                     edl_conn.setRequestMethod("HEAD");
                     final int code = edl_conn.getResponseCode();
@@ -195,7 +222,7 @@ public class EDLParser {
             }
         }
 
-        LOGGER.log(Level.INFO, "File (" + name + ") not found locally or at any specified remote locations.");
+        LOGGER.log(Level.INFO, "File (" + name + ") not found locally nor at any specified remote locations.");
 
         return new URL("");
     }
