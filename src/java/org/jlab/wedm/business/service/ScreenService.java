@@ -51,18 +51,19 @@ public class ScreenService {
     public HtmlScreen load(String name, List<Macro> macros) throws FileNotFoundException,
             IOException {
         
-        URL edl = EDLParser.getEdlURL(name);
-        String url = edl.toString();
-        
-        HtmlScreen screen = SCREEN_CACHE.get(url);
-        
-        if (url.isEmpty())
+        // Resolve name into URL
+        final URL url = EDLParser.getEdlURL(name);
+        if (url == null)
             return null;
         
+        // Already in cache?
+        String cache_key = url.toString();
+        HtmlScreen screen = SCREEN_CACHE.get(cache_key);
+        // .. and not expired?
         if(screen != null) {
-            if(edl.openConnection().getLastModified() > screen.getModifiedDate()) {
-                LOGGER.log(Level.WARNING, "Resource changed so flushing cache: {0}", url);
-                SCREEN_CACHE.remove(url);
+            if(url.openConnection().getLastModified() > screen.getModifiedDate()) {
+                LOGGER.log(Level.WARNING, "File changed so flushing cache: {0}", cache_key);
+                SCREEN_CACHE.remove(cache_key);
                 screen = null;
             }
         }
@@ -71,8 +72,8 @@ public class ScreenService {
             ScreenParser parser = new ScreenParser();
             
             long start = System.currentTimeMillis();
-            Screen parsedScreen = parser.parse(name, colorList, 0);
-            // long end = System.currentTimeMillis();
+            Screen parsedScreen = parser.parse(url, colorList, 0);
+            //long end = System.currentTimeMillis();
             
             //LOGGER.log(Level.FINEST, "EDL Parse time: (seconds) {0}", (end - start) / 1000.0);
             
@@ -87,21 +88,21 @@ public class ScreenService {
             screen.setGenerateSeconds(generateSeconds);
             
             if (CACHE_SCREENS_ENABLED) {
-                SCREEN_CACHE.put(url, screen);
+                SCREEN_CACHE.put(cache_key, screen);
             }
         }
         
         screen.incrementUsageCount();
         
         screen = applyMacros(screen, macros);
-         
+        
         return screen;
     }
     
-    private void loadColorFile() throws FileNotFoundException {
+    private void loadColorFile() throws FileNotFoundException {        
         ColorListParser parser = new ColorListParser();
         
-        File file = new File(COLOR_FILE_PATH);
+        File file = new File(COLOR_FILE_PATH);        
         
         colorList = parser.parse(file);
     }

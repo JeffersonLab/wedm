@@ -2,13 +2,13 @@ package org.jlab.wedm.persistence.io;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.io.InputStream;
+import java.net.URLConnection;
+import java.net.URL;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -16,15 +16,14 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.jlab.wedm.lifecycle.Configuration;
+import org.jlab.wedm.widget.ActiveGroup;
+import org.jlab.wedm.widget.ActiveSymbol;
 import org.jlab.wedm.persistence.model.ColorPalette;
+import org.jlab.wedm.widget.ActivePictureInPicture;
+import org.jlab.wedm.widget.EmbeddedScreen;
 import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
-import org.jlab.wedm.widget.ActiveGroup;
-import org.jlab.wedm.widget.ActivePictureInPicture;
-import org.jlab.wedm.widget.ActiveSymbol;
-import org.jlab.wedm.widget.EmbeddedScreen;
 import org.jlab.wedm.widget.ScreenProperties;
 import org.jlab.wedm.widget.UnknownWidget;
 
@@ -38,33 +37,21 @@ public class ScreenParser extends EDLParser {
 
     private static final Logger LOGGER = Logger.getLogger(ScreenParser.class.getName());
 
-    public Screen parse(String name, ColorPalette colorList, int recursionLevel) throws
+    public Screen parse(URL url, ColorPalette colorList, int recursionLevel) throws
             FileNotFoundException, IOException {
 
-        int max_recurse = 5;
-
-        URL edl = getEdlURL(name);
-
-        URLConnection edl_conn = edl.openConnection();
+        URLConnection edl_conn = url.openConnection();
         edl_conn.connect();
-        String url = edl.toString();
 
-        /* Limit the number of embedded files to 1 file deep if the resource is remote. */
-        if (url.startsWith("file:"))
-            max_recurse = 5;
-        else
-            max_recurse = 1;
-
+        String canonicalPath = url.toString();
         long modifiedDate = edl_conn.getLastModified();
-
-        InputStream edl_input = edl_conn.getInputStream();
 
         ScreenProperties properties = new ScreenProperties();
         properties.colorList = colorList;
         List<WEDMWidget> screenObjects = new ArrayList<>();
         List<EmbeddedScreen> embeddedScreens = new ArrayList<>();
 
-        try (Scanner scanner = new Scanner(edl_input)) {
+        try (Scanner scanner = new Scanner(edl_conn.getInputStream())) {
 
             WEDMWidget last = null;
             Map<String, String> traits = new HashMap<>();
@@ -167,9 +154,9 @@ public class ScreenParser extends EDLParser {
                                         // Ignoring comment
                                     } else {
                                         if (line.trim().endsWith("{")) {
-                                            // Special case: version 4.0.0 of ActiveLine sometimes
+                                            // Special case: version 4.0.0 of ActiveLine sometimes 
                                             // has { after numPoints.  It also sometimes ends the
-                                            // bracket on the line after yPoints and sometimes not.
+                                            // bracket on the line after yPoints and sometimes not. 
                                             // If so we end up with a harmless trait named } with no
                                             // value.
                                             // FYI - version 4.0.1 of ActiveLine doesn't have this
@@ -207,13 +194,18 @@ public class ScreenParser extends EDLParser {
                         }
                     } catch (Exception e) {
                         LOGGER.log(Level.WARNING, "Unable to parse line '" + line + "'; file '"
-                                + url + "'; ignoring", e);
+                                + canonicalPath + "'; ignoring", e);
                     }
                 }
             } // end while line
         } // end scanner try with resources // end scanner try with resources
 
-        if (recursionLevel < max_recurse) { // Don't recurse more than five files deep
+        // Don't recurse more than five files deep,
+        // less if the resource is remote.
+        int max_recurse = 5;
+        if (url.getProtocol().startsWith("http"))
+            max_recurse = 1;
+        if (recursionLevel < max_recurse) {
             for (EmbeddedScreen embedded : embeddedScreens) {
 
                 //LOGGER.log(Level.FINEST, "Embedded file: {0}", embedded.file);
@@ -221,7 +213,7 @@ public class ScreenParser extends EDLParser {
 
                     if (embedded instanceof ActiveSymbol) {
                         if (embedded.file != null) {
-                            Screen s = this.parse(embedded.file, colorList, recursionLevel + 1);
+                            Screen s = this.parse(EDLParser.getEdlURL(embedded.file), colorList, recursionLevel + 1);
                             s.setScreenProperties(embedded);
                             embedded.screen = s;
                         } else {
@@ -229,7 +221,7 @@ public class ScreenParser extends EDLParser {
                         }
                     } else if (embedded instanceof ActivePictureInPicture) {
                         if (embedded.file != null && "file".equals(embedded.displaySource)) {
-                            Screen s = this.parse(embedded.file, colorList, recursionLevel + 1);
+                            Screen s = this.parse(EDLParser.getEdlURL(embedded.file), colorList, recursionLevel + 1);
                             s.setScreenProperties(embedded);
                             embedded.screen = s;
                         } else if ("menu".equals(embedded.displaySource)) { // Use filePv to determine which menu item to use
@@ -241,7 +233,7 @@ public class ScreenParser extends EDLParser {
                                     //LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
                                     if (f != null) {
                                         try {
-                                            Screen s2 = this.parse(f, colorList, recursionLevel + 1);
+                                            Screen s2 = this.parse(EDLParser.getEdlURL(f), colorList, recursionLevel + 1);
 
                                             s2.embeddedIndex = i;
 
@@ -249,7 +241,7 @@ public class ScreenParser extends EDLParser {
                                         } catch (Exception e) {
                                             LOGGER.log(Level.WARNING,
                                                     "Unable to load embedded menu file from: "
-                                                    + url, e);
+                                                    + canonicalPath, e);
                                         }
                                     }
                                 }
@@ -266,6 +258,6 @@ public class ScreenParser extends EDLParser {
             }
         }
 
-        return new Screen(url, modifiedDate, properties, screenObjects, colorList);
+        return new Screen(canonicalPath, modifiedDate, properties, screenObjects, colorList);
     }
 }

@@ -152,7 +152,7 @@ public class EDLParser {
      *  @param name Name may be a http:, https:, file: URL,
      *              but also just a name that refers to a local file,
      *              or that is found on the EDMDATAFILES search path.
-     *  @return Resolved URL for the name
+     *  @return Resolved URL for the name or <code>null</code>
      *  @throws MalformedURLException
      */
     public static URL getEdlURL(String name) throws MalformedURLException {
@@ -223,8 +223,7 @@ public class EDLParser {
         }
 
         LOGGER.log(Level.INFO, "File (" + name + ") not found locally nor at any specified remote locations.");
-
-        return new URL("");
+        return null;
     }
 
     public static String stripQuotes(String value) {
