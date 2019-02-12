@@ -37,7 +37,7 @@ provided folders.
 ### Accessing Screen Files on Web Server
 Some EDM installations share files across a site via a web server.
 That way, clients running EDM do not need local or NFS-based file access,
-but can access all *.edl files from a web server.
+but can access all `*.edl` files from a web server.
 Similar to EDM, the environment variable **EDMHTTPDOCROOT** allows wedm to locate files via a web address.
 It has to be used in combination with an **EDMDATAFILES** search path, which might have only one `/` entry.
 For example, assume `EDMHTTPDOCROOT=http://www.webserver.com/edlfiles` and
