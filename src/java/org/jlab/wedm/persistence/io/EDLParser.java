@@ -31,6 +31,7 @@ public class EDLParser {
     public static final EDLFont DEFAULT_FONT = new EDLFont("helvetica", false, false, 12);
     public static final String[] SEARCH_PATH;
     public static final String HTTP_DOC_ROOT;
+    public static final String WEDM_DISABLE_CERTIFICATE_CHECK;
 
     /**
      * On Windows you could set EDL_DIR to a remote ExpanDrive mount say
@@ -48,6 +49,8 @@ public class EDLParser {
 
         REWRITE_FROM_DIR = System.getenv("REWRITE_FROM_DIR");
         REWRITE_TO_DIR = System.getenv("REWRITE_TO_DIR");
+
+        WEDM_DISABLE_CERTIFICATE_CHECK = System.getenv("WEDM_DISABLE_CERTIFICATE_CHECK");
 
         // Use search path?
         String search_path = System.getenv("EDMDATAFILES");
@@ -68,11 +71,13 @@ public class EDLParser {
 
             // If http:.. access is configured,
             // local files are often served with self-signed cert,
-            // so disable validation
-            try {
-                trustAnybody();
-            } catch (Exception ex) {
-                LOGGER.log(Level.WARNING, "Cannot disable certificate checks", ex);
+            // so disable validation if requested
+            if (WEDM_DISABLE_CERTIFICATE_CHECK != null) {
+                try {
+                    trustAnybody();
+                } catch (Exception ex) {
+                    LOGGER.log(Level.WARNING, "Cannot disable certificate checks", ex);
+                }
             }
         }
     }
