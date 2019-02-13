@@ -205,8 +205,14 @@ public class EDLParser {
                 try {
                     // Perform HEAD request to check for presence
                     final HttpURLConnection edl_conn = (HttpURLConnection) edl.openConnection();
-                    edl_conn.setRequestMethod("HEAD");
-                    final int code = edl_conn.getResponseCode();
+                    int code;
+                    try {
+                        edl_conn.setRequestMethod("HEAD");
+                        edl_conn.connect(); // connect() is automatically triggered by getResponseCode(), but let's make it explicit
+                        code = edl_conn.getResponseCode();
+                    } finally {
+                        edl_conn.disconnect(); // Don't hold any resources, we won't use this instance of HttpURLConnection again
+                    }
                     if (code == 200) {
                         LOGGER.log(Level.FINE, "File found at {0}", edl);
                         return edl;

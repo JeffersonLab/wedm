@@ -3,7 +3,9 @@ package org.jlab.wedm.business.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -53,7 +55,22 @@ public class ScreenService {
         HtmlScreen screen = SCREEN_CACHE.get(cache_key);
         // .. and not expired?
         if (screen != null) {
-            if (url.openConnection().getLastModified() > screen.getModifiedDate()) {
+            URLConnection con = url.openConnection();
+            long lastModified;
+            if (con instanceof HttpURLConnection) {
+                HttpURLConnection httpCon = (HttpURLConnection) con;
+                try {
+                    httpCon.setRequestMethod("HEAD"); // No need for full GET
+                    con.connect(); // Send request
+                    lastModified = con.getLastModified();
+                } finally {
+                    httpCon.disconnect(); // Free up HttpURLConnection instance resources (this particular instance isn't making another request)
+                }
+            } else {
+                lastModified = con.getLastModified(); // local file
+            }
+
+            if (lastModified > screen.getModifiedDate()) {
                 LOGGER.log(Level.WARNING, "File changed so flushing cache: {0}", cache_key);
                 SCREEN_CACHE.remove(cache_key);
                 screen = null;
