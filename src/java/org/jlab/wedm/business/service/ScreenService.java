@@ -61,8 +61,8 @@ public class ScreenService {
                 HttpURLConnection httpCon = (HttpURLConnection) con;
                 try {
                     httpCon.setRequestMethod("HEAD"); // No need for full GET
-                    con.connect(); // Send request
-                    lastModified = con.getLastModified();
+                    httpCon.connect(); // Send request
+                    lastModified = httpCon.getLastModified();
                 } finally {
                     httpCon.disconnect(); // Free up HttpURLConnection instance resources (this particular instance isn't making another request)
                 }
