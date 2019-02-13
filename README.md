@@ -30,6 +30,24 @@ The color palette file is located by searching the following locations in order:
 1. **EDMCOLORFILE** environment variable with an absolute path to a file
 2. **EDMFILES** environment variable with an absolute path to a directory containing the file "colors.list"
 3. Finally the default location of /etc/edm/colors.list
+### Screen File Search Path
+Similar to EDM, the environment variable **EDMDATAFILES** may be set to a colon-separated list of search paths.
+For example, setting `EDMDATAFILES=/main/sub1:/main/sub2` will search for display files in the two
+provided folders.
+### Accessing Screen Files on Web Server
+Some EDM installations share files across a site via a web server.
+That way, clients running EDM do not need local or NFS-based file access,
+but can access all `*.edl` files from a web server.
+Similar to EDM, the environment variable **EDMHTTPDOCROOT** allows wedm to locate files via a web address.
+It has to be used in combination with an **EDMDATAFILES** search path, which might have only one `/` entry.
+For example, assume `EDMHTTPDOCROOT=http://www.webserver.com/edlfiles` and
+`EDMDATAFILES=/main/sub1:/main/sub2`.
+Whenever wedm is now trying to open a file `x.edl`, it will attempt to open  
+`http://www.webserver.com/edlfiles/main/sub1/x.edl`
+followed by 
+`http://www.webserver.com/edlfiles/main/sub2/x.edl`,
+using the order provided in the search path,
+until it succeeds to find the file.
 
 ## See Also
 [WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes)      

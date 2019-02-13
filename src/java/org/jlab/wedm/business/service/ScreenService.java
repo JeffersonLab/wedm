@@ -3,6 +3,7 @@ package org.jlab.wedm.business.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -50,15 +51,19 @@ public class ScreenService {
     public HtmlScreen load(String name, List<Macro> macros) throws FileNotFoundException,
             IOException {
         
-        File f = EDLParser.getEdlFile(name);
-        String canonicalPath = f.getCanonicalPath();
+        // Resolve name into URL
+        final URL url = EDLParser.getEdlURL(name);
+        if (url == null)
+            return null;
         
-        HtmlScreen screen = SCREEN_CACHE.get(canonicalPath);
-        
+        // Already in cache?
+        String cache_key = url.toString();
+        HtmlScreen screen = SCREEN_CACHE.get(cache_key);
+        // .. and not expired?
         if(screen != null) {
-            if(f.lastModified() > screen.getModifiedDate()) {
-                LOGGER.log(Level.WARNING, "File changed so flushing cache: {0}", name);
-                SCREEN_CACHE.remove(name);
+            if(url.openConnection().getLastModified() > screen.getModifiedDate()) {
+                LOGGER.log(Level.WARNING, "File changed so flushing cache: {0}", cache_key);
+                SCREEN_CACHE.remove(cache_key);
                 screen = null;
             }
         }
@@ -67,7 +72,7 @@ public class ScreenService {
             ScreenParser parser = new ScreenParser();
             
             long start = System.currentTimeMillis();
-            Screen parsedScreen = parser.parse(canonicalPath, colorList, 0);
+            Screen parsedScreen = parser.parse(url, colorList, 0);
             //long end = System.currentTimeMillis();
             
             //LOGGER.log(Level.FINEST, "EDL Parse time: (seconds) {0}", (end - start) / 1000.0);
@@ -83,7 +88,7 @@ public class ScreenService {
             screen.setGenerateSeconds(generateSeconds);
             
             if (CACHE_SCREENS_ENABLED) {
-                SCREEN_CACHE.put(canonicalPath, screen);
+                SCREEN_CACHE.put(cache_key, screen);
             }
         }
         
