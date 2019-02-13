@@ -55,7 +55,7 @@ public class EDLParser {
         if (search_path != null)
         {
             SEARCH_PATH = search_path.split(":");
-            LOGGER.log(Level.INFO, "EDMDATAFILES search path:\n" + Arrays.toString(SEARCH_PATH));
+            LOGGER.log(Level.INFO, "EDMDATAFILES search path:\n{0}", Arrays.toString(SEARCH_PATH));
         }
         else
             SEARCH_PATH = null;
@@ -64,7 +64,7 @@ public class EDLParser {
         HTTP_DOC_ROOT = System.getenv("EDMHTTPDOCROOT");
         if (HTTP_DOC_ROOT != null)
         {
-            LOGGER.log(Level.INFO, "EDMHTTPDOCROOT: " + HTTP_DOC_ROOT);
+            LOGGER.log(Level.INFO, "EDMHTTPDOCROOT: {0}", HTTP_DOC_ROOT);
             if (SEARCH_PATH == null)
                 LOGGER.log(Level.WARNING, "EDMHTTPDOCROOT must be used with EDMDATAFILES");
 
@@ -161,7 +161,7 @@ public class EDLParser {
         // Use complete http.. URL as is
         if (name.startsWith("http:")  ||  name.startsWith("https:"))
         {
-            LOGGER.log(Level.FINE, "Using " + name + " as provided");
+            LOGGER.log(Level.FINE, "Using {0} as provided", name);
             return new URL(name);
         }
 
@@ -176,7 +176,7 @@ public class EDLParser {
         // Done?
         if (edl_file.exists())
         {
-            LOGGER.log(Level.FINE, "Found local file " + edl_file);
+            LOGGER.log(Level.FINE, "Found local file {0}", edl_file);
             return edl_file.toURI().toURL();
         }
 
@@ -202,7 +202,7 @@ public class EDLParser {
                     edl = new URL(HTTP_DOC_ROOT + path.substring(1) + "/" + name);
                 else
                     edl = new URL(HTTP_DOC_ROOT + path + "/" + name);
-                LOGGER.log(Level.FINER, "Checking " + edl);
+                LOGGER.log(Level.FINER, "Checking {0}", edl);
                 try
                 {
                     // Perform HEAD request to check for presence
@@ -211,7 +211,7 @@ public class EDLParser {
                     final int code = edl_conn.getResponseCode();
                     if (code == 200)
                     {
-                        LOGGER.log(Level.FINE, "File found at " + edl);
+                        LOGGER.log(Level.FINE, "File found at {0}", edl);
                         return edl;
                     }
                 }
@@ -222,7 +222,7 @@ public class EDLParser {
             }
         }
 
-        LOGGER.log(Level.INFO, "File (" + name + ") not found locally nor at any specified remote locations.");
+        LOGGER.log(Level.INFO, "File ({0}) not found locally nor at any specified remote locations.", name);
         return null;
     }
 
