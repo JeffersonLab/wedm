@@ -22,93 +22,92 @@ import org.jlab.wedm.persistence.model.Screen;
  * @author slominskir
  */
 public class ScreenService {
-    
+
     private static final Logger LOGGER = Logger.getLogger(ScreenService.class.getName());
-    
+
     private ColorPalette colorList;
     public static final ConcurrentHashMap<String, HtmlScreen> SCREEN_CACHE
             = new ConcurrentHashMap<>();
-    
+
     private static final boolean CACHE_SCREENS_ENABLED = true;
-    
+
     public ScreenService() throws FileNotFoundException {
         long start = System.currentTimeMillis();
         loadColorFile();
         long end = System.currentTimeMillis();
-        
+
         LOGGER.log(Level.FINEST, "Color List Load time: (seconds) {0}", (end - start) / 1000.0);
     }
-    
+
     public HtmlScreen load(String name, List<Macro> macros) throws FileNotFoundException,
             IOException {
-        
+
         // Resolve name into URL
         final URL url = EDLParser.getEdlURL(name);
-        if (url == null)
+        if (url == null) {
             return null;
-        
+        }
+
         // Already in cache?
         String cache_key = url.toString();
         HtmlScreen screen = SCREEN_CACHE.get(cache_key);
         // .. and not expired?
-        if(screen != null) {
-            if(url.openConnection().getLastModified() > screen.getModifiedDate()) {
+        if (screen != null) {
+            if (url.openConnection().getLastModified() > screen.getModifiedDate()) {
                 LOGGER.log(Level.WARNING, "File changed so flushing cache: {0}", cache_key);
                 SCREEN_CACHE.remove(cache_key);
                 screen = null;
             }
         }
-        
+
         if (screen == null) {
             ScreenParser parser = new ScreenParser();
-            
+
             long start = System.currentTimeMillis();
             Screen parsedScreen = parser.parse(url, colorList, 0);
             //long end = System.currentTimeMillis();
-            
+
             //LOGGER.log(Level.FINEST, "EDL Parse time: (seconds) {0}", (end - start) / 1000.0);
-            
             //start = System.currentTimeMillis();
             screen = parsedScreen.toHtmlScreen();
             long end = System.currentTimeMillis();
-            
+
             float generateSeconds = (end - start) / 1000.0f;
-            
+
             //LOGGER.log(Level.FINEST, "Generate time: (seconds) {0}", generateSeconds);
-            
             screen.setGenerateSeconds(generateSeconds);
-            
+
             if (CACHE_SCREENS_ENABLED) {
                 SCREEN_CACHE.put(cache_key, screen);
             }
         }
-        
+
         screen.incrementUsageCount();
-        
+
         screen = applyMacros(screen, macros);
-        
+
         return screen;
     }
-    
-    private void loadColorFile() throws FileNotFoundException {        
+
+    private void loadColorFile() throws FileNotFoundException {
         ColorListParser parser = new ColorListParser();
-        
-        File file = new File(COLOR_FILE_PATH);        
-        
+
+        File file = new File(COLOR_FILE_PATH);
+
         colorList = parser.parse(file);
     }
-    
+
     private HtmlScreen applyMacros(HtmlScreen screen, List<Macro> macros) {
         String html = screen.getHtml();
-        
+
         for (Macro m : macros) {
-            
+
             /*Avoid cross-site scripting and malformed HTML by escaping, but sacrifice ability to use XML reserved characters in Macros ("'&<>)*/
             String v = org.apache.taglibs.standard.functions.Functions.escapeXml(m.value);
-            
+
             html = html.replace(m.key, v);
         }
-        
+
         return new HtmlScreen(screen.getCanonicalPath(), screen.getModifiedDate(), html, screen.getCss(), screen.getJs(),
                 screen.getTitle());
     }
