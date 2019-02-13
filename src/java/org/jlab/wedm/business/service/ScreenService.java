@@ -31,15 +31,6 @@ public class ScreenService {
     
     private static final boolean CACHE_SCREENS_ENABLED = true;
     
-    /*static {
-        if (CACHE_SCREENS_ENABLED) {
-            FileChangeWatcher watcher = new FileChangeWatcher();
-            Thread t = new Thread(watcher);
-            t.setDaemon(true);
-            t.start();
-        }
-    }*/
-    
     public ScreenService() throws FileNotFoundException {
         long start = System.currentTimeMillis();
         loadColorFile();
