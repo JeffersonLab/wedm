@@ -49,7 +49,7 @@ followed by
 using the order provided in the search path,
 until it succeeds to find the file.
 
-Often it is convenient to ignore self-signed certificates.  This can be done by defining the environment variable WEDM_DISABLE_CERTIFICATE_CHECK to any value.
+Often it is convenient to ignore self-signed certificates.  This can be done by defining the environment variable **WEDM_DISABLE_CERTIFICATE_CHECK** to any value.
 
 ## See Also
 [WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes)      
