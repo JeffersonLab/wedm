@@ -256,16 +256,4 @@ public class EDLParser {
 
         return ((b * (x - min)) / max) + a;
     }
-
-    /*protected EDLFont parseFont(String fontStr) {
-        String[] tokens = fontStr.split("-");
-
-        String name = tokens[0];
-        String weight = tokens[1]; // bold
-        String oblique = tokens[2]; // italic
-        Float size = Float.parseFloat(tokens[3]);
-
-        return new EDLFont(name, "bold".equals(weight), "o".equals(oblique) || "i".equals(oblique),
-                size);
-    }*/
 }
