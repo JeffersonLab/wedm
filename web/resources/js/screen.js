@@ -65,13 +65,13 @@ function copyTextToClipboard(text) {
     document.body.removeChild(textArea);
 }
 
-jlab.wedm.getDocumentCoords = function(elem) {
-  let box = elem.getBoundingClientRect();
+jlab.wedm.getDocumentCoords = function (elem) {
+    let box = elem.getBoundingClientRect();
 
-  return {
-    y: box.top + pageYOffset,
-    x: box.left + pageXOffset
-  };
+    return {
+        y: box.top + pageYOffset,
+        x: box.left + pageXOffset
+    };
 };
 
 jlab.wedm.stringToFunction = function (str, errorCheck) {
@@ -529,12 +529,15 @@ jlab.wedm.resizeText = function () {
          * OuterHeight(true) = padding, border, and margin included
          */
 
-        /*console.log($parent.attr("id") + " - Screen Object Height: " + $parent.outerHeight());
-         console.log($parent.attr("id") + " - Text OuterHeight(true) + wrapHeight: " + ($obj.outerHeight(true) + wrapHeight));*/
+        /*console.log("Wrap Height: " + wrapHeight);
+        console.log("Wrap Width: " + wrapWidth);
+        console.log("Screen Object height: " + $parent.height());
+        console.log("Screen Object outerHeight: " + $parent.outerHeight());
+        console.log($parent.attr("id") + " - Text OuterHeight(true) + wrapHeight: " + ($obj.outerHeight(true) + wrapHeight));*/
 
         var i = 0;
 
-        while (($obj.outerHeight(true) + wrapHeight) > $parent.height() || ($obj.outerWidth(true) + wrapWidth) > $parent.width()) {
+        while (($obj.outerHeight(true) + wrapHeight) > $parent.outerHeight() || ($obj.outerWidth(true) + wrapWidth) > $parent.outerWidth()) {
             if (i > 10) {
                 console.log($parent.attr("id") + ' - font size difference too big; aborting resize');
                 break;
@@ -879,7 +882,7 @@ $(document).on("contextmenu", ".MouseSensitive", function (e) {
 $(document).on("mousedown", ".MouseSensitive", function (e) {
     if (e.which === 2) {
         /*console.log('middle mousedown');
-        console.log($(this));*/
+         console.log($(this));*/
 
         var msg = $(this).attr("data-pv");
         if (!msg) {
@@ -891,26 +894,26 @@ $(document).on("mousedown", ".MouseSensitive", function (e) {
         if (!msg) {
             msg = $(this).attr("data-color-pv");
         }
-        if(!msg) {
+        if (!msg) {
             msg = $(this).attr("data-vis-pv");
         }
         if (msg) {
             $("#tooltip").text(msg);
-            
+
             /*Keep tooltip as direct child of body so that tooltips can overflow .screen divs - must find document x,y*/
             var pos = jlab.wedm.getDocumentCoords($(this)[0]);
             $("#tooltip").css("top", pos.y);
-            $("#tooltip").css("left", pos.x + parseInt($(this).css("width")) + "px");    
-            
+            $("#tooltip").css("left", pos.x + parseInt($(this).css("width")) + "px");
+
             $("#tooltip").show();
             copyTextToClipboard(msg);
         } else {
-            jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");            
+            jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");
         }
     } else {
         jlab.wedm.propogateMouseEventToStackedElements(e, "mousedown");
     }
-    
+
     return false; /*don't use standard event propogation - we're doing our own*/
 });
 
