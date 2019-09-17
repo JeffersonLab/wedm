@@ -1,6 +1,8 @@
 # wedm
 Web Extensible Display Manager
 
+**Note**: Sequel ["Puddysticks"](https://github.com/JeffersonLab/puddysticks) is available.
+
 ## Introduction
 Leverages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
 
