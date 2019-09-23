@@ -2,6 +2,7 @@ package org.jlab.wedm.widget.html;
 
 import java.awt.Point;
 import java.io.File;
+import java.net.URL;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,27 +36,34 @@ public class ActiveImage extends HtmlScreenObject {
 
         // TODO: it would be faster to load pages if we allowed the browser to fetch images asyncronously
         try {
-            file = EDLParser.rewriteFileName(file);
-            
-            File path = new File(file);
-
-            if (!path.isAbsolute()) {
-                path = new File(EDLParser.EDL_ROOT_DIR + File.separator + file);
-            }
-
             String type = null;
             
-            if(path.getName().endsWith(".gif")) {
+            if(file.contains(".gif")) {
                 type = "gif";
-            } else if(path.getName().endsWith(".png")) {
+            } else if(file.contains(".png")) {
                 type = "png";
             }
             
             if(type == null) {
-                throw new RuntimeException("Unsupported image type: " + path.getName());
+                throw new RuntimeException("Unsupported image type: " + file);
             }
-            
-            String contents = IOUtil.encodeBase64(IOUtil.fileToBytes(path));
+
+            String contents;
+            // Check local file
+            File path = new File(file);
+            if (!path.isAbsolute()) {
+                path = new File(EDLParser.EDL_ROOT_DIR + File.separator + file);
+            }
+            if (path.canRead()) {
+                contents = IOUtil.encodeBase64(IOUtil.fileToBytes(path));
+            }
+            else {
+                // Check URL, using search path etc.
+                final URL url = EDLParser.getURL(EDLParser.rewriteFileName(file), false);
+                if (url == null)
+                    throw new Exception("Cannot locate image " + file);
+                contents = IOUtil.encodeBase64(IOUtil.streamToBytes(url.openStream()));
+            }
             
             imgHtml = "<img width=\"100%\" height=\"100%\" src=\"data:image/" + type + ";base64," + contents + "\"></img>\n";
 
