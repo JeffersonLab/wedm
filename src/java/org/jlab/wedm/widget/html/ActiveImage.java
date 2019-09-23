@@ -50,7 +50,7 @@ public class ActiveImage extends HtmlScreenObject {
 
             String contents;
             // Check local file
-            File path = new File(file);
+            File path = new File(EDLParser.rewriteFileName(file));
             if (!path.isAbsolute()) {
                 path = new File(EDLParser.EDL_ROOT_DIR + File.separator + file);
             }
