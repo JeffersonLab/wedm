@@ -148,7 +148,7 @@ public class EDLParser {
     }
 
     /**
-     * Resolve name to URL
+     * Resolve *.edl name to URL
      *
      * @param name Name may be a http:, https:, file: URL, but also just a name
      * that refers to a local file, or that is found on the EDMDATAFILES search
@@ -157,6 +157,20 @@ public class EDLParser {
      * @throws MalformedURLException
      */
     public static URL getEdlURL(String name) throws MalformedURLException {
+        return getURL(name, true);
+    }
+
+    /**
+     * Resolve name to URL
+     *
+     * @param name Name may be a http:, https:, file: URL, but also just a name
+     * that refers to a local file, or that is found on the EDMDATAFILES search
+     * path.
+     * @param force_edl Add *.edl suffix if not already in name?
+     * @return Resolved URL for the name or <code>null</code>
+     * @throws MalformedURLException
+     */
+    public static URL getURL(String name, final boolean force_edl) throws MalformedURLException {
         Objects.requireNonNull(name, "An EDL resource is required");
 
         // Use complete http.. URL as is
@@ -184,7 +198,7 @@ public class EDLParser {
         URL edl = null;
 
         // Assert that name has *.edl ending
-        if (!name.contains(".edl")) {
+        if (force_edl  &&  !name.contains(".edl")) {
             // The file extension should precede any macro following the resource name
             final int idx = name.indexOf("&");
             if (idx != -1) {

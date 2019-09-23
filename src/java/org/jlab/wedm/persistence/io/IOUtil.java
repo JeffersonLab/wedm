@@ -1,9 +1,11 @@
 package org.jlab.wedm.persistence.io;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +67,33 @@ public final class IOUtil {
         }
 
         return bytes;
+    }
+
+    /**
+     * Read input stream as byte array
+     * @param stream Input stream
+     * @return The bytes
+     * @throws IOException on error
+     */   
+    public static byte[] streamToBytes(final InputStream stream) throws IOException
+    {
+        final ByteArrayOutputStream buf = new ByteArrayOutputStream();
+
+        try
+        {
+            final byte[] section = new byte[4096];
+            int len;
+            while ((len = stream.read(section)) >= 0)
+                buf.write(section, 0, len);
+            buf.flush();
+            buf.close();
+        }
+        finally
+        {
+            closeQuietly(stream);
+        }
+
+        return buf.toByteArray();
     }
     
     /**
