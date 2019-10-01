@@ -49,7 +49,9 @@ public class ScreenController extends HttpServlet {
             // needed for search and replace
             if (name.startsWith("$(") && name.endsWith(")")) {
                 String value = request.getParameter(name);
-                macros.add(new Macro(name, value));
+                // Turn "$(  XX )" into "$(X)"
+                String trimmed_name = name.substring(2, name.length()-1).trim();
+                macros.add(new Macro("$(" + trimmed_name + ")", value));
             }
         }
 
