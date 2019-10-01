@@ -68,7 +68,7 @@
     </target>    
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" source="1.8" debug="true" encoding="UTF-8">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" target="1.8" source="1.8" debug="true" encoding="UTF-8">
             <classpath refid="project.class.path"/>
         </javac>
         <copy todir="${classes.dir}">
