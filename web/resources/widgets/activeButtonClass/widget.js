@@ -12,13 +12,18 @@ jlab.wedm.ButtonPvObserverInit = function () {
     jlab.wedm.ButtonPvObserver.prototype.constructor = jlab.wedm.ButtonPvObserver;
 
     jlab.wedm.ButtonPvObserver.prototype.handleControlUpdate = function (update) {
+        
+        /*console.log(update);*/
+        
         var $obj = $("#" + this.id),
-                value = update.value,
+                value = update.value.toString(), /*Always compare strings otherwise === won't work if value is a number as press and release are always strings*/
                 pressValue = $obj.attr("data-press-value"),
                 releaseValue = $obj.attr("data-release-value");
 
         /*Only ActiveButton.toggle-buttons actually have visible state to update*/
         if ($obj.hasClass("ActiveButton") && $obj.hasClass("toggle-button")) {
+
+            /*console.log("--- Is ActiveButton and toggle-button, press/release values: ", pressValue, releaseValue);*/
 
             /*if press and release have same value we only do press*/
             if (typeof pressValue !== undefined && pressValue === value) {
@@ -36,6 +41,8 @@ jlab.wedm.ButtonPvObserverInit = function () {
                 $obj.addClass("toggle-button-off");
 
                 jlab.wedm.doButtonUp($obj);
+            } else {
+                console.log('Button ' + this.id + ' is neither pressed or released!');
             }
         }
     };
