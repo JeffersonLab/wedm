@@ -175,6 +175,12 @@ public class EDLParser {
 
         // Use complete http.. URL as is
         if (name.startsWith("http:") || name.startsWith("https:")) {
+            // .. except when files are hosted at a HTTP_DOC_ROOT,
+            // in which case all complete URLs must start there
+            if (HTTP_DOC_ROOT != null  &&  ! name.startsWith(HTTP_DOC_ROOT)) {
+                LOGGER.log(Level.WARNING, "Rejecting URL {0}", name);
+                return null;
+            }
             LOGGER.log(Level.FINE, "Using {0} as provided", name);
             return new URL(name);
         }

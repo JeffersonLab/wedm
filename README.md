@@ -51,6 +51,10 @@ followed by
 using the order provided in the search path,
 until it succeeds to find the file.
 
+When `EDMHTTPDOCROOT` is defined, all complete URLs passed to WEDM via `...?edl=http:/...`
+must in fact start with the `EDMHTTPDOCROOT`. Other URLs will be rejected to prevent
+network attacks which try to use the WEDM host to probe URL access.
+
 Often it is convenient to ignore self-signed certificates.  This can be done by defining the environment variable **WEDM_DISABLE_CERTIFICATE_CHECK** to any value.
 
 ## See Also
