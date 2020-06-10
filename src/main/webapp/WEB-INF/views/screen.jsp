@@ -6,7 +6,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>WEDM - ${screen.title ne null ? screen.title : param.edl}</title>
+        <%-- Show title from EDM display.
+             Fall back to filename, but prevent HTML insertion.
+          --%>
+        <title>WEDM - ${screen.title ne null
+                        ? screen.title
+                        : ( param.edl.contains("<") || param.edl.contains("<")
+                            ? ""
+                            : param.edl
+                          )
+                       }</title>
         <link rel="stylesheet" type="text/css" href="${wedm:contextPrefix()}/epics2web/resources/css/epics2web.min.css?v=${initParam.epics2webReleaseNumber}"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
         <c:choose>

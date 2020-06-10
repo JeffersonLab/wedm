@@ -173,6 +173,12 @@ public class EDLParser {
     public static URL getURL(String name, final boolean force_edl) throws MalformedURLException {
         Objects.requireNonNull(name, "An EDL resource is required");
 
+        // Block name that might contain HTML elements
+        if (name.contains("<")  ||  name.contains(">")) {
+            LOGGER.log(Level.WARNING, "Rejecting name {0} because it might inject HTML", name);
+            return null;
+        }
+
         // Use complete http.. URL as is
         if (name.startsWith("http:") || name.startsWith("https:")) {
             // .. except when files are hosted at a HTTP_DOC_ROOT,
