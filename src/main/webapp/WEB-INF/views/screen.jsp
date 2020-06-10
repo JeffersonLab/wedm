@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>WEDM - ${screen.title ne null ? screen.title : param.edl}</title>
+        <title>WEDM - <c:out value="${screen.title ne null ? screen.title : param.edl}"/></title>
         <link rel="stylesheet" type="text/css" href="${wedm:contextPrefix()}/epics2web/resources/css/epics2web.min.css?v=${initParam.epics2webReleaseNumber}"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
         <c:choose>
