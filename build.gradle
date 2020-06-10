@@ -59,18 +59,22 @@ javascript.source {
     dev {
         js {
             srcDir "${projectDir}/src/main/webapp/resources/widgets"
-            include "*.js"
+            include "**/*.js"
         }
+    }
+}
+
+css.source {
+    dev {
         css {
             srcDir "${projectDir}/src/main/webapp/resources/widgets"
-            include "*.css"
+            include "**/*.css"
         }
     }
 }
 
 combineCss {
-    encoding = "UTF-8"
-    source = javascript.source.dev.css.files
+    source = css.source.dev.css.files
     dest = file("${buildDir}/combined.css")
 }
 
@@ -83,9 +87,12 @@ combineJs {
 minifyCss {
     source = "${buildDir}/combined.css"
     dest = file("${buildDir}/combined.min.css")
+    dependsOn combineCss
 }
 
 minifyJs {
     source = "${buildDir}/combined.js"
     dest = file("${buildDir}/combined.min.js")
+    closure.compilationLevel = 'WHITESPACE_ONLY'
+    dependsOn combineJs
 }
