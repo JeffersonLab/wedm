@@ -1,0 +1,91 @@
+plugins {
+    id 'war'
+    id "com.eriwen.gradle.css" version "2.14.0"
+    id "eu.butter.gradle.js" version "2.15.1"
+}
+
+description = "Web Extensible Display Manager"
+group 'org.jlab'
+version = '1.2.3'
+
+ext {
+    releaseDate = 'June 10 2020'
+    productionRelease = 'true'
+}
+
+repositories {
+    jcenter()
+}
+
+compileJava   {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+dependencies {
+    compile 'javax.servlet:jstl:1.2'
+    implementation 'org.glassfish:javax.json:1.1.4'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+    providedCompile 'javax:javaee-api:7.0'
+}
+
+war {
+    dependsOn(minifyCss)
+    dependsOn(minifyJs)
+    archiveName 'wedm.war'
+    filesMatching('WEB-INF/web.xml') {
+        filter {
+            String line -> line.replaceAll("@VERSION@", version)
+        }
+        filter {
+            String line -> line.replaceAll("@RELEASE_DATE@", releaseDate)
+        }
+        filter {
+            String line -> line.replaceAll("@PRODUCTION_RELEASE@", productionRelease)
+        }
+    }
+    from('build') {
+        include '*.min.css'
+        into 'resources/css/'
+    }
+    from('build') {
+        include '*.min.js'
+        into 'resources/js/'
+    }
+}
+
+javascript.source {
+    dev {
+        js {
+            srcDir "${projectDir}/src/main/webapp/resources/widgets"
+            include "*.js"
+        }
+        css {
+            srcDir "${projectDir}/src/main/webapp/resources/widgets"
+            include "*.css"
+        }
+    }
+}
+
+combineCss {
+    encoding = "UTF-8"
+    source = javascript.source.dev.css.files
+    dest = file("${buildDir}/combined.css")
+}
+
+combineJs {
+    encoding = "UTF-8"
+    source = javascript.source.dev.js.files
+    dest = file("${buildDir}/combined.js")
+}
+
+minifyCss {
+    source = "${buildDir}/combined.css"
+    dest = file("${buildDir}/combined.min.css")
+}
+
+minifyJs {
+    source = "${buildDir}/combined.js"
+    dest = file("${buildDir}/combined.min.js")
+}
