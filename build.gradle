@@ -53,6 +53,10 @@ war {
         include '*.min.js'
         into 'resources/js/'
     }
+    from('config') {
+        include 'wedm.properties'
+        into 'WEB-INF/classes'
+    }
 }
 
 javascript.source {
