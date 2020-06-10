@@ -4,3 +4,6 @@
 /dist/
 /nbbuild.xml
 /web/META-INF/context.xml
+/.idea/
+/out/
+/wedm.iml
