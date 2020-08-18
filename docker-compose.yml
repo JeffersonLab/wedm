@@ -1,0 +1,48 @@
+---
+version: '2'
+
+services:
+  softioc:
+    image: slominskir/softioc:1.1.0
+    tty: true
+    stdin_open: true
+    hostname: softioc
+    container_name: softioc
+    ports:
+      - "5064:5064/tcp"
+      - "5065:5065/tcp"
+      - "5064:5064/udp"
+      - "5065:5065/udp"
+    volumes:
+      - ./examples/softioc-db:/db
+      - ./examples/softioc-scripts:/scripts
+
+  epics2web:
+    image: slominskir/epics2web:1.9.3
+    hostname: epics2web
+    container_name: epics2web
+    environment:
+      EPICS_CA_ADDR_LIST: softioc
+    depends_on:
+      - softioc
+    ports:
+      - 9090:8080
+
+  wedm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
+    hostname: wedm
+    container_name: wedm
+    environment:
+      EDL_DIR: /edl
+      EDMCOLORFILE: /edl/colors.list
+      EPICS_2_WEB_HOST: epics2web:8080
+    depends_on:
+      - epics2web
+    ports:
+      - 8080:8080
+    volumes:
+      - ./examples/edl:/edl
