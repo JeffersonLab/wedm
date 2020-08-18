@@ -35,19 +35,24 @@ gradlew war
 ```
    
 ## Configure
+
 ### Web Socket Gateway
 Use the environment varaible **EPICS_2_WEB_HOST** to specify the hostname (and optionally :port) of the epics2web server.   If undefined, the same host as WEDM is assumed.
+
 ### Screen Files Path
 The environment variable **EDL_DIR** must be set to the canonical path to the directory containing your EDL files.  This directory (and subdirectories) will be browsable in WEDM.  If you want the demo EDL files on the overview page to work you need to download [the demo files](https://github.com/JeffersonLab/wedm/blob/master/examples/edl) and place them inside your *EDL_DIR* directory at the subdirectory *wedm*.  Demo files which require an EPICS monitor will need those PVs to exist (LOC PVs are used as much as possible to limit this).  The demo files are intended to be used with the JLab [colors.list](https://github.com/JeffersonLab/wedm/blob/master/examples/edl/colors.list).
+
 ### Colors File Path
 The color palette file is located by searching the following locations in order:
 1. **EDMCOLORFILE** environment variable with an absolute path to a file
 2. **EDMFILES** environment variable with an absolute path to a directory containing the file "colors.list"
 3. Finally the default location of /etc/edm/colors.list
+
 ### Screen File Search Path
 Similar to EDM, the environment variable **EDMDATAFILES** may be set to a colon-separated list of search paths.
 For example, setting `EDMDATAFILES=/main/sub1:/main/sub2` will result in searches for display files in the two
 provided folders.  When relative paths are encountered in an EDL file, the **EDL_DIR** path is searched first, then any additional paths specified in **EDMDATAFILES** are searched.
+
 ### Accessing Screen Files on Web Server
 Some EDM installations share files across a site via a web server.
 That way, clients running EDM do not need local or NFS-based file access,
