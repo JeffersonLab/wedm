@@ -6,10 +6,10 @@ plugins {
 
 description = "Web Extensible Display Manager"
 group 'org.jlab'
-version = '1.2.4'
+version = '1.3.0'
 
 ext {
-    releaseDate = 'June 10 2020'
+    releaseDate = 'Aug 18 2020'
     productionRelease = 'true'
 }
 
