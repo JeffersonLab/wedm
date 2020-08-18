@@ -691,7 +691,16 @@ jlab.wedm.infoPv = function (detail) {
 };
 
 jlab.wedm.initWebsocket = function () {
-    var options = {reconnectWaitMillis: 1000};
+
+
+    var protocol = 'ws:';
+    if (window.location.protocol === 'https:') {
+        protocol = 'wss:';
+    }
+
+    var options = {
+        url: protocol + "//" + jlab.epics2webHost + jlab.contextPrefix + "/epics2web/monitor"
+    }
 
     jlab.wedm.con = new jlab.epics2web.ClientConnection(options);
 

@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WEDM</title>
-        <link rel="stylesheet" type="text/css" href="${wedm:contextPrefix()}/epics2web/resources/css/site.css?v=${initParam.epics2webReleaseNumber}"/>  
+        <link rel="stylesheet" type="text/css" href="${wedm:epics2webPrefix()}/epics2web/resources/css/site.css?v=${initParam.epics2webReleaseNumber}"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/overview.css?v=${initParam.releaseNumber}"/>
     </head>
     <body>

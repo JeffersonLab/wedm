@@ -39,10 +39,11 @@ services:
     environment:
       EDL_DIR: /edl
       EDMCOLORFILE: /edl/colors.list
-      EPICS_2_WEB_HOST: epics2web:8080
+      EPICS_2_WEB_HOST: localhost:9090
     depends_on:
       - epics2web
     ports:
       - 8080:8080
     volumes:
       - ./examples/edl:/edl
+      - ./build/libs:/usr/local/tomcat/webapps

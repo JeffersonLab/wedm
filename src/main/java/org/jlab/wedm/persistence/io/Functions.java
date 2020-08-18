@@ -30,7 +30,36 @@ public class Functions {
         
         return name;
     }
-    
+
+    public static String epics2webHost() {
+        String host = System.getenv("EPICS_2_WEB_HOST");
+
+        if(host == null) {
+            host = "";
+        }
+
+        return host;
+    }
+
+    public static String epics2webPrefix() {
+        String prefix = epics2webHost();
+
+        if(prefix == null) {
+            prefix = "";
+        } else {
+            prefix = "//" + prefix; // Create protocol-relative URL
+        }
+
+
+        String contextPrefix = contextPrefix();
+
+        if(contextPrefix != null) {
+            prefix = prefix + contextPrefix;
+        }
+
+        return prefix;
+    }
+
     public static String contextPrefix() {
         String contextPrefix = System.getenv("CONTEXT_PREFIX");
         

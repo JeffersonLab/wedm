@@ -13,8 +13,20 @@
         <name>escapeFileName</name>
         <function-class>org.jlab.wedm.persistence.io.Functions</function-class>
         <function-signature>java.lang.String escapeFileName(java.lang.String)</function-signature>
-    </function>      
-    
+    </function>
+
+    <function>
+        <name>epics2webHost</name>
+        <function-class>org.jlab.wedm.persistence.io.Functions</function-class>
+        <function-signature>java.lang.String epics2webHost()</function-signature>
+    </function>
+
+    <function>
+        <name>epics2webPrefix</name>
+        <function-class>org.jlab.wedm.persistence.io.Functions</function-class>
+        <function-signature>java.lang.String epics2webPrefix()</function-signature>
+    </function>
+
     <function>
         <name>contextPrefix</name>
         <function-class>org.jlab.wedm.persistence.io.Functions</function-class>

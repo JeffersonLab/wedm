@@ -7,7 +7,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WEDM - <c:out value="${screen.title ne null ? screen.title : param.edl}"/></title>
-        <link rel="stylesheet" type="text/css" href="${wedm:contextPrefix()}/epics2web/resources/css/epics2web.min.css?v=${initParam.epics2webReleaseNumber}"/>
+        <link rel="stylesheet" type="text/css" href="${wedm:epics2webPrefix()}/epics2web/resources/css/epics2web.min.css?v=${initParam.epics2webReleaseNumber}"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/screen.css?v=${initParam.releaseNumber}"/>
         <c:choose>
             <c:when test="${initParam.productionRelease eq 'true'}">
@@ -32,14 +32,14 @@ ${screen.getCss()}
             </defs>
         </svg>
         <div class="connection-state-panel">
-            <img alt="Disconnected" class="ws-disconnected" title="Socket Disconnected" width="24" height="24" style="vertical-align: middle;" src="${wedm:contextPrefix()}/epics2web/resources/img/disconnected.svg?v=${initParam.epics2webReleaseNumber}"/>
-            <img alt="Connecting" class="ws-connecting connecting-spinner" title="Socket Connecting" width="24" height="24" style="vertical-align: middle; display: none;" src="${wedm:contextPrefix()}/epics2web/resources/img/connecting.svg?v=${initParam.epics2webReleaseNumber}"/>                
-            <img alt="Connected" class="ws-connected" title="Socket Connected" width="24" height="24" style="vertical-align: middle; display: none;" src="${wedm:contextPrefix()}/epics2web/resources/img/connected.svg?v=${initParam.epics2webReleaseNumber}"/>
+            <img alt="Disconnected" class="ws-disconnected" title="Socket Disconnected" width="24" height="24" style="vertical-align: middle;" src="${wedm:epics2webPrefix()}/epics2web/resources/img/disconnected.svg?v=${initParam.epics2webReleaseNumber}"/>
+            <img alt="Connecting" class="ws-connecting connecting-spinner" title="Socket Connecting" width="24" height="24" style="vertical-align: middle; display: none;" src="${wedm:epics2webPrefix()}/epics2web/resources/img/connecting.svg?v=${initParam.epics2webReleaseNumber}"/>
+            <img alt="Connected" class="ws-connected" title="Socket Connected" width="24" height="24" style="vertical-align: middle; display: none;" src="${wedm:epics2webPrefix()}/epics2web/resources/img/connected.svg?v=${initParam.epics2webReleaseNumber}"/>
         </div>        
 ${screen.getHtml()}
         <div id="tooltip"></div>
-        <script src="${wedm:contextPrefix()}/epics2web/resources/js/jquery-1.10.2.min.js"></script>
-        <script src="${wedm:contextPrefix()}/epics2web/resources/js/epics2web.min.js?v=${initParam.epics2webReleaseNumber}"></script> 
+        <script src="${wedm:epics2webPrefix()}/epics2web/resources/js/jquery-1.10.2.min.js"></script>
+        <script src="${wedm:epics2webPrefix()}/epics2web/resources/js/epics2web.min.js?v=${initParam.epics2webReleaseNumber}"></script>
         <script src="${pageContext.request.contextPath}/resources/js/screen.js?v=${initParam.releaseNumber}"></script>
         <c:choose>
             <c:when test="${initParam.productionRelease eq 'true'}">
@@ -55,6 +55,7 @@ ${screen.getHtml()}
 ${screen.getJs()}
 jlab.wedm.macroString = '${fn:escapeXml(macroString)}';
 jlab.contextPrefix = '${wedm:contextPrefix()}';
+jlab.epics2webHost = '${wedm:epics2webHost()}';
         </script>       
     </body>
 </html>
