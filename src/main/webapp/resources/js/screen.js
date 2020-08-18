@@ -698,8 +698,10 @@ jlab.wedm.initWebsocket = function () {
         protocol = 'wss:';
     }
 
+    var host = jlab.epics2webHost || window.location.host;
+
     var options = {
-        url: protocol + "//" + jlab.epics2webHost + jlab.contextPrefix + "/epics2web/monitor"
+        url: protocol + "//" + host + jlab.contextPrefix + "/epics2web/monitor"
     }
 
     jlab.wedm.con = new jlab.epics2web.ClientConnection(options);

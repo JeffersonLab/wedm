@@ -44,7 +44,7 @@ public class Functions {
     public static String epics2webPrefix() {
         String prefix = epics2webHost();
 
-        if(prefix == null) {
+        if(prefix == null || prefix.equals("")) {
             prefix = "";
         } else {
             prefix = "//" + prefix; // Create protocol-relative URL
