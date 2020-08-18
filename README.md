@@ -13,7 +13,7 @@ The Web Extensible Display Manager leverages [epics2web](https://github.com/Jeff
 
 
 **Overview**   
-[Overview](https://github.com/JeffersonLab/wedm/raw/master/doc/img/Overview.png?raw=true "Overview")
+![Overview](https://github.com/JeffersonLab/wedm/raw/master/doc/img/Overview.png?raw=true "Overview")
 
 **Browse**        
 ![Browse](https://github.com/JeffersonLab/wedm/raw/master/doc/img/Browse.png?raw=true "Browse")
