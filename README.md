@@ -9,14 +9,14 @@ The Web Extensible Display Manager leverages [epics2web](https://github.com/Jeff
 - [See Also](https://github.com/JeffersonLab/wedm#see-also)
 ---
 
-![Example](/doc/img/PhoneExample.png?raw=true "Example")
+![Example](https://github.com/JeffersonLab/wedm/raw/master/doc/img/PhoneExample.png?raw=true "Example")
 
 
 Overview
-![Overview](/doc/img/Overview.png?raw=true "Overview")
+![Overview](https://github.com/JeffersonLab/wedm/raw/master/doc/img/Overview.png?raw=true "Overview")
 
 Browse
-![Browse](/doc/img/Browse.png?raw=true "Browse")
+![Browse](https://github.com/JeffersonLab/wedm/raw/master/doc/img/Browse.png?raw=true "Browse")
 
 
 - [WEDM Features](https://github.com/JeffersonLab/wedm/wiki/WEDM-Features)   
@@ -36,7 +36,7 @@ gradlew war
    
 ## Configure
 ### Screen Files Path
-The environment variable **EDL_DIR** must be set to the canonical path to the directory containing your EDL files.  If you want the demo EDL files on the overview page to work you need to download ![the demo files](https://github.com/JeffersonLab/wedm/blob/master/examples/edl) and place them inside your *EDL_DIR* directory at the subdirectory *wedm*.  Demo files which require an EPICS monitor will need those PVs to exist (LOC PVs are used as much as possible to limit this).  The demo files are intended to be used with the JLab ![colors.list](https://github.com/JeffersonLab/wedm/blob/master/examples/edl/colors.list).
+The environment variable **EDL_DIR** must be set to the canonical path to the directory containing your EDL files.  If you want the demo EDL files on the overview page to work you need to download [the demo files](https://github.com/JeffersonLab/wedm/blob/master/examples/edl) and place them inside your *EDL_DIR* directory at the subdirectory *wedm*.  Demo files which require an EPICS monitor will need those PVs to exist (LOC PVs are used as much as possible to limit this).  The demo files are intended to be used with the JLab [colors.list](https://github.com/JeffersonLab/wedm/blob/master/examples/edl/colors.list).
 ### Colors File Path
 The color palette file is located by searching the following locations in order:
 1. **EDMCOLORFILE** environment variable with an absolute path to a file
