@@ -1,5 +1,5 @@
 # wedm
-The Web Extensible Display Manager ;everages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
+The Web Extensible Display Manager leverages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
 
 ![Example](/doc/img/PhoneExample.png?raw=true "Example")
 
