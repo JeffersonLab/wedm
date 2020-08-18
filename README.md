@@ -1,10 +1,5 @@
 # wedm
-Web Extensible Display Manager
-
-**Note**: Sequel ["Puddysticks"](https://github.com/JeffersonLab/puddysticks) is available.
-
-## Introduction
-Leverages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
+The Web Extensible Display Manager ;everages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
 
 ![Example](/doc/img/PhoneExample.png?raw=true "Example")
 
@@ -65,5 +60,7 @@ network attacks which try to use the WEDM host to probe URL access.
 Often it is convenient to ignore self-signed certificates.  This can be done by defining the environment variable **WEDM_DISABLE_CERTIFICATE_CHECK** to any value.
 
 ## See Also
-[WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes)      
-[This work was presented at ICALEPCS 2017](http://icalepcs2017.org/) and the [2017 EPICS workshop](https://indico.esss.lu.se/event/889/session/1/contribution/0)  
+
+  - ["Puddysticks"](https://github.com/JeffersonLab/puddysticks)   
+  - [WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes)      
+  - [This work was presented at ICALEPCS 2017](http://icalepcs2017.org/) and the [2017 EPICS workshop](https://indico.esss.lu.se/event/889/session/1/contribution/0)  
