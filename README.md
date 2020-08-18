@@ -35,6 +35,8 @@ gradlew war
 ```
    
 ## Configure
+### Web Socket Gateway
+Use the environment varaible **EPICS_2_WEB_HOST** to specify the hostname (and optionally :port) of the epics2web server.   If undefined, the same host as WEDM is assumed.
 ### Screen Files Path
 The environment variable **EDL_DIR** must be set to the canonical path to the directory containing your EDL files.  If you want the demo EDL files on the overview page to work you need to download [the demo files](https://github.com/JeffersonLab/wedm/blob/master/examples/edl) and place them inside your *EDL_DIR* directory at the subdirectory *wedm*.  Demo files which require an EPICS monitor will need those PVs to exist (LOC PVs are used as much as possible to limit this).  The demo files are intended to be used with the JLab [colors.list](https://github.com/JeffersonLab/wedm/blob/master/examples/edl/colors.list).
 ### Colors File Path
@@ -44,8 +46,8 @@ The color palette file is located by searching the following locations in order:
 3. Finally the default location of /etc/edm/colors.list
 ### Screen File Search Path
 Similar to EDM, the environment variable **EDMDATAFILES** may be set to a colon-separated list of search paths.
-For example, setting `EDMDATAFILES=/main/sub1:/main/sub2` will search for display files in the two
-provided folders.
+For example, setting `EDMDATAFILES=/main/sub1:/main/sub2` will result in searches for display files in the two
+provided folders.  When relative paths are encountered in an EDL file, the **EDL_DIR** path is searched first, then any additional paths specified in **EDMDATAFILES** are searched.
 ### Accessing Screen Files on Web Server
 Some EDM installations share files across a site via a web server.
 That way, clients running EDM do not need local or NFS-based file access,
@@ -66,6 +68,10 @@ must in fact start with the `EDMHTTPDOCROOT`. Other URLs will be rejected to pre
 network attacks which try to use the WEDM host to probe URL access.
 
 Often it is convenient to ignore self-signed certificates.  This can be done by defining the environment variable **WEDM_DISABLE_CERTIFICATE_CHECK** to any value.
+
+### Context Prefix
+When proxying WEDM it is sometimes useful to have multiple instances accessible via the same host via separate context paths.  In order to return correct links to resources an instance proxied with a namespacing prefix needs to be aware of the prefix.  The environment variable **CONTEXT_PREFIX** does this.  For example at Jefferson Lab we use a single proxy server for multiple departments each with their own instance of WEDM, and each configured with a prefix such as "/fel", "/chl", "/itf", and "/srf" ("/ops" uses default/empty prefix).
+
 
 ## Docker
 ```
