@@ -32,6 +32,14 @@ jlab.wedm.MotifSliderPvObserver.prototype.handleControlUpdate = function (update
             $track = $obj.find(".slider-track"),
             $knob = $track.find(".knob");
 
+    if(ratio > 1) {
+        console.log('WARNING: motif slider value over max; using max');
+        ratio = 1;
+    } else if(ratio < 0) {
+        console.log('WARNING: motif slider value under min; using min');
+        ratio = 0;
+    }
+
     if ($.isNumeric(max) && $.isNumeric(min)) {
         if (horizontal) {
             var trackWidth = $track.width(),
