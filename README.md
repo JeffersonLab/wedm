@@ -80,11 +80,14 @@ When proxying WEDM it is sometimes useful to have multiple instances accessible 
 
 ## Docker
 ```
+gradlew build
 docker-compose up
 ```
 Image hosted on [DockerHub](https://hub.docker.com/r/slominskir/wedm)
 
 Now navigate to http://localhost:8080/wedm/
+
+**Note:** The build is required because the docker-compose.yml file is setup for development.  If you remove the volume _./build/libs:/user/local/tomcat/webapps_ then you can skip the _gradlew build_ step and the pre-built version of WEDM inside the container will be used, but then you'll not be able to make changes on the fly on your localhost. 
 
 ## See Also
 
