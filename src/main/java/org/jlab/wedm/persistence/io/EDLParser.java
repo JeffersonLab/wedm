@@ -171,8 +171,49 @@ public class EDLParser {
      * @throws MalformedURLException
      */
     public static URL getURL(String name, final boolean force_edl) throws MalformedURLException {
+        return getURL(null, name, force_edl);
+    }
+    
+    /**
+     * Resolve name to URL
+     *
+     * @param parent Parent display URL or <code>null</code>.
+     * @param name Name may be a http:, https:, file: URL, but also just a name
+     * that refers to a local file, or that is found on the EDMDATAFILES search
+     * path.
+     * @param force_edl Add *.edl suffix if not already in name?
+     * @return Resolved URL for the name or <code>null</code>
+     * @throws MalformedURLException
+     */
+    public static URL getURL(URL parent, String name, final boolean force_edl) throws MalformedURLException {
         Objects.requireNonNull(name, "An EDL resource is required");
 
+        // Assert that name has *.edl ending
+        if (force_edl  &&  !name.contains(".edl")) {
+            // The file extension should precede any macro following the resource name
+            final int idx = name.indexOf("&");
+            if (idx != -1) {
+                name = name.substring(0, idx) + ".edl" + name.substring(idx);
+            } else {
+                name += ".edl";
+            }
+        }
+        
+        if (parent != null) {
+            // Check for relative path as supported by EDM since ~June 2021
+            try {
+                if ("file".equals(parent.getProtocol())) {
+                    final File parent_dir = new File(parent.toURI()).getParentFile();
+                    final File relative = new File(parent_dir, name);
+                    if (relative.canRead())
+                        return relative.toURI().toURL();
+                }
+             }
+             catch (Exception ex) {
+                 LOGGER.log(Level.FINER, "Cannot check relative path for parent " + parent + " and " + name, ex);
+             }
+        }
+        
         // Use complete http.. URL as is
         if (name.startsWith("http:") || name.startsWith("https:")) {
             // .. except when files are hosted at a HTTP_DOC_ROOT,
@@ -202,17 +243,6 @@ public class EDLParser {
 
         // Try search path
         URL edl = null;
-
-        // Assert that name has *.edl ending
-        if (force_edl  &&  !name.contains(".edl")) {
-            // The file extension should precede any macro following the resource name
-            final int idx = name.indexOf("&");
-            if (idx != -1) {
-                name = name.substring(0, idx) + ".edl" + name.substring(idx);
-            } else {
-                name += ".edl";
-            }
-        }
 
         if (SEARCH_PATH != null) {
             for (String path : SEARCH_PATH) {

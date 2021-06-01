@@ -230,7 +230,7 @@ public class ScreenParser extends EDLParser {
                         }
                     } else if (embedded instanceof ActivePictureInPicture) {
                         if (embedded.file != null && "file".equals(embedded.displaySource)) {
-                            Screen s = this.parse(EDLParser.getEdlURL(embedded.file), colorList, recursionLevel + 1);
+                            Screen s = this.parse(EDLParser.getURL(url, embedded.file, true), colorList, recursionLevel + 1);
                             s.setScreenProperties(embedded);
                             embedded.screen = s;
                         } else if ("menu".equals(embedded.displaySource)) { // Use filePv to determine which menu item to use
