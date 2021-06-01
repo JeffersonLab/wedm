@@ -1,5 +1,6 @@
 package org.jlab.wedm.persistence.io;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -26,6 +27,7 @@ import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 import org.jlab.wedm.widget.ScreenProperties;
 import org.jlab.wedm.widget.UnknownWidget;
+import org.jlab.wedm.widget.html.RelatedDisplay;
 
 public class ScreenParser extends EDLParser {
 
@@ -140,6 +142,24 @@ public class ScreenParser extends EDLParser {
                                     //        last.getClass().getSimpleName());
                                     last.parseTraits(traits, properties);
                                     last.performColorRuleCorrection();
+                                    
+                                    // Check if related display links need to be resolved
+                                    // relative to this display
+                                    if (last instanceof RelatedDisplay  &&  url != null) { 
+                                        try {
+                                            final RelatedDisplay related = (RelatedDisplay) last;
+                                            final File parent_dir = new File(url.toURI()).getParentFile();
+                                            for (int i=0; i<related.displayFileName.length; ++i) {
+                                                final File relative = new File(parent_dir, related.displayFileName[i]);
+                                                if (relative.canRead())
+                                                    related.displayFileName[i] = relative.getAbsolutePath();
+                                            }
+                                        }
+                                        catch (Exception ex) {
+                                            LOGGER.log(Level.FINER, "Cannot check relative link for parent " + url, ex);
+                                        }
+                                    }
+                                    
                                     traits = null;
                                     //last = null; // We can no longer clear last obj since widgets like RegTextupdateClass have multiple sets of properties
                                     break;
