@@ -146,17 +146,11 @@ public class ScreenParser extends EDLParser {
                                     // Check if related display links need to be resolved
                                     // relative to this display
                                     if (last instanceof RelatedDisplay  &&  url != null) { 
-                                        try {
-                                            final RelatedDisplay related = (RelatedDisplay) last;
-                                            final File parent_dir = new File(url.toURI()).getParentFile();
-                                            for (int i=0; i<related.displayFileName.length; ++i) {
-                                                final File relative = new File(parent_dir, related.displayFileName[i]);
-                                                if (relative.canRead())
-                                                    related.displayFileName[i] = relative.getAbsolutePath();
-                                            }
-                                        }
-                                        catch (Exception ex) {
-                                            LOGGER.log(Level.FINER, "Cannot check relative link for parent " + url, ex);
+                                        final RelatedDisplay related = (RelatedDisplay) last;
+                                        for (int i=0; i<related.displayFileName.length; ++i) {
+                                            final URL relative = EDLParser.getRelativeURL(url, related.displayFileName[i]);
+                                            if (relative != null  &&  EDLParser.testAccess(relative))
+                                                related.displayFileName[i] = relative.toExternalForm();
                                         }
                                     }
                                     
