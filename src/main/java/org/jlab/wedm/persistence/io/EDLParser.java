@@ -32,6 +32,7 @@ public class EDLParser {
     public static final String[] SEARCH_PATH;
     public static final String HTTP_DOC_ROOT;
     public static final String WEDM_DISABLE_CERTIFICATE_CHECK;
+    public static final boolean EDMRELATIVEPATHS;
 
     /**
      * On Windows you could set EDL_DIR to a remote ExpanDrive mount say
@@ -80,6 +81,11 @@ public class EDLParser {
                 }
             }
         }
+        
+        // EDM Version 1-12-105J, ca. June 2021, supports this environment variable
+        // to enable relative path support.
+        EDMRELATIVEPATHS = "yes".equals(System.getenv("EDMRELATIVEPATHS"));
+        LOGGER.log(Level.INFO, "EDMRELATIVEPATHS=" + (EDMRELATIVEPATHS ? "yes" : "no"));
     }
 
     /**
@@ -182,6 +188,9 @@ public class EDLParser {
      * @return URL for name relative to parent, for example "http://some/path/sub/another.edl" or <code>null</code>
      */
     public static URL getRelativeURL(final URL parent, String name) {
+        if (! EDMRELATIVEPATHS)
+            return null;
+        
         if (parent == null)
             return null;
         
@@ -250,7 +259,7 @@ public class EDLParser {
             }
         }
         
-        // Check for relative path as supported by EDM since ~June 2021
+        // Check for relative path
         final URL relative = getRelativeURL(parent, name);
         if (relative != null  &&  testAccess(relative))
             return relative;

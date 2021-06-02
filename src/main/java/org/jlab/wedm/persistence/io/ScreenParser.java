@@ -27,6 +27,7 @@ import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 import org.jlab.wedm.widget.ScreenProperties;
 import org.jlab.wedm.widget.UnknownWidget;
+import org.jlab.wedm.widget.html.ActiveImage;
 import org.jlab.wedm.widget.html.RelatedDisplay;
 
 public class ScreenParser extends EDLParser {
@@ -143,14 +144,21 @@ public class ScreenParser extends EDLParser {
                                     last.parseTraits(traits, properties);
                                     last.performColorRuleCorrection();
                                     
-                                    // Check if related display links need to be resolved
-                                    // relative to this display
-                                    if (last instanceof RelatedDisplay  &&  url != null) { 
-                                        final RelatedDisplay related = (RelatedDisplay) last;
-                                        for (int i=0; i<related.displayFileName.length; ++i) {
-                                            final URL relative = EDLParser.getRelativeURL(url, related.displayFileName[i]);
+                                    // Check if links need to be resolved relative to this display
+                                    if (url != null) {
+                                        if (last instanceof RelatedDisplay) { 
+                                            final RelatedDisplay related = (RelatedDisplay) last;
+                                            for (int i=0; i<related.displayFileName.length; ++i) {
+                                                final URL relative = EDLParser.getRelativeURL(url, related.displayFileName[i]);
+                                                if (relative != null  &&  EDLParser.testAccess(relative))
+                                                    related.displayFileName[i] = relative.toExternalForm();
+                                            }
+                                        }
+                                        else if (last instanceof ActiveImage) { 
+                                            final ActiveImage image = (ActiveImage) last;
+                                            final URL relative = EDLParser.getRelativeURL(url, image.file);
                                             if (relative != null  &&  EDLParser.testAccess(relative))
-                                                related.displayFileName[i] = relative.toExternalForm();
+                                                image.file = relative.toExternalForm();
                                         }
                                     }
                                     
