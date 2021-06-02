@@ -175,6 +175,57 @@ public class EDLParser {
     }
     
     /**
+     * Combine parent URL and name into URL relative to parent
+     * 
+     * @param parent Parent URL, for example "http://some/path/file.edl", or <code>null</code>
+     * @param name Name, for example "sub/another.edl"
+     * @return URL for name relative to parent, for example "http://some/path/sub/another.edl" or <code>null</code>
+     */
+    public static URL getRelativeURL(final URL parent, String name) {
+        if (parent == null)
+            return null;
+        
+        try {            
+            // Locate separator between 'folder' and 'file'
+            final URI parent_uri = parent.toURI();
+            String path = parent_uri.getPath();
+            int sep = path.lastIndexOf('/');
+            if (sep >= 0)
+                path = path.substring(0, sep);
+                
+            // Construct URI where 'file' in parent is replaced by 'name'
+            final URI relative_uri = new URI(parent_uri.getScheme(),
+                                             parent_uri.getUserInfo(),
+                                             parent_uri.getHost(),
+                                             parent_uri.getPort(),
+                                             path + "/" + name,
+                                             parent_uri.getQuery(),
+                                             parent_uri.getFragment());
+            return relative_uri.toURL();
+        }
+        catch (Exception ex) {
+            LOGGER.log(Level.FINER, "Cannot check relative path for parent " + parent + " and " + name, ex);
+            return null;
+        }
+    }
+    
+    /**
+     * @param url URL for which read access will be tested
+     * @return <code>true</code> if url can be read
+     */
+    public static boolean testAccess(final URL url) {
+        try {
+            url.openStream().close();
+            return true;
+        }
+        catch (Exception ex) {
+            // Ignore
+        }
+
+        return false;
+    }
+    
+    /**
      * Resolve name to URL
      *
      * @param parent Parent display URL or <code>null</code>.
@@ -199,20 +250,10 @@ public class EDLParser {
             }
         }
         
-        if (parent != null) {
-            // Check for relative path as supported by EDM since ~June 2021
-            try {
-                if ("file".equals(parent.getProtocol())) {
-                    final File parent_dir = new File(parent.toURI()).getParentFile();
-                    final File relative = new File(parent_dir, name);
-                    if (relative.canRead())
-                        return relative.toURI().toURL();
-                }
-             }
-             catch (Exception ex) {
-                 LOGGER.log(Level.FINER, "Cannot check relative path for parent " + parent + " and " + name, ex);
-             }
-        }
+        // Check for relative path as supported by EDM since ~June 2021
+        final URL relative = getRelativeURL(parent, name);
+        if (relative != null  &&  testAccess(relative))
+            return relative;
         
         // Use complete http.. URL as is
         if (name.startsWith("http:") || name.startsWith("https:")) {

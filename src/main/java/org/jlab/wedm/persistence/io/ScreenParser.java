@@ -232,7 +232,7 @@ public class ScreenParser extends EDLParser {
         // less if the resource is remote.
         int max_recurse = 5;
         if (url.getProtocol().startsWith("http")) {
-            max_recurse = 1;
+            max_recurse = 2;
         }
         if (recursionLevel < max_recurse) {
             for (EmbeddedScreen embedded : embeddedScreens) {
