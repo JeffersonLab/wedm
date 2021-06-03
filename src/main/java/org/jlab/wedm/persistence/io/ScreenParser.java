@@ -1,5 +1,6 @@
 package org.jlab.wedm.persistence.io;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -26,6 +27,8 @@ import org.jlab.wedm.persistence.model.Screen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 import org.jlab.wedm.widget.ScreenProperties;
 import org.jlab.wedm.widget.UnknownWidget;
+import org.jlab.wedm.widget.html.ActiveImage;
+import org.jlab.wedm.widget.html.RelatedDisplay;
 
 public class ScreenParser extends EDLParser {
 
@@ -140,6 +143,25 @@ public class ScreenParser extends EDLParser {
                                     //        last.getClass().getSimpleName());
                                     last.parseTraits(traits, properties);
                                     last.performColorRuleCorrection();
+                                    
+                                    // Check if links need to be resolved relative to this display
+                                    if (url != null) {
+                                        if (last instanceof RelatedDisplay) { 
+                                            final RelatedDisplay related = (RelatedDisplay) last;
+                                            for (int i=0; i<related.displayFileName.length; ++i) {
+                                                final URL relative = EDLParser.getRelativeURL(url, related.displayFileName[i]);
+                                                if (relative != null  &&  EDLParser.testAccess(relative))
+                                                    related.displayFileName[i] = relative.toExternalForm();
+                                            }
+                                        }
+                                        else if (last instanceof ActiveImage) { 
+                                            final ActiveImage image = (ActiveImage) last;
+                                            final URL relative = EDLParser.getRelativeURL(url, image.file);
+                                            if (relative != null  &&  EDLParser.testAccess(relative))
+                                                image.file = relative.toExternalForm();
+                                        }
+                                    }
+                                    
                                     traits = null;
                                     //last = null; // We can no longer clear last obj since widgets like RegTextupdateClass have multiple sets of properties
                                     break;
@@ -212,7 +234,7 @@ public class ScreenParser extends EDLParser {
         // less if the resource is remote.
         int max_recurse = 5;
         if (url.getProtocol().startsWith("http")) {
-            max_recurse = 1;
+            max_recurse = 2;
         }
         if (recursionLevel < max_recurse) {
             for (EmbeddedScreen embedded : embeddedScreens) {
@@ -230,7 +252,7 @@ public class ScreenParser extends EDLParser {
                         }
                     } else if (embedded instanceof ActivePictureInPicture) {
                         if (embedded.file != null && "file".equals(embedded.displaySource)) {
-                            Screen s = this.parse(EDLParser.getEdlURL(embedded.file), colorList, recursionLevel + 1);
+                            Screen s = this.parse(EDLParser.getURL(url, embedded.file, true), colorList, recursionLevel + 1);
                             s.setScreenProperties(embedded);
                             embedded.screen = s;
                         } else if ("menu".equals(embedded.displaySource)) { // Use filePv to determine which menu item to use

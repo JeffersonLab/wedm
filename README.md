@@ -74,6 +74,17 @@ network attacks which try to use the WEDM host to probe URL access.
 
 Often it is convenient to ignore self-signed certificates.  This can be done by defining the environment variable **WEDM_DISABLE_CERTIFICATE_CHECK** to any value.
 
+### Relative path support
+EDM versions from 1-12-105J on (ca. June 2021) use this environment variable
+to enable support for relative path names:
+
+```
+EDMRELATIVEPATHS=yes
+```
+
+When relative paths are enabled, the names of embedded displays, images and
+links to related displays can be resolved relative to the display which contains them.
+
 ### Context Prefix
 When proxying WEDM it is sometimes useful to have multiple instances accessible via the same host via separate context paths.  In order to return correct links to resources an instance proxied with a namespacing prefix needs to be aware of the prefix.  The environment variable **CONTEXT_PREFIX** does this.  For example at Jefferson Lab we use a single proxy server for multiple departments each with their own instance of WEDM, and each configured with a prefix such as "/fel", "/chl", "/itf", and "/srf" ("/ops" uses default/empty prefix).
 
