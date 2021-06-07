@@ -1,4 +1,4 @@
-# wedm
+# wedm  [![Docker](https://img.shields.io/docker/v/slominskir/wedm?sort=semver&label=DockerHub)](https://hub.docker.com/r/slominskir/wedm)
 The Web Extensible Display Manager leverages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
 
 ---
