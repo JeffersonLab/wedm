@@ -98,12 +98,13 @@ Image hosted on [DockerHub](https://hub.docker.com/r/slominskir/wedm)
 
 Now navigate to http://localhost:8080/wedm/
 
-**Note:** The build is required because the docker-compose.yml file is setup for development.  If you remove the volume _./build/libs:/user/local/tomcat/webapps_ then you can skip the _gradlew build_ step and the pre-built version of WEDM inside the container will be used, but then you'll not be able to make changes on the fly on your localhost. 
+**Note:** When developing the app you can mount the build artifact into the container by substituting the docker-compose up command with:
 
-**Note:** If you're running the Docker build inside an organization network with an intercepting SSL proxy you will likely need to insert the organization custom CA certificate.  For example on the Jefferson Lab network builds are run with:
 ```
-docker build -t wedm . --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt --no-cache
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up
 ```
+
+**Note:** Some organizations like JLab use an [intercepting proxy](https://gist.github.com/slominskir/92c25a033db93a90184a5994e71d0b78).
 
 
 ## See Also
