@@ -1,0 +1,6 @@
+---
+version: '3.8'
+
+services:
+  wedm:
+    image: slominskir/wedm:1.3.0

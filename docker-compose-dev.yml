@@ -1,0 +1,13 @@
+---
+version: '3.8'
+
+services:
+  wedm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
+    volumes:
+      - ./examples/edl:/edl
+      - ./build/libs:/usr/local/tomcat/webapps

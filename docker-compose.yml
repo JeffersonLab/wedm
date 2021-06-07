@@ -1,5 +1,5 @@
 ---
-version: '2'
+version: '3.8'
 
 services:
   softioc:
@@ -29,11 +29,6 @@ services:
       - 9090:8080
 
   wedm:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
     hostname: wedm
     container_name: wedm
     environment:
@@ -44,6 +39,3 @@ services:
       - epics2web
     ports:
       - 8080:8080
-    volumes:
-      - ./examples/edl:/edl
-      - ./build/libs:/usr/local/tomcat/webapps
