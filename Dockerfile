@@ -19,3 +19,4 @@ RUN git clone https://github.com/JeffersonLab/wedm \
 FROM tomcat:9.0.37-jdk11-adoptopenjdk-hotspot
 
 COPY --from=builder /wedm/build/libs /usr/local/tomcat/webapps
+COPY --from=builder /wedm/examples/edl /edl
