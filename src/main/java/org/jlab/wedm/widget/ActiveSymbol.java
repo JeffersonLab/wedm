@@ -22,8 +22,8 @@ public class ActiveSymbol extends EmbeddedScreen {
     private static final Logger LOGGER = Logger.getLogger(ActiveSymbol.class.getName());
 
     public int numStates;
-    public int[] minValues;
-    public int[] maxValues;
+    public float[] minValues;
+    public float[] maxValues;
     public String[] controlPvs;
     public boolean useOriginalSize = false;
     public boolean useOriginalColors = false;
@@ -33,8 +33,8 @@ public class ActiveSymbol extends EmbeddedScreen {
         super.parseTraits(traits, properties);
 
         numStates = TraitParser.parseInt(traits, "numStates", 0);
-        minValues = TraitParser.parseIntArray(traits, numStates, "minValues");
-        maxValues = TraitParser.parseIntArray(traits, numStates, "maxValues");
+        minValues = TraitParser.parseFloatArray(traits, numStates, "minValues");
+        maxValues = TraitParser.parseFloatArray(traits, numStates, "maxValues");
 
         controlPvs = TraitParser.parseStringArray(traits, 1, "controlPvs");
 
