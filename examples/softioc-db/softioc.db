@@ -28,3 +28,9 @@ record(ao,"channel6") {
         field(HHSV,MAJOR)
         field(HIHI,1)
 }
+record(calc,"CHBCRYO") {
+  field(SCAN, ".2 second")
+  field(CALC, "A < 512 ? (A*2) : 2")
+  field(INPA, "CHBCRYO.VAL")
+  field(VAL, "2")
+}
