@@ -91,7 +91,6 @@ When proxying WEDM it is sometimes useful to have multiple instances accessible 
 
 ## Docker
 ```
-gradlew build
 docker-compose up
 ```
 Image hosted on [DockerHub](https://hub.docker.com/r/slominskir/wedm)
