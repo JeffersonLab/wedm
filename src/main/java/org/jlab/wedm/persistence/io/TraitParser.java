@@ -144,6 +144,38 @@ public class TraitParser {
         return result;
     }
 
+    public static float[] parseFloatArray(Map<String, String> traits, int elementCount, String key) {
+        String value = traits.get(key);
+        float[] result = null;
+        try {
+            if (value != null) {
+                String[] lines = value.split("\n");
+
+                // EDM arrays are specified as "index  value".
+                // Default value for missing elements is zero.
+                result = new float[elementCount];
+
+                for (int i = 0; i < lines.length; i++) {
+                    String[] tks = lines[i].split("\\s+");
+                    int index = Integer.parseInt(tks[0]);
+
+                    if (index >= 0 && index <= MAX_ARRAY_SIZE) {
+                        result[index] = Float.parseFloat(tks[1]);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "index number out of range: " + index);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.FINEST, "Unable to parse float; key: {0}; value: {1}", new Object[]{key,
+                value});
+        }
+
+        return result;
+    }
+    
+    
     public static String[] parseStringArray(Map<String, String> traits, int elementCount,
             String key) {
         String value = traits.get(key);
