@@ -31,7 +31,7 @@ x 23
 y 22
 w 125
 h 115
-file "heartBeat"
+file "wedm/objects/heartBeat"
 numStates 10
 minValues {
   1 1
