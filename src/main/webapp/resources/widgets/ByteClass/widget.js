@@ -36,6 +36,24 @@ jlab.wedm.BytePvObserverInit = function () {
                 $bits = $obj.find(".bit"),
                 index;
 
+        if (jlab.wedm.isCalcExpr(this.pvSet.ctrlPvExpr)) {
+            var pvs = [];
+            for (var i = 0; i < this.pvSet.ctrlPvs.length; i++) {
+                var name = this.pvSet.ctrlPvs[i],
+                    val;
+
+                val = this.pvNameToValueMap[name];
+
+                if (typeof val === 'undefined') {
+                    /*Still more PVs we need values from*/
+                    return;
+                }
+                pvs.push(val);
+            }
+
+            value = jlab.wedm.evalCalcExpr(this.pvSet.ctrlPvExpr, pvs);
+        }
+
         /*console.log("value: " + value);*/
 
         //$(".ActiveByte[data-pv='" + this.pv + "']").text(value);
