@@ -3,4 +3,4 @@ version: '3.8'
 
 services:
   wedm:
-    image: slominskir/wedm:1.4.1
+    image: slominskir/wedm:1.5.0
