@@ -85,6 +85,19 @@ EDMRELATIVEPATHS=yes
 When relative paths are enabled, the names of embedded displays, images and
 links to related displays can be resolved relative to the display which contains them.
 
+By default, WEDM will test access to each relative path and otherwise fall back to
+the search path.
+These access checks take considerable time.
+If a site uses relative path names and no longer relies on a search path,
+these checks can be disabled via
+
+```
+WEDM_DISABLE_RELATIVEPATHS_CHECK=yes
+```
+
+When both `EDMRELATIVEPATHS` and `WEDM_DISABLE_RELATIVEPATHS_CHECK` are set to `yes`,
+all file references are assumed to be relative without checking access.
+
 ### Context Prefix
 When proxying WEDM it is sometimes useful to have multiple instances accessible via the same host via separate context paths.  In order to return correct links to resources an instance proxied with a namespacing prefix needs to be aware of the prefix.  The environment variable **CONTEXT_PREFIX** does this.  For example at Jefferson Lab we use a single proxy server for multiple departments each with their own instance of WEDM, and each configured with a prefix such as "/fel", "/chl", "/itf", and "/srf" ("/ops" uses default/empty prefix).
 
