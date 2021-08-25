@@ -150,14 +150,14 @@ public class ScreenParser extends EDLParser {
                                             final RelatedDisplay related = (RelatedDisplay) last;
                                             for (int i=0; i<related.displayFileName.length; ++i) {
                                                 final URL relative = EDLParser.getRelativeURL(url, related.displayFileName[i]);
-                                                if (relative != null  &&  EDLParser.testAccess(relative))
+                                                if (relative != null)
                                                     related.displayFileName[i] = relative.toExternalForm();
                                             }
                                         }
                                         else if (last instanceof ActiveImage) { 
                                             final ActiveImage image = (ActiveImage) last;
                                             final URL relative = EDLParser.getRelativeURL(url, image.file);
-                                            if (relative != null  &&  EDLParser.testAccess(relative))
+                                            if (relative != null)
                                                 image.file = relative.toExternalForm();
                                         }
                                     }
@@ -244,7 +244,7 @@ public class ScreenParser extends EDLParser {
 
                     if (embedded instanceof ActiveSymbol) {
                         if (embedded.file != null) {
-                            Screen s = this.parse(EDLParser.getEdlURL(embedded.file), colorList, recursionLevel + 1);
+                            Screen s = this.parse(EDLParser.getURL(url, embedded.file, true), colorList, recursionLevel + 1);
                             s.setScreenProperties(embedded);
                             embedded.screen = s;
                         } else {
@@ -264,7 +264,7 @@ public class ScreenParser extends EDLParser {
                                     //LOGGER.log(Level.FINEST, "file {0}: {1}", new Object[]{i, f});
                                     if (f != null) {
                                         try {
-                                            Screen s2 = this.parse(EDLParser.getEdlURL(f), colorList, recursionLevel + 1);
+                                            Screen s2 = this.parse(EDLParser.getURL(url, f, true), colorList, recursionLevel + 1);
 
                                             s2.embeddedIndex = i;
 

@@ -33,6 +33,7 @@ public class EDLParser {
     public static final String HTTP_DOC_ROOT;
     public static final String WEDM_DISABLE_CERTIFICATE_CHECK;
     public static final boolean EDMRELATIVEPATHS;
+    public static final boolean WEDM_DISABLE_RELATIVEPATHS_CHECK;
 
     /**
      * On Windows you could set EDL_DIR to a remote ExpanDrive mount say
@@ -86,6 +87,9 @@ public class EDLParser {
         // to enable relative path support.
         EDMRELATIVEPATHS = "yes".equals(System.getenv("EDMRELATIVEPATHS"));
         LOGGER.log(Level.INFO, "EDMRELATIVEPATHS=" + (EDMRELATIVEPATHS ? "yes" : "no"));
+        
+        WEDM_DISABLE_RELATIVEPATHS_CHECK = "yes".equals(System.getenv("WEDM_DISABLE_RELATIVEPATHS_CHECK"));
+        LOGGER.log(Level.INFO, "WEDM_DISABLE_RELATIVEPATHS_CHECK=" + (WEDM_DISABLE_RELATIVEPATHS_CHECK ? "yes" : "no"));
     }
 
     /**
@@ -183,9 +187,13 @@ public class EDLParser {
     /**
      * Combine parent URL and name into URL relative to parent
      * 
+     * Check access based on WEDM_DISABLE_RELATIVEPATHS_CHECK
+     * 
      * @param parent Parent URL, for example "http://some/path/file.edl", or <code>null</code>
      * @param name Name, for example "sub/another.edl"
-     * @return URL for name relative to parent, for example "http://some/path/sub/another.edl" or <code>null</code>
+     * @return URL for name relative to parent, for example "http://some/path/sub/another.edl".
+     *         <code>null</code> if EDMRELATIVEPATHS is not enabled,
+     *         or check of relative path is enabled and fails
      */
     public static URL getRelativeURL(final URL parent, String name) {
         if (! EDMRELATIVEPATHS)
@@ -210,19 +218,24 @@ public class EDLParser {
                                              path + "/" + name,
                                              parent_uri.getQuery(),
                                              parent_uri.getFragment());
-            return relative_uri.toURL();
+            final URL url = relative_uri.toURL();
+            if (testAccess(url))
+                return url;
         }
         catch (Exception ex) {
             LOGGER.log(Level.FINER, "Cannot check relative path for parent " + parent + " and " + name, ex);
-            return null;
         }
+        return null;
     }
     
     /**
      * @param url URL for which read access will be tested
-     * @return <code>true</code> if url can be read
+     * @return <code>true</code> if url can be read or test is disabled
      */
-    public static boolean testAccess(final URL url) {
+    private static boolean testAccess(final URL url) {
+        if (WEDM_DISABLE_RELATIVEPATHS_CHECK)
+            return true;
+
         try {
             url.openStream().close();
             return true;
@@ -261,7 +274,7 @@ public class EDLParser {
         
         // Check for relative path
         final URL relative = getRelativeURL(parent, name);
-        if (relative != null  &&  testAccess(relative))
+        if (relative != null)
             return relative;
         
         // Use complete http.. URL as is
