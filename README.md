@@ -1,7 +1,10 @@
 # wedm  [![Docker](https://img.shields.io/docker/v/slominskir/wedm?sort=semver&label=DockerHub)](https://hub.docker.com/r/slominskir/wedm)
 The Web Extensible Display Manager leverages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
 
+![Example](https://github.com/JeffersonLab/wedm/raw/main/doc/img/PhoneExample.png?raw=true "Example")
+
 ---
+- [Overview](https://github.com/JeffersonLab/wedm#overview)
 - [Install](https://github.com/JeffersonLab/wedm#install)
 - [Build](https://github.com/JeffersonLab/wedm#build)
 - [Configure](https://github.com/JeffersonLab/wedm#configure)
@@ -9,15 +12,7 @@ The Web Extensible Display Manager leverages [epics2web](https://github.com/Jeff
 - [See Also](https://github.com/JeffersonLab/wedm#see-also)
 ---
 
-![Example](https://github.com/JeffersonLab/wedm/raw/master/doc/img/PhoneExample.png?raw=true "Example")
-
-
-**Overview**   
-![Overview](https://github.com/JeffersonLab/wedm/raw/master/doc/img/Overview.png?raw=true "Overview")
-
-**Browse**        
-![Browse](https://github.com/JeffersonLab/wedm/raw/master/doc/img/Browse.png?raw=true "Browse")
-
+## Overview
 
 - [WEDM Features](https://github.com/JeffersonLab/wedm/wiki/WEDM-Features)   
 - [WEDM Objects](https://github.com/JeffersonLab/wedm/wiki/WEDM-Objects)   
