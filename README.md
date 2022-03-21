@@ -1,4 +1,4 @@
-# wedm  [![Docker](https://img.shields.io/docker/v/slominskir/wedm?sort=semver&label=DockerHub)](https://hub.docker.com/r/slominskir/wedm)
+# wedm [![Java CI with Gradle](https://github.com/JeffersonLab/wedm/actions/workflows/gradle.yml/badge.svg)](https://github.com/JeffersonLab/wedm/actions/workflows/gradle.yml)  [![Docker](https://img.shields.io/docker/v/slominskir/wedm?sort=semver&label=DockerHub)](https://hub.docker.com/r/slominskir/wedm)
 The Web Extensible Display Manager leverages [epics2web](https://github.com/JeffersonLab/epics2web) to view [EDM](https://www.slac.stanford.edu/grp/cd/soft/epics/extensions/edm/edm.html) screens on the web.
 
 ![Example](https://github.com/JeffersonLab/wedm/raw/main/doc/img/PhoneExample.png?raw=true "Example")
