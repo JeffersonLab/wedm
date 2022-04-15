@@ -8,3 +8,5 @@
 /out/
 /wedm.iml
 /.gradle/
+/buildSrc/.gradle/
+/buildSrc/build/

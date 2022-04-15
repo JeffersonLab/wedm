@@ -1,8 +1,11 @@
+import org.jlab.CombineFileTask
+
 plugins {
     id 'war'
-    id "com.eriwen.gradle.css" version "2.14.0"
-    id "eu.butter.gradle.js" version "2.15.1"
+    id ("org.gradlewebtools.minify") version "1.3.0"
 }
+
+apply plugin: org.jlab.CombinePlugin
 
 description = "Web Extensible Display Manager"
 group 'org.jlab'
@@ -14,33 +17,52 @@ ext {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
-compileJava   {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
+tasks.withType(JavaCompile) {
+    options.release = 8
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 dependencies {
-    compile 'javax.servlet:jstl:1.2'
+    implementation 'javax.servlet:jstl:1.2'
     implementation 'org.glassfish:javax.json:1.1.4'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
     providedCompile 'javax:javaee-api:7.0'
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+task combineCss(type: CombineFileTask) {
+    source.from("src/main/webapp/resources/widgets").include('**/*.css')
+    dest = file("${buildDir}/combined-css/combined.css")
+}
+
+task combineJs(type: CombineFileTask) {
+    source.from("src/main/webapp/resources/widgets").include('**/*.js')
+    dest = file("${buildDir}/combined-js/combined.js")
+}
+
+task cssMinifyIt(type: org.gradlewebtools.minify.CssMinifyTask) {
+    dependsOn(combineCss)
+    srcDir = project.file("build/combined-css")
+    dstDir = project.file("build/minified")
+}
+
+task jsMinifyIt(type: org.gradlewebtools.minify.JsMinifyTask) {
+    dependsOn(combineJs)
+    srcDir = project.file("build/combined-js")
+    dstDir = project.file("build/minified")
 }
 
 war {
-    dependsOn(minifyCss)
-    dependsOn(minifyJs)
-    archiveName 'wedm.war'
+    dependsOn(cssMinifyIt)
+    dependsOn(jsMinifyIt)
+    archiveFileName = 'wedm.war'
     filesMatching('WEB-INF/web.xml') {
         filter {
-            String line -> line.replaceAll("@VERSION@", version)
+            String line -> line.replaceAll("@VERSION@", project.version)
         }
         filter {
             String line -> line.replaceAll("@RELEASE_DATE@", releaseDate)
@@ -49,54 +71,12 @@ war {
             String line -> line.replaceAll("@PRODUCTION_RELEASE@", productionRelease)
         }
     }
-    from('build') {
+    from('build/minified') {
         include '*.min.css'
         into 'resources/css/'
     }
-    from('build') {
+    from('build/minified') {
         include '*.min.js'
         into 'resources/js/'
     }
-}
-
-javascript.source {
-    dev {
-        js {
-            srcDir "${projectDir}/src/main/webapp/resources/widgets"
-            include "**/*.js"
-        }
-    }
-}
-
-css.source {
-    dev {
-        css {
-            srcDir "${projectDir}/src/main/webapp/resources/widgets"
-            include "**/*.css"
-        }
-    }
-}
-
-combineCss {
-    source = css.source.dev.css.files
-    dest = file("${buildDir}/combined.css")
-}
-
-combineJs {
-    encoding = "UTF-8"
-    source = javascript.source.dev.js.files
-    dest = file("${buildDir}/combined.js")
-}
-
-minifyCss {
-    source = "${buildDir}/combined.css"
-    dest = file("${buildDir}/combined.min.css")
-    dependsOn combineCss
-}
-
-minifyJs {
-    source = "${buildDir}/combined.js"
-    dest = file("${buildDir}/combined.min.js")
-    closure.compilationLevel = 'WHITESPACE_ONLY'
-    dependsOn combineJs
 }
