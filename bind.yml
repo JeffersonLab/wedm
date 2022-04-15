@@ -1,0 +1,18 @@
+services:
+  softioc:
+    extends:
+      file: build.yml
+      service: softioc
+
+  epics2web:
+    extends:
+      file: build.yml
+      service: epics2web
+
+  wedm:
+    extends:
+      file: build.yml
+      service: wedm
+    volumes:
+      - ./build/libs:/usr/local/tomcat/webapps
+      - ./examples/edl:/edl

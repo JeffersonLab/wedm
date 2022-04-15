@@ -1,0 +1,21 @@
+services:
+  softioc:
+    image: slominskir/softioc:1.1.0
+    tty: true
+    stdin_open: true
+    hostname: softioc
+    container_name: softioc
+    volumes:
+      - ./examples/softioc-db:/db
+      - ./examples/softioc-scripts:/scripts
+
+  epics2web:
+    image: slominskir/epics2web:1.13.0
+    hostname: epics2web
+    container_name: epics2web
+    environment:
+      EPICS_CA_ADDR_LIST: softioc
+    depends_on:
+      - softioc
+    ports:
+      - 9090:8080
