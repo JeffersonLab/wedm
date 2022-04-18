@@ -12,7 +12,7 @@ group 'org.jlab'
 version = '1.8.0'
 
 ext {
-    releaseDate = 'Aug 25 2021'
+    releaseDate = 'April 18 2022'
     productionRelease = 'true'
 }
 
