@@ -5,10 +5,10 @@ The Web Extensible Display Manager leverages [epics2web](https://github.com/Jeff
 
 ---
 - [Overview](https://github.com/JeffersonLab/wedm#overview)
+- [Quick Start with Compose](https://github.com/JeffersonLab/wedm#quick-start-with-compose)
 - [Install](https://github.com/JeffersonLab/wedm#install)
-- [Build](https://github.com/JeffersonLab/wedm#build)
 - [Configure](https://github.com/JeffersonLab/wedm#configure)
-- [Docker](https://github.com/JeffersonLab/wedm#docker)
+- [Build](https://github.com/JeffersonLab/wedm#build) 
 - [See Also](https://github.com/JeffersonLab/wedm#see-also)
 ---
 
@@ -17,17 +17,26 @@ The Web Extensible Display Manager leverages [epics2web](https://github.com/Jeff
 - [WEDM Features](https://github.com/JeffersonLab/wedm/wiki/WEDM-Features)   
 - [WEDM Objects](https://github.com/JeffersonLab/wedm/wiki/WEDM-Objects)   
 
+## Quick Start with Compose 
+1. Grab project
+```
+git clone https://github.com/JeffersonLab/wedm
+cd wedm
+```
+2. Launch Docker
+```
+docker compose up
+```
+3. Navigate to example displays via web browser   
+
+http://localhost:8080/wedm
+
+**See**: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
+
 ## Install
    1. Install [epics2web](https://github.com/JeffersonLab/epics2web)
    1. Download [wedm.war](https://github.com/JeffersonLab/wedm/releases) and drop it into the Tomcat webapps directory
    1. Start Tomcat and navigate your web browser to localhost:8080/wedm
-   
-## Build 
-```
-git clone https://github.com/JeffersonLab/wedm
-cd wedm
-gradlew war
-```
    
 ## Configure
 
@@ -96,23 +105,19 @@ all file references are assumed to be relative without checking access.
 ### Context Prefix
 When proxying WEDM it is sometimes useful to have multiple instances accessible via the same host via separate context paths.  In order to return correct links to resources an instance proxied with a namespacing prefix needs to be aware of the prefix.  The environment variable **CONTEXT_PREFIX** does this.  For example at Jefferson Lab we use a single proxy server for multiple departments each with their own instance of WEDM, and each configured with a prefix such as "/fel", "/chl", "/itf", and "/srf" ("/ops" uses default/empty prefix).
 
-
-## Docker
-```
-docker-compose up
-```
-Image hosted on [DockerHub](https://hub.docker.com/r/slominskir/wedm)
-
-Now navigate to http://localhost:8080/wedm/
-
-**Note:** When developing the app you can mount the build artifact into the container by substituting the docker-compose up command with:
+## Build 
+This project is built with [Java 17](https://adoptium.net/) (compiled to Java 8 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
 ```
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml up
+git clone https://github.com/JeffersonLab/wedm
+cd wedm
+gradlew build
 ```
+**Note**: If you do not already have Gradle installed, it will be installed automatically by the wrapper script included in the source
 
-**Note:** Some organizations like JLab use an [intercepting proxy](https://gist.github.com/slominskir/92c25a033db93a90184a5994e71d0b78).
+**Note for JLab On-Site Users**: Jefferson Lab has an intercepting [proxy](https://gist.github.com/slominskir/92c25a033db93a90184a5994e71d0b78)
 
+**See**: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
 
 ## See Also
 
