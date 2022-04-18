@@ -750,13 +750,18 @@ jlab.wedm.doButtonDown = function ($obj) {
     }
     $obj.find(".screen-text").text($obj.attr("data-on-label"));
     $obj.find(".text-wrap").css("border-width", "0");
-    var local = jlab.wedm.parseLocalVar($obj.attr("data-pv")),
+    var local = $obj.attr("data-pv"),
             pressValue = $obj.attr("data-press-value");
-    if (typeof pressValue !== 'undefined') {
-        if (local.value !== pressValue) {
-            local.value = pressValue;
-            /*console.log("settting local pv down value: " + local.name + " = " + local.value);*/
-            jlab.wedm.updatePv({pv: local.name, value: local.value});
+
+    if(typeof local !== 'undefined') {
+        local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
+
+        if (typeof pressValue !== 'undefined') {
+            if (local.value !== pressValue) {
+                local.value = pressValue;
+                /*console.log("settting local pv down value: " + local.name + " = " + local.value);*/
+                jlab.wedm.updatePv({pv: local.name, value: local.value});
+            }
         }
     }
 };
@@ -770,13 +775,18 @@ jlab.wedm.doButtonUp = function ($obj) {
     }
     $obj.find(".screen-text").text($obj.attr("data-off-label"));
     $obj.find(".text-wrap").css("border-width", "2px");
-    var local = jlab.wedm.parseLocalVar($obj.attr("data-pv")),
-            releaseValue = $obj.attr("data-release-value");
-    if (typeof releaseValue !== 'undefined') {
-        if (local.value !== releaseValue) {
-            local.value = releaseValue;
-            /*console.log("settting local pv up value: " + local.name + " = " + local.value);*/
-            jlab.wedm.updatePv({pv: local.name, value: local.value});
+    var local = $obj.attr("data-pv"),
+        releaseValue = $obj.attr("data-release-value");
+
+    if(typeof local !== 'undefined') {
+        local = jlab.wedm.parseLocalVar($obj.attr("data-pv"));
+
+        if (typeof releaseValue !== 'undefined') {
+            if (local.value !== releaseValue) {
+                local.value = releaseValue;
+                /*console.log("settting local pv up value: " + local.name + " = " + local.value);*/
+                jlab.wedm.updatePv({pv: local.name, value: local.value});
+            }
         }
     }
 };
