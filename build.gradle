@@ -9,7 +9,7 @@ apply plugin: org.jlab.CombinePlugin
 
 description = "Web Extensible Display Manager"
 group 'org.jlab'
-version = '1.6.0'
+version = '1.7.0'
 
 ext {
     releaseDate = 'Aug 25 2021'
