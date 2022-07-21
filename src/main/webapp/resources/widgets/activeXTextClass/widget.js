@@ -89,24 +89,54 @@ jlab.wedm.StaticTextPvObserverInit = function () {
         }
     };
 
+    jlab.wedm.StaticTextPvObserver.prototype.handleCalcExpr = function(value) {
+        if (jlab.wedm.isCalcExpr(this.pvSet.colorPvExpr)) {
+            var pvs = this.toOrderedExpressionValues(this.pvSet.colorPvs);
+
+            if(pvs == null) {
+                return null; // We don't have complete set of variables yet!
+            }
+
+            value = jlab.wedm.evalCalcExpr(this.pvSet.colorPvExpr, pvs);
+        }
+
+        return value;
+    };
+
     jlab.wedm.StaticTextPvObserver.prototype.handleColorUpdate = function (update) {
         var $obj = $("#" + this.id),
                 color,
                 fgRuleIndex = $obj.attr("data-fg-color-rule"),
                 bgRuleIndex = $obj.attr("data-bg-color-rule"),
-                stmt;
+                stmt,
+                value = update.value;
 
         $obj[0].classList.remove("waiting-for-state");
 
         if (typeof fgRuleIndex !== 'undefined') {
             stmt = jlab.wedm.colorRules[fgRuleIndex];
-            color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
+
+            value = this.handleCalcExpr(value);
+
+            if(value == null) {
+                return; // Still waiting for more updates
+            }
+
+            color = jlab.wedm.evalColorExpr.call(this, stmt, value);
+
             $obj.css("color", color);
         }
 
         if (typeof bgRuleIndex !== 'undefined') {
             stmt = jlab.wedm.colorRules[bgRuleIndex];
-            color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
+
+            value = this.handleCalcExpr(value);
+
+            if(value == null) {
+                return; // Still waiting for more updates
+            }
+
+            color = jlab.wedm.evalColorExpr.call(this, stmt, value);
             $obj.css("background-color", color);
         }
     };

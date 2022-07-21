@@ -38,18 +38,10 @@ jlab.wedm.ControlTextPvObserverInit = function () {
             value = enumVal;
         } else { /*Not an enum*/
             if (jlab.wedm.isCalcExpr(this.pvSet.ctrlPvExpr)) {
-                var pvs = [];
-                for (var i = 0; i < this.pvSet.ctrlPvs.length; i++) {
-                    var name = this.pvSet.ctrlPvs[i],
-                            val;
+                var pvs = this.toOrderedExpressionValues(this.pvSet.ctrlPvs);
 
-                    val = this.pvNameToValueMap[name];
-
-                    if (typeof val === 'undefined') {
-                        /*Still more PVs we need values from*/
-                        return;
-                    }
-                    pvs.push(val);
+                if(pvs == null) {
+                    return; // We don't have complete set of variables yet!
                 }
 
                 value = jlab.wedm.evalCalcExpr(this.pvSet.ctrlPvExpr, pvs);

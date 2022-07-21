@@ -257,6 +257,26 @@ jlab.wedm.PvObserver = function (id, pvSet) {
             console.log('Unknown limit PV: ' + update.pv);
         }
     };
+
+    jlab.wedm.PvObserver.prototype.toOrderedExpressionValues = function (names) {
+        var pvs = [];
+
+        for (var i = 0; i < names.length; i++) {
+            var name = names[i],
+                val;
+
+            val = this.pvNameToValueMap[name];
+
+            if (typeof val === 'undefined') {
+                /*Still more PVs we need values from*/
+                return null;
+            }
+
+            pvs.push(val);
+        }
+
+        return pvs;
+    };
 };
 
 jlab.wedm.isLocalExpr = function (expr) {
@@ -625,7 +645,7 @@ jlab.wedm.createWidgets = function () {
 
         var allPvs = jlab.wedm.uniqueArray(ctrlPvs.concat(visPvs).concat(alarmPvs).concat(colorPvs).concat(indicatorPvs).concat(limitPvs)),
                 widget = null,
-                pvSet = {ctrlPvExpr: ctrlPvExpr, visPvExpr: visPvExpr, alarmPvExpr: alarmPvExpr, indicatorPvExpr: indicatorPvExpr, alarmPvs: alarmPvs, colorPvs: colorPvs, ctrlPvs: ctrlPvs, visPvs: visPvs, indicatorPvs: indicatorPvs, limitPvs: limitPvs};
+                pvSet = {ctrlPvExpr: ctrlPvExpr, visPvExpr: visPvExpr, alarmPvExpr: alarmPvExpr, colorPvExpr: colorPvExpr, indicatorPvExpr: indicatorPvExpr, alarmPvs: alarmPvs, colorPvs: colorPvs, ctrlPvs: ctrlPvs, visPvs: visPvs, indicatorPvs: indicatorPvs, limitPvs: limitPvs};
 
         if (ctrlPvExpr !== undefined || visPvExpr !== undefined || alarmPvExpr !== undefined || colorPvExpr !== undefined || indicatorPvExpr !== undefined) {
             /*console.log($obj[0].className);*/
