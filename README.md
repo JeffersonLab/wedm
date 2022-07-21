@@ -9,6 +9,7 @@ The Web Extensible Display Manager leverages [epics2web](https://github.com/Jeff
 - [Install](https://github.com/JeffersonLab/wedm#install)
 - [Configure](https://github.com/JeffersonLab/wedm#configure)
 - [Build](https://github.com/JeffersonLab/wedm#build) 
+- [Release](https://github.com/JeffersonLab/wedm#release) 
 - [See Also](https://github.com/JeffersonLab/wedm#see-also)
 ---
 
@@ -118,6 +119,12 @@ gradlew build
 **Note for JLab On-Site Users**: Jefferson Lab has an intercepting [proxy](https://gist.github.com/slominskir/92c25a033db93a90184a5994e71d0b78)
 
 **See**: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
+
+## Release
+1. Bump the version number and release date in build.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).   
+2. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/wedm/releases) page corresponding to same version in build.gradle (Enumerate changes and link issues).   Run war Gradle build target and attach war to release.
+3. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag)  
+4. Bump and commit quick start [image version](https://github.com/JeffersonLab/wedm/blob/main/docker-compose.override.yml)
 
 ## See Also
 
