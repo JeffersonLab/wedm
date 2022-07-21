@@ -446,8 +446,15 @@ jlab.wedm.pvsFromExpr = function (expr) {
             }
 
             expr.substring(expr.indexOf("}") + 2, end).split(",").forEach(function (pv) {
-                /*We assume LOC declaration/assignments are not possible inside CALC otherwise we would need to parse out assignment*/
-                pvs.push($.trim(pv));
+                pv = $.trim(pv);
+
+                if (pv.indexOf("LOC\\") === 0) {
+                    var local = jlab.wedm.parseLocalVar(pv);
+                    console.log('sub local', local);
+                    pvs.push(local.name);
+                } else {
+                    pvs.push(pv);
+                }
             });
         } else if (expr.indexOf("EPICS\\") === 0) {
             pvs.push(expr.substring(6));
