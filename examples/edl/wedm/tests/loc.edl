@@ -1,0 +1,50 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 806
+y 516
+w 970
+h 740
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-8.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 2
+textColor index 14
+ctlFgColor1 index 30
+ctlFgColor2 index 32
+ctlBgColor1 index 34
+ctlBgColor2 index 35
+topShadowColor index 37
+botShadowColor index 44
+gridSize 5
+endScreenProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 192
+y 133
+w 75
+h 26
+controlPv "CALC\\\{(A>D)||(B>F)||(C>H)?2:(A>E)||(B>G)||(C>I)?1:0\}(LOC\\A=i:0,LOC\\B=i:0,LOC\\C=i:0,LOC\\D=i:0,LOC\\E=i:0,LOC\\F=i:0,LOC\\G=i:0,LOC\\H=i:0,LOC\\I=i:0)"
+font "helvetica-medium-r-18.0"
+fontAlign "right"
+fgColor index 113
+bgColor index 0
+topShadowColor index 10
+botShadowColor index 8
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 32
+colorPv "CALC\\\{(A>D)||(B>F)||(C>H)?2:(A>E)||(B>G)||(C>I)?1:0\}(LOC\\A,LOC\\B,LOC\\C,LOC\\D,LOC\\E,LOC\\F,LOC\\G,LOC\\H,LOC\\I)"
+newPos
+objType "monitors"
+endObjectProperties
+
