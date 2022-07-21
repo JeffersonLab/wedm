@@ -450,7 +450,6 @@ jlab.wedm.pvsFromExpr = function (expr) {
 
                 if (pv.indexOf("LOC\\") === 0) {
                     var local = jlab.wedm.parseLocalVar(pv);
-                    console.log('sub local', local);
                     pvs.push(local.name);
                 } else {
                     pvs.push(pv);
