@@ -84,14 +84,21 @@ jlab.wedm.ShapePvObserverInit = function () {
                 color,
                 stmt,
                 lineRuleIndex = $obj.attr("data-line-color-rule"),
-                fillRuleIndex = $obj.attr("data-fill-color-rule");
+                fillRuleIndex = $obj.attr("data-fill-color-rule"),
+                value = update.value;
 
         $obj[0].classList.remove("waiting-for-state");
 
         if (lineRuleIndex !== undefined) {
             stmt = jlab.wedm.colorRules[lineRuleIndex];
 
-            color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
+            value = this.handleCalcExpr(value);
+
+            if(value == null) {
+                return; // Still waiting for more updates
+            }
+
+            color = jlab.wedm.evalColorExpr.call(this, stmt, value);
 
             $shape.attr("stroke", color);
         }
@@ -99,7 +106,13 @@ jlab.wedm.ShapePvObserverInit = function () {
         if (fillRuleIndex !== undefined) {
             stmt = jlab.wedm.colorRules[fillRuleIndex];
 
-            color = jlab.wedm.evalColorExpr.call(this, stmt, update.value);
+            value = this.handleCalcExpr(value);
+
+            if(value == null) {
+                return; // Still waiting for more updates
+            }
+
+            color = jlab.wedm.evalColorExpr.call(this, stmt, value);
 
             $shape.attr("fill", color);
         }

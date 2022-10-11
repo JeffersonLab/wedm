@@ -48,3 +48,19 @@ newPos
 objType "monitors"
 endObjectProperties
 
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 127
+w 12
+h 12
+lineColor index  14
+lineWidth  1
+fill
+fillColor index 101
+alarmPv CALC\\\{A||B\}(LOC\\V1=i:0,LOC\\V2=i:1)
+endObjectProperties

@@ -277,6 +277,20 @@ jlab.wedm.PvObserver = function (id, pvSet) {
 
         return pvs;
     };
+
+    jlab.wedm.PvObserver.prototype.handleCalcExpr = function(value) {
+        if (jlab.wedm.isCalcExpr(this.pvSet.colorPvExpr)) {
+            var pvs = this.toOrderedExpressionValues(this.pvSet.colorPvs);
+
+            if(pvs == null) {
+                return null; // We don't have complete set of variables yet!
+            }
+
+            value = jlab.wedm.evalCalcExpr(this.pvSet.colorPvExpr, pvs);
+        }
+
+        return value;
+    };
 };
 
 jlab.wedm.isLocalExpr = function (expr) {
@@ -426,9 +440,11 @@ jlab.wedm.parseLocalVar = function (expr) {
                 } else {
                     local.value = 0;
                 }
-            } else if (type !== "s") { // if not enum or string must be integer or double
+            } else if (type !== "s") { // if not enum or string must be integer or double or byte
                 if (local.value === '') { // Default is zero for numbers
                     local.value = 0;
+                } else { // Convert str to number else CALC expressions with LOC vars break on logical or and such
+                    local.value = local.value * 1;
                 }
             }
 

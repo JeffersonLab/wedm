@@ -89,20 +89,6 @@ jlab.wedm.StaticTextPvObserverInit = function () {
         }
     };
 
-    jlab.wedm.StaticTextPvObserver.prototype.handleCalcExpr = function(value) {
-        if (jlab.wedm.isCalcExpr(this.pvSet.colorPvExpr)) {
-            var pvs = this.toOrderedExpressionValues(this.pvSet.colorPvs);
-
-            if(pvs == null) {
-                return null; // We don't have complete set of variables yet!
-            }
-
-            value = jlab.wedm.evalCalcExpr(this.pvSet.colorPvExpr, pvs);
-        }
-
-        return value;
-    };
-
     jlab.wedm.StaticTextPvObserver.prototype.handleColorUpdate = function (update) {
         var $obj = $("#" + this.id),
                 color,
