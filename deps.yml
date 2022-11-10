@@ -1,6 +1,6 @@
 services:
   softioc:
-    image: slominskir/softioc:1.1.0
+    image: jeffersonlab/softioc:1.1.0
     tty: true
     stdin_open: true
     hostname: softioc
@@ -10,7 +10,7 @@ services:
       - ./examples/softioc-scripts:/scripts
 
   epics2web:
-    image: slominskir/epics2web:1.13.0
+    image: jeffersonlab/epics2web:1.14.1
     hostname: epics2web
     container_name: epics2web
     environment:
