@@ -24,7 +24,7 @@ The Web Extensible Display Manager leverages [epics2web](https://github.com/Jeff
 git clone https://github.com/JeffersonLab/wedm
 cd wedm
 ```
-2. Launch Docker
+2. Launch [Compose](https://github.com/docker/compose)
 ```
 docker compose up
 ```
