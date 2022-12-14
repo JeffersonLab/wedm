@@ -1,11 +1,8 @@
-import org.jlab.CombineFileTask
-
 plugins {
     id 'war'
-    id ("org.gradlewebtools.minify") version "1.3.0"
+    id "org.gradlewebtools.minify" version "1.3.1"
+    id "org.jlab.cat" version "1.0.0"
 }
-
-apply plugin: org.jlab.CombinePlugin
 
 description = "Web Extensible Display Manager"
 group 'org.jlab'
@@ -34,14 +31,14 @@ dependencies {
     providedCompile 'javax:javaee-api:7.0'
 }
 
-task combineCss(type: CombineFileTask) {
-    source.from("src/main/webapp/resources/widgets").include('**/*.css')
-    dest = file("${buildDir}/combined-css/combined.css")
+task combineCss(type: org.jlab.cat.CatTask) {
+    input.from("src/main/webapp/resources/widgets").include('**/*.css')
+    output = file("${buildDir}/combined-css/combined.css")
 }
 
-task combineJs(type: CombineFileTask) {
-    source.from("src/main/webapp/resources/widgets").include('**/*.js')
-    dest = file("${buildDir}/combined-js/combined.js")
+task combineJs(type: org.jlab.cat.CatTask) {
+    input.from("src/main/webapp/resources/widgets").include('**/*.js')
+    output = file("${buildDir}/combined-js/combined.js")
 }
 
 task cssMinifyIt(type: org.gradlewebtools.minify.CssMinifyTask) {
