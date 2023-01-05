@@ -1,0 +1,5768 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 1139
+y 424
+w 1383
+h 1244
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 954
+y 143
+w 48
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "deg F"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 905
+y 143
+w 36
+h 21
+controlPv "HAGEM:SBS:amb:temp"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 2
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "BB Regulator Output Pressure"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 894
+y 104
+w 176
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Ambient Temperature"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 898
+y 134
+w 112
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 12
+y 45
+w 1208
+h 1156
+lineColor index 14
+fill
+fillColor index 10
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 35
+y 131
+w 102
+h 36
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 311
+y 104
+w 219
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Regulator Output Pressure"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 316
+y 132
+w 102
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 386
+y 139
+w 24
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "psi"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 26
+y 177
+w 1159
+h 157
+lineColor index 14
+fill
+fillColor index 12
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 993
+y 1153
+w 200
+h 46
+controlPv "iocgasSystem86:TOD"
+fgColor index 65
+fgAlarm
+bgColor index 10
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 26
+y 341
+w 1159
+h 157
+lineColor index 14
+fill
+fillColor index 12
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 32
+y 422
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 45
+y 430
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch17"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 9"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 177
+y 385
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch18"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 174
+y 422
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 429
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch18"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 9"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 321
+y 385
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch19"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 318
+y 421
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 333
+y 429
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch19"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 11"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 468
+y 386
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch20"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 386
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch21"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 386
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch22"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 901
+y 386
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch23"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1044
+y 386
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch24"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 246
+y 466
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch18"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Hi Status 10"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 388
+y 467
+w 73
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch19"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 11"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 532
+y 466
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch20"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 12"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 677
+y 466
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch21"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 13"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 819
+y 466
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch22"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 14"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 963
+y 466
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch23"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 15"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1106
+y 466
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch24"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 16"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 104
+y 466
+w 72
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch17"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+id "Hi Status 9"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 39
+y 466
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 182
+y 466
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 328
+y 466
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 470
+y 466
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 466
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 466
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 903
+y 466
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1045
+y 466
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 461
+y 422
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 476
+y 429
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch20"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 12"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 610
+y 420
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 624
+y 429
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch21"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 13"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 753
+y 420
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 767
+y 429
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch22"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 14"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 897
+y 420
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 911
+y 429
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch23"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 15"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1040
+y 420
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1054
+y 429
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch24"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 16"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 33
+y 386
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch17"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 26
+y 506
+w 1159
+h 157
+lineColor index 14
+fill
+fillColor index 12
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 32
+y 587
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 45
+y 595
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch25"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 17"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 177
+y 550
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch26"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 174
+y 587
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 594
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch26"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 18"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 321
+y 550
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch27"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 318
+y 586
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 333
+y 594
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch27"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 19"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 468
+y 551
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch28"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 551
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch29"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 551
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch30"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 901
+y 551
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch31"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1044
+y 551
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch32"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 246
+y 631
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch26"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 18"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 388
+y 632
+w 73
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch27"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 19"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 532
+y 631
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch28"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 20"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 677
+y 631
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch29"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 21"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 819
+y 631
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch30"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 22"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 963
+y 631
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch31"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 23"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1106
+y 631
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch32"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 24"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 104
+y 631
+w 72
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch25"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 17"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 39
+y 631
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 182
+y 631
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 328
+y 631
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 470
+y 631
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 631
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 631
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 903
+y 631
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1045
+y 631
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 461
+y 587
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 476
+y 594
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch28"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 20"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 610
+y 585
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 624
+y 594
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch29"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 21"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 753
+y 585
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 767
+y 594
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch30"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 22"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 897
+y 585
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 911
+y 594
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch31"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 23"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1040
+y 585
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1054
+y 594
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch32"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 24"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 33
+y 551
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch25"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 26
+y 671
+w 1159
+h 157
+lineColor index 14
+fill
+fillColor index 12
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 32
+y 752
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 45
+y 760
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch33"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 25"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 177
+y 715
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch34"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 174
+y 752
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 759
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch34"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 26"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 321
+y 715
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch35"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 318
+y 751
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 333
+y 759
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch35"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 27"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 468
+y 716
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch36"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 716
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch37"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 716
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch38"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 901
+y 716
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch39"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1044
+y 716
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch40"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 246
+y 796
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch34"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 26"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 388
+y 797
+w 73
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch35"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 27"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 532
+y 796
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch36"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 28"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 677
+y 796
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch37"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 29"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 819
+y 796
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch38"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 30"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 963
+y 796
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch39"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 31"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1106
+y 796
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch40"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 32"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 104
+y 796
+w 72
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch33"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 25"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 39
+y 796
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 182
+y 796
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 328
+y 796
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 470
+y 796
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 796
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 796
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 903
+y 796
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1045
+y 796
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 461
+y 752
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 476
+y 759
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch36"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 28"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 610
+y 750
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 624
+y 759
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch37"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 29"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 753
+y 750
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 767
+y 759
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch38"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 30"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 897
+y 750
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 911
+y 759
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch39"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 31"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1040
+y 750
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1054
+y 759
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch40"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 32"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 33
+y 716
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch33"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 26
+y 835
+w 1159
+h 157
+lineColor index 14
+fill
+fillColor index 12
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 32
+y 916
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 45
+y 924
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch41"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 33"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 177
+y 879
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch42"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 174
+y 916
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 923
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch42"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 34"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 321
+y 879
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch43"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 318
+y 915
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 333
+y 923
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch43"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 35"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 468
+y 880
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch44"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 880
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch45"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 880
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch46"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 901
+y 880
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch47"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1044
+y 880
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch48"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 246
+y 960
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch42"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 34"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 388
+y 961
+w 73
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch43"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 35"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 532
+y 960
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch44"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 36"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 677
+y 960
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch45"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 37"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 819
+y 960
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch46"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 38"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 963
+y 960
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch47"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 39"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1106
+y 960
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch48"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 40"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 104
+y 960
+w 72
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch41"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 33"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 39
+y 960
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 182
+y 960
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 328
+y 960
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 470
+y 960
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 960
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 960
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 903
+y 960
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1045
+y 960
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 461
+y 916
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 476
+y 923
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch44"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 36"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 610
+y 914
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 624
+y 923
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch45"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 37"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 753
+y 914
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 767
+y 923
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch46"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 38"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 897
+y 914
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 911
+y 923
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch47"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 39"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1040
+y 914
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1054
+y 923
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch48"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 40"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 33
+y 880
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch41"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 26
+y 1000
+w 1159
+h 157
+lineColor index 14
+fill
+fillColor index 12
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 32
+y 1081
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 45
+y 1089
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch49"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 41"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 177
+y 1044
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch50"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 174
+y 1081
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 1088
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch50"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 42"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 321
+y 1043
+w 88
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Spare Ch1"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 318
+y 1080
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 333
+y 1088
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch51"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 43"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 1045
+w 88
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Spare Ch4"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 901
+y 1045
+w 88
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Spare Ch5"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1044
+y 1045
+w 88
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Spare Ch6"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 246
+y 1125
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch50"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 42"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 388
+y 1126
+w 73
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch51"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 43"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 532
+y 1125
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch52"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 44"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 677
+y 1125
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch53"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 45"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 819
+y 1125
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch54"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 46"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 963
+y 1125
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch55"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 47"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1106
+y 1125
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch56"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 48"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 104
+y 1125
+w 72
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch49"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 41"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 39
+y 1125
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 182
+y 1125
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 328
+y 1125
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 470
+y 1125
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 1125
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 1125
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 903
+y 1125
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1045
+y 1125
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 461
+y 1081
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 476
+y 1088
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch52"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 44"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 610
+y 1079
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 624
+y 1088
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch53"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 45"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 753
+y 1079
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 767
+y 1088
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch54"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 46"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 897
+y 1079
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 911
+y 1088
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch55"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 47"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1040
+y 1079
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1054
+y 1088
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch56"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 48"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 33
+y 1045
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch49"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 462
+y 1042
+w 88
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Spare Ch2"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 610
+y 1042
+w 88
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Spare Ch3"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 104
+y 138
+w 24
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "psi"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 329
+y 140
+w 56
+h 21
+controlPv "HAGEM:SBS:press:ch02"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 2
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "BB Regulator Output Pressure"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 46
+y 140
+w 56
+h 21
+controlPv "HAGEM:SBS:press:ch01"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 2
+nullColor index 14
+newPos
+objType "monitors"
+id "BB Regulator Input Pressure"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 33
+y 104
+w 204
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Regulator Input Pressure"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 893
+y 59
+w 160
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Software Heartbeat"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 401
+y 58
+w 358
+h 27
+font "helvetica-bold-r-24.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Hall A SBS GEM Flow Readout"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 33
+y 222
+w 111
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Hi Flow Ch09"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1040
+y 256
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 897
+y 256
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 753
+y 256
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 610
+y 256
+w 130
+h 37
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 461
+y 258
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1045
+y 302
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 903
+y 302
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 302
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 302
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 470
+y 302
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 328
+y 302
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 182
+y 302
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 39
+y 302
+w 58
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Status:"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 104
+y 302
+w 72
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch09"
+format "string"
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+id "Hi Status 1"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1106
+y 302
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch16"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 8"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 963
+y 302
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch15"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 7"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 819
+y 302
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch14"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 6"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 677
+y 302
+w 70
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch13"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 5"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 532
+y 302
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch12"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 4"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 388
+y 303
+w 73
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch11"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Std Status 3"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 246
+y 302
+w 71
+h 21
+controlPv "HAGEM:SBS:gas:sensor:ch10"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "Hi Status 02"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1044
+y 222
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch16"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 901
+y 222
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch15"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 757
+y 222
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch14"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 614
+y 222
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch13"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 468
+y 222
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch12"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 318
+y 257
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 321
+y 221
+w 124
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Std Flow Ch11"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 174
+y 258
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 177
+y 221
+w 111
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Hi Flow Ch10"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 32
+y 258
+w 130
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 45
+y 266
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch09"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Hi Flow 1"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 265
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch10"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Hi Flow 2"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 333
+y 265
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch11"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 3"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 476
+y 265
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch12"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 4"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 624
+y 265
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch13"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 5"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 767
+y 265
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch14"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 6"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 911
+y 265
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch15"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 7"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1054
+y 265
+w 107
+h 21
+controlPv "HAGEM:SBS:gas:ch16"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 14
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+id "Std Flow 8"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 611
+y 134
+w 85
+h 35
+lineColor index 14
+fill
+fillColor index 0
+lineWidth 3
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 618
+y 141
+w 53
+h 21
+controlPv "HAGEM:SBS:gas:mix"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+useDisplayBg
+autoHeight
+precision 2
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+id "BB Regulator Output Pressure"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 674
+y 141
+w 16
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "%"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 607
+y 104
+w 126
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 0
+bgColor index 51
+useDisplayBg
+value {
+  "Argon % of mix"
+}
+autoSize
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1067
+y 60
+w 20
+h 20
+lineColor index 14
+fill
+fillColor index 15
+visPv "HAGEM:SBS:heartbeat:1"
+visMin "1"
+visMax "2"
+endObjectProperties

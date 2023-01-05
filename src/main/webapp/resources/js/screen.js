@@ -672,7 +672,9 @@ jlab.wedm.createWidgets = function () {
                 var s = jlab.wedm.classToObserverMap[classes[i]];
 
                 if (typeof s !== 'undefined') {
+                    //console.log('s: ', s);
                     var f = jlab.wedm.stringToFunction(s);
+                    //console.log('creating object: ', f);
                     widget = new f(id, pvSet);
                     found = true;
                     break;
@@ -850,19 +852,28 @@ jlab.wedm.macroQueryString = function (macros) {
 
 /*Due to observer prototype inheritance declaration order of functions matters so we provide a mechanism to ensure a dependent functions exists before init*/
 jlab.wedm.observerDependencies = [];
+
+jlab.wedm.initObserverDep = function(observer) {
+    jlab.wedm.observerDependencies[observer] = jlab.wedm.observerDependencies[observer] || []; /*Invoke dependents*/
+    for (var i = 0; i < jlab.wedm.observerDependencies[observer].length; i++) {
+        var dep = jlab.wedm.observerDependencies[observer][i];
+        //console.log('init dep: ' + dep);
+        var f = jlab.wedm.stringToFunction(dep + 'Init');
+        f();
+        jlab.wedm.initObserverDep(dep);
+    }
+};
+
 jlab.wedm.initPvObserver = function (observer, dependency) {
-    /*console.log('init: ' + observer);*/
+    //console.log('init: ' + observer);
     if (typeof dependency === 'undefined' || jlab.wedm.stringToFunction(dependency)) { /*No dependency or dependency already defined*/
         var f = jlab.wedm.stringToFunction(observer + 'Init');
         f();
-        jlab.wedm.observerDependencies[observer] = jlab.wedm.observerDependencies[observer] || []; /*Invoke dependents*/
-        for (var i = 0; i < jlab.wedm.observerDependencies[observer].length; i++) {
-            /*console.log('init dep: ' + jlab.wedm.observerDependencies[observer][i]);*/
-            f = jlab.wedm.stringToFunction(jlab.wedm.observerDependencies[observer][i] + 'Init');
-            f();
-        }
+        //console.log('created: ', observer);
+        jlab.wedm.initObserverDep(observer);
+
     } else { /*Queue init function to be called after dependency initialized*/
-        /*console.log('Queuing: ' + observer);*/
+        //console.log('Queuing: ' + observer, 'waiting on: ' + dependency);
         jlab.wedm.observerDependencies[dependency] = jlab.wedm.observerDependencies[dependency] || [];
         jlab.wedm.observerDependencies[dependency].push(observer);
     }
