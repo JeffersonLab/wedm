@@ -130,4 +130,4 @@ gradlew build
 
   - ["Puddysticks"](https://github.com/JeffersonLab/puddysticks)   
   - [WEDM Technical Notes](https://github.com/JeffersonLab/wedm/wiki/Technical-Notes)      
-  - [This work was presented at ICALEPCS 2017](http://accelconf.web.cern.ch/icalepcs2017/) and the [2017 EPICS workshop](https://indico.esss.lu.se/event/889/session/1/contribution/0)  
+  - [This work was presented at ICALEPCS 2017](https://doi.org/10.18429/JACoW-ICALEPCS2017-TUPHA181) and the [2017 EPICS workshop](https://indico.esss.lu.se/event/889/session/1/contribution/0)  
