@@ -1,0 +1,52 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 0
+y 0
+w 600
+h 600
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 50
+botShadowColor index 10
+endScreenProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 25
+y 25
+w 400
+h 400
+fgColor index 14
+bgColor index 51
+topShadowColor index 50
+botShadowColor index 10
+displaySource "menu"
+filePv "LOC\\\\TEST=i:0"
+center
+sizeOfs 5
+numDsps 1
+displayFileName {
+  0 "wedm/tests/macro-test/related.edl"
+}
+menuLabel {
+  0 "Related Display"
+}
+symbols {
+  0 "A=Embedded A,B=Embedded B,C=Embedded C"
+}
+endObjectProperties
