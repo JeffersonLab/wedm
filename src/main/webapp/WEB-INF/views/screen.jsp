@@ -54,7 +54,6 @@ ${screen.getHtml()}
         </c:choose>
         <script>
 ${screen.getJs()}
-jlab.wedm.macroString = '${fn:escapeXml(macroString)}';
 jlab.contextPrefix = '${wedm:contextPrefix()}';
 jlab.epics2webHost = '${wedm:epics2webHost()}';
         </script>       

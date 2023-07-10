@@ -98,7 +98,7 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         } else if (!screenList.isEmpty()) {
             for (int i = 0; i < screenList.size(); i++) {
                 Screen s = screenList.get(i);
-                String screenHtml = s.toHtmlBody(indent + HtmlScreen.INDENT_STEP);
+                String screenHtml = s.toHtmlBody(indent + HtmlScreen.INDENT_STEP, symbols[i]);
 
                 if (symbols != null && symbols[i] != null) {
                     screenHtml = applyMacros(screenHtml, symbols[i]);

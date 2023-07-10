@@ -39,11 +39,28 @@ $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
                     macros.push(macro);
                 }
 
+                // If duplicate URL params first one takes precedence.
+                // We set display macros first, then embedded, then screen
+
                 if (!doNotPropagate) {
+
+                    // Look for all parent screens (can be multiple).
+                    // Ordered closest first such that earlier duplicate macro takes precedence
+                    var screenMacros = "";
+                    var parentScreens = $(this).parents(".screen").each(function() {
+                        var m = $(this).attr("data-macros");
+                        if(m.length > 0) {
+                            screenMacros = screenMacros + m + ",";
+                        }
+                    });
+
+                    // remove trailing comma
+                    screenMacros = screenMacros.substring(0,screenMacros.length - 1);
+
                     if (macros[i].length > 0) {
-                        macros[i] = macros[i] + "," + jlab.wedm.macroString;
+                        macros[i] = macros[i] + "," + screenMacros;
                     } else {
-                        macros[i] = jlab.wedm.macroString;
+                        macros[i] = screenMacros;
                     }
                 }
             }

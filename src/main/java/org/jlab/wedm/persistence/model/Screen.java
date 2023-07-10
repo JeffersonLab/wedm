@@ -22,6 +22,12 @@ public class Screen {
     public Integer embeddedIndex = null;
     private final ColorPalette colorList;
 
+    /**
+     *  This is a special placeholder.  We don't store macros in the screen cache because macros can vary.  Instead, we
+     *  store a special placeholder that is replaced with macros on page load.
+    * */
+    public static final String ROOT_SCREEN_MACRO_PLACEHOLDER = "root-screen-macros";
+
     public Screen(String canonicalPath, long modifiedDate, ScreenProperties properties,
             List<WEDMWidget> screenObjects, ColorPalette colorList) {
         this.canonicalPath = canonicalPath;
@@ -36,13 +42,13 @@ public class Screen {
     }
 
     public HtmlScreen toHtmlScreen() {
-        String html = toHtmlBody(HtmlScreen.INITIAL_INDENT);
+        String html = toHtmlBody(HtmlScreen.INITIAL_INDENT, ROOT_SCREEN_MACRO_PLACEHOLDER);
         String css = toCssHead();
         String js = this.getColorStyleVariables(); // TODO: this is wasteful to redo every time
         return new HtmlScreen(canonicalPath, modifiedDate, html, css, js, properties.title);
     }
 
-    public String toHtmlBody(String indent) {
+    public String toHtmlBody(String indent, String macros) {
 
         if (properties.w <= 0) {
             properties.w = 800;
@@ -57,13 +63,18 @@ public class Screen {
         String widthAndHeight = "width: " + properties.w + "px; height: " + properties.h + "px; ";
         String indentPlusOne = indent + HtmlScreen.INDENT_STEP;
         String embeddedIndexStr = "";
+        String macrosStr = "";
 
         if (embeddedIndex != null) {
             embeddedIndexStr = "data-index=\"" + embeddedIndex + "\"";
         }
 
+        if(macros != null) {
+            macrosStr = " data-macros=\"" + macros + "\"";
+        }
+
         String html
-                = indent + "<div class=\"screen\" " + embeddedIndexStr
+                = indent + "<div class=\"screen\" " + embeddedIndexStr + macrosStr
                 + " style=\"position: relative; " + widthAndHeight
                 + " ";
 

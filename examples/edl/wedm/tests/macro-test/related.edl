@@ -64,9 +64,6 @@ numDsps 1
 displayFileName {
   0 "wedm/tests/macro-test/macro.edl"
 }
-symbols {
-  0 "A=Related Display A, B=Related Display B, C=Related Display C"
-}
 icon
 endObjectProperties
 
@@ -89,6 +86,9 @@ numPvs 4
 numDsps 1
 displayFileName {
   0 "wedm/tests/macro-test/macro.edl"
+}
+symbols {
+  0 "C=Related Display C"
 }
 icon
 endObjectProperties
@@ -128,7 +128,7 @@ fgColor index 14
 bgColor index 51
 useDisplayBg
 value {
-  "Related Display Macro"
+  "Embedded Macro"
 }
 autoSize
 endObjectProperties
@@ -149,7 +149,7 @@ fgColor index 14
 bgColor index 51
 useDisplayBg
 value {
-  "Embedded Macro"
+  "Related Display Macro"
 }
 autoSize
 endObjectProperties

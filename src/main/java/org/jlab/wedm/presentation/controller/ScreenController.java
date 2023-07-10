@@ -55,24 +55,6 @@ public class ScreenController extends HttpServlet {
             }
         }
 
-        StringBuilder builder = new StringBuilder();
-        if (!macros.isEmpty()) {
-            Macro m = macros.get(0);
-            builder.append(m.key.substring(2, m.key.length() - 1));
-            builder.append("=");
-            builder.append(m.value);
-
-            for (int i = 1; i < macros.size(); i++) {
-                m = macros.get(i);
-                builder.append(",");
-                builder.append(m.key.substring(2, m.key.length() - 1));
-                builder.append("=");
-                builder.append(m.value);
-            }
-        }
-
-        String macroString = builder.toString();
-
         ScreenService service = new ScreenService();
 
         try {
@@ -84,7 +66,6 @@ public class ScreenController extends HttpServlet {
 
             request.setAttribute("widgets", Configuration.WIDGET_LIST);
             request.setAttribute("screen", screen);
-            request.setAttribute("macroString", macroString);
 
             request.getRequestDispatcher("/WEB-INF/views/screen.jsp").forward(request, response);
         } catch (FileNotFoundException ex) {

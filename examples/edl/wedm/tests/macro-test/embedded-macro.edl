@@ -47,6 +47,6 @@ menuLabel {
   0 "Related Display"
 }
 symbols {
-  0 "A=Embedded A,B=Embedded B,C=Embedded C"
+  0 "B=Embedded B"
 }
 endObjectProperties

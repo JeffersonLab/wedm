@@ -117,6 +117,27 @@ public class ScreenService {
     private HtmlScreen applyMacros(HtmlScreen screen, List<Macro> macros) {
         String html = screen.getHtml();
 
+        // First we replace cached screen macros placeholder with value
+        StringBuilder builder = new StringBuilder();
+        if (!macros.isEmpty()) {
+            Macro m = macros.get(0);
+            builder.append(m.key.substring(2, m.key.length() - 1));
+            builder.append("=");
+            builder.append(m.value);
+
+            for (int i = 1; i < macros.size(); i++) {
+                m = macros.get(i);
+                builder.append(",");
+                builder.append(m.key.substring(2, m.key.length() - 1));
+                builder.append("=");
+                builder.append(m.value);
+            }
+        }
+
+        String macroString = builder.toString();
+        html = html.replace(Screen.ROOT_SCREEN_MACRO_PLACEHOLDER, macroString);
+
+        // Now we actually apply macros to screen
         for (Macro m : macros) {
 
             /*Avoid cross-site scripting and malformed HTML by escaping, but sacrifice ability to use XML reserved characters in Macros ("'&<>)*/
