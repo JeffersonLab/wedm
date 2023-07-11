@@ -98,10 +98,17 @@ public class ActivePictureInPicture extends EmbeddedScreen {
         } else if (!screenList.isEmpty()) {
             for (int i = 0; i < screenList.size(); i++) {
                 Screen s = screenList.get(i);
-                String screenHtml = s.toHtmlBody(indent + HtmlScreen.INDENT_STEP, symbols[i]);
+
+                String macros = null;
 
                 if (symbols != null && symbols[i] != null) {
-                    screenHtml = applyMacros(screenHtml, symbols[i]);
+                    macros = symbols[i];
+                }
+
+                String screenHtml = s.toHtmlBody(indent + HtmlScreen.INDENT_STEP, macros);
+
+                if (macros != null) {
+                    screenHtml = applyMacros(screenHtml, macros);
                 }
 
                 html = html + screenHtml;
