@@ -49,7 +49,7 @@ $(document).on("click contextmenu", ".RelatedDisplay", function (e) {
                     var screenMacros = "";
                     var parentScreens = $(this).parents(".screen").each(function() {
                         var m = $(this).attr("data-macros");
-                        if(m.length > 0) {
+                        if(m && m.length > 0) {
                             screenMacros = screenMacros + m + ",";
                         }
                     });
