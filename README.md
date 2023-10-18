@@ -9,7 +9,8 @@ The Web Extensible Display Manager leverages [epics2web](https://github.com/Jeff
 - [Install](https://github.com/JeffersonLab/wedm#install)
 - [Configure](https://github.com/JeffersonLab/wedm#configure)
 - [Build](https://github.com/JeffersonLab/wedm#build) 
-- [Release](https://github.com/JeffersonLab/wedm#release) 
+- [Release](https://github.com/JeffersonLab/wedm#release)
+- [Deploy](https://github.com/JeffersonLab/wedm#deploy) 
 - [See Also](https://github.com/JeffersonLab/wedm#see-also)
 ---
 
@@ -125,6 +126,17 @@ gradlew build
 2. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/wedm/releases) page corresponding to same version in build.gradle (Enumerate changes and link issues).   Run war Gradle build target and attach war to release.
 3. Build and publish a new Docker image [from the GitHub tag](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  GitHub is configured to do this automatically on git push of semver tag (typically part of GitHub release) or the [Publish to DockerHub](https://github.com/JeffersonLab/wedm/actions/workflows/docker-publish.yml) action can be manually triggered after selecting a tag.
 4. Bump and commit quick start [image version](https://github.com/JeffersonLab/wedm/blob/main/docker-compose.override.yml)
+
+## Deploy
+At JLab this app is found at [epicsweb.jlab.org/wedm](https://epicsweb.jlab.org/wedm/), plus other fiefdom specific subpaths, and internally at [epicswebtest.acc.jlab.org/wedm](https://epicswebtest.acc.jlab.org/wedm/).  However, the epicsweb server is a proxy for `epicswebops.acc.jlab.org`, `epicswebchl.acc.jlab.org`, `epicswebfel.acc.jlab.org`, `epicswebsrf.acc.jlab.org` and `epicswebitf.acc.jlab.org`.  Additionally, the context root for each is adjusted with a suffix such that all servers can be reached from a single namespace.  The context root suffixes are `/`, `/chl`, `/fel`, `/srf`, and `/itf` respectively.  Tomcat interprets context roots from _war_ file name unless overridden elsewhere.  Therefore each _war_ must be renamed with `#<suffix>`.    Use wget or the like to grab the release war file.  Don't download directly into webapps dir as file scanner may attempt to deploy before fully downloaded.  Be careful of previous war file as by default wget won't overrwite.  The war file should be attached to each release, so right click it and copy location (or just update version in path provided in the example below).  Example for chl fiefdom:
+
+```
+cd /tmp
+rm wedm.war
+wget https://github.com/JeffersonLab/wmenu/releases/download/v1.2.3/wedm.war
+mv wedm.war wedm#chl.war
+mv  wedm#chl.war /usr/share/tomcat/webapps
+```
 
 ## See Also
 
