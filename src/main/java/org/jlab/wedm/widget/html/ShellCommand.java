@@ -1,6 +1,7 @@
 package org.jlab.wedm.widget.html;
 
 import org.jlab.wedm.persistence.io.EDLParser;
+import org.jlab.wedm.persistence.io.Functions;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.widget.ScreenProperties;
 
@@ -59,8 +60,10 @@ public class ShellCommand extends ActiveButton {
 
                     String filepath = EDLParser.OTF_DIR + File.separator + filename;
 
+                    String prefix = Functions.contextPrefix();
+
                     try {
-                        url = "/wedm/screen?edl=" + URLEncoder.encode(filepath, "UTF-8");
+                        url = prefix + "/wedm/screen?edl=" + URLEncoder.encode(filepath, "UTF-8");
                     } catch (UnsupportedEncodingException e) {
                         throw new RuntimeException("UTF-8 Unsupported");
                     }
