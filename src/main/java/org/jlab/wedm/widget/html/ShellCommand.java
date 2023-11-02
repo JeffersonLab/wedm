@@ -1,9 +1,14 @@
 package org.jlab.wedm.widget.html;
 
+import org.jlab.wedm.persistence.io.EDLParser;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.widget.ScreenProperties;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -42,6 +47,23 @@ public class ShellCommand extends ActiveButton {
                             url = tokens[1];
                         }
                     break;
+                }
+            }
+
+            // Not a browser open command, so let's see if it's an OTF command (if OTF enabled)
+            if(url == null && EDLParser.OTF_DIR != null) {
+
+                String filename = EDLParser.OTF_MAP.get(command);
+
+                if(filename != null) {
+
+                    String filepath = EDLParser.OTF_DIR + File.separator + filename;
+
+                    try {
+                        url = "/wedm/screen?edl=" + URLEncoder.encode(filepath, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException("UTF-8 Unsupported");
+                    }
                 }
             }
         }

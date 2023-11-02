@@ -1,24 +1,30 @@
 package org.jlab.wedm.persistence.io;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
+import javax.json.stream.JsonParser;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 import org.jlab.wedm.persistence.model.EDLFont;
 
 /**
- *
  * @author slominskir
  */
 public class EDLParser {
@@ -34,6 +40,11 @@ public class EDLParser {
     public static final String WEDM_DISABLE_CERTIFICATE_CHECK;
     public static final boolean EDMRELATIVEPATHS;
     public static final boolean WEDM_DISABLE_RELATIVEPATHS_CHECK;
+
+    public static final String OTF_DIR;
+
+    public static final String OTF_MAP_FILENAME = "edl.json";
+    public static final Map<String, String> OTF_MAP = new HashMap<>();
 
     /**
      * On Windows you could set EDL_DIR to a remote ExpanDrive mount say
@@ -82,14 +93,60 @@ public class EDLParser {
                 }
             }
         }
-        
+
         // EDM Version 1-12-105J, ca. June 2021, supports this environment variable
         // to enable relative path support.
         EDMRELATIVEPATHS = "yes".equals(System.getenv("EDMRELATIVEPATHS"));
         LOGGER.log(Level.INFO, "EDMRELATIVEPATHS=" + (EDMRELATIVEPATHS ? "yes" : "no"));
-        
+
         WEDM_DISABLE_RELATIVEPATHS_CHECK = "yes".equals(System.getenv("WEDM_DISABLE_RELATIVEPATHS_CHECK"));
         LOGGER.log(Level.INFO, "WEDM_DISABLE_RELATIVEPATHS_CHECK=" + (WEDM_DISABLE_RELATIVEPATHS_CHECK ? "yes" : "no"));
+
+        OTF_DIR = System.getenv("OTF_DIR");
+
+        if (OTF_DIR != null) {
+            loadOtfMap();
+        }
+    }
+
+    private static void loadOtfMap() {
+        String path = OTF_DIR + File.separator + OTF_MAP_FILENAME;
+
+        try (
+                FileInputStream fis = new FileInputStream(path);
+                JsonParser parser = Json.createParser(fis);
+        ) {
+
+            String cmd = null;
+            String edl = null;
+
+            while (parser.hasNext()) {
+                JsonParser.Event e = parser.next();
+
+                //System.err.println("Event: "  + e);
+
+                if (e == JsonParser.Event.KEY_NAME) {
+                    switch (parser.getString()) {
+                        case "cmd":
+                            parser.next();
+                            cmd = parser.getString();
+                            //System.out.println("cmd: " + cmd);
+                            break;
+                        case "edl":
+                            parser.next();
+                            edl = parser.getString();
+                            //System.out.println("edl: " + edl);
+                    }
+                } else if(e == JsonParser.Event.END_OBJECT) {
+                    if(cmd != null && edl != null) {
+                        EDLParser.OTF_MAP.put(cmd, edl);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unable to parse file: " + path);
+            e.printStackTrace();
+        }
     }
 
     /**

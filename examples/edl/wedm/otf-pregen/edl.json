@@ -1,0 +1,8 @@
+[
+{
+  "edl": "T1RGTGF1bmNoZXIgbWFnbmV0IGJveGRldGFpbHMgLW5hbWUgU1VQRVJCSUdCSVRF.edl",
+  "src": "wedm/tests/OTFPregen.edl",
+  "cmd": "export DISPLAY=<DSPNAME>; OTFLauncher magnet boxdetails -name SUPERBIGBITE",
+  "exe": "OTFLauncher magnet boxdetails -name SUPERBIGBITE"
+}
+]
