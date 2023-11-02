@@ -107,6 +107,9 @@ all file references are assumed to be relative without checking access.
 ### Context Prefix
 When proxying WEDM it is sometimes useful to have multiple instances accessible via the same host via separate context paths.  In order to return correct links to resources an instance proxied with a namespacing prefix needs to be aware of the prefix.  The environment variable **CONTEXT_PREFIX** does this.  For example at Jefferson Lab we use a single proxy server for multiple departments each with their own instance of WEDM, and each configured with a prefix such as "/fel", "/chl", "/itf", and "/srf" ("/ops" uses default/empty prefix).
 
+### OTF Screens
+If the optional environment variable `OTF_DIR` is defined, then ShellCommand widgets with OTFLauncher commands will be honored if possible via a pregenerated screen cache found at the path indicated by the variable.  The cache directory is expected to contain a file named `edl.json` which maps OTF shell commands to .edl files.  The JLab On-The-Fly (OTF) EDM screens are used to automatically keep screens in sync with the accelerator configuration database and are usually generated dynamically at the time of invocation.   A cache reduces latency when opening screens and a separate app invokes the generation commands such that WEDM continues to interface solely with EDM files on a filesystem.
+
 ## Build 
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 8 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
