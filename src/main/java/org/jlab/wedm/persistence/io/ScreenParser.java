@@ -148,10 +148,13 @@ public class ScreenParser extends EDLParser {
                                     if (url != null) {
                                         if (last instanceof RelatedDisplay) { 
                                             final RelatedDisplay related = (RelatedDisplay) last;
-                                            for (int i=0; i<related.displayFileName.length; ++i) {
-                                                final URL relative = EDLParser.getRelativeURL(url, related.displayFileName[i]);
-                                                if (relative != null)
-                                                    related.displayFileName[i] = relative.toExternalForm();
+
+                                            if(related.numDsps > 0) {
+                                                for (int i=0; i<related.displayFileName.length; ++i) {
+                                                    final URL relative = EDLParser.getRelativeURL(url, related.displayFileName[i]);
+                                                    if (relative != null)
+                                                        related.displayFileName[i] = relative.toExternalForm();
+                                                }
                                             }
                                         }
                                         else if (last instanceof ActiveImage) { 
