@@ -1,0 +1,5 @@
+{
+  "dockerComposeFile": "dev.yaml",
+  "service": "wedm",
+  "workspaceFolder": "/wedm"
+}

@@ -17,7 +17,5 @@ services:
       EDMCOLORFILE: /edl/colors.list
       EPICS_2_WEB_HOST: localhost:9090
       OTF_DIR: /edl/wedm/otf-pregen
-    depends_on:
-      - epics2web
     ports:
       - 8080:8080

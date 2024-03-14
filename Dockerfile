@@ -16,7 +16,7 @@ COPY . /app
 RUN cd /app && gradle build -x test --no-watch-fs $OPTIONAL_CERT_ARG
 
 ################## Stage 1
-FROM ${RUN_IMAGE} as runner
+FROM ${RUN_IMAGE} as prod
 ARG CUSTOM_CRT_URL
 ARG RUN_USER=tomcat
 ARG APP_HOME=/usr/local/tomcat/webapps
@@ -32,3 +32,9 @@ RUN useradd -m tomcat \
     && chown -R ${RUN_USER}:0 ${APP_HOME} \
     && chmod -R g+rw ${APP_HOME}
 USER ${RUN_USER}
+
+################## Stage 2
+FROM prod as dev
+USER root
+RUN apt update \
+    && apt install git -y
