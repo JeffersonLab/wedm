@@ -312,7 +312,7 @@ x 17
 y 264
 w 220
 h 20
-controlPv "IBC0R08CRCUR1"
+controlPv "channel6"
 font "helvetica-medium-r-18.0"
 fgColor index 14
 bgColor index 51

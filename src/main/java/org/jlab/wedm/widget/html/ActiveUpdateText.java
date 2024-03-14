@@ -17,6 +17,10 @@ public class ActiveUpdateText extends ActiveControlText {
 
         displayMode = traits.get("displayMode");
 
+        if (displayMode == null) {
+            attributes.put("data-show-units", "true");
+        }
+
         if ("exp".equals(displayMode) || "engineer".equals(displayMode)) {
             format = "exponential";
 

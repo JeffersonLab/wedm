@@ -27,6 +27,7 @@ record(ao,"channel6") {
         field(DTYP,"Soft Channel")
         field(HHSV,MAJOR)
         field(HIHI,1)
+        field(EGU, "SuperMegaVolts")
 }
 record(calc,"counter_CHBCRYO") {
   field(SCAN, ".2 second")

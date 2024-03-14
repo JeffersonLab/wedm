@@ -199,3 +199,40 @@ value {
 autoSize
 endObjectProperties
 
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 301
+y 220
+w 112
+h 17
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 51
+useDisplayBg
+value {
+  "< Units"
+}
+autoSize
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 32
+y 220
+w 244
+h 26
+controlPv "channel6"
+fgColor index 14
+bgColor index 51
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
