@@ -11,11 +11,6 @@ jobs:
     outputs:
       semvertag: ${{ steps.getver.outputs.semvertag }}
     steps:
-      - name: Dump github context
-        run:   echo "$GITHUB_CONTEXT"
-        shell: bash
-        env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Build
