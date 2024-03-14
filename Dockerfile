@@ -37,4 +37,4 @@ USER ${RUN_USER}
 FROM prod as dev
 USER root
 RUN apt update \
-    && apt install git -y
+    && apt install git openjdk-17-jre-headless -y
