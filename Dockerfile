@@ -37,4 +37,7 @@ USER ${RUN_USER}
 FROM prod as dev
 USER root
 RUN apt update \
-    && apt install git openjdk-17-jre-headless -y
+    && apt install git openjdk-17-jdk -y \
+# Tomcat prioritizes JRE_HOME over JAVA_HOME and we run with jdk8 and build wtih jdk17
+ENV JRE_HOME /opt/java/openjdk
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
