@@ -6,12 +6,10 @@ plugins {
 
 description = "Web Extensible Display Manager"
 group 'org.jlab'
-version = '1.13.2'
+version new File("./VERSION").text
+ext.releaseDate = new Date().format('MMM dd yyyy')
 
-ext {
-    releaseDate = 'Nov 2 2023'
-    productionRelease = 'true'
-}
+ext.productionRelease = 'true'
 
 repositories {
     mavenCentral()
