@@ -1,0 +1,19 @@
+services:
+  epics2web:
+    extends:
+      file: ../compose.yaml
+      service: epics2web
+
+  softioc:
+    extends:
+      file: ../compose.yaml
+      service: softioc
+
+  wedm:
+    build:
+      context: ../.
+      dockerfile: Dockerfile
+      target: dev
+    extends:
+      file: ../compose.yaml
+      service: wedm

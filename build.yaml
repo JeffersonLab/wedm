@@ -16,6 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: dev
       args:
         - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
 
