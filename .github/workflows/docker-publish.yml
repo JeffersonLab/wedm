@@ -1,3 +1,20 @@
+name: Publish to DockerHub
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      semvertag:
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
