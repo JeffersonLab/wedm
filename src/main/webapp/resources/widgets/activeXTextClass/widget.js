@@ -16,14 +16,19 @@ jlab.wedm.StaticTextPvObserverInit = function () {
     jlab.wedm.StaticTextPvObserver.prototype.constructor = jlab.wedm.StaticTextPvObserver;
 
     jlab.wedm.StaticTextPvObserver.prototype.handleInfo = function (info) {
-
-        var $obj = $("#" + this.id);
+        var $obj = $("#" + this.id),
+            unitsPv = info.pv.endsWith('.EGU');
 
         if (!info.connected) {
-            $obj.css("color", jlab.wedm.disconnectedAlarmColor);
-            $obj.attr("background-color", "transparent");
-            $obj[0].classList.add("disconnected-pv");
-            $obj[0].classList.remove("waiting-for-state");
+            // Ignore units error.  See: https://github.com/JeffersonLab/wedm/issues/36
+            if(unitsPv) {
+                console.log('ignoring failed .EGU monitor', info);
+            } else { // mark it as disconnected!
+                $obj.css("color", jlab.wedm.disconnectedAlarmColor);
+                $obj.attr("background-color", "transparent");
+                $obj[0].classList.add("disconnected-pv");
+                $obj[0].classList.remove("waiting-for-state");
+            }
         }
     };
 
