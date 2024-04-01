@@ -1,0 +1,22 @@
+name: CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'VERSION'
+
+jobs:
+  release:
+    uses: jeffersonlab/java-workflows/.github/workflows/gh-release.yml@main
+    with:
+      files: build/libs/wedm.war
+    secrets: inherit
+
+  docker_publish:
+    needs:
+      - release
+    uses: jeffersonlab/container-workflows/.github/workflows/docker-publish.yml@main
+    with:
+      semvertag: ${{ needs.release.outputs.semvertag }}
+    secrets: inherit

@@ -11,20 +11,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-      - uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: wrapper
-      - name: Build with Gradle
-        run: ./gradlew build
+  build:
+    uses: jeffersonlab/java-workflows/.github/workflows/unit-ci.yml@main
+
