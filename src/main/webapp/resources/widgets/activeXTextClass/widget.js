@@ -107,7 +107,7 @@ jlab.wedm.StaticTextPvObserverInit = function () {
         if (typeof fgRuleIndex !== 'undefined') {
             stmt = jlab.wedm.colorRules[fgRuleIndex];
 
-            value = this.handleCalcExpr(value);
+            value = this.handleColorCalcExpr(value);
 
             if(value == null) {
                 return; // Still waiting for more updates
@@ -121,7 +121,7 @@ jlab.wedm.StaticTextPvObserverInit = function () {
         if (typeof bgRuleIndex !== 'undefined') {
             stmt = jlab.wedm.colorRules[bgRuleIndex];
 
-            value = this.handleCalcExpr(value);
+            value = this.handleColorCalcExpr(value);
 
             if(value == null) {
                 return; // Still waiting for more updates

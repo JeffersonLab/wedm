@@ -36,6 +36,12 @@ jlab.wedm.ShapePvObserverInit = function () {
                 lineAlarm = $obj.attr("data-line-alarm") === "true",
                 invalid = false;
 
+        sevr = this.handleAlarmCalcExpr(sevr);
+
+        if(sevr == null) {
+            return; // Still waiting for more updates
+        }
+
         $obj.attr("data-sevr", sevr);
         $obj[0].classList.remove("waiting-for-state");
 
@@ -92,7 +98,7 @@ jlab.wedm.ShapePvObserverInit = function () {
         if (lineRuleIndex !== undefined) {
             stmt = jlab.wedm.colorRules[lineRuleIndex];
 
-            value = this.handleCalcExpr(value);
+            value = this.handleColorCalcExpr(value);
 
             if(value == null) {
                 return; // Still waiting for more updates
@@ -106,7 +112,7 @@ jlab.wedm.ShapePvObserverInit = function () {
         if (fillRuleIndex !== undefined) {
             stmt = jlab.wedm.colorRules[fillRuleIndex];
 
-            value = this.handleCalcExpr(value);
+            value = this.handleColorCalcExpr(value);
 
             if(value == null) {
                 return; // Still waiting for more updates
