@@ -278,15 +278,32 @@ jlab.wedm.PvObserver = function (id, pvSet) {
         return pvs;
     };
 
-    jlab.wedm.PvObserver.prototype.handleCalcExpr = function(value) {
-        if (jlab.wedm.isCalcExpr(this.pvSet.colorPvExpr)) {
-            var pvs = this.toOrderedExpressionValues(this.pvSet.colorPvs);
+    jlab.wedm.PvObserver.prototype.handleColorCalcExpr = function(value) {
 
-            if(pvs == null) {
+        var expr = this.pvSet.colorPvExpr,
+            pvs = this.pvSet.colorPvs;
+
+        return this.handleCalcExpr(value, expr, pvs);
+    };
+
+    jlab.wedm.PvObserver.prototype.handleAlarmCalcExpr = function(value) {
+
+        var expr = this.pvSet.alarmPvExpr,
+            pvs = this.pvSet.alarmPvs;
+
+        return this.handleCalcExpr(value, expr, pvs);
+    };
+
+    jlab.wedm.PvObserver.prototype.handleCalcExpr = function(value, expr, pvs) {
+
+        if (jlab.wedm.isCalcExpr(expr)) {
+            var ordered = this.toOrderedExpressionValues(pvs);
+
+            if(ordered == null) {
                 return null; // We don't have complete set of variables yet!
             }
 
-            value = jlab.wedm.evalCalcExpr(this.pvSet.colorPvExpr, pvs);
+            value = jlab.wedm.evalCalcExpr(expr, ordered);
         }
 
         return value;
@@ -649,9 +666,14 @@ jlab.wedm.createWidgets = function () {
         if (alarmSensitive && indicatorPvs.length === 1 && !jlab.wedm.isLocalExpr(indicatorPvs[0])) {
             basename = jlab.wedm.basename(indicatorPvs[0]);
             alarmPvs.push(basename + ".SEVR");
-        } else if (alarmPvs.length === 1) {
-            basename = jlab.wedm.basename(alarmPvs[0]);
-            alarmPvs[0] = basename + ".SEVR";
+        }
+
+        // Force alarm PVs to always end with .SEVR
+        for(var i = 0; i < alarmPvs.length; i++) {
+            basename = jlab.wedm.basename(alarmPvs[i]);
+            var newname = basename + ".SEVR";
+            alarmPvExpr = alarmPvExpr.replace(alarmPvs[i], newname);
+            alarmPvs[i] = newname;
         }
 
         if (showUnits && ctrlPvs.length === 1 && !jlab.wedm.isLocalExpr(ctrlPvs[0]) && typeof $obj.find(".screen-text") !== 'undefined') {
