@@ -34,7 +34,7 @@ jlab.wedm.ControlTextPvObserverInit = function () {
                 hexPrefix = $obj.attr("data-hex-prefix") === "true",
                 units = $obj.attr("data-units");
 
-        if (typeof enumVal !== 'undefined') {
+        if (typeof enumVal !== 'undefined' && this.pvSet.ctrlPvs.length === 1) {
             value = enumVal;
         } else { /*Not an enum*/
             if (jlab.wedm.isCalcExpr(this.pvSet.ctrlPvExpr)) {
