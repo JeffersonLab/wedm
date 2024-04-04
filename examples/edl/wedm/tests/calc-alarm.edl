@@ -1,0 +1,66 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 0
+y 0
+w 400
+h 400
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 8
+bgColor index 2
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 51
+ctlBgColor2 index 8
+topShadowColor index 2
+botShadowColor index 12
+snapToGrid
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 50
+y 40
+w 15
+h 10
+lineColor index 14
+fill
+fillColor index 113
+fillAlarm
+alarmPv "CALC\\\{max(A,B)\}(channel1.STAT,channel2.STAT)"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 180
+y 40
+w 300
+h 22
+controlPv "CALC\\\{max(A,B)\}(channel1.SEVR,channel2.SEVR)"
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 51
+topShadowColor index 2
+botShadowColor index 12
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
