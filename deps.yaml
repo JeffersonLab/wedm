@@ -10,7 +10,7 @@ services:
       - ./examples/softioc-scripts:/scripts
 
   epics2web:
-    image: jeffersonlab/epics2web:1.14.1
+    image: jeffersonlab/epics2web:1.17.1
     hostname: epics2web
     container_name: epics2web
     environment:
