@@ -672,7 +672,9 @@ jlab.wedm.createWidgets = function () {
         for(var i = 0; i < alarmPvs.length; i++) {
             basename = jlab.wedm.basename(alarmPvs[i]);
             var newname = basename + ".SEVR";
-            alarmPvExpr = alarmPvExpr.replace(alarmPvs[i], newname);
+            if(typeof alarmPvExpr !== 'undefined') {
+                alarmPvExpr = alarmPvExpr.replace(alarmPvs[i], newname);
+            }
             alarmPvs[i] = newname;
         }
 
