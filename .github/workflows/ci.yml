@@ -13,5 +13,5 @@ on:
 
 jobs:
   build:
-    uses: jeffersonlab/java-workflows/.github/workflows/unit-ci.yml@main
+    uses: jeffersonlab/java-workflows/.github/workflows/unit-ci.yml@v1
 
