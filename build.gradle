@@ -6,7 +6,7 @@ plugins {
 
 description = "Web Extensible Display Manager"
 group 'org.jlab'
-version new File("./VERSION").text
+version new File("${projectDir}/VERSION").text.trim()
 ext.releaseDate = new Date().format('MMM dd yyyy')
 
 ext.productionRelease = 'true'
