@@ -8,15 +8,14 @@ on:
 
 jobs:
   release:
-    uses: jeffersonlab/java-workflows/.github/workflows/gh-release.yml@v1
+    uses: jeffersonlab/java-workflows/.github/workflows/gh-release.yaml@v2
     with:
       files: build/libs/wedm.war
-    secrets: inherit
 
   docker_publish:
     needs:
       - release
-    uses: jeffersonlab/container-workflows/.github/workflows/docker-publish.yml@v1
+    uses: jeffersonlab/container-workflows/.github/workflows/docker-publish.yaml@v2
     with:
       semvertag: ${{ needs.release.outputs.semvertag }}
     secrets: inherit
