@@ -52,6 +52,10 @@ tasks.register('jsMinifyIt', org.gradlewebtools.minify.JsMinifyTask) {
     dstDir = project.file("build/minified")
 }
 
+tasks.named('jar') {
+    enabled = false
+}
+
 war {
     dependsOn(cssMinifyIt)
     dependsOn(jsMinifyIt)
