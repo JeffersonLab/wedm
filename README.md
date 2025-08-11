@@ -111,7 +111,7 @@ When proxying WEDM it is sometimes useful to have multiple instances accessible 
 If the optional environment variable `OTF_DIR` is defined, then ShellCommand widgets with OTFLauncher commands will be honored if possible via a pregenerated screen cache found at the path indicated by the variable.  The cache directory is expected to contain a file named `edl.json` which maps OTF shell commands to .edl files.  The JLab On-The-Fly (OTF) EDM screens are used to automatically keep screens in sync with the accelerator configuration database and are usually generated dynamically at the time of invocation.   A cache reduces latency when opening screens and a separate app invokes the generation commands such that WEDM continues to interface solely with EDM files on a filesystem.
 
 ## Build 
-This project is built with [Java 17](https://adoptium.net/) (compiled to Java 8 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
+This project is built with [Java 21](https://adoptium.net/) (compiled to Java 21 bytecode), and uses the [Gradle 9](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
 ```
 git clone https://github.com/JeffersonLab/wedm
@@ -131,14 +131,21 @@ gradlew build
    - The [Publish docker image](https://github.com/JeffersonLab/container-workflows/blob/main/.github/workflows/docker-publish.yaml) GitHub Action to create a new demo Docker image.
 
 ## Deploy
-At JLab this app is found at [epicsweb.jlab.org/wedm](https://epicsweb.jlab.org/wedm/), plus other fiefdom specific subpaths, and internally at [epicswebtest.acc.jlab.org/wedm](https://epicswebtest.acc.jlab.org/wedm/).  However, the epicsweb server is a proxy for `epicswebops.acc.jlab.org`, `epicswebops2.acc.jlab.org`, `epicswebchl.acc.jlab.org`, `epicswebfel.acc.jlab.org`, `epicswebsrf.acc.jlab.org` and `epicswebitf.acc.jlab.org`.  Additionally, the context root for each is adjusted with a prefix such that all servers can be reached from a single namespace.  The context root prefixes are `/`, `/ops2`, `/chl`, `/fel`, `/srf`, and `/itf` respectively.  Tomcat interprets context roots from _war_ file name unless overridden elsewhere.  Therefore each _war_ must be prefixed with `<prefix>#`.    Use wget or the like to grab the release war file.  Don't download directly into webapps dir as file scanner may attempt to deploy before fully downloaded.  Be careful of previous war file as by default wget won't overrwite.  The war file should be attached to each release, so right click it and copy location (or just update version in path provided in the example below).  Example for chl fiefdom:
+At JLab this app is found at [epicsweb.jlab.org/wedm](https://epicsweb.jlab.org/wedm/), plus other fiefdom specific subpaths, and internally at [epicswebtest9.acc.jlab.org/wedm](https://epicswebtest9.acc.jlab.org/wedm/).  However, the epicsweb server is a proxy for `epicswebops9.acc.jlab.org`, `epicswebops99.acc.jlab.org`, `epicswebchl9.acc.jlab.org`, `epicsweblerf9.acc.jlab.org`, `epicswebsrf9.acc.jlab.org` and `epicswebuitf9.acc.jlab.org`.  Additionally, the context root for each is adjusted with a prefix such that all servers can be reached from a single namespace.  The context root prefixes are `/`, `/ops2`, `/chl`, `/fel`, `/srf`, and `/itf` respectively.  Tomcat interprets context roots from _war_ file name unless overridden elsewhere.  Therefore each _war_ must be prefixed with `<prefix>#`.    Use wget or the like to grab the release war file.  Don't download directly into webapps dir as file scanner may attempt to deploy before fully downloaded.  Be careful of previous war file as by default wget won't overrwite.  The war file should be attached to each release, so right click it and copy location (or just update version in path provided in the example below).
 
+A script is provided to automate the deployment. As root run:
+```
+cd /root/setup
+./deploy.sh wmenu {version}
+```
+
+Or manually execute (CHL fiefdom shown):
 ```
 cd /tmp
 rm wedm.war
 wget https://github.com/JeffersonLab/wmenu/releases/download/v1.2.3/wedm.war
 mv wedm.war chl#wedm.war
-mv  chl#wedm.war /usr/share/tomcat/webapps
+mv  chl#wedm.war /opt/tomcat/current/webapps
 ```
 
 ## See Also
