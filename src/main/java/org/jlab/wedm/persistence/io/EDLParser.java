@@ -3,10 +3,7 @@ package org.jlab.wedm.persistence.io;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
+import java.net.*;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -221,9 +218,10 @@ public class EDLParser {
      * that refers to a local file, or that is found on the EDMDATAFILES search
      * path.
      * @return Resolved URL for the name or <code>null</code>
-     * @throws MalformedURLException
+     * @throws MalformedURLException If the URL is malformed
+     * @throws URISyntaxException If the URI syntax is invalid
      */
-    public static URL getEdlURL(String name) throws MalformedURLException {
+    public static URL getEdlURL(String name) throws MalformedURLException, URISyntaxException {
         return getURL(name, true);
     }
 
@@ -235,9 +233,10 @@ public class EDLParser {
      * path.
      * @param force_edl Add *.edl suffix if not already in name?
      * @return Resolved URL for the name or <code>null</code>
-     * @throws MalformedURLException
+     * @throws MalformedURLException If the URL is malformed
+     * @throws URISyntaxException If the URI syntax is invalid
      */
-    public static URL getURL(String name, final boolean force_edl) throws MalformedURLException {
+    public static URL getURL(String name, final boolean force_edl) throws MalformedURLException, URISyntaxException {
         return getURL(null, name, force_edl);
     }
     
@@ -315,7 +314,7 @@ public class EDLParser {
      * @return Resolved URL for the name or <code>null</code>
      * @throws MalformedURLException
      */
-    public static URL getURL(URL parent, String name, final boolean force_edl) throws MalformedURLException {
+    public static URL getURL(URL parent, String name, final boolean force_edl) throws MalformedURLException, URISyntaxException {
         Objects.requireNonNull(name, "An EDL resource is required");
 
         // Assert that name has *.edl ending
@@ -343,7 +342,7 @@ public class EDLParser {
                 return null;
             }
             LOGGER.log(Level.FINE, "Using {0} as provided", name);
-            return new URL(name);
+            return new URI(name).toURL();
         }
 
         final File edl_file;
@@ -367,9 +366,9 @@ public class EDLParser {
         if (SEARCH_PATH != null) {
             for (String path : SEARCH_PATH) {
                 if (path.startsWith("/")) {
-                    edl = new URL(HTTP_DOC_ROOT + path.substring(1) + "/" + name);
+                    edl = new URI(HTTP_DOC_ROOT + path.substring(1) + "/" + name).toURL();
                 } else {
-                    edl = new URL(HTTP_DOC_ROOT + path + "/" + name);
+                    edl = new URI(HTTP_DOC_ROOT + path + "/" + name).toURL();
                 }
                 LOGGER.log(Level.FINER, "Checking {0}", edl);
                 try {

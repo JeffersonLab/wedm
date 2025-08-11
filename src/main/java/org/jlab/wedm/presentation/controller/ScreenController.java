@@ -2,6 +2,7 @@ package org.jlab.wedm.presentation.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -73,6 +74,8 @@ public class ScreenController extends HttpServlet {
             request.setAttribute("edlname", edlname);
 
             request.getRequestDispatcher("/WEB-INF/views/file-not-found.jsp").forward(request, response);
+        } catch (URISyntaxException ex) {
+            throw new ServletException(ex);
         }
     }
 }

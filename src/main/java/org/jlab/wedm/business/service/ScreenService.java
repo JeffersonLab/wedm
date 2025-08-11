@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -41,8 +42,7 @@ public class ScreenService {
         LOGGER.log(Level.FINEST, "Color List Load time: (seconds) {0}", (end - start) / 1000.0);
     }
 
-    public HtmlScreen load(String name, List<Macro> macros) throws FileNotFoundException,
-            IOException {
+    public HtmlScreen load(String name, List<Macro> macros) throws IOException, URISyntaxException {
 
         // Resolve name into URL
         final URL url = EDLParser.getEdlURL(name);
