@@ -24,11 +24,10 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    implementation 'javax.servlet:jstl:1.2'
-    implementation 'org.glassfish:javax.json:1.1.4'
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
-    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
-    providedCompile 'javax:javaee-api:7.0'
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0',
+            'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0',
+            'org.glassfish:jakarta.json:2.0.1'
+    providedCompile 'jakarta.servlet:jakarta.servlet-api:6.1.0'
 }
 
 tasks.register('combineCss', org.jlab.cat.CatTask) {

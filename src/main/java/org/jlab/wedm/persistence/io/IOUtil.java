@@ -7,9 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.DatatypeConverter;
 
 /**
  * IO Utilities.
@@ -97,6 +97,7 @@ public final class IOUtil {
    * @return A base64 encoded String
    */
   public static String encodeBase64(byte[] data) {
-    return DatatypeConverter.printBase64Binary(data);
+    Base64.Encoder encoder = Base64.getEncoder();
+    return encoder.encodeToString(data);
   }
 }
