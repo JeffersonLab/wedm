@@ -36,6 +36,8 @@ http://localhost:8080/wedm
 **See**: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
 ## Install
+   1. Download Java 21
+   1. Download [Apache Tomcat 11](http://tomcat.apache.org/)
    1. Install [epics2web](https://github.com/JeffersonLab/epics2web)
    1. Download [wedm.war](https://github.com/JeffersonLab/wedm/releases) and drop it into the Tomcat webapps directory
    1. Start Tomcat and navigate your web browser to localhost:8080/wedm
