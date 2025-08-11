@@ -1,9 +1,6 @@
 package org.jlab.wedm.widget.html;
 
 /**
- *
  * @author slominskir
  */
-public class ActiveRegExUpdateText extends ActiveUpdateText {
-    
-}
+public class ActiveRegExUpdateText extends ActiveUpdateText {}

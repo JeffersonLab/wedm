@@ -1,23 +1,22 @@
 package org.jlab.wedm.persistence.model;
 
 /**
- * 
  * @author slominskir
  */
 public class Macro {
-    public String key;
-    public String value;
+  public String key;
+  public String value;
 
-    public Macro(String key, String value) {
-        this.key = key;
-        this.value = value;
-    }
+  public Macro(String key, String value) {
+    this.key = key;
+    this.value = value;
+  }
 
-    public String getKey() {
-        return key;
-    }
+  public String getKey() {
+    return key;
+  }
 
-    public String getValue() {
-        return value;
-    }
+  public String getValue() {
+    return value;
+  }
 }

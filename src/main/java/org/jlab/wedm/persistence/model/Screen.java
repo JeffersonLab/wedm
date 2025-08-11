@@ -1,149 +1,172 @@
 package org.jlab.wedm.persistence.model;
 
-import org.jlab.wedm.widget.ScreenProperties;
 import java.awt.Point;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jlab.wedm.widget.ScreenProperties;
 
 /**
- *
  * @author slominskir
  */
 public class Screen {
 
-    private static final Logger LOGGER = Logger.getLogger(Screen.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(Screen.class.getName());
 
-    private final String canonicalPath;
-    private final long modifiedDate;
-    private ScreenProperties properties;
-    public final List<WEDMWidget> screenObjects;
-    public Integer embeddedIndex = null;
-    private final ColorPalette colorList;
+  private final String canonicalPath;
+  private final long modifiedDate;
+  private ScreenProperties properties;
+  public final List<WEDMWidget> screenObjects;
+  public Integer embeddedIndex = null;
+  private final ColorPalette colorList;
 
-    /**
-     *  This is a special placeholder.  We don't store macros in the screen cache because macros can vary.  Instead, we
-     *  store a special placeholder that is replaced with macros on page load.
-    * */
-    public static final String ROOT_SCREEN_MACRO_PLACEHOLDER = "root-screen-macros";
+  /**
+   * This is a special placeholder. We don't store macros in the screen cache because macros can
+   * vary. Instead, we store a special placeholder that is replaced with macros on page load.
+   */
+  public static final String ROOT_SCREEN_MACRO_PLACEHOLDER = "root-screen-macros";
 
-    public Screen(String canonicalPath, long modifiedDate, ScreenProperties properties,
-            List<WEDMWidget> screenObjects, ColorPalette colorList) {
-        this.canonicalPath = canonicalPath;
-        this.modifiedDate = modifiedDate;
-        this.properties = properties;
-        this.screenObjects = screenObjects;
-        this.colorList = colorList;
+  public Screen(
+      String canonicalPath,
+      long modifiedDate,
+      ScreenProperties properties,
+      List<WEDMWidget> screenObjects,
+      ColorPalette colorList) {
+    this.canonicalPath = canonicalPath;
+    this.modifiedDate = modifiedDate;
+    this.properties = properties;
+    this.screenObjects = screenObjects;
+    this.colorList = colorList;
+  }
+
+  public void setScreenProperties(ScreenProperties properties) {
+    this.properties = properties;
+  }
+
+  public HtmlScreen toHtmlScreen() {
+    String html = toHtmlBody(HtmlScreen.INITIAL_INDENT, ROOT_SCREEN_MACRO_PLACEHOLDER);
+    String css = toCssHead();
+    String js = this.getColorStyleVariables(); // TODO: this is wasteful to redo every time
+    return new HtmlScreen(canonicalPath, modifiedDate, html, css, js, properties.title);
+  }
+
+  public String toHtmlBody(String indent, String macros) {
+
+    if (properties.w <= 0) {
+      properties.w = 800;
+      LOGGER.log(Level.WARNING, "Screen width not defined: using default of 800px");
     }
 
-    public void setScreenProperties(ScreenProperties properties) {
-        this.properties = properties;
+    if (properties.h <= 0) {
+      properties.h = 600;
+      LOGGER.log(Level.WARNING, "Screen height not defined: using default of 600px");
     }
 
-    public HtmlScreen toHtmlScreen() {
-        String html = toHtmlBody(HtmlScreen.INITIAL_INDENT, ROOT_SCREEN_MACRO_PLACEHOLDER);
-        String css = toCssHead();
-        String js = this.getColorStyleVariables(); // TODO: this is wasteful to redo every time
-        return new HtmlScreen(canonicalPath, modifiedDate, html, css, js, properties.title);
+    String widthAndHeight = "width: " + properties.w + "px; height: " + properties.h + "px; ";
+    String indentPlusOne = indent + HtmlScreen.INDENT_STEP;
+    String embeddedIndexStr = "";
+    String macrosStr = "";
+
+    if (embeddedIndex != null) {
+      embeddedIndexStr = "data-index=\"" + embeddedIndex + "\"";
     }
 
-    public String toHtmlBody(String indent, String macros) {
-
-        if (properties.w <= 0) {
-            properties.w = 800;
-            LOGGER.log(Level.WARNING, "Screen width not defined: using default of 800px");
-        }
-
-        if (properties.h <= 0) {
-            properties.h = 600;
-            LOGGER.log(Level.WARNING, "Screen height not defined: using default of 600px");
-        }
-
-        String widthAndHeight = "width: " + properties.w + "px; height: " + properties.h + "px; ";
-        String indentPlusOne = indent + HtmlScreen.INDENT_STEP;
-        String embeddedIndexStr = "";
-        String macrosStr = "";
-
-        if (embeddedIndex != null) {
-            embeddedIndexStr = "data-index=\"" + embeddedIndex + "\"";
-        }
-
-        if(macros != null) {
-            macrosStr = " data-macros=\"" + macros + "\"";
-        }
-
-        String html
-                = indent + "<div class=\"screen\" " + embeddedIndexStr + macrosStr
-                + " style=\"position: relative; " + widthAndHeight
-                + " ";
-
-        if (properties.bgColor != null && properties.bgColor instanceof EDLColorConstant) {
-            html = html + "background-color: "
-                    + ((EDLColorConstant) properties.bgColor).toRgbString() + "; ";
-        }
-
-        html = html + "\">\n";
-
-        Point translation = new Point(0, 0);
-
-        for (WEDMWidget obj : screenObjects) {
-            html = html + obj.toHtml(indentPlusOne, translation);
-        }
-
-        html = html + HtmlScreen.INITIAL_INDENT + "</div>\n";
-
-        return html;
+    if (macros != null) {
+      macrosStr = " data-macros=\"" + macros + "\"";
     }
 
-    public String getColorStyleVariables() {
-        String js;
+    String html =
+        indent
+            + "<div class=\"screen\" "
+            + embeddedIndexStr
+            + macrosStr
+            + " style=\"position: relative; "
+            + widthAndHeight
+            + " ";
 
-        AlarmColors alarmColors = colorList.getAlarmColors();
-
-        js = "jlab.wedm.disconnectedAlarmColor = '" + alarmColors.disconnectedAlarm.toRgbString()
-                + "',\n";
-        js = js + "jlab.wedm.invalidAlarmColor = '" + alarmColors.invalidAlarm.toRgbString()
-                + "',\n";
-        js = js + "jlab.wedm.minorAlarmColor = '" + alarmColors.minorAlarm.toRgbString() + "',\n";
-        js = js + "jlab.wedm.majorAlarmColor = '" + alarmColors.majorAlarm.toRgbString() + "',\n";
-        js = js + "jlab.wedm.noAlarmColor = '" + alarmColors.noAlarm.toRgbString() + "';\n";
-
-        List<EDLColorRule> rules = colorList.getRuleColors();
-
-        js = js + "jlab.wedm.colorRules = {};\n";
-
-        for (EDLColorRule rule : rules) {
-            js = js + "jlab.wedm.colorRules[" + rule.getIndex() + "] = \"" + rule.getExpression()
-                    + "\";\n";
-        }
-
-        js = js + "jlab.wedm.colors = {};\n";
-
-        List<EDLColorConstant> constants = colorList.getStaticColors();
-
-        for (EDLColorConstant constant : constants) {
-            js = js + "jlab.wedm.colors['" + constant.getName() + "'] = '" + constant.toRgbString()
-                    + "';\n";
-        }
-
-        return js;
+    if (properties.bgColor != null && properties.bgColor instanceof EDLColorConstant) {
+      html =
+          html
+              + "background-color: "
+              + ((EDLColorConstant) properties.bgColor).toRgbString()
+              + "; ";
     }
 
-    private String toCssHead() {
-        String css = "";
+    html = html + "\">\n";
 
-        if (properties.fgColor != null && properties.fgColor instanceof EDLColorConstant) {
-            // Someday we may want to add: ,\nbody .ScreenObject .hoverable-part:hover:before
-            css = css + "body .ScreenObject:hover,\nbody .ScreenObject:hover:before {\noutline-color: "
-                    + ((EDLColorConstant) properties.fgColor).toRgbString() + " !important;\n}\n";
-        }
+    Point translation = new Point(0, 0);
 
-        return css;
+    for (WEDMWidget obj : screenObjects) {
+      html = html + obj.toHtml(indentPlusOne, translation);
     }
-    
-    @Override
-    public String toString(){
-        return canonicalPath;
+
+    html = html + HtmlScreen.INITIAL_INDENT + "</div>\n";
+
+    return html;
+  }
+
+  public String getColorStyleVariables() {
+    String js;
+
+    AlarmColors alarmColors = colorList.getAlarmColors();
+
+    js =
+        "jlab.wedm.disconnectedAlarmColor = '"
+            + alarmColors.disconnectedAlarm.toRgbString()
+            + "',\n";
+    js = js + "jlab.wedm.invalidAlarmColor = '" + alarmColors.invalidAlarm.toRgbString() + "',\n";
+    js = js + "jlab.wedm.minorAlarmColor = '" + alarmColors.minorAlarm.toRgbString() + "',\n";
+    js = js + "jlab.wedm.majorAlarmColor = '" + alarmColors.majorAlarm.toRgbString() + "',\n";
+    js = js + "jlab.wedm.noAlarmColor = '" + alarmColors.noAlarm.toRgbString() + "';\n";
+
+    List<EDLColorRule> rules = colorList.getRuleColors();
+
+    js = js + "jlab.wedm.colorRules = {};\n";
+
+    for (EDLColorRule rule : rules) {
+      js =
+          js
+              + "jlab.wedm.colorRules["
+              + rule.getIndex()
+              + "] = \""
+              + rule.getExpression()
+              + "\";\n";
     }
+
+    js = js + "jlab.wedm.colors = {};\n";
+
+    List<EDLColorConstant> constants = colorList.getStaticColors();
+
+    for (EDLColorConstant constant : constants) {
+      js =
+          js
+              + "jlab.wedm.colors['"
+              + constant.getName()
+              + "'] = '"
+              + constant.toRgbString()
+              + "';\n";
+    }
+
+    return js;
+  }
+
+  private String toCssHead() {
+    String css = "";
+
+    if (properties.fgColor != null && properties.fgColor instanceof EDLColorConstant) {
+      // Someday we may want to add: ,\nbody .ScreenObject .hoverable-part:hover:before
+      css =
+          css
+              + "body .ScreenObject:hover,\nbody .ScreenObject:hover:before {\noutline-color: "
+              + ((EDLColorConstant) properties.fgColor).toRgbString()
+              + " !important;\n}\n";
+    }
+
+    return css;
+  }
+
+  @Override
+  public String toString() {
+    return canonicalPath;
+  }
 }

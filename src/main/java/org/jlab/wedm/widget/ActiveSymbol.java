@@ -2,143 +2,150 @@ package org.jlab.wedm.widget;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jlab.wedm.persistence.io.TraitParser;
-import org.jlab.wedm.persistence.model.ColorPalette;
 import org.jlab.wedm.persistence.model.HtmlScreen;
 import org.jlab.wedm.persistence.model.WEDMWidget;
 
 /**
- *
  * @author slominskir
  */
 public class ActiveSymbol extends EmbeddedScreen {
 
-    private static final Logger LOGGER = Logger.getLogger(ActiveSymbol.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(ActiveSymbol.class.getName());
 
-    public int numStates;
-    public float[] minValues;
-    public float[] maxValues;
-    public String[] controlPvs;
-    public boolean useOriginalSize = false;
-    public boolean useOriginalColors = false;
+  public int numStates;
+  public float[] minValues;
+  public float[] maxValues;
+  public String[] controlPvs;
+  public boolean useOriginalSize = false;
+  public boolean useOriginalColors = false;
 
-    @Override
-    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
-        super.parseTraits(traits, properties);
+  @Override
+  public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+    super.parseTraits(traits, properties);
 
-        numStates = TraitParser.parseInt(traits, "numStates", 0);
-        minValues = TraitParser.parseFloatArray(traits, numStates, "minValues");
-        maxValues = TraitParser.parseFloatArray(traits, numStates, "maxValues");
+    numStates = TraitParser.parseInt(traits, "numStates", 0);
+    minValues = TraitParser.parseFloatArray(traits, numStates, "minValues");
+    maxValues = TraitParser.parseFloatArray(traits, numStates, "maxValues");
 
-        controlPvs = TraitParser.parseStringArray(traits, 1, "controlPvs");
+    controlPvs = TraitParser.parseStringArray(traits, 1, "controlPvs");
 
-        useOriginalSize = TraitParser.parseBoolean(traits, "useOriginalSize");
-        useOriginalColors = TraitParser.parseBoolean(traits, "useOriginalColors");
+    useOriginalSize = TraitParser.parseBoolean(traits, "useOriginalSize");
+    useOriginalColors = TraitParser.parseBoolean(traits, "useOriginalColors");
+  }
+
+  @Override
+  public String toHtml(String indent, Point translation) {
+
+    int originX = x + translation.x;
+    int originY = y + translation.y;
+
+    attributes.put("id", "obj-" + objectId);
+
+    classes.add("ActiveSymbol");
+    classes.add("ScreenObject");
+
+    if (numPvs == 1 && controlPvs != null && controlPvs.length == 1) {
+      attributes.put("data-pv", controlPvs[0]);
+
+      if (numStates > 0 && numStates <= 64) {
+        String minStr = String.valueOf(minValues[0]);
+        for (int i = 1; i < numStates; i++) {
+          minStr = minStr + " " + minValues[i];
+        }
+        attributes.put("data-min-values", minStr);
+
+        String maxStr = String.valueOf(maxValues[0]);
+        for (int i = 1; i < numStates; i++) {
+          maxStr = maxStr + " " + maxValues[i];
+        }
+        attributes.put("data-max-values", maxStr);
+      }
     }
 
-    @Override
-    public String toHtml(String indent, Point translation) {
+    styles.put("width", w + "px");
+    styles.put("height", h + "px");
+    styles.put("left", originX + "px");
+    styles.put("top", originY + "px");
 
-        int originX = x + translation.x;
-        int originY = y + translation.y;
+    Map<String, String> glasspaneStyles = new HashMap<>();
+    glasspaneStyles.put("width", w + "px");
+    glasspaneStyles.put("height", h + "px");
+    glasspaneStyles.put("left", "0");
+    glasspaneStyles.put("top", "0");
+    glasspaneStyles.put("position", "absolute");
+    glasspaneStyles.put("z-index", "9999");
+    glasspaneStyles.put("pointer-events", "auto");
+    String glasspaneStyleStr = getStyleString(glasspaneStyles);
 
-        attributes.put("id", "obj-" + objectId);
+    String attrStr = getAttributesString(attributes);
+    String classStr = getClassString(classes);
+    String styleStr = getStyleString(styles);
 
-        classes.add("ActiveSymbol");
-        classes.add("ScreenObject");
+    String html = indent + "<div " + classStr + " " + attrStr + " " + styleStr + "/>";
 
-        if (numPvs == 1 && controlPvs != null && controlPvs.length == 1) {
-            attributes.put("data-pv", controlPvs[0]);
+    if (screen != null && !screen.screenObjects.isEmpty()) {
 
-            if (numStates > 0 && numStates <= 64) {
-                String minStr = String.valueOf(minValues[0]);
-                for (int i = 1; i < numStates; i++) {
-                    minStr = minStr + " " + minValues[i];
-                }
-                attributes.put("data-min-values", minStr);
-
-                String maxStr = String.valueOf(maxValues[0]);
-                for (int i = 1; i < numStates; i++) {
-                    maxStr = maxStr + " " + maxValues[i];
-                }
-                attributes.put("data-max-values", maxStr);
-            }
-        }
-
-        styles.put("width", w + "px");
-        styles.put("height", h + "px");
-        styles.put("left", originX + "px");
-        styles.put("top", originY + "px");
-
-        Map<String, String> glasspaneStyles = new HashMap<>();
-        glasspaneStyles.put("width", w + "px");
-        glasspaneStyles.put("height", h + "px");
-        glasspaneStyles.put("left", "0");
-        glasspaneStyles.put("top", "0");
-        glasspaneStyles.put("position", "absolute");
-        glasspaneStyles.put("z-index", "9999");
-        glasspaneStyles.put("pointer-events", "auto");
-        String glasspaneStyleStr = getStyleString(glasspaneStyles);
-
-        String attrStr = getAttributesString(attributes);
-        String classStr = getClassString(classes);
-        String styleStr = getStyleString(styles);
-
-        String html = indent + "<div " + classStr + " " + attrStr + " " + styleStr + "/>";
-
-        if (screen != null && !screen.screenObjects.isEmpty()) {
-
-            for (WEDMWidget obj : screen.screenObjects) {
-
-                if (obj instanceof ActiveGroup) {
-                    ActiveGroup grp = (ActiveGroup) obj;
-
-                    Point p = grp.getOrigin();
-                    Dimension d = grp.getDimension();
-
-                    Point childTranslation = new Point(-p.x, -p.y);
-
-                    if (!useOriginalSize) {
-                        float xScale = (float) w / d.width;
-                        float yScale = (float) h / d.height;
-
-                        grp.symbolScaleOverride(xScale, yScale);
-                    }
-
-                    if (!useOriginalColors) {
-                        overrideColorsRecursive(obj);
-                    }
-
-                    html = html + obj.toHtml(indent + HtmlScreen.INDENT_STEP, childTranslation);
-                } else {
-                    LOGGER.log(Level.WARNING, "Symbol top level object is not an ActiveGroup: {0}",
-                            obj.getClass().getSimpleName());
-                }
-            }
-        }
-
-        html = html + indent + HtmlScreen.INDENT_STEP + "<div data-pv=\"" + attributes.get("data-pv") + "\" class=\"GlassPane MouseSensitive\" " + glasspaneStyleStr + "></div>\n";
-
-        html = html + indent + "</div>\n";
-
-        return html;
-    }
-
-    private void overrideColorsRecursive(WEDMWidget obj) {
-        obj.symbolColorOverride(bgColor, fgColor);
+      for (WEDMWidget obj : screen.screenObjects) {
 
         if (obj instanceof ActiveGroup) {
-            List<WEDMWidget> children = ((ActiveGroup) obj).children;
+          ActiveGroup grp = (ActiveGroup) obj;
 
-            for (WEDMWidget child : children) {
-                overrideColorsRecursive(child);
-            }
+          Point p = grp.getOrigin();
+          Dimension d = grp.getDimension();
+
+          Point childTranslation = new Point(-p.x, -p.y);
+
+          if (!useOriginalSize) {
+            float xScale = (float) w / d.width;
+            float yScale = (float) h / d.height;
+
+            grp.symbolScaleOverride(xScale, yScale);
+          }
+
+          if (!useOriginalColors) {
+            overrideColorsRecursive(obj);
+          }
+
+          html = html + obj.toHtml(indent + HtmlScreen.INDENT_STEP, childTranslation);
+        } else {
+          LOGGER.log(
+              Level.WARNING,
+              "Symbol top level object is not an ActiveGroup: {0}",
+              obj.getClass().getSimpleName());
         }
+      }
     }
+
+    html =
+        html
+            + indent
+            + HtmlScreen.INDENT_STEP
+            + "<div data-pv=\""
+            + attributes.get("data-pv")
+            + "\" class=\"GlassPane MouseSensitive\" "
+            + glasspaneStyleStr
+            + "></div>\n";
+
+    html = html + indent + "</div>\n";
+
+    return html;
+  }
+
+  private void overrideColorsRecursive(WEDMWidget obj) {
+    obj.symbolColorOverride(bgColor, fgColor);
+
+    if (obj instanceof ActiveGroup) {
+      List<WEDMWidget> children = ((ActiveGroup) obj).children;
+
+      for (WEDMWidget child : children) {
+        overrideColorsRecursive(child);
+      }
+    }
+  }
 }

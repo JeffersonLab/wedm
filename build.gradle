@@ -1,7 +1,8 @@
 plugins {
     id 'war'
-    id "org.gradlewebtools.minify" version "2.1.1"
-    id "org.jlab.cat" version "1.1.0"
+    id 'org.gradlewebtools.minify' version '2.1.1'
+    id 'org.jlab.cat' version '1.1.0'
+    id 'com.diffplug.spotless' version '7.2.1'
 }
 
 description = "Web Extensible Display Manager"
@@ -74,5 +75,11 @@ war {
     from('build/minified') {
         include '*.min.js'
         into 'resources/js/'
+    }
+}
+
+spotless {
+    java {
+        googleJavaFormat()
     }
 }

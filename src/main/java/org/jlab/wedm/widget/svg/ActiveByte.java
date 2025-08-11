@@ -1,102 +1,111 @@
 package org.jlab.wedm.widget.svg;
 
+import static org.jlab.wedm.widget.svg.SvgScreenObject.DASH_SPACING;
+
 import java.awt.Point;
 import java.util.Map;
 import org.jlab.wedm.persistence.io.TraitParser;
 import org.jlab.wedm.widget.ScreenProperties;
-import static org.jlab.wedm.widget.svg.SvgScreenObject.DASH_SPACING;
 
 /**
- *
  * @author slominskir
  */
 public class ActiveByte extends ActiveRectangle {
 
-    public int numBits;
-    public int shift;
-    public boolean littleEndian;
+  public int numBits;
+  public int shift;
+  public boolean littleEndian;
 
-    @Override
-    public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
-        super.parseTraits(traits, properties);
+  @Override
+  public void parseTraits(Map<String, String> traits, ScreenProperties properties) {
+    super.parseTraits(traits, properties);
 
-        numBits = TraitParser.parseInt(traits, "numBits", 0);
-        shift = TraitParser.parseInt(traits, "shift", 0);
+    numBits = TraitParser.parseInt(traits, "numBits", 0);
+    shift = TraitParser.parseInt(traits, "shift", 0);
 
-        littleEndian = "little".equals(traits.get("endian"));
+    littleEndian = "little".equals(traits.get("endian"));
+  }
+
+  @Override
+  public String toHtml(String indent, Point translation) {
+    attributes.put("data-shift", String.valueOf(shift));
+    attributes.put("data-little-endian", String.valueOf(littleEndian));
+
+    return super.toHtml(indent, translation);
+  }
+
+  @Override
+  public String toSvg(String indent, Point translation) {
+    String svg = "";
+
+    // svg = super.toSvg(indent, indentStep, translation);
+    int originX = x + translation.x;
+    int originY = y + translation.y;
+
+    if (numBits < 1) {
+      numBits = 1;
     }
 
-    @Override
-    public String toHtml(String indent, Point translation) {
-        attributes.put("data-shift", String.valueOf(shift));
-        attributes.put("data-little-endian", String.valueOf(littleEndian));
+    int bitWidth, bitHeight;
+    boolean vertical = true;
 
-        return super.toHtml(indent, translation);
+    /*If equal h & w EDM makes vertical widget*/
+    if (h >= w) {
+      bitWidth = w;
+      bitHeight = h / numBits;
+    } else {
+      bitWidth = w / numBits;
+      bitHeight = h;
+      vertical = false;
     }
 
-    @Override
-    public String toSvg(String indent, Point translation) {
-        String svg = "";
+    for (int i = 0; i < numBits; i++) {
+      svg =
+          svg
+              + indent
+              + "<rect class=\"bit\" x=\""
+              + originX
+              + "\" y=\""
+              + originY
+              + "\" width=\""
+              + bitWidth
+              + "\" height=\""
+              + bitHeight
+              + "\" ";
 
-        //svg = super.toSvg(indent, indentStep, translation);
-        int originX = x + translation.x;
-        int originY = y + translation.y;
+      String strokeColorStr = "black";
 
-        if (numBits < 1) {
-            numBits = 1;
-        }
+      if (lineColor != null) {
+        strokeColorStr = lineColor.toColorString();
+      }
 
-        int bitWidth, bitHeight;
-        boolean vertical = true;
+      svg = svg + "stroke=\"" + strokeColorStr + "\" ";
 
-        /*If equal h & w EDM makes vertical widget*/
-        if (h >= w) {
-            bitWidth = w;
-            bitHeight = h / numBits;
-        } else {
-            bitWidth = w / numBits;
-            bitHeight = h;
-            vertical = false;
-        }
+      String fillColorStr = "transparent";
 
-        for (int i = 0; i < numBits; i++) {
-            svg = svg + indent + "<rect class=\"bit\" x=\"" + originX + "\" y=\"" + originY
-                    + "\" width=\"" + bitWidth
-                    + "\" height=\"" + bitHeight + "\" ";
+      if (fill && fillColor != null) {
+        fillColorStr = fillColor.toColorString();
+      }
 
-            String strokeColorStr = "black";
+      svg = svg + "fill=\"" + fillColorStr + "\" ";
 
-            if (lineColor != null) {
-                strokeColorStr = lineColor.toColorString();
-            }
+      if (lineWidth != null) {
+        svg = svg + "stroke-width=\"" + lineWidth + "\" ";
+      }
 
-            svg = svg + "stroke=\"" + strokeColorStr + "\" ";
+      if (dash) {
+        svg = svg + "stroke-dasharray=\"" + DASH_SPACING + "\" ";
+      }
 
-            String fillColorStr = "transparent";
+      svg = svg + "/>\n";
 
-            if (fill && fillColor != null) {
-                fillColorStr = fillColor.toColorString();
-            }
-
-            svg = svg + "fill=\"" + fillColorStr + "\" ";
-
-            if (lineWidth != null) {
-                svg = svg + "stroke-width=\"" + lineWidth + "\" ";
-            }
-
-            if (dash) {
-                svg = svg + "stroke-dasharray=\"" + DASH_SPACING + "\" ";
-            }
-
-            svg = svg + "/>\n";
-
-            if (vertical) {
-                originY = originY + bitHeight;
-            } else {
-                originX = originX + bitWidth;
-            }
-        }
-
-        return svg;
+      if (vertical) {
+        originY = originY + bitHeight;
+      } else {
+        originX = originX + bitWidth;
+      }
     }
+
+    return svg;
+  }
 }
