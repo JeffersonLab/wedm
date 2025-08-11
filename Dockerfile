@@ -1,8 +1,8 @@
-ARG BUILD_IMAGE=gradle:7.4-jdk17-alpine
-ARG RUN_IMAGE=tomcat:9.0.68-jre8
+ARG BUILD_IMAGE=gradle:9-jdk21-alpine
+ARG RUN_IMAGE=tomcat:11-jdk21
 
 ################## Stage 0
-FROM ${BUILD_IMAGE} as builder
+FROM ${BUILD_IMAGE} AS builder
 ARG CUSTOM_CRT_URL
 USER root
 WORKDIR /
@@ -13,10 +13,10 @@ RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
        && export OPTIONAL_CERT_ARG=--cert=/etc/ssl/certs/ca-certificates.crt \
     ; fi
 COPY . /app
-RUN cd /app && gradle build -x test --no-watch-fs $OPTIONAL_CERT_ARG
+RUN cd /app && gradle build -x test -x spotlessJavaCheck --no-watch-fs $OPTIONAL_CERT_ARG
 
 ################## Stage 1
-FROM ${RUN_IMAGE} as prod
+FROM ${RUN_IMAGE} AS prod
 ARG CUSTOM_CRT_URL
 ARG RUN_USER=tomcat
 ARG APP_HOME=/usr/local/tomcat/webapps
@@ -34,11 +34,11 @@ RUN useradd -m tomcat \
 USER ${RUN_USER}
 
 ################## Stage 2
-FROM prod as dev
+FROM prod AS dev
 USER root
 RUN apt update \
-    && apt install tini git openjdk-17-jdk -y
+    && apt install tini git openjdk-21-jdk -y
 # Tomcat prioritizes JRE_HOME over JAVA_HOME and we run with jdk8 and build wtih jdk17
 ENV JRE_HOME=/opt/java/openjdk
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 ENTRYPOINT ["tini", "--", "sleep", "infinity"]
