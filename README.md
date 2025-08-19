@@ -138,7 +138,7 @@ At JLab this app is found at [epicsweb.jlab.org/wedm](https://epicsweb.jlab.org/
 A script is provided to automate the deployment. As root run:
 ```
 cd /root/setup
-./deploy.sh wmenu {version}
+./deploy.sh wedm {version}
 ```
 
 Or manually execute (CHL fiefdom shown):
