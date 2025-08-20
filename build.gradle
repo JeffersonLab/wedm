@@ -1,7 +1,7 @@
 plugins {
     id 'war'
     id 'org.gradlewebtools.minify' version '2.1.1'
-    id 'org.jlab.cat' version '1.1.0'
+    id 'org.jlab.cat' version '1.2.0'
     id 'com.diffplug.spotless' version '7.2.1'
 }
 
