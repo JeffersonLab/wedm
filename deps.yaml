@@ -1,10 +1,10 @@
 services:
   softioc:
-    image: jeffersonlab/softioc:1.1.0
-    tty: true
-    stdin_open: true
+    image: codecr.jlab.org/acc/iac/containers/softioc:1
     hostname: softioc
     container_name: softioc
+    environment:
+      SOFTIOC_HEALTH_PV: channel1
     volumes:
       - ./examples/softioc-db:/db
       - ./examples/softioc-scripts:/scripts
