@@ -16,7 +16,7 @@ COPY . /app
 RUN cd /app && gradle build -x test -x spotlessJavaCheck --no-watch-fs $OPTIONAL_CERT_ARG
 
 ################## Stage 1
-FROM ${RUN_IMAGE} AS prod
+FROM ${RUN_IMAGE} AS runtime
 ARG CUSTOM_CRT_URL
 ARG RUN_USER=tomcat
 ARG APP_HOME=/usr/local/tomcat/webapps
@@ -34,7 +34,7 @@ RUN useradd -m tomcat \
 USER ${RUN_USER}
 
 ################## Stage 2
-FROM prod AS dev
+FROM runtime AS dev
 USER root
 RUN apt update \
     && apt install tini git openjdk-21-jdk -y
@@ -42,3 +42,7 @@ RUN apt update \
 ENV JRE_HOME=/opt/java/openjdk
 ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 ENTRYPOINT ["tini", "--", "sleep", "infinity"]
+
+################## Stage 3
+# Last, so a build without a target, such as the publish workflow's, gets prod
+FROM runtime AS prod
